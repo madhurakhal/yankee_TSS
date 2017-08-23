@@ -53,6 +53,8 @@ public class logictest implements Serializable {
 
     @Override
     public String toString() {
+        
+        System.out.println("Hello chages");
         return "jee17.logic.to.logictest[ id=" + id + " ]";
     }
     
