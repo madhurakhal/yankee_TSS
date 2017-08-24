@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>#{pageTitle }</title>
+        
+        <ui:include src="header-script-css.xhtml" />
+    </h:head>
+
+    <h:body styleClass="hold-transition skin-blue">
+        <div class="wrapper">
+            <ui:include src="header-page.xhtml"/>
+            <div class="content-wrapper">
+                <ui:insert name="main-content">
+
+                </ui:insert>
+            </div>
+            <ui:include src="footer-page.xhtml"/>
+        </div>
+        <ui:include src="footer-script.xhtml" />
+    </h:body>
+</html>
+
