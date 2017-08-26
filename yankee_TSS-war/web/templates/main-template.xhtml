@@ -12,11 +12,13 @@
         <ui:include src="header-script-css.xhtml" />
     </h:head>
 
-    <h:body styleClass="hold-transition skin-blue">
+    <h:body styleClass="hold-transition skin-blue layout-top-nav">
         <p:outputPanel styleClass="wrapper">
             <ui:include src="header-page.xhtml"/>
             <p:outputPanel styleClass="content-wrapper">
-                <ui:insert name="main-content"></ui:insert>
+                <b:container>
+                    <ui:insert name="main-content"></ui:insert>
+                </b:container>
             </p:outputPanel>
             <ui:include src="footer-page.xhtml"/>
         </p:outputPanel>

@@ -11,3 +11,6 @@ and open the template in the editor.
 .main-header .navbar, .main-footer, .content-wrapper {
     margin-left: 0px;
 }
+.box-info {
+    overflow: hidden;
+}

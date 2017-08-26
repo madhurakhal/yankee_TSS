@@ -10,7 +10,7 @@
         <ui:define name="main-content">
             <b:column styleClass="content">
                 <b:row>
-                    <b:column col-xs="4" offset-xs="4">
+                    <b:column col-xs="10" offset-xs="1" col-md="8" offset-md="2" col-lg="4" offset-lg="4">
                         <b:column styleClass="box box-info">
                             <b:column styleClass="box-header with-border text-center">
                                 <h3 styleClass="box-title">Sign Up</h3>
@@ -18,14 +18,14 @@
                             <b:form horizontal="true">
                                 <p:outputPanel styleClass="box-body">
                                     <b:formGroup>
-                                        <h:outputLabel styleClass="col-sm-2 control-label" for="email">Email</h:outputLabel>
-                                        <b:column col-xs="10">
+                                        <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="email">Email</h:outputLabel>
+                                        <b:column col-sm="10" col-xs="12">
                                             <b:inputText id="email" styleClass="form-control" placeholder="Email"/>
                                         </b:column>
                                     </b:formGroup>
                                     <b:formGroup>
-                                        <h:outputLabel styleClass="col-sm-2 control-label" for="password">Password</h:outputLabel>
-                                        <b:column col-sm="10">
+                                        <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="password">Password</h:outputLabel>
+                                        <b:column col-xs="12" col-sm="10">
                                             <b:inputText id="password" styleClass="form-control" placeholder="Password"/>
                                         </b:column>
                                     </b:formGroup>

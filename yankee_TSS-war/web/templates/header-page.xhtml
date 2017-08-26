@@ -11,25 +11,28 @@
             <p:outputPanel styleClass="navbar navbar-static-top">
                 <b:container fluid="true">
                     <p:outputPanel styleClass="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                            <i class="fa fa-bars"></i>
+                        </button>
                         <h:link  styleClass="navbar-brand" outcome="/index.xhtml"><b>Welcome</b></h:link>
                     </p:outputPanel>
-                    <p:outputPanel styleClass="navbar-collapse">
+                    <p:outputPanel styleClass="collapse navbar-collapse" id="navbar-collapse">
                         <b:navbarLinks styleClass="nav navbar-nav">
                             <b:navLink href="index.xhtml" value="Home"></b:navLink>
                         </b:navbarLinks>
-                        
+
                         <ui:fragment rendered="#{not empty request.remoteUser}">
                             <b:navbarLinks styleClass="nav navbar-nav navbar-right">
                                 <b:navLink value="Log Out" href="#"/>
                             </b:navbarLinks>
                         </ui:fragment>
-                        
+
                         <ui:fragment rendered="#{empty request.remoteUser}">
                             <b:navbarLinks styleClass="nav navbar-nav navbar-right">
                                 <b:navLink value="Log In" href="public/login.xhtml"/>
                             </b:navbarLinks>
                         </ui:fragment>
-                        
+
                     </p:outputPanel>
                 </b:container>
             </p:outputPanel>
