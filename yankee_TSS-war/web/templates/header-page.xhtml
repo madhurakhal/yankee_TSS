@@ -2,31 +2,27 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui">
     <ui:composition>
         <header class="main-header">
             <base href="${request.contextPath}/"/>
-            <nav class="navbar navbar-static-top">
-                <div class="container-fluid">
-                    <div class="navbar-header">
+            <p:outputPanel styleClass="navbar navbar-static-top">
+                <b:container fluid="true">
+                    <p:outputPanel styleClass="navbar-header">
                         <h:link  styleClass="navbar-brand"><b>Welcome</b></h:link>
-                    </div>
-                    
-                    <div id="navbar-collapse">
-                        <ul class="nav navbar-nav">
-                            <li>
-                                <h:outputLink  value="index.xhtml">Home</h:outputLink> 
-                            </li>
-                        </ul>
-                        
-                        <ul class="nav navbar-nav navbar-right">
-                            <li>
-                                <h:outputLink value="public/login.xhtml">Log In</h:outputLink>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
+                    </p:outputPanel>
+                    <p:outputPanel styleClass="navbar-collapse">
+                        <b:navbarLinks styleClass="nav navbar-nav">
+                            <b:navLink href="index.xhtml" value="Home"></b:navLink>
+                        </b:navbarLinks>
+                        <b:navbarLinks styleClass="nav navbar-nav navbar-right">
+                            <b:navLink value="Log In" href="public/login.xhtml"/>
+                        </b:navbarLinks>
+                    </p:outputPanel>
+                </b:container>
+            </p:outputPanel>
         </header>
     </ui:composition>
 </html>
