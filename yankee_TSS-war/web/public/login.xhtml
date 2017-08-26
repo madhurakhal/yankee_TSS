@@ -16,7 +16,7 @@
                                 <h3 styleClass="box-title">Sign Up</h3>
                             </b:column>
                             <b:form horizontal="true">
-                                <div styleClass="box-body">
+                                <p:outputPanel styleClass="box-body">
                                     <b:formGroup>
                                         <h:outputLabel styleClass="col-sm-2 control-label" for="email">Email</h:outputLabel>
                                         <b:column col-xs="10">
@@ -34,7 +34,7 @@
                                             <b:selectBooleanCheckbox value="checked" caption="Remember Me"/>
                                         </b:column>
                                     </b:formGroup>
-                                </div>
+                                </p:outputPanel>
                                 <b:column col-xs="12" class="box-footer">
                                     <b:commandButton value="Sign In" styleClass="btn btn-info pull-right"/>
                                 </b:column>
