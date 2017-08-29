@@ -32,8 +32,8 @@ public class PersonEntity extends NamedEntity {
     private String emailAddress;
     private LocalDate dateOfBirth;
     
-    @OneToMany(mappedBy = "roles")
-    private Set<String> role;
+    //@OneToMany(mappedBy = "roles")
+    //private Set<String> role;
 
     public PersonEntity() {
     }
@@ -43,13 +43,13 @@ public class PersonEntity extends NamedEntity {
     }
 
     
-    public Set<String> getRole() {
-        return role;
-    }
-
-    public void setRole(Set<String> role) {
-        this.role = role;
-    }
+//    public Set<String> getRole() {
+//        return role;
+//    }
+//
+//    public void setRole(Set<String> role) {
+//        this.role = role;
+//    }
 
     public String getFirstName() {
         return firstName;
