@@ -22,6 +22,8 @@ import javax.persistence.Table;
     @NamedQuery(name = "getPersonList", query = "SELECT p FROM PersonEntity p ORDER BY p.name, p.uuid"),
     @NamedQuery(name = "getPersonByName", query = "SELECT p FROM PersonEntity p WHERE p.name = :name")
 })
+
+// TODO: REMOVE relation getter setter as per our requirement. delete set if in collection.
 @Entity
 @Table(name = "PERSON")
 public class PersonEntity extends NamedEntity {
@@ -32,8 +34,9 @@ public class PersonEntity extends NamedEntity {
     private String emailAddress;
     private LocalDate dateOfBirth;
     
-    //@OneToMany(mappedBy = "roles")
-    //private Set<String> role;
+    @OneToMany(mappedBy = "person")
+    private Set<RoleEntity> roles;
+   
 
     public PersonEntity() {
     }
@@ -41,16 +44,15 @@ public class PersonEntity extends NamedEntity {
     public PersonEntity(boolean isNew){
         super(isNew);        
     }
-
     
-//    public Set<String> getRole() {
-//        return role;
-//    }
-//
-//    public void setRole(Set<String> role) {
-//        this.role = role;
-//    }
+    public Set<RoleEntity> getRoles() {
+        return roles;
+    }
 
+    public void setRoles(Set<RoleEntity> roles) {
+        this.roles = roles;
+    }
+   
     public String getFirstName() {
         return firstName;
     }
