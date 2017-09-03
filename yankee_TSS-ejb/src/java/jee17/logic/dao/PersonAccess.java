@@ -36,13 +36,15 @@ public class PersonAccess extends AbstractAccess<PersonEntity> {
 
         try {
             // try to find firstname and lastname in directory
+            System.out.println("Here Before");
             org.riediger.ldap.Person p = directoryLookup.lookupPerson(name);
+            System.out.println("Here After" + p);
             if (p != null) {
                 pe.setFirstName(p.getFirstName());
                 pe.setLastName(p.getLastName());
                 // Have to get these details from somewhere. Since directory lookup only gives firstname and last name
                 pe.setDateOfBirth(null);
-                pe.setEmailAddress(null);
+                pe.setEmailAddress(name);
             }
         } catch (NamingException ex) {
             Logger.getLogger(PersonAccess.class.getName()).log(Level.SEVERE, null, ex);

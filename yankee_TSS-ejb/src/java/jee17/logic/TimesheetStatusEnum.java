@@ -5,7 +5,9 @@
  */
 package jee17.logic;
 
-public enum TimesheetFrequency {
-    WEEKLY,
-    MONTHLY;
+public enum TimesheetStatusEnum {
+    IN_PROGRESS,
+    SIGNED_BY_EMPLOYEE,
+    SIGNED_BY_SUPERVISOR,
+    ARCHIVED;
 }

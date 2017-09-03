@@ -7,14 +7,14 @@ package jee17.entities;
 
 import java.time.LocalDate;
 import java.util.Set;
-import jee17.logic.ContractStatus;
+import jee17.logic.ContractStatusEnum;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import jee17.logic.TimesheetFrequency;
+import jee17.logic.TimesheetFrequencyEnum;
 
 /**
  *
@@ -27,13 +27,13 @@ public class ContractEntity extends NamedEntity {
     private static final long serialVersionUID = 1L;
     
     @Enumerated(EnumType.STRING)
-    private ContractStatus status;
+    private ContractStatusEnum status;
     
     private LocalDate startDate;
     private LocalDate endDate;
     
     @Enumerated(EnumType.STRING)
-    private TimesheetFrequency frequency;
+    private TimesheetFrequencyEnum frequency;
     
     private LocalDate terminationDate;
     private double hoursPerWeek;
@@ -55,11 +55,11 @@ public class ContractEntity extends NamedEntity {
     @OneToMany(mappedBy = "contract")
     private Set<SecretaryEntity> secretaries;
 
-    public ContractStatus getStatus() {
+    public ContractStatusEnum getStatus() {
         return status;
     }
 
-    public void setStatus(ContractStatus status) {
+    public void setStatus(ContractStatusEnum status) {
         this.status = status;
     }
 
@@ -79,11 +79,11 @@ public class ContractEntity extends NamedEntity {
         this.endDate = endDate;
     }
 
-    public TimesheetFrequency getFrequency() {
+    public TimesheetFrequencyEnum getFrequency() {
         return frequency;
     }
 
-    public void setFrequency(TimesheetFrequency frequency) {
+    public void setFrequency(TimesheetFrequencyEnum frequency) {
         this.frequency = frequency;
     }
 

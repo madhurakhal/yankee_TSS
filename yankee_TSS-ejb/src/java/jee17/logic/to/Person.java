@@ -6,7 +6,15 @@ public class Person extends Named {
 
     private static final long serialVersionUID = 2813983198416172587L;
 
-    private String firstName;
+    private String firstName;    
+    private String lastName;
+    private String emailAddress;
+    private LocalDate dateOfBirth;
+    
+    
+    public Person(String uuid, String name) {
+        super(uuid, name);
+    }
 
     public String getFirstName() {
         return firstName;
@@ -30,13 +38,6 @@ public class Person extends Named {
 
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
-    }
-    private String lastName;
-    private String emailAddress;
-    private LocalDate dateOfBirth;
-
-    public Person(String uuid, String name) {
-        super(uuid, name);
     }
 
     public LocalDate getDateOfBirth() {

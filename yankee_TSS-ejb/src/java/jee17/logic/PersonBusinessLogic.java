@@ -20,5 +20,8 @@ public interface PersonBusinessLogic {
      *
      * @return the person list, sorted by name
      */
-    public List<Person> getPersonDetails();
+    public List<Person> getPersonList();
+    
+    public Person createPerson(String name);
+        
 }

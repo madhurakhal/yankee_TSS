@@ -13,7 +13,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import jee17.logic.TimesheetStatus;
+import jee17.logic.TimesheetStatusEnum;
 
 /**
  *
@@ -27,7 +27,7 @@ public class TimesheetEntity extends NamedEntity {
     private static final long serialVersionUID = 1L;
      
     @Enumerated(EnumType.STRING)
-    private TimesheetStatus status;
+    private TimesheetStatusEnum status;
     
     private LocalDate startDate;
 
@@ -50,11 +50,11 @@ public class TimesheetEntity extends NamedEntity {
     public TimesheetEntity() {
     }
 
-    public TimesheetStatus getStatus() {
+    public TimesheetStatusEnum getStatus() {
         return status;
     }
 
-    public void setStatus(TimesheetStatus status) {
+    public void setStatus(TimesheetStatusEnum status) {
         this.status = status;
     }
 

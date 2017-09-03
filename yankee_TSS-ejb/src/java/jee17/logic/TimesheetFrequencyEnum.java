@@ -5,9 +5,7 @@
  */
 package jee17.logic;
 
-public enum ContractStatus {
-    PREPARED,
-    STARTED,
-    TERMINATED,
-    ARCHIVED;
+public enum TimesheetFrequencyEnum {
+    WEEKLY,
+    MONTHLY;
 }

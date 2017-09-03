@@ -5,9 +5,9 @@
  */
 package jee17.logic;
 
-public enum TimesheetStatus {
-    IN_PROGRESS,
-    SIGNED_BY_EMPLOYEE,
-    SIGNED_BY_SUPERVISOR,
-    ARCHIVED;
+public enum RoleTypeEnum {
+   SECRETARY,
+   ASSISTANT,
+   EMPLOYEE,
+   SUPERVISOR;
 }
