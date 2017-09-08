@@ -16,7 +16,7 @@ import jee17.entities.NamedEntity;
  */
 public abstract class AbstractAccess<E extends NamedEntity> {
 
-    @PersistenceContext(name = "JavaEE2017-ejbPU")
+    @PersistenceContext(name = "yankee_TSS-ejbPU")
     protected EntityManager em;
 
     public E getByUuid(String uuid) {

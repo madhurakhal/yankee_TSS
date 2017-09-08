@@ -13,7 +13,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import jee17.logic.TimesheetStatusEnum;
+import jee17.logic.ENUM.TimesheetStatusEnum;
 
 /**
  *

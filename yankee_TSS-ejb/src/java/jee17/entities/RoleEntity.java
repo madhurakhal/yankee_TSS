@@ -10,7 +10,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import jee17.logic.RoleTypeEnum;
+import jee17.logic.ENUM.RoleTypeEnum;
 
 /**
  *

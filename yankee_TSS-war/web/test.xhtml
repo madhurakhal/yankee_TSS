@@ -12,7 +12,7 @@
             <h:form id="form">
                 <p:growl id="msgs" showDetail="true"/>
 
-                <p:dataTable id="persons" var="persons" value="#{personListBean.persons}" editable="true" style="margin-bottom:20px">
+                <p:dataTable id="cars1" var="persons" value="#{personListBean.persons}" editable="true" style="margin-bottom:20px">
                     <p:ajax event="rowEdit" listener="#{personListBean.updatePersonDetails}" update=":form:msgs" />
                     <p:ajax event="rowEditCancel" listener="#{personListBean.updatePersonDetails}" update=":form:msgs" />
 

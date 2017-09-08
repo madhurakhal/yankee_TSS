@@ -7,14 +7,14 @@ package jee17.entities;
 
 import java.time.LocalDate;
 import java.util.Set;
-import jee17.logic.ContractStatusEnum;
+import jee17.logic.ENUM.ContractStatusEnum;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import jee17.logic.TimesheetFrequencyEnum;
+import jee17.logic.ENUM.TimesheetFrequencyEnum;
 
 /**
  *

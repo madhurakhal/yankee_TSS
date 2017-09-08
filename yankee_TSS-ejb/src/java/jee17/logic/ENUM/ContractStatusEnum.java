@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jee17.logic;
+package jee17.logic.ENUM;
 
-public enum RoleTypeEnum {
-   SECRETARY,
-   ASSISTANT,
-   EMPLOYEE,
-   SUPERVISOR;
+public enum ContractStatusEnum {
+    PREPARED,
+    STARTED,
+    TERMINATED,
+    ARCHIVED;
 }

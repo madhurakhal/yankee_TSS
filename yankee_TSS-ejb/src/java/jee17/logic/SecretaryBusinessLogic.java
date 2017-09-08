@@ -7,7 +7,6 @@ package jee17.logic;
 
 import java.util.List;
 import javax.ejb.Remote;
-import jee17.logic.ENUM.RoleTypeEnum;
 import jee17.logic.to.Person;
 
 /**
@@ -15,16 +14,14 @@ import jee17.logic.to.Person;
  * @author Sabs
  */
 @Remote 
-public interface PersonBusinessLogic {
+public interface SecretaryBusinessLogic {
     /**
      * Returns a list of all {@link Person}s.
      *
      * @return the person list, sorted by name
      */
-    public List<Person> getPersonList();
+    public List<Person> getSecretaryList();
     
-    public Person createPerson(String name);
-    
-    public void updatePersonDetails(String uuid, RoleTypeEnum roleType);
+    public Person createSecretary(String name);
         
 }
