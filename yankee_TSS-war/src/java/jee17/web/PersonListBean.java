@@ -65,7 +65,6 @@ public class PersonListBean {
         FacesContext.getCurrentInstance().addMessage(null, msg);
         String selectedPerson_uuid = ((Person) event.getObject()).getUuid();
         personBusinessLogic.updatePersonDetails(selectedPerson_uuid, roleType);
-        System.out.println("Am I here to update?" + roleType);
-               
+        System.out.println("Am I here to update?" + roleType);               
     }
 }
