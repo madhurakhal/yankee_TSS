@@ -24,6 +24,9 @@
                     </p:column>
                     <p:column headerText="Email">
                         <h:outputText value = "#{persons.emailAddress}"/>   
+                    </p:column>        
+                    <p:column headerText="Last Name">
+                        <h:outputText value = "#{persons.roles}"/>   
                     </p:column>
                     
                     <p:column headerText="Role">
@@ -40,6 +43,13 @@
                     <p:column style="width:32px">
                         <p:rowEditor />
                     </p:column>
+                    <p:column headerText="Last Name">
+                        <h:dataTable value="#{persons.roles}" var="nested_row">
+                            <ui:repeat value="#{nested_row.roles}" var="t">
+   <ui:repeat value="#{t}" var="s">
+      #{s}
+   </ui:repeat>
+</ui:repeat></h:dataTable></p:column>
                 </p:dataTable>        
 
             </h:form>

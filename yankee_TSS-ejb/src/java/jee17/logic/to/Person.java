@@ -1,6 +1,9 @@
 package jee17.logic.to;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Set;
+import jee17.entities.RoleEntity;
 
 public class Person extends Named {
 
@@ -11,6 +14,15 @@ public class Person extends Named {
     private String emailAddress;
     private LocalDate dateOfBirth;
     
+    private ArrayList<Role> roles;
+
+    public void setRoles(ArrayList<Role> roles) {
+        this.roles = roles;
+    }
+
+    public ArrayList<Role> getRoles() {
+        return roles;
+    }
     
     public Person(String uuid, String name) {
         super(uuid, name);

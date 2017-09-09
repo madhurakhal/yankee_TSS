@@ -24,6 +24,7 @@ import jee17.logic.dao.PersonAccess;
 import jee17.logic.dao.SecretaryAccess;
 import jee17.logic.dao.SupervisorAccess;
 import jee17.logic.to.Person;
+import jee17.logic.to.Role;
 
 /**
  *
@@ -57,6 +58,15 @@ public class PersonBusinessLogicImpl implements PersonBusinessLogic {
             p.setLastName(pe.getLastName());
             p.setDateOfBirth(pe.getDateOfBirth());
             p.setEmailAddress(pe.getEmailAddress());
+            
+            ArrayList<Role> resultRole = new ArrayList<>(pe.getRoles().size());
+            for(RoleEntity re : pe.getRoles()){
+                System.out.println("AT LEATST " + re.getRollType());
+                Role r = new Role(re.getUuid(), re.getName());
+                r.setRoleType(re.getRollType());
+                resultRole.add(r);
+            };
+            p.setRoles(resultRole);
             result.add(p);
         }
         return result;
@@ -83,7 +93,8 @@ public class PersonBusinessLogicImpl implements PersonBusinessLogic {
                 //se.setRollType(roleType);
                 break;
             case SECRETARY:
-                secretaryAccess.createEntity("secretary");
+                SecretaryEntity se1 = secretaryAccess.createEntity("secretary");
+                se1.setPerson(pe);
                 break;
             case SUPERVISOR: 
                 secretaryAccess.createEntity("secretary");

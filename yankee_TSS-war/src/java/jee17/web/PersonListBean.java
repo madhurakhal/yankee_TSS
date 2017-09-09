@@ -1,5 +1,6 @@
 package jee17.web;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -9,6 +10,7 @@ import javax.inject.Named;
 import jee17.logic.PersonBusinessLogic;
 import jee17.logic.ENUM.RoleTypeEnum;
 import jee17.logic.to.Person;
+import jee17.logic.to.Role;
 import org.primefaces.event.RowEditEvent;
 
 /*
@@ -45,6 +47,14 @@ public class PersonListBean {
         if (persons == null) {
             //personBusinessLogic.createPerson("sbhattarai@uni-koblenz.de");
             persons = personBusinessLogic.getPersonList();
+            for (Person i : persons)
+            {
+                ArrayList<Role> roles = i.getRoles();
+                for (Role j : roles){
+                    System.out.println("name " + i.getFirstName());
+                    System.out.println("huh" + j.getRoleType());
+                }
+            }           
             
         }
         return persons;
