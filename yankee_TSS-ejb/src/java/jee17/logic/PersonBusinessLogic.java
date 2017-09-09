@@ -26,5 +26,7 @@ public interface PersonBusinessLogic {
     public Person createPerson(String name);
     
     public void updatePersonDetails(String uuid, RoleTypeEnum roleType);
+    
+    public Person getPersonByName(String name);
         
 }

@@ -6,7 +6,12 @@
     <ui:composition template="templates/main-template.xhtml">
         <ui:param name="pageTitle" value="Welcome Man"/>
         <ui:define name="main-content">
-            <h2>Hello Man</h2>
+            <h:commandButton value="You Are Admin" action="#{bean.delete}" 
+    rendered="#{request.isUserInRole('ADMIN')}" /> 
+            <h:commandButton value="You Are Authenticated" action="#{bean.delete}" 
+    rendered="#{request.isUserInRole('AUTHENTICATED')}" /> 
+            <h:commandButton value="You Are Staff" action="#{bean.delete}" 
+    rendered="#{request.isUserInRole('STAFF')}" /> 
         </ui:define>
     </ui:composition>
 </html>

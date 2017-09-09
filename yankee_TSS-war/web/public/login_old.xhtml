@@ -15,25 +15,18 @@
                             <b:column styleClass="box-header with-border text-center">
                                 <h3 styleClass="box-title">Sign Up</h3>
                             </b:column>
-                            <!--<b:form horizontal="true">-->
-                            <form role="form" method="post" action="j_security_check" name="loginForm">
+                            <b:form horizontal="true">
                                 <p:outputPanel styleClass="box-body">
                                     <b:formGroup>
                                         <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="email">Email</h:outputLabel>
                                         <b:column col-sm="10" col-xs="12">
-                                            <input  id="username" name="j_username"
-                                                    class="form-control"  type="text"
-                                                    placeholder="Username"
-                                                    autofocus="true" autocomplete="off"/>
+                                            <b:inputText id="email" styleClass="form-control" placeholder="Email"/>
                                         </b:column>
                                     </b:formGroup>
                                     <b:formGroup>
                                         <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="password">Password</h:outputLabel>
                                         <b:column col-xs="12" col-sm="10">
-                                            <input id="password" name="j_password"
-                                                   class="form-control" type="password"
-                                                   placeholder="Password"
-                                                   autocomplete="off"/>
+                                            <b:inputText id="password" styleClass="form-control" placeholder="Password"/>
                                         </b:column>
                                     </b:formGroup>
                                     <b:formGroup>
@@ -43,14 +36,9 @@
                                     </b:formGroup>
                                 </p:outputPanel>
                                 <b:column col-xs="12" class="box-footer">
-                                    <button styleClass="btn btn-info pull-right" class="btn btn-success" type="submit">
-                                        <span class="glyphicon glyphicon-ok"> Login</span>
-                                    </button>
+                                    <b:commandButton value="Sign In" styleClass="btn btn-info pull-right"/>
                                 </b:column>
-                            </form>
-                            <b:alert severity="danger" rendered="${request.parameterMap.containsKey('j_username')}">
-                                Error in Login
-                            </b:alert>
+                            </b:form>
                         </b:column>
                     </b:column>
                 </b:row>  

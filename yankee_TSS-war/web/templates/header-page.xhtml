@@ -6,6 +6,7 @@
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:p="http://primefaces.org/ui">
     <ui:composition>
+        <h:form id="navForm">
         <header class="main-header">
             <base href="${request.contextPath}/"/>
             <p:outputPanel styleClass="navbar navbar-static-top">
@@ -23,7 +24,8 @@
 
                         <ui:fragment rendered="#{not empty request.remoteUser}">
                             <b:navbarLinks styleClass="nav navbar-nav navbar-right">
-                                <b:navLink value="Log Out" href="#"/>
+                                <b:navLink outcome="myaccount" value="My Account" icon="cog"/>
+                                <b:navCommandLink  value="Log Out" icon="log-out" action="#{loginBean.logout}"/>
                             </b:navbarLinks>
                         </ui:fragment>
 
@@ -36,7 +38,8 @@
                     </p:outputPanel>
                 </b:container>
             </p:outputPanel>
-        </header>
+        </header></h:form>
     </ui:composition>
+    
 </html>
 

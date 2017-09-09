@@ -35,16 +35,16 @@ public class PersonBusinessLogicImpl implements PersonBusinessLogic {
 
     @EJB
     private PersonAccess personAccess;
-    
+
     @EJB
     private SecretaryAccess secretaryAccess;
-    
+
     @EJB
     private EmployeeAccess employeeAccess;
-    
+
     @EJB
     private SupervisorAccess supervisorAccess;
-    
+
     @EJB
     private AssistantAccess assistantAccess;
 
@@ -58,9 +58,9 @@ public class PersonBusinessLogicImpl implements PersonBusinessLogic {
             p.setLastName(pe.getLastName());
             p.setDateOfBirth(pe.getDateOfBirth());
             p.setEmailAddress(pe.getEmailAddress());
-            
+
             ArrayList<Role> resultRole = new ArrayList<>(pe.getRoles().size());
-            for(RoleEntity re : pe.getRoles()){
+            for (RoleEntity re : pe.getRoles()) {
                 System.out.println("AT LEATST " + re.getRollType());
                 Role r = new Role(re.getUuid(), re.getName());
                 r.setRoleType(re.getRollType());
@@ -71,7 +71,7 @@ public class PersonBusinessLogicImpl implements PersonBusinessLogic {
         }
         return result;
     }
-    
+
     @Override
     public Person createPerson(String name) {
         PersonEntity p = personAccess.createEntity(name);
@@ -79,28 +79,45 @@ public class PersonBusinessLogicImpl implements PersonBusinessLogic {
     }
 
     @Override
-    public void updatePersonDetails(String uuid , RoleTypeEnum roleType) {
-        PersonEntity pe = personAccess.getByUuid(uuid); 
-        switch (roleType){
-            case  ASSISTANT:
+    public Person getPersonByName(String name) {
+        PersonEntity pe = personAccess.getPersonByName(name);
+        Person p = new Person(pe.getUuid(), pe.getName());
+        p.setFirstName(pe.getFirstName());
+        p.setLastName(pe.getLastName());
+        p.setDateOfBirth(pe.getDateOfBirth());
+        ArrayList<Role> resultRole = new ArrayList<>(pe.getRoles().size());
+        for (RoleEntity re : pe.getRoles()) {
+            Role r = new Role(re.getUuid(), re.getName());
+            r.setRoleType(re.getRollType());
+            resultRole.add(r);
+        };
+        p.setRoles(resultRole);
+        return p;
+    }
+
+    @Override
+    public void updatePersonDetails(String uuid, RoleTypeEnum roleType) {
+        PersonEntity pe = personAccess.getByUuid(uuid);
+        switch (roleType) {
+            case ASSISTANT:
                 AssistantEntity ae = assistantAccess.createEntity("secretary");
-                ae.setPerson(pe); 
+                ae.setPerson(pe);
                 //ae.setRollType(roleType);
-                break;                
+                break;
             case EMPLOYEE:
                 SecretaryEntity se = secretaryAccess.createEntity("secretary");
-                se.setPerson(pe); 
+                se.setPerson(pe);
                 //se.setRollType(roleType);
                 break;
             case SECRETARY:
                 SecretaryEntity se1 = secretaryAccess.createEntity("secretary");
                 se1.setPerson(pe);
                 break;
-            case SUPERVISOR: 
+            case SUPERVISOR:
                 secretaryAccess.createEntity("secretary");
                 break;
             default: ;
-        }         
+        }
     }
-   
+
 }
