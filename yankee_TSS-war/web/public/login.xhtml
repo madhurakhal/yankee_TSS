@@ -4,7 +4,8 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:b="http://bootsfaces.net/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
     <ui:composition template="/templates/main-template.xhtml">
         <ui:param name="pageTitle" value="Sign Up" />
         <ui:define name="main-content">
@@ -15,8 +16,8 @@
                             <b:column styleClass="box-header with-border text-center">
                                 <h3 styleClass="box-title">Sign Up</h3>
                             </b:column>
-                            <!--<b:form horizontal="true">-->
-                            <form role="form" method="post" action="j_security_check" name="loginForm">
+                            <b:form horizontal="true" pt:action="j_security_check" pt:method="post" pt:name="loginForm" pt:role="form">
+                            <!--<form role="form" method="post" action="j_security_check" name="loginForm">-->
                                 <p:outputPanel styleClass="box-body">
                                     <b:formGroup>
                                         <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="email">Email</h:outputLabel>
@@ -43,11 +44,9 @@
                                     </b:formGroup>
                                 </p:outputPanel>
                                 <b:column col-xs="12" class="box-footer">
-                                    <button styleClass="btn btn-info pull-right" class="btn btn-success" type="submit">
-                                        <span class="glyphicon glyphicon-ok"> Login</span>
-                                    </button>
+                                    <b:commandButton value="Sign In" styleClass="btn btn-info pull-right" pt:type="submit"/>
                                 </b:column>
-                            </form>
+                            </b:form>
                             <b:alert severity="danger" rendered="${request.parameterMap.containsKey('j_username')}">
                                 Error in Login
                             </b:alert>
