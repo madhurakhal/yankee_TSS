@@ -23,14 +23,33 @@ import org.primefaces.event.RowEditEvent;
  */
 @RequestScoped
 @Named
-public class PersonListBean {
+public class CreateContractBean {
 
     @EJB
     private PersonBusinessLogic personBusinessLogic;
 
     private List<Person> persons;
     private RoleTypeEnum roleType;
+    private Person contractTo;
+    private List<RoleTypeEnum> selectedRoleTypes;
 
+    public List<RoleTypeEnum> getSelectedRoleTypes() {
+        return selectedRoleTypes;
+    }
+
+    public void setSelectedRoleTypes(List<RoleTypeEnum> selectedRoleTypes) {
+        this.selectedRoleTypes = selectedRoleTypes;
+    }
+
+    public Person getContractTo() {
+        return contractTo;
+    }
+
+    public void setContractTo(Person contractTo) {
+        this.contractTo = contractTo;
+    }
+
+    
     public void setPersonBusinessLogic(PersonBusinessLogic personBusinessLogic) {
         this.personBusinessLogic = personBusinessLogic;
     }
@@ -50,9 +69,11 @@ public class PersonListBean {
             for (Person i : persons)
             {
                 ArrayList<Role> roles = i.getRoles();
+                System.out.println("email" + i.getEmailAddress());
                 for (Role j : roles){
                     System.out.println("name " + i.getFirstName());
                     System.out.println("huh" + j.getRoleType());
+                    
                 }
             }           
             
@@ -60,6 +81,8 @@ public class PersonListBean {
         return persons;
     }
     
+    
+    // Look this up on test.xhtml it makes use of it.
     public void updatePersonDetails(RowEditEvent event) {
         FacesMessage msg = new FacesMessage("Car Edited", ((Person) event.getObject()).getUuid());
         FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -67,4 +90,11 @@ public class PersonListBean {
         personBusinessLogic.updatePersonDetails(selectedPerson_uuid, roleType);
         System.out.println("Am I here to update?" + roleType);               
     }
+    
+    public void newContractInit() {
+       System.out.println("Am I here to update?" + roleType);   
+       System.out.println("Am I here to update?" + selectedRoleTypes); 
+    }
+    
+    
 }

@@ -12,9 +12,9 @@
             <h:form id="form">
                 <p:growl id="msgs" showDetail="true"/>
 
-                <p:dataTable id="persons" var="persons" value="#{personListBean.persons}" editable="true" style="margin-bottom:20px">
-                    <p:ajax event="rowEdit" listener="#{personListBean.updatePersonDetails}" update=":form:msgs" />
-                    <p:ajax event="rowEditCancel" listener="#{personListBean.updatePersonDetails}" update=":form:msgs" />
+                <p:dataTable id="persons" var="persons" value="#{createContract.persons}" editable="true" style="margin-bottom:20px">
+                    <p:ajax event="rowEdit" listener="#{createContract.updatePersonDetails}" update=":form:msgs" />
+                    <p:ajax event="rowEditCancel" listener="#{createContract.updatePersonDetails}" update=":form:msgs" />
 
                     <p:column headerText="First Name">
                         <h:outputText value = "#{persons.firstName}"/>  
@@ -31,9 +31,9 @@
                     
                     <p:column headerText="Role">
                         <p:cellEditor>
-                            <f:facet name="output"><h:outputText value="#{personListBean.roleType}" /></f:facet>
+                            <f:facet name="output"><h:outputText value="#{createContract.roleType}" /></f:facet>
                             <f:facet name="input">
-                                <h:selectOneMenu value="#{personListBean.roleType}" style="width:100%; color:black ">
+                                <h:selectOneMenu value="#{createContract.roleType}" style="width:100%; color:black ">
                                     <f:selectItems value="#{roleTypeBean.roleTypes}" />
                                 </h:selectOneMenu>
                             </f:facet>

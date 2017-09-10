@@ -12,6 +12,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import jee17.logic.ENUM.PreferredLanguageENUM;
 
 /**
  *
@@ -33,10 +34,18 @@ public class PersonEntity extends NamedEntity {
     private String lastName;
     private String emailAddress;
     private LocalDate dateOfBirth;
+    private PreferredLanguageENUM preferredLanguage = PreferredLanguageENUM.EN;
+
+    public PreferredLanguageENUM getPreferredLanguage() {
+        return preferredLanguage;
+    }
+
+    public void setPreferredLanguage(PreferredLanguageENUM preferredLanguage) {
+        this.preferredLanguage = preferredLanguage;
+    }
     
     @OneToMany(mappedBy = "person")
-    private Set<RoleEntity> roles;
-   
+    private Set<RoleEntity> roles;   
 
     public PersonEntity() {
     }

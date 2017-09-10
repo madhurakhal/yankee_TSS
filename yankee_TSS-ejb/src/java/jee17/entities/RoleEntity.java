@@ -22,7 +22,10 @@ public abstract class RoleEntity extends NamedEntity {
     private static final long serialVersionUID = 1L;
     @Enumerated(EnumType.STRING)
     private RoleTypeEnum rollType;
-
+    
+    @ManyToOne
+    private PersonEntity person;
+    
     public RoleTypeEnum getRollType() {
         return rollType;
     }
@@ -38,8 +41,7 @@ public abstract class RoleEntity extends NamedEntity {
         super(isNew);
     }    
     
-    @ManyToOne
-    private PersonEntity person;
+    
 
     public PersonEntity getPerson() {
         return person;

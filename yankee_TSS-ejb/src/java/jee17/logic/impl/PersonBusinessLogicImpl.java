@@ -6,13 +6,10 @@
 package jee17.logic.impl;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import jee17.entities.AssistantEntity;
-import jee17.entities.NamedEntity;
 import jee17.entities.PersonEntity;
 import jee17.entities.RoleEntity;
 import jee17.entities.SecretaryEntity;
