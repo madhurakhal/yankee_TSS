@@ -45,6 +45,7 @@ public class PersonAccess extends AbstractAccess<PersonEntity> {
                 // Have to get these details from somewhere. Since directory lookup only gives firstname and last name
                 pe.setDateOfBirth(null);
                 pe.setEmailAddress(name);
+                System.out.println("I am here to create this entity." + p.getFirstName());
             }
         } catch (NamingException ex) {
             Logger.getLogger(PersonAccess.class.getName()).log(Level.SEVERE, null, ex);
@@ -85,7 +86,7 @@ public class PersonAccess extends AbstractAccess<PersonEntity> {
         } catch (NoResultException ex) {
             // Create a PersonEntity for the name.
             System.out.println("NOW is there a exception? when creating name? i.e creating entity");
-            return createEntity(name);
+            return this.createEntity(name);
         }
     }
 

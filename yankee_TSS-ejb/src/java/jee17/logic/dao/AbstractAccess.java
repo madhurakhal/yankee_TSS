@@ -42,4 +42,8 @@ public abstract class AbstractAccess<E extends NamedEntity> {
         em.persist(entity);
         return entity;
     }
+    
+    public E updateEntity (E entity) {
+        return em.merge(entity);
+    }
 }

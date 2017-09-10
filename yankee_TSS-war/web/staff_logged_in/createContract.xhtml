@@ -42,6 +42,12 @@
                     </p:selectCheckboxMenu>           
                 </h:panelGrid>
 
+                <h:outputLabel for="roleType" value="Choose Role " />
+                <b:selectOneMenu id="roleType" value="#{createContractBean.roleType}" immediate="true">
+                    <f:selectItem itemLabel="Choose role" noSelectionOption="true"/>
+                    <f:selectItems  value="#{roleTypeBean.roleTypes}"/>
+                    <f:ajax render="firstNameInput lastNameInput emailAddressInput" />
+                </b:selectOneMenu>   
                 <b:commandButton id="createContractButton"
                                  look="success"
                                  icon="ok"

@@ -7,7 +7,15 @@ package jee17.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+
+@NamedQueries({
+    @NamedQuery(name = "getAssistantCount", query = "SELECT COUNT(p) FROM AssistantEntity p"),
+    @NamedQuery(name = "getAssistantList", query = "SELECT p FROM AssistantEntity p ORDER BY p.name, p.uuid"),
+    @NamedQuery(name = "getAssistantByName", query = "SELECT p FROM AssistantEntity p WHERE p.name = :name")
+})
 
 // TODO: REMOVE relation getter setter as per our requirement. delete set if in collection.
 @Entity

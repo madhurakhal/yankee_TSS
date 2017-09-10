@@ -81,6 +81,19 @@
             <role-name>ADMIN</role-name>
         </auth-constraint>
     </security-constraint>
+    <security-constraint>
+        <display-name>Staff Access</display-name>
+        <web-resource-collection>
+            <web-resource-name>Staff Pages</web-resource-name>
+            <description/>
+            <url-pattern>/faces/staff_logged_in/*</url-pattern>
+            <url-pattern>/staff_logged_in/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description>Staffs only</description>
+            <role-name>STAFF</role-name>
+        </auth-constraint>
+    </security-constraint>
     <login-config>
         <auth-method>FORM</auth-method>
         <realm-name>uniko-file-realm</realm-name>

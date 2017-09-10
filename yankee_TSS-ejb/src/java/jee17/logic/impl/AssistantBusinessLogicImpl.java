@@ -8,16 +8,19 @@ package jee17.logic.impl;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import jee17.entities.AssistantEntity;
 import jee17.entities.PersonEntity;
 import jee17.entities.SecretaryEntity;
 import jee17.entities.SupervisorEntity;
+import jee17.logic.AssistantBusinessLogic;
 import jee17.logic.SecretaryBusinessLogic;
 import jee17.logic.SupervisorBusinessLogic;
+import jee17.logic.dao.AssistantAccess;
 import jee17.logic.dao.PersonAccess;
 import jee17.logic.dao.SecretaryAccess;
 import jee17.logic.dao.SupervisorAccess;
+import jee17.logic.to.Assistant;
 import jee17.logic.to.Person;
-import jee17.logic.to.Secretary;
 import jee17.logic.to.Supervisor;
 
 /**
@@ -25,16 +28,16 @@ import jee17.logic.to.Supervisor;
  * @author Sabs
  */
 @Stateless
-public class SecretaryBusinessLogicImpl implements SecretaryBusinessLogic {
+public class AssistantBusinessLogicImpl implements AssistantBusinessLogic {
 
     @EJB
-    private SecretaryAccess secretaryAccess;
+    private AssistantAccess assistantAccess;
     
     @EJB
     private PersonAccess personAccess;
 
     @Override
-    public List<Secretary> getSecretaryList() {
+    public List<Assistant> getAssistantList(){
 //        List<PersonEntity> l = personAccess.getPersonList();
 //        List<Person> result = new ArrayList<>(l.size());
 //        for (PersonEntity pe : l) {
@@ -48,12 +51,12 @@ public class SecretaryBusinessLogicImpl implements SecretaryBusinessLogic {
     }
     
     @Override
-    public Secretary createSecretary(String name , String personUUID) {
-        SecretaryEntity se = secretaryAccess.getCreateSecretaryByName(name);
+    public Assistant createAssistant(String name , String personUUID) {
+        AssistantEntity se = assistantAccess.getCreateAssistantByName(name);
         PersonEntity pe = personAccess.getByUuid(personUUID);
         se.setPerson(pe);
-        secretaryAccess.updateEntity(se); // not sure if we have to update
+        assistantAccess.updateEntity(se); // not sure if we have to update
         // TODOOOOOOOOOOOOOO have to think what to return
-        return new Secretary(se.getUuid(), se.getName());
+        return new Assistant(se.getUuid(), se.getName());
     }
 }

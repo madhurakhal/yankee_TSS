@@ -31,7 +31,9 @@
                     
                     <p:column headerText="Role">
                         <p:cellEditor>
-                            <f:facet name="output"><h:outputText value="#{createContract.roleType}" /></f:facet>
+                            <f:facet name="output">
+                                <h:outputText value="#{createContract.roleType}" />
+                            </f:facet>
                             <f:facet name="input">
                                 <h:selectOneMenu value="#{createContract.roleType}" style="width:100%; color:black ">
                                     <f:selectItems value="#{roleTypeBean.roleTypes}" />

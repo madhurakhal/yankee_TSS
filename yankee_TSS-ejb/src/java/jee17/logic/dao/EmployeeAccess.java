@@ -5,35 +5,29 @@
  */
 package jee17.logic.dao;
 
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.security.RolesAllowed;
-import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import javax.naming.NamingException;
 import javax.persistence.NoResultException;
-import jee17.entities.PersonEntity;
-import jee17.entities.SecretaryEntity;
+import jee17.entities.EmployeeEntity;
 import jee17.logic.ENUM.RoleTypeEnum;
-import jee17.logic.to.Person;
-import org.riediger.ldap.DirectoryLookup;
 
 /**
  * @author Dr. Volker Riediger <riediger@uni-koblenz.de>
  */
 @Stateless
 @LocalBean
-public class EmployeeAccess extends AbstractAccess<SecretaryEntity> {
+public class EmployeeAccess extends AbstractAccess<EmployeeEntity> {
 
     @Override
-    public SecretaryEntity createEntity(String name) {
+    public EmployeeEntity createEntity(String name) {
         name = name.trim().toLowerCase();
-        SecretaryEntity se = super.createEntity(name);
+        EmployeeEntity se = super.createEntity(name);
 
         try {
-            se.setRollType(RoleTypeEnum.SECRETARY);
+            se.setRollType(RoleTypeEnum.EMPLOYEE);
         }catch (Exception ex) {
             Logger.getLogger(EmployeeAccess.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -41,18 +35,33 @@ public class EmployeeAccess extends AbstractAccess<SecretaryEntity> {
     }
 
     @Override
-    protected Class<SecretaryEntity> getEntityClass() {
-        return SecretaryEntity.class;
+    protected Class<EmployeeEntity> getEntityClass() {
+        return EmployeeEntity.class;
     }
 
     @Override
-    protected SecretaryEntity newEntity() {
-        return new SecretaryEntity(true);
+    protected EmployeeEntity newEntity() {
+        return new EmployeeEntity(true);
     }
 
     @Override
     public long getEntityCount() {
-        return em.createNamedQuery("getPersonCount", Long.class
+        return em.createNamedQuery("getEmployeeCount", Long.class
         ).getSingleResult();
+    }
+    
+    @RolesAllowed("AUTHENTICATED")
+    public EmployeeEntity getCreateEmployeeByName(String name) {
+        name = name.trim().toLowerCase();
+
+        try {
+            // try to find supervisor
+            return em.createNamedQuery("getEmployeeByName", EmployeeEntity.class)
+                    .setParameter("name", name)
+                    .getSingleResult();
+        } catch (NoResultException ex) {
+            // Create a SupervisorEntity for the name.
+            return createEntity(name);
+        }
     }
 }

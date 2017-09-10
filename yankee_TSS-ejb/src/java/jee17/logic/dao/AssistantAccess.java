@@ -5,21 +5,14 @@
  */
 package jee17.logic.dao;
 
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.security.RolesAllowed;
-import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import javax.naming.NamingException;
 import javax.persistence.NoResultException;
 import jee17.entities.AssistantEntity;
-import jee17.entities.PersonEntity;
-import jee17.entities.SecretaryEntity;
 import jee17.logic.ENUM.RoleTypeEnum;
-import jee17.logic.to.Person;
-import org.riediger.ldap.DirectoryLookup;
 
 /**
  * @author Dr. Volker Riediger <riediger@uni-koblenz.de>
@@ -53,7 +46,22 @@ public class AssistantAccess extends AbstractAccess<AssistantEntity> {
 
     @Override
     public long getEntityCount() {
-        return em.createNamedQuery("getPersonCount", Long.class
+        return em.createNamedQuery("getAssistantCount", Long.class
         ).getSingleResult();
+    }
+    
+    @RolesAllowed("AUTHENTICATED")
+    public AssistantEntity getCreateAssistantByName(String name) {
+        name = name.trim().toLowerCase();
+
+        try {
+            // try to find Assistant
+            return em.createNamedQuery("getAssistantByName", AssistantEntity.class)
+                    .setParameter("name", name)
+                    .getSingleResult();
+        } catch (NoResultException ex) {
+            // Create a SupervisorEntity for the name.
+            return createEntity(name);
+        }
     }
 }

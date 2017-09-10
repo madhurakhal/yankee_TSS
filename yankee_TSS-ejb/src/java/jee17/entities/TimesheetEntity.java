@@ -11,10 +11,17 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import jee17.logic.ENUM.TimesheetStatusEnum;
 
+@NamedQueries({
+    @NamedQuery(name = "getTimesheetCount", query = "SELECT COUNT(p) FROM TimesheetEntity p"),
+    @NamedQuery(name = "getTimesheetList", query = "SELECT p FROM TimesheetEntity p ORDER BY p.name, p.uuid"),
+    @NamedQuery(name = "getTimesheetByName", query = "SELECT p FROM TimesheetEntity p WHERE p.name = :name")
+})
 /**
  *
  * TODO: REMOVE relation getter setter as per our requirement. delete set if in

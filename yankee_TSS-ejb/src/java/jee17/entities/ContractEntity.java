@@ -11,11 +11,20 @@ import jee17.logic.ENUM.ContractStatusEnum;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import jee17.logic.ENUM.TimesheetFrequencyEnum;
 
+
+
+@NamedQueries({
+    @NamedQuery(name = "getContractCount", query = "SELECT COUNT(p) FROM ContractEntity p"),
+    @NamedQuery(name = "getContractList", query = "SELECT p FROM ContractEntity p ORDER BY p.name, p.uuid"),
+    @NamedQuery(name = "getContractByName", query = "SELECT p FROM ContractEntity p WHERE p.name = :name")
+})
 /**
  *
  * TODO: REMOVE relation getter setter as per our requirement. delete set if in collection.

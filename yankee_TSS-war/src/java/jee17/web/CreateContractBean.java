@@ -6,9 +6,15 @@ import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
+import jee17.logic.AssistantBusinessLogic;
+import jee17.logic.ContractBusinessLogic;
 import jee17.logic.PersonBusinessLogic;
 import jee17.logic.ENUM.RoleTypeEnum;
+import jee17.logic.EmployeeBusinessLogic;
+import jee17.logic.SecretaryBusinessLogic;
+import jee17.logic.SupervisorBusinessLogic;
 import jee17.logic.to.Person;
 import jee17.logic.to.Role;
 import org.primefaces.event.RowEditEvent;
@@ -27,6 +33,25 @@ public class CreateContractBean {
 
     @EJB
     private PersonBusinessLogic personBusinessLogic;
+    
+    @EJB
+    private SupervisorBusinessLogic supervisorBusinessLogic;
+    
+    @EJB
+    private AssistantBusinessLogic assistantBusinessLogic;
+    
+    @EJB
+    private SecretaryBusinessLogic secretaryBusinessLogic;
+    
+    @EJB
+    private EmployeeBusinessLogic employeeBusinessLogic;
+    
+    
+    @EJB
+    private ContractBusinessLogic contractBusinessLogic;
+    
+    @Inject
+    private LoginBean loginBean;
 
     private List<Person> persons;
     private RoleTypeEnum roleType;
@@ -75,8 +100,7 @@ public class CreateContractBean {
                     System.out.println("huh" + j.getRoleType());
                     
                 }
-            }           
-            
+            }            
         }
         return persons;
     }
@@ -92,9 +116,37 @@ public class CreateContractBean {
     }
     
     public void newContractInit() {
-       System.out.println("Am I here to update?" + roleType);   
-       System.out.println("Am I here to update?" + selectedRoleTypes); 
-    }
-    
+       System.out.println("Called for contract create"); 
+       Person loggedInUser = loginBean.getUser();
+       // Make the current loggedin person as supervisor
+       String supervisorUUID;// i.e. supervisor or 
+       
+       supervisorUUID = supervisorBusinessLogic.createSupervisor(loggedInUser.getName(), loggedInUser.getUuid()).getUuid();
+       
+       // switch case to make role associated person
+       String assignedRoleUUID;
+       RoleTypeEnum e = RoleTypeEnum.ASSISTANT;
+       switch(roleType){
+            case ASSISTANT:
+                assignedRoleUUID = assistantBusinessLogic.createAssistant(loggedInUser.getName(), loggedInUser.getUuid()).getUuid();
+                break;
+            case EMPLOYEE :
+                assignedRoleUUID = employeeBusinessLogic.createEmployee(loggedInUser.getName(), loggedInUser.getUuid()).getUuid();
+                break;
+            case SECRETARY: 
+                assignedRoleUUID = secretaryBusinessLogic.createSecretary(loggedInUser.getName(), loggedInUser.getUuid()).getUuid();
+                break;  
+            default:
+                assignedRoleUUID = null; break;
+       }
+       
+       // Create new contract with all persons related to it i.e supervisor , assitant or employee or secretary
+       contractBusinessLogic.createContract("contract", supervisorUUID , assignedRoleUUID , roleType);
+       // Get the person whose contract is to be created. 
+       // 
+       // Go through the roles and create roles for that person
+       System.out.println("Am I here to update?" + loggedInUser.getFirstName());   
+       System.out.println("Am I here to update?" + roleType); 
+    }  
     
 }

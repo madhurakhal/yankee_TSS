@@ -10,16 +10,17 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import jee17.entities.AssistantEntity;
+import jee17.entities.EmployeeEntity;
 import jee17.entities.PersonEntity;
 import jee17.entities.RoleEntity;
 import jee17.entities.SecretaryEntity;
 import jee17.logic.ENUM.RoleTypeEnum;
 import jee17.logic.PersonBusinessLogic;
-import jee17.logic.dao.AssistantAccess;
 import jee17.logic.dao.EmployeeAccess;
 import jee17.logic.dao.PersonAccess;
 import jee17.logic.dao.SecretaryAccess;
 import jee17.logic.dao.SupervisorAccess;
+import jee17.logic.dao.AssistantAccess;
 import jee17.logic.to.Person;
 import jee17.logic.to.Role;
 
@@ -78,17 +79,20 @@ public class PersonBusinessLogicImpl implements PersonBusinessLogic {
     @Override
     public Person getPersonByName(String name) {
         PersonEntity pe = personAccess.getPersonByName(name);
+        System.out.println("Ok want to get something for pe");
+        System.out.println("Ok want to get something for pe" + pe.getFirstName());
         Person p = new Person(pe.getUuid(), pe.getName());
         p.setFirstName(pe.getFirstName());
         p.setLastName(pe.getLastName());
         p.setDateOfBirth(pe.getDateOfBirth());
-        ArrayList<Role> resultRole = new ArrayList<>(pe.getRoles().size());
-        for (RoleEntity re : pe.getRoles()) {
-            Role r = new Role(re.getUuid(), re.getName());
-            r.setRoleType(re.getRollType());
-            resultRole.add(r);
-        };
-        p.setRoles(resultRole);
+//        ArrayList<Role> resultRole = new ArrayList<>(pe.getRoles().size());
+//        for (RoleEntity re : pe.getRoles()) {
+//            Role r = new Role(re.getUuid(), re.getName());
+//            r.setRoleType(re.getRollType());
+//            resultRole.add(r);
+//        };
+//        p.setRoles(resultRole);
+        System.out.println("Ok want to get something for pe" + p.getFirstName());
         return p;
     }
 
@@ -102,7 +106,7 @@ public class PersonBusinessLogicImpl implements PersonBusinessLogic {
                 //ae.setRollType(roleType);
                 break;
             case EMPLOYEE:
-                SecretaryEntity se = secretaryAccess.createEntity("secretary");
+                EmployeeEntity se = employeeAccess.createEntity("secretary");
                 se.setPerson(pe);
                 //se.setRollType(roleType);
                 break;

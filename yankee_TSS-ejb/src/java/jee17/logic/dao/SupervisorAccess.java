@@ -7,9 +7,13 @@ package jee17.logic.dao;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.persistence.NoResultException;
+import jee17.entities.PersonEntity;
 import jee17.entities.SecretaryEntity;
+import jee17.entities.SupervisorEntity;
 import jee17.logic.ENUM.RoleTypeEnum;
 
 /**
@@ -17,15 +21,15 @@ import jee17.logic.ENUM.RoleTypeEnum;
  */
 @Stateless
 @LocalBean
-public class SupervisorAccess extends AbstractAccess<SecretaryEntity> {
+public class SupervisorAccess extends AbstractAccess<SupervisorEntity> {
 
     @Override
-    public SecretaryEntity createEntity(String name) {
+    public SupervisorEntity createEntity(String name) {
         name = name.trim().toLowerCase();
-        SecretaryEntity se = super.createEntity(name);
+        SupervisorEntity se = super.createEntity(name);
 
         try {
-            se.setRollType(RoleTypeEnum.SECRETARY);
+            se.setRollType(RoleTypeEnum.SUPERVISOR);
         }catch (Exception ex) {
             Logger.getLogger(SupervisorAccess.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -33,18 +37,33 @@ public class SupervisorAccess extends AbstractAccess<SecretaryEntity> {
     }
 
     @Override
-    protected Class<SecretaryEntity> getEntityClass() {
-        return SecretaryEntity.class;
+    protected Class<SupervisorEntity> getEntityClass() {
+        return SupervisorEntity.class;
     }
 
     @Override
-    protected SecretaryEntity newEntity() {
-        return new SecretaryEntity(true);
+    protected SupervisorEntity newEntity() {
+        return new SupervisorEntity(true);
     }
 
     @Override
     public long getEntityCount() {
         return em.createNamedQuery("getPersonCount", Long.class
         ).getSingleResult();
+    }
+    
+    @RolesAllowed("AUTHENTICATED")
+    public SupervisorEntity getCreateSupervisorByName(String name) {
+        name = name.trim().toLowerCase();
+
+        try {
+            // try to find supervisor
+            return em.createNamedQuery("getSupervisorByName", SupervisorEntity.class)
+                    .setParameter("name", name)
+                    .getSingleResult();
+        } catch (NoResultException ex) {
+            // Create a SupervisorEntity for the name.
+            return createEntity(name);
+        }
     }
 }

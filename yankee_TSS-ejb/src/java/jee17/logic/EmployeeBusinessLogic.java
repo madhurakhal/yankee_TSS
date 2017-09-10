@@ -7,8 +7,8 @@ package jee17.logic;
 
 import java.util.List;
 import javax.ejb.Remote;
+import jee17.logic.to.Employee;
 import jee17.logic.to.Person;
-import jee17.logic.to.Secretary;
 import jee17.logic.to.Supervisor;
 
 /**
@@ -16,14 +16,14 @@ import jee17.logic.to.Supervisor;
  * @author Sabs
  */
 @Remote 
-public interface SecretaryBusinessLogic {
+public interface EmployeeBusinessLogic {
     /**
      * Returns a list of all {@link Person}s.
      *
      * @return the person list, sorted by name
      */
-    public List<Secretary> getSecretaryList();
+    public List<Employee> getEmployeeList();
     
-    public Secretary createSecretary(String name , String personUUID);
+    public Employee createEmployee(String name , String personUUID);
         
 }

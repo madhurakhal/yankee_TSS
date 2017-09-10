@@ -34,7 +34,7 @@ public class PersonEntity extends NamedEntity {
     private String lastName;
     private String emailAddress;
     private LocalDate dateOfBirth;
-    private PreferredLanguageENUM preferredLanguage = PreferredLanguageENUM.EN;
+    private PreferredLanguageENUM preferredLanguage;
 
     public PreferredLanguageENUM getPreferredLanguage() {
         return preferredLanguage;

@@ -36,22 +36,29 @@ public class LoginBean implements Serializable {
     private Person user;
 
     public Person getUser() {
+        System.out.println("Called for getUser by logged Bean");
         Principal currentPrincipal = FacesContext.getCurrentInstance()
                 .getExternalContext()
                 .getUserPrincipal();
+        System.out.println(currentPrincipal.getName());
         String currentPrincipalName = currentPrincipal == null
                 ? null
                 : currentPrincipal.getName().trim().toLowerCase();
         if (Objects.equals(currentPrincipalName, principalName)) {
+            System.out.println("Users was 1");
             return user;
         }
         if (currentPrincipalName == null) {
+            System.out.println("Users was 2");
             principalName = null;
             user = null;
         } else {
+            System.out.println("Users was ");
             principalName = currentPrincipalName;
             user = personBusinessLogic.getPersonByName(principalName);
         }
+        System.out.println("User");
+        System.out.println("User" + user.getFirstName());
         return user;
     }
 

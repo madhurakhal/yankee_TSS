@@ -6,8 +6,16 @@
 package jee17.entities;
 
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+@NamedQueries({
+    @NamedQuery(name = "getSupervisorCount", query = "SELECT COUNT(p) FROM SupervisorEntity p"),
+    @NamedQuery(name = "getSupervisorList", query = "SELECT p FROM SupervisorEntity p ORDER BY p.name, p.uuid"),
+    @NamedQuery(name = "getSupervisorByName", query = "SELECT p FROM SupervisorEntity p WHERE p.name = :name")
+})
 
 // TODO: REMOVE relation getter setter as per our requirement. delete set if in collection.
 @Entity
