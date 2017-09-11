@@ -7,33 +7,17 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <ui:composition template="/WEB-INF/templates/main-template.xhtml">
         <ui:param name="pageTitle" value="Welcome Man"/>
-        <ui:define name="main-content">
+        <ui:define name="main-content">           
             
-            
-            <h:button value="You Are Admin" outcome="#{bean.delete}" 
+            <h:button value="Admin Page" outcome="admin" 
                       rendered="#{request.isUserInRole('ADMIN')}" />
 
-            <p:panelGrid columns="1" rendered="#{request.isUserInRole('STAFF')}">
-                <h3>STAFF Logged In</h3>
+            <p:panelGrid columns="4" rendered="#{request.isUserInRole('STAFF')}">
+                <h3>#{loginBean.user.firstName} #{loginBean.user.lastName}</h3>
                 
-                <h:button value="Create Contract" outcome="createContract"/>
-                
-                <h3>Contract Details</h3>
-                <h:form id="form">
-                    <p:growl id="msgs" showDetail="true"/>
-
-                    <p:dataTable id="persons" var="persons" value="#{createContractBean.persons}">                        
-                        <p:column headerText="First Name">
-                            <h:outputText value = "#{persons.firstName}"/>  
-                        </p:column>
-                        <p:column headerText="Last Name">
-                            <h:outputText value = "#{persons.lastName}"/>   
-                        </p:column>
-                        <p:column headerText="Email">
-                            <h:outputText value = "#{persons.emailAddress}"/>   
-                        </p:column> 
-                    </p:dataTable>
-                </h:form>
+                <h:button value="Create Contract" outcome="createContract"/>                
+                <h:button value="Manage Contracts" outcome="manageContracts"/>                               
+                <h:button value="View Contract Statistics" outcome="viewContractStatistics"/> 
             </p:panelGrid>         
 
         </ui:define>
