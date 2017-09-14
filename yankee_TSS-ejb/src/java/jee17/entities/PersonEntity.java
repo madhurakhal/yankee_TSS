@@ -35,14 +35,7 @@ public class PersonEntity extends NamedEntity {
     private String emailAddress;
     private LocalDate dateOfBirth;
     private PreferredLanguageENUM preferredLanguage;
-
-    public PreferredLanguageENUM getPreferredLanguage() {
-        return preferredLanguage;
-    }
-
-    public void setPreferredLanguage(PreferredLanguageENUM preferredLanguage) {
-        this.preferredLanguage = preferredLanguage;
-    }
+    private String userRoleRealm;
     
     @OneToMany(mappedBy = "person")
     private Set<RoleEntity> roles;   
@@ -54,6 +47,23 @@ public class PersonEntity extends NamedEntity {
         super(isNew);        
     }
     
+
+    public String getUserRoleRealm() {
+        return userRoleRealm;
+    }
+
+    public void setUserRoleRealm(String userRoleRealm) {
+        this.userRoleRealm = userRoleRealm;
+    }
+
+    public PreferredLanguageENUM getPreferredLanguage() {
+        return preferredLanguage;
+    }
+
+    public void setPreferredLanguage(PreferredLanguageENUM preferredLanguage) {
+        this.preferredLanguage = preferredLanguage;
+    }    
+   
     public Set<RoleEntity> getRoles() {
         return roles;
     }

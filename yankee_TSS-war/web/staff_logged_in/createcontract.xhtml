@@ -7,11 +7,11 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core">
     <ui:composition template="/WEB-INF/templates/main-template.xhtml">        
-        <ui:param name="pageTitle" value="Admin Page"/>
+        <ui:param name="pageTitle" value="Create Contract Page"/>
         <ui:define name="main-content">
             <p></p>
-            <b:form id="createCourseForm">
-                <h:outputLabel for="contractPersons" value="Create Contract of : " />
+            <b:form id="createContractForm">
+                <h:outputLabel for="contractPersons" value="Create Contract For" />
                 <b:selectOneMenu id="contractPersons" value="#{createContractBean.contractTo}" immediate="true">
                     <f:selectItem itemLabel="Choose person" noSelectionOption="true"/>
                     <f:selectItems  value="#{createContractBean.persons}" var="entity" itemLabel="#{entity.firstName} #{entity.lastName}" itemValue="#{entity}"/>
@@ -31,30 +31,18 @@
                 <b:inputText id="emailAddressInput" label="Email"
                              value="#{createContractBean.contractTo.emailAddress}"
                              required="false" disabled = "true">
-                </b:inputText>
-
-                <h:panelGrid columns="1" cellpadding="10">
-                    <h:outputLabel for="multiple" value="Select Roles " />
-                    <p:selectCheckboxMenu id="multiple" value="#{createContractBean.selectedRoleTypes}" label="roles"
-                                          multiple="true" filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
-                        <f:selectItems value="#{roleTypeBean.roleTypes}" var = "t" itemDisabled="#{t == 'SUPERVISOR' ? 'true' : 'false'}"/>
-                    </p:selectCheckboxMenu>           
-                </h:panelGrid>
-
-                <h:outputLabel for="roleType" value="Choose Role " />
-                <b:selectOneMenu id="roleType" value="#{createContractBean.roleType}" immediate="true">
-                    <f:selectItem itemLabel="Choose role" noSelectionOption="true"/>
-                    <f:selectItems  value="#{roleTypeBean.roleTypes}"/>
-                    <f:ajax render="firstNameInput lastNameInput emailAddressInput" />
-                </b:selectOneMenu>   
+                </b:inputText>                 
+                
                 <b:commandButton id="createContractButton"
+                                 disabled="#{empty createContractBean.persons}"
                                  look="success"
                                  icon="ok"
                                  value="Create Contract"
-                                 action="courselist"
+                                 action="index"
                                  actionListener="#{createContractBean.newContractInit}"/>
             </b:form>                   
 
+            
         </ui:define>
     </ui:composition>
 </html>

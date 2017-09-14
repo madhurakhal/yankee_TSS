@@ -5,6 +5,7 @@
  */
 package jee17.logic.dao;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.security.RolesAllowed;
@@ -65,5 +66,16 @@ public class SupervisorAccess extends AbstractAccess<SupervisorEntity> {
             // Create a SupervisorEntity for the name.
             return createEntity(name);
         }
+    }
+    
+    @RolesAllowed("AUTHENTICATED")
+    public List<SupervisorEntity> getSupervisorByPerson(PersonEntity person) {
+       try {
+            return em.createNamedQuery("getSupervisorByPerson", SupervisorEntity.class)
+                    .setParameter("person", person)
+                    .getResultList();
+        } catch (NoResultException ex) {
+            return null;
+        } 
     }
 }

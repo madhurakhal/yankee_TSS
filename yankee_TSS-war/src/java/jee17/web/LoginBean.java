@@ -36,7 +36,6 @@ public class LoginBean implements Serializable {
     private Person user;
 
     public Person getUser() {
-        System.out.println("Called for getUser by logged Bean");
         Principal currentPrincipal = FacesContext.getCurrentInstance()
                 .getExternalContext()
                 .getUserPrincipal();
@@ -45,20 +44,19 @@ public class LoginBean implements Serializable {
                 ? null
                 : currentPrincipal.getName().trim().toLowerCase();
         if (Objects.equals(currentPrincipalName, principalName)) {
-            System.out.println("Users was 1");
             return user;
         }
         if (currentPrincipalName == null) {
-            System.out.println("Users was 2");
             principalName = null;
             user = null;
         } else {
-            System.out.println("Users was ");
             principalName = currentPrincipalName;
             user = personBusinessLogic.getPersonByName(principalName);
+            // Also update user group
+            if(FacesContext.getCurrentInstance().getExternalContext().isUserInRole("STAFF")){
+                personBusinessLogic.updateUserRoleRealm(user.getUuid() , "STAFF");
+            }
         }
-        System.out.println("User");
-        System.out.println("User" + user.getFirstName());
         return user;
     }
 

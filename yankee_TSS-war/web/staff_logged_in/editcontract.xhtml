@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/WEB-INF/templates/main-template.xhtml">        
+        <ui:param name="pageTitle" value="Create Contract Page"/>
+        <ui:define name="main-content">
+
+            <p:breadCrumb>
+                <p:menuitem value="Categories" url="/staff_logged_in/managecontracts.xhtml" />
+                <p:menuitem value="Manage Contracts" url="/staff_logged_in/managecontracts.xhtml" />
+                <p:menuitem value="Edit Contract" disabled="true" />
+            </p:breadCrumb>
+
+            <h:form id="form">
+                <h3>Contract Details</h3>
+                <p></p>
+                <p:panelGrid columns="2" style="width:100%">
+                    <b:inputText id="firstNameInput" label="First Name" 
+                                 value="#{manageContractsBean.person_id}">
+                    </b:inputText> 
+                    <h:form id="form">
+                        <h3>Contract Details</h3>
+                        <p:panelGrid columns="2" style="width:100%">
+                        
+                        
+                        </p:panelGrid>
+                    </h:form>
+                </p:panelGrid>
+            </h:form>
+
+        </ui:define>
+    </ui:composition>
+</html>
+

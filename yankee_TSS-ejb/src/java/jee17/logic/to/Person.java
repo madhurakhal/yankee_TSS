@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Set;
 import jee17.entities.RoleEntity;
+import jee17.logic.ENUM.PreferredLanguageENUM;
 
 public class Person extends Named {
 
@@ -15,6 +16,25 @@ public class Person extends Named {
     private LocalDate dateOfBirth;
     
     private ArrayList<Role> roles;
+    
+    private PreferredLanguageENUM preferredLanguage;
+    private String userRoleRealm;
+
+    public PreferredLanguageENUM getPreferredLanguage() {
+        return preferredLanguage;
+    }
+
+    public void setPreferredLanguage(PreferredLanguageENUM preferredLanguage) {
+        this.preferredLanguage = preferredLanguage;
+    }
+
+    public String getUserRoleRealm() {
+        return userRoleRealm;
+    }
+
+    public void setUserRoleRealm(String userRoleRealm) {
+        this.userRoleRealm = userRoleRealm;
+    }
 
     public void setRoles(ArrayList<Role> roles) {
         this.roles = roles;

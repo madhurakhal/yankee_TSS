@@ -24,5 +24,7 @@ public interface SupervisorBusinessLogic {
     public List<Person> getSupervisorList();
     
     public Supervisor createSupervisor(String name , String personUUID);
+    
+    public List<Supervisor> getSupervisorByPerson(String personUUID);
         
 }

@@ -5,13 +5,17 @@
  */
 package jee17.logic.dao;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
+import jee17.entities.ContractEntity;
 import jee17.entities.EmployeeEntity;
+import jee17.entities.PersonEntity;
+import jee17.entities.SupervisorEntity;
 import jee17.logic.ENUM.RoleTypeEnum;
 
 /**
@@ -63,5 +67,16 @@ public class EmployeeAccess extends AbstractAccess<EmployeeEntity> {
             // Create a SupervisorEntity for the name.
             return createEntity(name);
         }
+    }
+    
+    @RolesAllowed("AUTHENTICATED")
+    public EmployeeEntity getEmployeeByContract(ContractEntity contract) {
+       try {
+            return em.createNamedQuery("getEmployeeByContract", EmployeeEntity.class)
+                    .setParameter("contract", contract)
+                    .getSingleResult();
+        } catch (NoResultException ex) {
+            return null;
+        } 
     }
 }

@@ -27,6 +27,9 @@ public interface PersonBusinessLogic {
     
     public void updatePersonDetails(String uuid, RoleTypeEnum roleType);
     
+    public void updateUserRoleRealm(String uuid , String realmRole);
+            
     public Person getPersonByName(String name);
+    
         
 }

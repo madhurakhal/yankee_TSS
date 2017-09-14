@@ -10,15 +10,10 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import jee17.entities.PersonEntity;
 import jee17.entities.SecretaryEntity;
-import jee17.entities.SupervisorEntity;
 import jee17.logic.SecretaryBusinessLogic;
-import jee17.logic.SupervisorBusinessLogic;
 import jee17.logic.dao.PersonAccess;
 import jee17.logic.dao.SecretaryAccess;
-import jee17.logic.dao.SupervisorAccess;
-import jee17.logic.to.Person;
 import jee17.logic.to.Secretary;
-import jee17.logic.to.Supervisor;
 
 /**
  *
@@ -49,7 +44,9 @@ public class SecretaryBusinessLogicImpl implements SecretaryBusinessLogic {
     
     @Override
     public Secretary createSecretary(String name , String personUUID) {
-        SecretaryEntity se = secretaryAccess.getCreateSecretaryByName(name);
+        // To Think Will I create a lot of Secretaries with different contract ID
+        //SecretaryEntity se = secretaryAccess.getCreateSecretaryByName(name);
+        SecretaryEntity se = secretaryAccess.createEntity(name);
         PersonEntity pe = personAccess.getByUuid(personUUID);
         se.setPerson(pe);
         secretaryAccess.updateEntity(se); // not sure if we have to update

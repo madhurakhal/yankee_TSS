@@ -56,7 +56,9 @@ public class PersonBusinessLogicImpl implements PersonBusinessLogic {
             p.setLastName(pe.getLastName());
             p.setDateOfBirth(pe.getDateOfBirth());
             p.setEmailAddress(pe.getEmailAddress());
-
+            p.setUserRoleRealm(pe.getUserRoleRealm());
+            p.setPreferredLanguage(pe.getPreferredLanguage());
+            
             ArrayList<Role> resultRole = new ArrayList<>(pe.getRoles().size());
             for (RoleEntity re : pe.getRoles()) {
                 System.out.println("AT LEATST " + re.getRollType());
@@ -94,6 +96,13 @@ public class PersonBusinessLogicImpl implements PersonBusinessLogic {
 //        p.setRoles(resultRole);
         System.out.println("Ok want to get something for pe" + p.getFirstName());
         return p;
+    }
+   
+    @Override
+    public void updateUserRoleRealm(String uuid , String realmRole){
+        PersonEntity pe = personAccess.getByUuid(uuid);
+        pe.setUserRoleRealm(realmRole);
+        personAccess.updateEntity(pe);
     }
 
     @Override

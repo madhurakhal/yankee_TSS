@@ -25,5 +25,7 @@ public interface EmployeeBusinessLogic {
     public List<Employee> getEmployeeList();
     
     public Employee createEmployee(String name , String personUUID);
+    
+    public Employee getEmployeeByContract(String contractUUID);
         
 }

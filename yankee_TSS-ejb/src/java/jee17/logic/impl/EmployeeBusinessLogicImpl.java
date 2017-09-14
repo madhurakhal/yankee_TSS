@@ -10,18 +10,12 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import jee17.entities.EmployeeEntity;
 import jee17.entities.PersonEntity;
-import jee17.entities.SecretaryEntity;
-import jee17.entities.SupervisorEntity;
 import jee17.logic.EmployeeBusinessLogic;
-import jee17.logic.SecretaryBusinessLogic;
-import jee17.logic.SupervisorBusinessLogic;
+import jee17.logic.dao.ContractAccess;
 import jee17.logic.dao.EmployeeAccess;
 import jee17.logic.dao.PersonAccess;
-import jee17.logic.dao.SecretaryAccess;
-import jee17.logic.dao.SupervisorAccess;
 import jee17.logic.to.Employee;
 import jee17.logic.to.Person;
-import jee17.logic.to.Supervisor;
 
 /**
  *
@@ -32,9 +26,12 @@ public class EmployeeBusinessLogicImpl implements EmployeeBusinessLogic {
 
     @EJB
     private EmployeeAccess employeeAccess;
-    
+
     @EJB
     private PersonAccess personAccess;
+
+    @EJB
+    private ContractAccess contractAccess;
 
     @Override
     public List<Employee> getEmployeeList() {
@@ -47,16 +44,34 @@ public class EmployeeBusinessLogicImpl implements EmployeeBusinessLogic {
 //            p.setDateOfBirth(pe.getDateOfBirth());
 //            result.add(p);
 //        }
-          return null;
+        return null;
     }
-    
+
     @Override
-    public Employee createEmployee(String name , String personUUID) {
-        EmployeeEntity se = employeeAccess.getCreateEmployeeByName(name);
+    public Employee createEmployee(String name, String personUUID) {
+        // To Think Will I create a lot of Employee with different contract ID
+        //EmployeeEntity se = employeeAccess.getCreateEmployeeByName(name);
+        EmployeeEntity ee = employeeAccess.createEntity(name);
         PersonEntity pe = personAccess.getByUuid(personUUID);
-        se.setPerson(pe);
-        employeeAccess.updateEntity(se); // not sure if we have to update
+        ee.setPerson(pe);
+        employeeAccess.updateEntity(ee); // not sure if we have to update
         // TODOOOOOOOOOOOOOO have to think what to return
-        return new Employee(se.getUuid(), se.getName());
+        return new Employee(ee.getUuid(), ee.getName());
+    }
+
+    @Override
+    public Employee getEmployeeByContract(String contractUUID) {
+        EmployeeEntity ee = employeeAccess.getEmployeeByContract(contractAccess.getByUuid(contractUUID));
+        // Need to create a SUpervisor list from transfer object
+        if (ee == null){return null;}
+        Employee e = new Employee(ee.getUuid(), ee.getName());
+        PersonEntity person = ee.getPerson();
+        Person p = new Person(person.getUuid() , person.getName());
+        p.setFirstName(person.getFirstName());
+        p.setLastName(person.getLastName());
+        p.setEmailAddress(person.getEmailAddress());
+        // Fill up all other contract info
+        e.setPerson(p);
+        return e;
     }
 }

@@ -6,7 +6,22 @@ public class Role extends Named {
 
     private static final long serialVersionUID = 2813983198416172587L;
 
-    private RoleTypeEnum roleType;   
+    private RoleTypeEnum roleType;  
+    
+    private Person person;
+    
+    public Role(String uuid, String name) {
+        super(uuid, name);
+    }
+
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
 
     public RoleTypeEnum getRoleType() {
         return roleType;
@@ -14,11 +29,6 @@ public class Role extends Named {
 
     public void setRoleType(RoleTypeEnum roleType) {
         this.roleType = roleType;
-    }
+    }   
     
-    
-    public Role(String uuid, String name) {
-        super(uuid, name);
-    }
-
 }

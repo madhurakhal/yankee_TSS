@@ -9,22 +9,28 @@
     <ui:composition template="/WEB-INF/templates/main-template.xhtml">        
         <ui:param name="pageTitle" value="Admin Page"/>
         <ui:define name="main-content">
-            <h3>Contract Details</h3>
+            <h3>Associated Contracts</h3>
             <h:form id="form">
                 <p:growl id="msgs" showDetail="true"/>
+                <p:panelGrid columns="2">
+                    <h3>#{loginBean.user.firstName} #{loginBean.user.lastName}</h3>
 
-                <p:dataTable id="persons" var="persons" value="#{createContractBean.persons}">                        
-                    <p:column headerText="First Name">
-                        <h:outputText value = "#{persons.firstName}"/>  
-                    </p:column>
-                    <p:column headerText="Last Name">
-                        <h:outputText value = "#{persons.lastName}"/>   
-                    </p:column>
-                    <p:column headerText="Email">
-                        <h:outputText value = "#{persons.emailAddress}"/>   
-                    </p:column> 
-                </p:dataTable>
+
+
+                    <p:dataTable id="persons" var="persons" value="#{manageContractsBean.persons_associatedto_contract}" editable="true" style="margin-bottom:20px">
+                        <p:column headerText="Contracts with status PREPARED">
+                            <h:outputText value = "#{persons.firstName} #{persons.lastName} (#{persons.emailAddress})"/>  
+                        </p:column>
+                        <p:column headerText="Action " style="width:70px">
+                            <p:commandLink value = "Edit" id="editLink" styleClass="ui-icon ui-icon-pencil"  action="#{manageContractsBean.onRowEdit(persons.uuid)}"/>
+                            <p:commandLink value = "Delete" id="deleteLink" styleClass="ui-icon ui-icon-trash"  action="#{manageContractsBean.onRowDelete(persons.uuid)}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:panelGrid>
+
+
             </h:form>
+
         </ui:define>
     </ui:composition>
 </html>
