@@ -21,6 +21,8 @@ public abstract class AbstractAccess<E extends NamedEntity> {
 
     public E getByUuid(String uuid) {
         try {
+            em.flush();
+            em.clear();
             return em.createNamedQuery("getNamedEntityByUuid", getEntityClass())
                     .setParameter("uuid", uuid)
                     .getSingleResult();

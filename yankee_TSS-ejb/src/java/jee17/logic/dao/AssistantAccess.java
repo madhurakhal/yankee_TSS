@@ -5,6 +5,7 @@
  */
 package jee17.logic.dao;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.security.RolesAllowed;
@@ -12,6 +13,8 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
 import jee17.entities.AssistantEntity;
+import jee17.entities.ContractEntity;
+import jee17.entities.SecretaryEntity;
 import jee17.logic.ENUM.RoleTypeEnum;
 
 /**
@@ -55,6 +58,8 @@ public class AssistantAccess extends AbstractAccess<AssistantEntity> {
         name = name.trim().toLowerCase();
 
         try {
+            em.flush();
+            em.clear();
             // try to find Assistant
             return em.createNamedQuery("getAssistantByName", AssistantEntity.class)
                     .setParameter("name", name)
@@ -63,5 +68,17 @@ public class AssistantAccess extends AbstractAccess<AssistantEntity> {
             // Create a SupervisorEntity for the name.
             return createEntity(name);
         }
+    }
+    
+    
+    @RolesAllowed("AUTHENTICATED")
+    public List<AssistantEntity> getAssistantsByContract(ContractEntity contract) {
+       try {
+            return em.createNamedQuery("getAssistantsByContract", AssistantEntity.class)
+                    .setParameter("contract", contract)
+                    .getResultList();
+        } catch (NoResultException ex) {
+            return null;
+        } 
     }
 }

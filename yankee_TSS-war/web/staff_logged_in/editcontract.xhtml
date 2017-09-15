@@ -3,33 +3,40 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:b="http://bootsfaces.net/ui"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="/WEB-INF/templates/main-template.xhtml">        
         <ui:param name="pageTitle" value="Create Contract Page"/>
         <ui:define name="main-content">
-
+<h:form>
             <p:breadCrumb>
                 <p:menuitem value="Categories" url="/staff_logged_in/managecontracts.xhtml" />
                 <p:menuitem value="Manage Contracts" url="/staff_logged_in/managecontracts.xhtml" />
                 <p:menuitem value="Edit Contract" disabled="true" />
             </p:breadCrumb>
 
-            <h:form id="form">
-                <h3>Contract Details</h3>
-                <p></p>
-                <p:panelGrid columns="2" style="width:100%">
-                    <b:inputText id="firstNameInput" label="First Name" 
-                                 value="#{manageContractsBean.person_id}">
-                    </b:inputText> 
-                    <h:form id="form">
-                        <h3>Contract Details</h3>
-                        <p:panelGrid columns="2" style="width:100%">
-                        
-                        
-                        </p:panelGrid>
-                    </h:form>
-                </p:panelGrid>
+            
+            
+                <p:growl id="msg" showDetail="true" escape="false" />
+                <p:pickList id="PojoPickList" value="#{editContractBean.listModel}" var="secretaries" effect="bounce"
+                            itemValue="#{secretaries}" itemLabel="#{secretaries.firstName} #{secretaries.lastName}" showCheckbox="true" responsive="true"
+                            showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" converter="personConverter">
+                    <f:facet name="sourceCaption">Add new Secretaries</f:facet>
+                    <f:facet name="targetCaption">Current Secretaries </f:facet>
+
+                    <p:ajax event="transfer" listener="#{editContractBean.onTransfer}" update="msg" />
+
+                    <p:column style="width:10%">
+                        <h:outputText styleClass="ui-theme ui-theme-#{theme.name}" />
+                    </p:column>
+
+                    <p:column style="width:90%;">
+                        <h:outputText value="#{secretaries.firstName} #{secretaries.lastName}" />
+                    </p:column>
+                </p:pickList>          
+
+
+
             </h:form>
 
         </ui:define>

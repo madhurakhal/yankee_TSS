@@ -5,12 +5,14 @@
  */
 package jee17.logic.dao;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
+import jee17.entities.ContractEntity;
 import jee17.entities.PersonEntity;
 import jee17.entities.SecretaryEntity;
 import jee17.entities.SupervisorEntity;
@@ -65,5 +67,18 @@ public class SecretaryAccess extends AbstractAccess<SecretaryEntity> {
             // Create a SecretaryEntity for the name.
             return createEntity(name);
         }
+    }
+    
+    @RolesAllowed("AUTHENTICATED")
+    public List<SecretaryEntity> getSecretariesByContract(ContractEntity contract) {
+       try {
+            em.flush();
+            em.clear();
+            return em.createNamedQuery("getSecretariesByContract", SecretaryEntity.class)
+                    .setParameter("contract", contract)
+                    .getResultList();
+        } catch (NoResultException ex) {
+            return null;
+        } 
     }
 }
