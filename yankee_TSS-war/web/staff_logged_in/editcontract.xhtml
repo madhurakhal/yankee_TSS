@@ -16,23 +16,24 @@
                 </p:breadCrumb>
 
                 <p:growl id="msg" showDetail="true" escape="false" />
-                <p:pickList id="PojoPickList" value="#{editContractBean.assistantPickupList}" var="secretaries" effect="bounce"
+                
+                <p:pickList id="assistantPojoList" value="#{editContractBean.assistantPickupList}" var="assistants" effect="bounce"
+                            itemValue="#{assistants}" itemLabel="#{assistants.firstName} #{assistants.lastName}" showCheckbox="true" responsive="true"
+                            showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" converter="personConverter">
+                    <f:facet name="sourceCaption">Add new Assistants</f:facet>
+                    <f:facet name="targetCaption">Current Assistants </f:facet>
+
+                    <p:ajax event="transfer" listener="#{editContractBean.onTransfer}" update="msg" />  
+                </p:pickList> 
+                
+                <p:pickList id="secretaryPojoList" value="#{editContractBean.secretaryPickupList}" var="secretaries" effect="bounce"
                             itemValue="#{secretaries}" itemLabel="#{secretaries.firstName} #{secretaries.lastName}" showCheckbox="true" responsive="true"
                             showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" converter="personConverter">
                     <f:facet name="sourceCaption">Add new Secretaries</f:facet>
                     <f:facet name="targetCaption">Current Secretaries </f:facet>
 
-                    <p:ajax event="transfer" listener="#{editContractBean.onTransfer}" update="msg" />
-
-                    <p:column style="width:10%">
-                        <h:outputText styleClass="ui-theme ui-theme-#{theme.name}" />
-                    </p:column>
-
-                    <p:column style="width:90%;">
-                        <h:outputText value="#{secretaries.firstName} #{secretaries.lastName}" />
-                    </p:column>
-                </p:pickList>          
-
+                    <p:ajax event="transfer" listener="#{editContractBean.onTransfer}" update="msg" />  
+                </p:pickList> 
 
 
             </h:form>

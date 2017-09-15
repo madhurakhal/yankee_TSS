@@ -61,7 +61,7 @@ public class PersonBusinessLogicImpl implements PersonBusinessLogic {
             
             ArrayList<Role> resultRole = new ArrayList<>(pe.getRoles().size());
             for (RoleEntity re : pe.getRoles()) {
-                System.out.println("AT LEATST " + re.getRollType());
+                //System.out.println("AT LEATST " + re.getRollType());
                 Role r = new Role(re.getUuid(), re.getName());
                 r.setRoleType(re.getRollType());
                 resultRole.add(r);

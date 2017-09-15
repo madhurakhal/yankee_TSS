@@ -9,6 +9,7 @@ import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -31,7 +32,7 @@ import org.primefaces.model.DualListModel;
  * @author Dr. Volker Riediger <riediger@uni-koblenz.de>
  */
 @ManagedBean
-@RequestScoped
+@ViewScoped
 @Named
 public class EditContractBean {
 
@@ -69,8 +70,8 @@ public class EditContractBean {
 
     private String contract_id;
     private Person supervisorForContract;
-    private List<Person> secretariesForContract;
-    private List<Person> assistantsForContract;
+    private List<Person> secretariesForContract = new ArrayList<>();
+    private List<Person> assistantsForContract = new ArrayList<>();
 
     private List<Person> availableSecretaryList = new ArrayList<>();
     private List<Person> availableAssistantList = new ArrayList<>();
@@ -83,7 +84,7 @@ public class EditContractBean {
     public void init() {
         //This contract id will be sent to edit contract as parameter in url from managecontract edit is pressed
         // This will be used in getting current assistant, supervisor, secretary for this contract id below.
-
+        System.out.println("called me init only once yes?");
         getContract_id();
         getPersons();
 
@@ -101,7 +102,7 @@ public class EditContractBean {
         // Note the supervisor is just one for a given contract. So supervisorForContract can be used.
         secretaryPickupList = new DualListModel<>(new ArrayList<>(availableSecretaryList), secretariesForContract);
         assistantPickupList = new DualListModel<>(new ArrayList<>(availableAssistantList), assistantsForContract);
-        System.out.println("la haiiiiiiiiiiiiii" + availableSecretaryList);
+        System.out.println("la haiiiiiiiiiiiiii" + supervisorForContract);
         System.out.println(assistantPickupList);
 
     }
@@ -121,7 +122,9 @@ public class EditContractBean {
     }
 
     public Person getSupervisorForContract() {
-        supervisorForContract = supervisorBusinessLogic.getSupervisorByContract(contract_id).getPerson();
+        if (supervisorForContract == null) {
+            supervisorForContract = supervisorBusinessLogic.getSupervisorByContract(contract_id).getPerson();
+        }
         return supervisorForContract;
     }
 
@@ -130,7 +133,7 @@ public class EditContractBean {
     }
 
     public List<Person> getSecretariesForContract() {
-        if (secretariesForContract == null) {
+        if (secretariesForContract.isEmpty()) {
             List<Secretary> ls = secretaryBusinessLogic.getSecretariesByContract(contract_id);
             List<Person> result = new ArrayList<>();
             for (Secretary s : ls) {
@@ -146,7 +149,7 @@ public class EditContractBean {
     }
 
     public List<Person> getAssistantsForContract() {
-        if (assistantsForContract == null) {
+        if (assistantsForContract.isEmpty()) {
             List<Assistant> ls = assistantBusinessLogic.getAssistantsByContract(contract_id);
             List<Person> result = new ArrayList<>();
             for (Assistant s : ls) {
@@ -164,7 +167,7 @@ public class EditContractBean {
     // BEGINS getter and setter for available secretary , assistant, supervisor list that can be made secretaries assistant, supervisor respec.
     // Note for this secretariesforcontract, supervisorforcontract, assistantforcontract has to be loaded. done in init().
     public List<Person> getAvailableSecretaryList() {
-        if (availableSecretaryList == null) {
+        if (availableSecretaryList.isEmpty()) {
             for (Person p : persons) {
                 System.out.println("People available for secretary" + p.getFirstName());
                 if (secretariesForContract.contains(p)) {
@@ -181,10 +184,12 @@ public class EditContractBean {
     }
 
     public List<Person> getAvailableAssistantList() {
-        for (Person p : persons) {
-            if (assistantsForContract.contains(p)) {
-            } else {
-                availableAssistantList.add(p);
+        if (availableAssistantList.isEmpty()) {
+            for (Person p : persons) {
+                if (assistantsForContract.contains(p)) {
+                } else {
+                    availableAssistantList.add(p);
+                }
             }
         }
         return availableAssistantList;
@@ -195,7 +200,7 @@ public class EditContractBean {
     }
 
     public List<Person> getAvailableSupervisorList() {
-        if (availableSupervisorList == null) {
+        if (availableSupervisorList.isEmpty()) {
             for (Person p : persons) {
                 if (supervisorForContract.equals(p)) {
                 } else {
@@ -228,11 +233,17 @@ public class EditContractBean {
     }
 
     public void onTransfer(TransferEvent event) {
+        System.out.println("Called ontransfer");
         StringBuilder builder = new StringBuilder();
-        for(Object item : event.getItems()) {
-            builder.append(((Person) item).getName()).append("<br />");
+        for (Object item : event.getItems()) {
+            builder.append(((Person) item).getFirstName()).append("<br />");
         }
-
+        System.out.println(assistantPickupList.getSource());
+        System.out.println(assistantPickupList.getTarget());
+        System.out.println(assistantsForContract);
+        System.out.println(secretaryPickupList.getSource());
+        System.out.println(secretaryPickupList.getTarget());
+        
         FacesMessage msg = new FacesMessage();
         msg.setSeverity(FacesMessage.SEVERITY_INFO);
         msg.setSummary("Items Transferred");
