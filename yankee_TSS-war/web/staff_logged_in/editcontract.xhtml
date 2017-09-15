@@ -18,7 +18,7 @@
             
             
                 <p:growl id="msg" showDetail="true" escape="false" />
-                <p:pickList id="PojoPickList" value="#{editContractBean.listModel}" var="secretaries" effect="bounce"
+                <p:pickList id="PojoPickList" value="#{editContractBean.assistantPickupList}" var="secretaries" effect="bounce"
                             itemValue="#{secretaries}" itemLabel="#{secretaries.firstName} #{secretaries.lastName}" showCheckbox="true" responsive="true"
                             showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" converter="personConverter">
                     <f:facet name="sourceCaption">Add new Secretaries</f:facet>

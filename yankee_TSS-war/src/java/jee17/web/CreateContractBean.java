@@ -134,7 +134,7 @@ public class CreateContractBean {
     // When create contract button pressed.
     // Create Supervisor for the person who is logged in.
     // Create the rolltype(Secretary / Assistant / Employee) selected for the person selected.
-    public void newContractInit() {
+    public void create() {
         System.out.println("Called for contract create");
         Person loggedInUser = loginBean.getUser();
         // Make the current loggedin person as supervisor
@@ -170,6 +170,6 @@ public class CreateContractBean {
         System.out.println("Am I here to update?" + roleType);
         FacesMessage msg = new FacesMessage("Contract Created");
         FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
+    }   
 
 }

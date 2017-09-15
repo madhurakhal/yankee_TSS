@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -18,6 +19,7 @@ import jee17.logic.SupervisorBusinessLogic;
 import jee17.logic.to.Assistant;
 import jee17.logic.to.Person;
 import jee17.logic.to.Secretary;
+import org.primefaces.event.TransferEvent;
 import org.primefaces.model.DualListModel;
 
 /*
@@ -51,7 +53,7 @@ public class EditContractBean {
     private List<Person> persons = new ArrayList<>();
 
     public List<Person> getPersons() {
-        if (persons == null) {
+        if (persons.isEmpty()) {
             persons = personBusinessLogic.getPersonList();
             // removes the person who is logged in
             //persons.remove(personBusinessLogic.getPersonByName(loginBean.getUser().getName()));
@@ -64,7 +66,8 @@ public class EditContractBean {
     }
 
     Map<String, String> person_to_contract = new HashMap<>();
-
+    
+    private String contract_id;
     private Person supervisorForContract;
     private List<Person> secretariesForContract;
     private List<Person> assistantsForContract;
@@ -75,13 +78,14 @@ public class EditContractBean {
     
     private DualListModel<Person> secretaryPickupList;
     private DualListModel<Person> assistantPickupList;
-    private String contract_id;
 
     @PostConstruct
     public void init() {
         //This contract id will be sent to edit contract as parameter in url from managecontract edit is pressed
         // This will be used in getting current assistant, supervisor, secretary for this contract id below.
+        
         getContract_id();
+        getPersons();
 
         // First we will get all the assistant , supervisor , secretary for the given contract
         getAssistantsForContract();
@@ -97,6 +101,9 @@ public class EditContractBean {
         // Note the supervisor is just one for a given contract. So supervisorForContract can be used.
         secretaryPickupList = new DualListModel<>(new ArrayList<>(availableSecretaryList), secretariesForContract);
         assistantPickupList = new DualListModel<>(new ArrayList<>(availableAssistantList), assistantsForContract);
+        System.out.println("la haiiiiiiiiiiiiii" +   availableSecretaryList);
+        System.out.println(assistantPickupList);
+        
     }
 
     // BEGINS GETTER AND SETTER for contract id then current assistant , supervisor, secretaries for given contract
@@ -159,6 +166,7 @@ public class EditContractBean {
     public List<Person> getAvailableSecretaryList() {
         if (availableSecretaryList == null) {
             for (Person p : persons) {
+                System.out.println("People available for secretary" + p.getFirstName());
                 if (secretariesForContract.contains(p)) {
                 } else {
                     availableSecretaryList.add(p);
@@ -217,5 +225,19 @@ public class EditContractBean {
 
     public void setAssistantPickupList(DualListModel<Person> assistantPickupList) {
         this.assistantPickupList = assistantPickupList;
+    }
+    
+        public void onTransfer(TransferEvent event) {
+        StringBuilder builder = new StringBuilder();
+//        for(Object item : event.getItems()) {
+//            builder.append(((Theme) item).getName()).append("<br />");
+//        }
+         
+        FacesMessage msg = new FacesMessage();
+        msg.setSeverity(FacesMessage.SEVERITY_INFO);
+        msg.setSummary("Items Transferred");
+        msg.setDetail(builder.toString());
+         
+        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 }
