@@ -1,12 +1,8 @@
 package yankee.web;
 
-import java.util.List;
-import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
-import yankee.logic.PersonBusinessLogic;
 import yankee.logic.ENUM.RoleTypeEnum;
-import yankee.logic.to.Person;
 
 /*
  * To change this license header, choose License Headers in Project Properties.

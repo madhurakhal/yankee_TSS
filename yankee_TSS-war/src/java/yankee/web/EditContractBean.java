@@ -1,5 +1,6 @@
 package yankee.web;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +23,8 @@ import yankee.logic.to.Person;
 import yankee.logic.to.Secretary;
 import org.primefaces.event.TransferEvent;
 import org.primefaces.model.DualListModel;
+import yankee.logic.ENUM.TimesheetFrequencyEnum;
+import yankee.logic.EmployeeBusinessLogic;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -47,9 +50,53 @@ public class EditContractBean {
 
     @EJB
     private PersonBusinessLogic personBusinessLogic;
+    
+    @EJB
+    private EmployeeBusinessLogic employeeBusinessLogic;
+    
 
     @Inject
     private LoginBean loginBean;
+    
+    private LocalDate startDate;    
+    private LocalDate endDate;
+    private TimesheetFrequencyEnum timesheetFrequency;
+    private Person currentContractPerson;
+
+    public Person getCurrentContractPerson() {
+        if (currentContractPerson == null) {
+            currentContractPerson = employeeBusinessLogic.getEmployeeByContract(contract_id).getPerson();
+        }
+        return currentContractPerson;
+    }
+
+    public void setCurrentContractPerson(Person currentContractPerson) {
+        this.currentContractPerson = currentContractPerson;
+    }
+
+    public TimesheetFrequencyEnum getTimesheetFrequency() {
+        return timesheetFrequency;
+    }
+
+    public void setTimesheetFrequency(TimesheetFrequencyEnum timesheetFrequency) {
+        this.timesheetFrequency = timesheetFrequency;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
 
     private List<Person> persons = new ArrayList<>();
 
@@ -76,6 +123,7 @@ public class EditContractBean {
     private List<Person> availableSecretaryList = new ArrayList<>();
     private List<Person> availableAssistantList = new ArrayList<>();
     private List<Person> availableSupervisorList = new ArrayList<>();
+    
 
     private DualListModel<Person> secretaryPickupList;
     private DualListModel<Person> assistantPickupList;
@@ -237,7 +285,9 @@ public class EditContractBean {
         StringBuilder builder = new StringBuilder();
         for (Object item : event.getItems()) {
             builder.append(((Person) item).getFirstName()).append("<br />");
+            assistantPickupList.getTarget().remove((Person) item);
         }
+        
         System.out.println(assistantPickupList.getSource());
         System.out.println(assistantPickupList.getTarget());
         System.out.println(assistantsForContract);
