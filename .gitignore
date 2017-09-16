@@ -2,8 +2,10 @@
 /dist/
 /yankee_TSS-war/build/
 /yankee_TSS-war/dist/
+/yankee_TSS-war/nbproject/
 /yankee_TSS-ejb/build/
 /yankee_TSS-ejb/dist/
-/JavaApplication1/nbproject/private/
-/JavaApplication1/build/
+/yankee_TSS-ejb/nbproject/
+
 /JavaApplication1/nbproject/
+/JavaApplication1/build/
