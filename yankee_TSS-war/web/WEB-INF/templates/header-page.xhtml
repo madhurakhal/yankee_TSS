@@ -24,7 +24,7 @@
 
                         <ui:fragment rendered="#{not empty request.remoteUser}">
                             <b:navbarLinks styleClass="nav navbar-nav navbar-right">
-                                <b:navLink outcome="myaccount" value="My Account" icon="cog"/>
+                                <b:navLink outcome="myaccount" value="#{loginBean.user.firstName} " icon="cog"/>
                                 <b:navCommandLink  value="Log Out" icon="log-out" action="#{loginBean.logout}"/>
                             </b:navbarLinks>
                         </ui:fragment>

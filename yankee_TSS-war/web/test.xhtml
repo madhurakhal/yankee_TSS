@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui"
+      xmlns:p="http://primefaces.org/ui"      
+      xmlns:b="http://bootsfaces.net/ui"
       xmlns:f="http://java.sun.com/jsf/core">
     <ui:composition template="/WEB-INF/templates/main-template.xhtml">        
         <ui:param name="pageTitle" value="Admin Page"/>
@@ -28,10 +29,12 @@
                     <p:column headerText="Roles">
                         <h:outputText value = "#{persons.roles}"/>   
                     </p:column>
-                    
+
                     <p:column headerText="Role">
                         <p:cellEditor>
-                            <f:facet name="output"><h:outputText value="#{createContract.roleType}" /></f:facet>
+                            <f:facet name="output">
+                                <h:outputText value="#{createContract.roleType}" />
+                            </f:facet>
                             <f:facet name="input">
                                 <h:selectOneMenu value="#{createContract.roleType}" style="width:100%; color:black ">
                                     <f:selectItems value="#{roleTypeBean.roleTypes}" />
@@ -40,16 +43,35 @@
                         </p:cellEditor>
                     </p:column>
 
+                    <!--This Code for multiple select dropdown with some disabled item BEGINSSSS--> 
+                    <h:panelGrid columns="1" cellpadding="10">
+                        <h:outputLabel for="multiple" value="Select Roles " />
+                        <p:selectCheckboxMenu id="multiple" value="#{createContractBean.selectedRoleTypes}" label="roles"
+                                              multiple="true" filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
+                            <f:selectItems value="#{roleTypeBean.roleTypes}" var = "t" itemDisabled="#{t == 'SUPERVISOR' ? 'true' : 'false'}"/>
+                        </p:selectCheckboxMenu>           
+                    </h:panelGrid>
+                    <!--This Code for multiple select dropdown with some disabled item ENDSSSSSSS--> 
+                   
+                    <!--This code is for role type select roletypes-->
+                    <h:outputLabel for="roleType" value="Choose Role " />
+                <b:selectOneMenu id="roleType" value="#{createContractBean.roleType}">
+                    <f:selectItem itemLabel="Choose role" noSelectionOption="true"/>
+                    <f:selectItems  value="#{roleTypeBean.roleTypes}" var = "_roles" itemDisabled="#{_roles == 'SUPERVISOR' ? 'true' : 'false'}"/>     
+                </b:selectOneMenu>
+                    
                     <p:column style="width:32px">
                         <p:rowEditor />
                     </p:column>
                     <p:column headerText="Last Name">
                         <h:dataTable value="#{persons.roles}" var="nested_row">
                             <ui:repeat value="#{nested_row.roles}" var="t">
-   <ui:repeat value="#{t}" var="s">
-      #{s}
-   </ui:repeat>
-</ui:repeat></h:dataTable></p:column>
+                                <ui:repeat value="#{t}" var="s">
+                                    #{s}
+                                </ui:repeat>
+                            </ui:repeat>
+                        </h:dataTable>
+                    </p:column>
                 </p:dataTable>        
 
             </h:form>

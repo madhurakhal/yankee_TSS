@@ -3,12 +3,44 @@
               xmlns="http://xmlns.jcp.org/xml/ns/javaee"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
-   <resource-handler>org.omnifaces.resourcehandler.CombinedResourceHandler</resource-handler>
-   <navigation-rule>
+    <resource-handler>org.omnifaces.resourcehandler.CombinedResourceHandler</resource-handler>
+    <navigation-rule>
         <from-view-id>/index.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>createContract</from-outcome>
-            <to-view-id>/logged_in/createContract.xhtml</to-view-id>
-        </navigation-case>        
+            <to-view-id>/staff_logged_in/createcontract.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>manageContracts</from-outcome>
+            <to-view-id>/staff_logged_in/managecontracts.xhtml</to-view-id>
+        </navigation-case>          
+        <navigation-case>
+            <from-outcome>viewContractStatistics</from-outcome>
+            <to-view-id>/staff_logged_in/viewcontract_statistics.xhtml</to-view-id>
+        </navigation-case>  
+        <navigation-case>
+            <from-outcome>admin</from-outcome>
+            <to-view-id>/admin/administration.xhtml</to-view-id>
+        </navigation-case>       
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/staff_logged_in/managecontracts.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>index</from-outcome>
+            <to-view-id>/staff_logged_in/createcontract.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>*</from-view-id>
+        <navigation-case>
+            <from-outcome>index</from-outcome>
+            <to-view-id>/index.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>myaccount</from-outcome>
+            <to-view-id>/logged_in/myaccount.xhtml?faces-redirect=true</to-view-id>
+        </navigation-case>
     </navigation-rule>
 </faces-config>

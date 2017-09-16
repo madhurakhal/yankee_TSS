@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <ui:composition template="/WEB-INF/templates/main-template.xhtml">        
+        <ui:param name="pageTitle" value="Create Contract Page"/>
+        <ui:define name="main-content">
+            <p></p>
+            <b:form id="createContractForm">
+                <h:outputLabel for="contractPersons" value="Create Contract For" />
+                <b:selectOneMenu id="contractPersons" value="#{createContractBean.contractTo}" immediate="true">
+                    <f:selectItem itemLabel="Choose person" noSelectionOption="true"/>
+                    <f:selectItems  value="#{createContractBean.persons}" var="entity" itemLabel="#{entity.firstName} #{entity.lastName}" itemValue="#{entity}"/>
+                    <f:ajax render="firstNameInput lastNameInput emailAddressInput" />
+                </b:selectOneMenu>           
+
+                <b:inputText id="firstNameInput" label="First Name"
+                             value="#{createContractBean.contractTo.firstName}"
+                             required="false" disabled = "true">
+                </b:inputText>
+
+                <b:inputText id="lastNameInput" label="Last Name"
+                             value="#{createContractBean.contractTo.lastName}"
+                             required="false" disabled = "true">
+                </b:inputText>
+
+                <b:inputText id="emailAddressInput" label="Email"
+                             value="#{createContractBean.contractTo.emailAddress}"
+                             required="false" disabled = "true">
+                </b:inputText>                 
+                
+                <b:commandButton id="createContractButton"
+                                 disabled="#{empty createContractBean.persons}"
+                                 look="success"
+                                 icon="ok"
+                                 value="Create Contract"
+                                 action="index"
+                                 actionListener="#{createContractBean.create}"/>
+            </b:form>                   
+
+            
+        </ui:define>
+    </ui:composition>
+</html>
+
