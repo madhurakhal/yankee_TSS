@@ -64,7 +64,7 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
             
             if(uuid!=null)
             {
-                     centity=getContractByUUID("e88c3ba2-f2e7-49e6-a3c7-4d7bc0186941");
+                     centity=getContractByUUID("e88c3ba2-f2e7-49e6-a3c7-4d7bc0186941"); // hardcoding for testing purpose
             }
             
             if (!contractStatus.equalsIgnoreCase(ContractStatusEnum.STARTED.toString())) {
