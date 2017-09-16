@@ -2,6 +2,7 @@ package yankee.web;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,7 @@ import org.primefaces.event.TransferEvent;
 import org.primefaces.model.DualListModel;
 import yankee.logic.ENUM.TimesheetFrequencyEnum;
 import yankee.logic.EmployeeBusinessLogic;
+import yankee.logic.to.Employee;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -58,13 +60,13 @@ public class EditContractBean {
     @Inject
     private LoginBean loginBean;
     
-    private LocalDate startDate;    
-    private LocalDate endDate;
+    private Date startDate;    
+    private Date endDate;
     private TimesheetFrequencyEnum timesheetFrequency;
     private Person currentContractPerson;
 
     public Person getCurrentContractPerson() {
-        if (currentContractPerson == null) {
+        if (currentContractPerson == null) {            
             currentContractPerson = employeeBusinessLogic.getEmployeeByContract(contract_id).getPerson();
         }
         return currentContractPerson;
@@ -82,19 +84,19 @@ public class EditContractBean {
         this.timesheetFrequency = timesheetFrequency;
     }
 
-    public LocalDate getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDate getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
@@ -280,25 +282,60 @@ public class EditContractBean {
         this.assistantPickupList = assistantPickupList;
     }
 
-    public void onTransfer(TransferEvent event) {
+    public void onTransferSecretary(TransferEvent event) {
         System.out.println("Called ontransfer");
         StringBuilder builder = new StringBuilder();
         for (Object item : event.getItems()) {
             builder.append(((Person) item).getFirstName()).append("<br />");
-            assistantPickupList.getTarget().remove((Person) item);
-        }
-        
-        System.out.println(assistantPickupList.getSource());
-        System.out.println(assistantPickupList.getTarget());
-        System.out.println(assistantsForContract);
-        System.out.println(secretaryPickupList.getSource());
-        System.out.println(secretaryPickupList.getTarget());
-        
+            if(event.isAdd()){
+                assistantPickupList.getSource().remove((Person) item);  
+            } 
+            if(event.isRemove()){
+                assistantPickupList.getSource().add((Person) item);  
+            }
+        }        
         FacesMessage msg = new FacesMessage();
         msg.setSeverity(FacesMessage.SEVERITY_INFO);
         msg.setSummary("Items Transferred");
         msg.setDetail(builder.toString());
 
         FacesContext.getCurrentInstance().addMessage(null, msg);
+        
+    }
+    public void onTransferAssistant(TransferEvent event) {
+        System.out.println("Called ontransfer");
+        StringBuilder builder = new StringBuilder();
+        for (Object item : event.getItems()) {
+            builder.append(((Person) item).getFirstName()).append("<br />");   
+            if(event.isAdd()){
+                secretaryPickupList.getSource().remove((Person) item);  
+            } 
+            if(event.isRemove()){
+                secretaryPickupList.getSource().add((Person) item);  
+            }
+        }        
+        FacesMessage msg = new FacesMessage();
+        msg.setSeverity(FacesMessage.SEVERITY_INFO);
+        msg.setSummary("Items Transferred");
+        msg.setDetail(builder.toString());
+
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        
+    }
+
+
+    public void edit(){
+        System.out.println("Edit in progress"); 
+        // Make changes for all contract details.
+        System.out.println("Supervisor" + supervisorForContract);
+        System.out.println("New secretaries" + secretaryPickupList.getTarget());
+        System.out.println("New secretaries" + assistantPickupList.getTarget());
+        System.out.println("Start date" + startDate);
+        System.out.println("End date" + endDate);
+        System.out.println("Contract id" + contract_id);
+        
+        // TODO 
+        // 1. update supervisor for the contract
+        
     }
 }

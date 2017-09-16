@@ -1,62 +1,100 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package yankee.logic.to;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Set;
-import yankee.entities.RoleEntity;
+import yankee.logic.ENUM.ContractStatusEnum;
+import yankee.logic.ENUM.TimesheetFrequencyEnum;
+import yankee.logic.to.Named;
 
-public class Contract extends Named {
-
-    private static final long serialVersionUID = 2813983198416172587L;
-
-    private String firstName;    
-    private String lastName;
-    private String emailAddress;
-    private LocalDate dateOfBirth;
+/**
+ *
+ * @author Shriharsh
+ */
+public class Contract extends Named{
     
-    private ArrayList<Role> roles;
+    private ContractStatusEnum status;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private TimesheetFrequencyEnum frequency;
+    private LocalDate terminationDate;
+    private double hoursPerWeek;
+    private int workingDaysPerWeek;
+    private int vacationDaysPerYear;
 
-    public void setRoles(ArrayList<Role> roles) {
-        this.roles = roles;
-    }
-
-    public ArrayList<Role> getRoles() {
-        return roles;
-    }
-    
     public Contract(String uuid, String name) {
         super(uuid, name);
     }
 
-    public String getFirstName() {
-        return firstName;
+    public ContractStatusEnum getStatus() {
+        return status;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setStatus(ContractStatusEnum status) {
+        this.status = status;
     }
 
-    public String getLastName() {
-        return lastName;
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
     }
 
-    public String getEmailAddress() {
-        return emailAddress;
+    public LocalDate getEndDate() {
+        return endDate;
     }
 
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 
-    public LocalDate getDateOfBirth() {
-        return dateOfBirth;
+    public TimesheetFrequencyEnum getFrequency() {
+        return frequency;
     }
 
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+    public void setFrequency(TimesheetFrequencyEnum frequency) {
+        this.frequency = frequency;
     }
+
+    public LocalDate getTerminationDate() {
+        return terminationDate;
+    }
+
+    public void setTerminationDate(LocalDate terminationDate) {
+        this.terminationDate = terminationDate;
+    }
+
+    public double getHoursPerWeek() {
+        return hoursPerWeek;
+    }
+
+    public void setHoursPerWeek(double hoursPerWeek) {
+        this.hoursPerWeek = hoursPerWeek;
+    }
+
+    public int getWorkingDaysPerWeek() {
+        return workingDaysPerWeek;
+    }
+
+    public void setWorkingDaysPerWeek(int workingDaysPerWeek) {
+        this.workingDaysPerWeek = workingDaysPerWeek;
+    }
+
+    public int getVacationDaysPerYear() {
+        return vacationDaysPerYear;
+    }
+
+    public void setVacationDaysPerYear(int vacationDaysPerYear) {
+        this.vacationDaysPerYear = vacationDaysPerYear;
+    }
+
+   
+    
+    
+    
 }
