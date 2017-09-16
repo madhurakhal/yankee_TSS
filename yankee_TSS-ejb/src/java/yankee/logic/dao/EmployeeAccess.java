@@ -81,4 +81,9 @@ public class EmployeeAccess extends AbstractAccess<EmployeeEntity> {
             return null;
         } 
     }
+    
+     public List<EmployeeEntity> getEmployeeList() {
+        return em.createNamedQuery("getEmployeeList", EmployeeEntity.class
+        ).getResultList();
+    }
 }
