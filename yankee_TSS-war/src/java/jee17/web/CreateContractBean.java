@@ -8,7 +8,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import jee17.entities.SupervisorEntity;
 import jee17.logic.AssistantBusinessLogic;
 import jee17.logic.ContractBusinessLogic;
 import jee17.logic.PersonBusinessLogic;
@@ -38,12 +37,6 @@ public class CreateContractBean {
 
     @EJB
     private SupervisorBusinessLogic supervisorBusinessLogic;
-
-    @EJB
-    private AssistantBusinessLogic assistantBusinessLogic;
-
-    @EJB
-    private SecretaryBusinessLogic secretaryBusinessLogic;
 
     @EJB
     private EmployeeBusinessLogic employeeBusinessLogic;

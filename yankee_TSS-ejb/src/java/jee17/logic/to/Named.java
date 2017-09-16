@@ -57,4 +57,9 @@ public abstract class Named implements Comparable<Named>, Serializable {
         }
         return result;
     }
+    
+    @Override
+    public String toString() {
+        return String.format(name);
+    }
 }

@@ -39,18 +39,19 @@ public class ManageContractsBean {
 
     private List<Person> persons_associatedto_contract = new ArrayList<>();
     Map<String, String> person_to_contract = new HashMap<>();
-    private String person_id;
-
-    public String getPerson_id() {
-        Map<String, String> params = FacesContext.getCurrentInstance()
-                .getExternalContext().getRequestParameterMap();
-        person_id = params.get("id");
-        return person_id;
-    }
-
-    public void setPerson_id(String person_id) {
-        this.person_id = person_id;
-    }
+    
+//    private String person_id;
+//
+//    public String getPerson_id() {
+//        Map<String, String> params = FacesContext.getCurrentInstance()
+//                .getExternalContext().getRequestParameterMap();
+//        person_id = params.get("id");
+//        return person_id;
+//    }
+//
+//    public void setPerson_id(String person_id) {
+//        this.person_id = person_id;
+//    }
 
     public List<Person> getPersons_associatedto_contract() {
         //because supervisor table will store supervisor id with contractid and person

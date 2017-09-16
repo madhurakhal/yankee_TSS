@@ -5,15 +5,21 @@
  */
 package jee17.logic.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import jee17.entities.AssistantEntity;
 import jee17.entities.PersonEntity;
+import jee17.entities.SecretaryEntity;
 import jee17.logic.AssistantBusinessLogic;
 import jee17.logic.dao.AssistantAccess;
+import jee17.logic.dao.ContractAccess;
 import jee17.logic.dao.PersonAccess;
 import jee17.logic.to.Assistant;
+import jee17.logic.to.Contract;
+import jee17.logic.to.Person;
+import jee17.logic.to.Secretary;
 
 /**
  *
@@ -27,6 +33,9 @@ public class AssistantBusinessLogicImpl implements AssistantBusinessLogic {
     
     @EJB
     private PersonAccess personAccess;
+    
+    @EJB
+    private ContractAccess contractAccess;
 
     @Override
     public List<Assistant> getAssistantList(){
@@ -52,5 +61,39 @@ public class AssistantBusinessLogicImpl implements AssistantBusinessLogic {
         assistantAccess.updateEntity(se); // not sure if we have to update
         // TODOOOOOOOOOOOOOO have to think what to return
         return new Assistant(se.getUuid(), se.getName());
+    }
+    
+    @Override
+    public List<Assistant> getAssistantsByContract(String contractUUID) {
+        List<AssistantEntity> lse = assistantAccess.getAssistantsByContract(contractAccess.getByUuid(contractUUID));
+        
+        List<Assistant> result = new ArrayList<>();
+        for (AssistantEntity se : lse) {
+            Assistant s = new Assistant(se.getUuid(), se.getName());
+            
+            PersonEntity person = se.getPerson();
+            
+            Person p = new Person(person.getUuid(), person.getName());
+            p.setFirstName(person.getFirstName());
+            p.setLastName(person.getLastName());
+            p.setDateOfBirth(person.getDateOfBirth());
+            p.setPreferredLanguage(person.getPreferredLanguage());
+            p.setUserRoleRealm(person.getUserRoleRealm());
+            //p.setRoles(person.getRoles());
+            // Fill up all other contract info
+            s.setPerson(p);            
+            result.add(s);
+        }
+        return result;
+    }
+
+    @Override
+    public Assistant getAssistantByUUID(String UUID) {
+        AssistantEntity se = assistantAccess.getByUuid(UUID);
+        Assistant s = new Assistant(se.getUuid(), se.getName());
+        s.setContract(new Contract(se.getContract().getUuid() , se.getContract().getName()));
+        s.setPerson(new Person(se.getPerson().getUuid() , se.getPerson().getName()));
+        s.setRoleType(se.getRollType());
+        return s;
     }
 }

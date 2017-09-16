@@ -79,6 +79,8 @@ public class PersonAccess extends AbstractAccess<PersonEntity> {
         name = name.trim().toLowerCase();
         System.out.println("DO I COME TO CREATE A PERSON BY ITS NAME :- " + name);
         try {
+            em.flush();
+            em.clear();
             // try to find a person
             return em.createNamedQuery("getPersonByName", PersonEntity.class)
                     .setParameter("name", name)

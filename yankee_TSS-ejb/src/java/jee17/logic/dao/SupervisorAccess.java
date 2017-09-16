@@ -12,6 +12,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
+import jee17.entities.ContractEntity;
 import jee17.entities.PersonEntity;
 import jee17.entities.SecretaryEntity;
 import jee17.entities.SupervisorEntity;
@@ -71,9 +72,24 @@ public class SupervisorAccess extends AbstractAccess<SupervisorEntity> {
     @RolesAllowed("AUTHENTICATED")
     public List<SupervisorEntity> getSupervisorByPerson(PersonEntity person) {
        try {
+            em.flush();
+            em.clear();
             return em.createNamedQuery("getSupervisorByPerson", SupervisorEntity.class)
                     .setParameter("person", person)
                     .getResultList();
+        } catch (NoResultException ex) {
+            return null;
+        } 
+    }
+    
+    @RolesAllowed("AUTHENTICATED")
+    public SupervisorEntity getSupervisorByContract(ContractEntity contract) {
+       try {
+            em.flush();
+            em.clear();
+            return em.createNamedQuery("getSupervisorByContract", SupervisorEntity.class)
+                    .setParameter("contract", contract)
+                    .getSingleResult();
         } catch (NoResultException ex) {
             return null;
         } 
