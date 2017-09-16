@@ -17,16 +17,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import yankee.logic.ENUM.TimesheetStatusEnum;
 
+
+
 @NamedQueries({
-    @NamedQuery(name = "getTimesheetCount", query = "SELECT COUNT(p) FROM TimesheetEntity p"),
-    @NamedQuery(name = "getTimesheetList", query = "SELECT p FROM TimesheetEntity p ORDER BY p.name, p.uuid"),
-    @NamedQuery(name = "getTimesheetByName", query = "SELECT p FROM TimesheetEntity p WHERE p.name = :name")
+    @NamedQuery(name = "getTimeSheetsForContract", query = "SELECT p FROM TimesheetEntity p WHERE p.contract.id = :contractId")
 })
-/**
- *
- * TODO: REMOVE relation getter setter as per our requirement. delete set if in
- * collection.
- */
+
+
 @Entity
 @Table(name = "TIMESHEET")
 public class TimesheetEntity extends NamedEntity {
