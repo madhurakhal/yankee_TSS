@@ -1,5 +1,8 @@
 /yankee_TSS-war/build/
 /yankee_TSS-ejb/dist/
+/yankee_TSS-war/nbproject/
+/yankee_TSS-ejb/nbproject/
+/yankee_TSS/nbproject/
 /build/
 /yankee_TSS-war/dist/
 /dist/
