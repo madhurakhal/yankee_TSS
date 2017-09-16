@@ -11,15 +11,19 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import jee17.logic.ENUM.TimesheetStatusEnum;
 
-/**
- *
- * TODO: REMOVE relation getter setter as per our requirement. delete set if in
- * collection.
- */
+
+
+@NamedQueries({
+    @NamedQuery(name = "getTimeSheetsForContract", query = "SELECT p FROM TimesheetEntity p WHERE p.contract.id = :contractId")
+})
+
+
 @Entity
 @Table(name = "TIMESHEET")
 public class TimesheetEntity extends NamedEntity {
