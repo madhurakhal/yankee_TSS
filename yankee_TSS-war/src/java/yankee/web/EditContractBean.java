@@ -24,7 +24,6 @@ import org.primefaces.event.TransferEvent;
 import org.primefaces.model.DualListModel;
 import yankee.logic.ENUM.TimesheetFrequencyEnum;
 import yankee.logic.EmployeeBusinessLogic;
-import yankee.logic.to.Supervisor;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
