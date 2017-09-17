@@ -8,7 +8,6 @@ package yankee.logic;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Remote;
-import yankee.logic.ENUM.RoleTypeEnum;
 import yankee.logic.to.Contract;
 import yankee.logic.to.Person;
 
@@ -36,5 +35,5 @@ public interface ContractBusinessLogic {
      */
     public Contract createContract(String contractName, Person supervisor, Person assistant, Person secretary, Person employee);
     
-    public Contract editContract(String contractUUID , Person supervisorPerson , List<Person> secretaries , List<Person> assistants , Date startDate, Date endDate );
+    public Contract editContract(String contractUUID , Person supervisorPerson , List<Person> secretaries , boolean secretariesChanged, List<Person> assistants , boolean assistantsChanged, Date startDate, Date endDate );
 }

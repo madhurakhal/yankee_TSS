@@ -121,7 +121,7 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
     }
     
     @Override
-    public Contract editContract(String contractUUID , Person supervisorPerson , List<Person> secretaries , List<Person> assistants , Date startDate, Date endDate ){
+    public Contract editContract(String contractUUID , Person supervisorPerson , List<Person> secretaries , boolean secretariesChanged, List<Person> assistants , boolean assistantsChanged, Date startDate, Date endDate ){
         // When updating contract 
         // We will receive 
         // 1. new supervisorFor contract .. check for null if no change. Delete and create if not null and associate this contract id.
@@ -142,11 +142,20 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
             // create new supervisor with this contract id
             SupervisorEntity sve = supervisorAccess.createEntity(supervisorPerson.getName());
             sve.setPerson(personAccess.getByUuid(supervisorPerson.getUuid()));
-            sve.setContract(ce);
-            sve.setRollType(RoleTypeEnum.SUPERVISOR);    
+            sve.setContract(ce);    
         } 
         
         // 2.
+        
+        // delete all secretaries for that contract
+        if(secretariesChanged){
+        List <SecretaryEntity> toDeleteSecretaries = secretaryAccess.getSecretariesByContract(ce);
+        // For loop to delete
+        
+        // Now we create the secretaries given in the list
+        
+        
+        }
         
         return new Contract(ce.getUuid() , ce.getName());
     }
