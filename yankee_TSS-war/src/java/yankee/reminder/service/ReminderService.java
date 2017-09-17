@@ -80,7 +80,7 @@ public class ReminderService {
                 String contractId = e.getContract().getUuid();
                 try {
                     timeSheets = timeSheetBusinessLogic.getAllTimeSheetsForContract(Long.parseLong(contractId));
-                    System.out.println("list of employees  " + timeSheets);
+                    System.out.println("list of timesheets  " + timeSheets);
                 } catch (NumberFormatException ne) {
                     System.out.println("Exception Occured from timeSheetBusinessLogic!!");
                 }
