@@ -19,9 +19,10 @@
                     </p:outputPanel>
                     <p:outputPanel styleClass="collapse navbar-collapse" id="navbar-collapse">
                         <b:navbarLinks styleClass="nav navbar-nav">
-                            <b:navLink href="index.xhtml" value="Home"></b:navLink>
+                            <b:navLink outcome="dashboard" value="Dashboard" rendered="#{not empty request.remoteUser}"></b:navLink>
+                            <b:navLink outcome="index" value="Home" rendered="#{empty request.remoteUser}"></b:navLink>
                         </b:navbarLinks>
-
+                        
                         <ui:fragment rendered="#{not empty request.remoteUser}">
                             <b:navbarLinks styleClass="nav navbar-nav navbar-right">
                                 <b:navLink outcome="myaccount" value="#{loginBean.user.firstName} " icon="cog"/>

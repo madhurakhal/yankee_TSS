@@ -182,9 +182,9 @@ public class EditContractBean {
         if (secretariesForContract.isEmpty()) {
             List<Secretary> ls = secretaryBusinessLogic.getSecretariesByContract(contract_id);
             List<Person> result = new ArrayList<>();
-            for (Secretary s : ls) {
+            ls.forEach((s) -> {
                 result.add(s.getPerson());
-            }
+            });
             secretariesForContract = result;
         }
         return secretariesForContract;
@@ -198,9 +198,9 @@ public class EditContractBean {
         if (assistantsForContract.isEmpty()) {
             List<Assistant> ls = assistantBusinessLogic.getAssistantsByContract(contract_id);
             List<Person> result = new ArrayList<>();
-            for (Assistant s : ls) {
+            ls.forEach((s) -> {
                 result.add(s.getPerson());
-            }
+            });
             assistantsForContract = result;
         }
         return assistantsForContract;

@@ -5,7 +5,7 @@
               xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
     <resource-handler>org.omnifaces.resourcehandler.CombinedResourceHandler</resource-handler>
     <navigation-rule>
-        <from-view-id>/index.xhtml</from-view-id>
+        <from-view-id>/logged_in/dashboard.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>createContract</from-outcome>
             <to-view-id>/staff_logged_in/createcontract.xhtml</to-view-id>
@@ -41,6 +41,10 @@
         <navigation-case>
             <from-outcome>myaccount</from-outcome>
             <to-view-id>/logged_in/myaccount.xhtml?faces-redirect=true</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>dashboard</from-outcome>
+            <to-view-id>/logged_in/dashboard.xhtml?faces-redirect=true</to-view-id>
         </navigation-case>
     </navigation-rule>
 </faces-config>
