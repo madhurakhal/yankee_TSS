@@ -86,29 +86,29 @@ public class CreateContractBean {
     public List<Person> getPersons() {
         if (persons == null) {
             persons = personBusinessLogic.getPersonList();
-                       
+
             for (Iterator<Person> iter = persons.listIterator(); iter.hasNext();) {
                 Person all = iter.next();
-                
+
                 // Get the supervisors for the person who is trying to create contract. He might have been supervisor for many contracts.
                 List<Supervisor> ls = supervisorBusinessLogic.getSupervisorByPerson(loginBean.getUser().getUuid());
                 if (all.getUuid() == null ? loginBean.getUser().getUuid() == null : all.getUuid().equals(loginBean.getUser().getUuid())){
-                   iter.remove(); 
+                   iter.remove();
                    continue;
                 }
                 for (Supervisor s : ls){
-                    Employee e = employeeBusinessLogic.getEmployeeByContract(s.getContract().getUuid());                    
+                    Employee e = employeeBusinessLogic.getEmployeeByContract(s.getContract().getUuid());
                     if(e != null){
                         if(all.getUuid() == null ? e.getPerson().getUuid() == null : all.getUuid().equals(e.getPerson().getUuid())){
                         iter.remove();}
-                    }                    
-                }               
+                    }
+                }
             }
-        }        
+        }
         return persons;
     }
-    
-    public void create() {  
+
+    public void create() {
         // When create contract button pressed.
         // First if person clicks on Set supervisor box
         // select your role i.e assistant or secretary appears.
@@ -119,9 +119,9 @@ public class CreateContractBean {
         Person employee = contractTo;
         Person assistant = null;
         Person secretary = null;
-        
+
         if (yourRoleType == null){
-            supervisor = loginBean.getUser(); 
+            supervisor = loginBean.getUser();
         }
         else{
             if (yourRoleType == RoleTypeEnum.SECRETARY){
@@ -130,16 +130,16 @@ public class CreateContractBean {
             else{
                 assistant = loginBean.getUser();
             }
-            supervisor = changedSupervisorPerson; 
-        }       
+            supervisor = changedSupervisorPerson;
+        }
         contractBusinessLogic.createContract("contract" + employee.getName(), supervisor, assistant, secretary, employee);
-        
+
         FacesMessage msg = new FacesMessage("Contract Created");
         FacesContext.getCurrentInstance().addMessage(null, msg);
-    }   
-    
-    
-    
+    }
+
+
+
     // NOT USED IN OUR MAIN CODES
     // Look this up on test.xhtml it makes use of it.
     public void updatePersonDetails(RowEditEvent event) {

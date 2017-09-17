@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import yankee.logic.EmployeeBusinessLogic;
 import yankee.logic.SupervisorBusinessLogic;
+import yankee.logic.to.Contract;
 import yankee.logic.to.Employee;
 import yankee.logic.to.Person;
 import yankee.logic.to.Supervisor;
@@ -52,21 +53,33 @@ public class ManageContractsBean {
 //    public void setPerson_id(String person_id) {
 //        this.person_id = person_id;
 //    }
-
+   
+    // TODO hello world
+//    public List<Contract> getContracts() {
+//        List<Supervisor> sup = supervisorBusinessLogic.getSupervisorByPerson(loginBean.getUser().getUuid());
+//        
+//        return
+//    }
     public List<Person> getPersons_associatedto_contract() {
         //because supervisor table will store supervisor id with contractid and person
         List<Supervisor> ls = supervisorBusinessLogic.getSupervisorByPerson(loginBean.getUser().getUuid());
-
-        for (Supervisor s : ls) {
-            Employee e = employeeBusinessLogic.getEmployeeByContract(s.getContract().getUuid());            
-            if ( e != null){
+        
+     
+        
+        ls.forEach((s) -> {
+            Employee e = employeeBusinessLogic.getEmployeeByContract(s.getContract().getUuid());
+            if (e != null) {
                 persons_associatedto_contract.add(e.getPerson());  
                 // Just a mapping so that contract is associaated to person
                 person_to_contract.put(e.getPerson().getUuid(), s.getContract().getUuid());
-            }               
-        }      
+            }
+        });      
         return persons_associatedto_contract;
     }
+    
+    
+    
+    
 
     public void setPersons_associatedto_contract(List<Person> persons_associatedto_contract) {
         this.persons_associatedto_contract = persons_associatedto_contract;

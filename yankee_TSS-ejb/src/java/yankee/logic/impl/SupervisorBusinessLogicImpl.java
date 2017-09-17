@@ -70,17 +70,18 @@ public class SupervisorBusinessLogicImpl implements SupervisorBusinessLogic {
         List<SupervisorEntity> lse = supervisorAccess.getSupervisorByPerson(personAccess.getByUuid(personUUID));
         // Need to create a SUpervisor list from transfer object
         List<Supervisor> result = new ArrayList<>();
-        for (SupervisorEntity se : lse) {
+        lse.stream().map((se) -> {
             Supervisor p = new Supervisor(se.getUuid(), se.getName());
-            
             ContractEntity contract = se.getContract();
             Contract c = new Contract(contract.getUuid(), contract.getName());
             // Fill up all other contract info
             p.setContract(c);
+            return p;
+        }).forEachOrdered((p) -> {
             //Should we also update person?
             //p.setPerson(personAccess.getByUuid(personUUID));
             result.add(p);
-        }
+        });
         return result;
     }
 
@@ -101,5 +102,10 @@ public class SupervisorBusinessLogicImpl implements SupervisorBusinessLogic {
         s.setPerson(p);
 
         return s;
+    }
+
+    @Override
+    public List<Contract> getContracts(String personUUID) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

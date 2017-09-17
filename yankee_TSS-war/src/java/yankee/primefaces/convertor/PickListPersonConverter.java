@@ -9,7 +9,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import yankee.logic.to.Person;
 
-@FacesConverter(value = "personConverter")
+@FacesConverter(value = "personListConverter")
 public class PickListPersonConverter implements Converter {
     @Override
     public Object getAsObject(FacesContext fc, UIComponent comp, String value) {
