@@ -14,7 +14,6 @@ import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
 import yankee.entities.ContractEntity;
 import yankee.entities.PersonEntity;
-import yankee.entities.SecretaryEntity;
 import yankee.entities.SupervisorEntity;
 import yankee.logic.ENUM.RoleTypeEnum;
 

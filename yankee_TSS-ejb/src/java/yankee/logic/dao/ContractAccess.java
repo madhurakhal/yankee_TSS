@@ -10,10 +10,7 @@ import java.util.logging.Logger;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import yankee.entities.ContractEntity;
-import yankee.entities.SecretaryEntity;
-import yankee.entities.SupervisorEntity;
 import yankee.logic.ENUM.ContractStatusEnum;
-import yankee.logic.ENUM.RoleTypeEnum;
 
 /**
  * @author Dr. Volker Riediger <riediger@uni-koblenz.de>
@@ -26,7 +23,6 @@ public class ContractAccess extends AbstractAccess<ContractEntity> {
     public ContractEntity createEntity(String name) {
         name = name.trim().toLowerCase();
         ContractEntity se = super.createEntity(name);
-
         try {
             se.setStatus(ContractStatusEnum.PREPARED);
         }catch (Exception ex) {

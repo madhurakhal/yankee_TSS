@@ -60,8 +60,6 @@ public class EmployeeAccess extends AbstractAccess<EmployeeEntity> {
 
         try {
             // try to find supervisor
-            em.flush();
-            em.clear();
             return em.createNamedQuery("getEmployeeByName", EmployeeEntity.class)
                     .setParameter("name", name)
                     .getSingleResult();

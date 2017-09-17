@@ -14,3 +14,10 @@ and open the template in the editor.
 .box-info {
     overflow: hidden;
 }
+
+#createContractForm .form-group {
+    overflow: hidden;
+}
+.ui-outputpanel.box-body {
+    border-top: 1px solid #696b6d;
+}

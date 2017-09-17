@@ -6,7 +6,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:b="http://bootsfaces.net/ui">
-    <ui:composition template="/WEB-INF/templates/main-template.xhtml">        
+    <ui:composition template="/WEB-INF/templates/main-template.xhtml">
         <ui:param name="pageTitle" value="Create Contract Page"/>
         <ui:define name="main-content">
             <h:form>
@@ -19,58 +19,59 @@
                 <p:growl id="msg" showDetail="true" escape="false" />
 
 
-                <h:panelGrid columns="1" style="width: 100%"> 
+
+                <h:panelGrid columns="1" style="width: 100%">
                     <h:outputLabel id="currentContract" value=" Contract For : #{editContractBean.currentContractPerson.firstName} #{editContractBean.currentContractPerson.lastName} (#{editContractBean.currentContractPerson.emailAddress})"/>
 
 
-                  
+
                         <h:panelGrid id = "panelcontractChange" columns="1" style="width: 100%; vertical-align: top;">
                             <h:outputLabel for="startDate" value="Contract Start Date" />
-                            <p:calendar  id="startDate" value="#{editContractBean.startDate}" pattern="MM/dd/yyyy"/>          
+                            <p:calendar  id="startDate" value="#{editContractBean.startDate}" pattern="MM/dd/yyyy"/>
 
                             <h:outputLabel for="endDate" value="Contract End Date" />
-                            <p:calendar id="endDate" value="#{editContractBean.endDate}" pattern="MM/dd/yyyy"/>          
+                            <p:calendar id="endDate" value="#{editContractBean.endDate}" pattern="MM/dd/yyyy"/>
 
 
                             <h:outputLabel for="timesheetFrequency" value="Timesheet Frequency" />
-                            <b:selectOneMenu id="timesheetFrequency" value="#{editContractBean.timesheetFrequency}" immediate="true">                            
+                            <b:selectOneMenu id="timesheetFrequency" value="#{editContractBean.timesheetFrequency}" immediate="true">
                                 <f:selectItem itemLabel="Choose Frequency" noSelectionOption="true"/>
                                 <f:selectItems  value="#{timesheetFrequencyBean.timesheetFrequencyEnum}"/>
 
                             </b:selectOneMenu>
-                            
+
                             <h:outputLabel for="changeSupervisor" value="Change Supervisor" />
                             <b:selectOneMenu id="changeSupervisor" value="#{editContractBean.supervisorForContract}" immediate="true">
                                 <f:selectItem value="#{editContractBean.supervisorForContract}" itemLabel="#{editContractBean.supervisorForContract.firstName} #{editContractBean.supervisorForContract.lastName}" noSelectionOption="true" itemValue="#{editContractBean.supervisorForContract}"/>
                                 <f:selectItems  value="#{editContractBean.availableSupervisorList}" var="supervisorlist" itemLabel="#{supervisorlist.firstName} #{supervisorlist.lastName}" itemValue="#{supervisorlist}"/>
 
-                                
-                            </b:selectOneMenu>  
+
+                            </b:selectOneMenu>
 
                             <h:outputLabel for="assistantPojoList" value="Edit Assistants" />
                             <p:pickList id="assistantPojoList" value="#{editContractBean.assistantPickupList}" var="assistants" effect="bounce"
                                         itemValue="#{assistants}" itemLabel="#{assistants.firstName} #{assistants.lastName}" showCheckbox="true" responsive="true"
-                                        showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" converter="personConverter">
+                                        showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" converter="personListConverter">
                                 <f:facet name="sourceCaption">Add new Assistants</f:facet>
                                 <f:facet name="targetCaption">Current Assistants </f:facet>
-                                <p:ajax event="transfer"  listener="#{editContractBean.onTransferAssistant}" update="msg secretaryPojoList" />  
-                            </p:pickList> 
+                                <p:ajax event="transfer"  listener="#{editContractBean.onTransferAssistant}" update="msg secretaryPojoList" />
+                            </p:pickList>
 
                             <h:outputLabel for="secretaryPojoList" value="Edit Secretaries" />
                             <p:pickList id="secretaryPojoList" value="#{editContractBean.secretaryPickupList}" var="secretaries" effect="bounce"
                                         itemValue="#{secretaries}" itemLabel="#{secretaries.firstName} #{secretaries.lastName}" showCheckbox="true" responsive="true"
-                                        showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" converter="personConverter">
+                                        showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" converter="personListConverter">
                                 <f:facet name="sourceCaption">Add new Secretaries</f:facet>
                                 <f:facet name="targetCaption">Current Secretaries </f:facet>
 
-                                <p:ajax event="transfer" listener="#{editContractBean.onTransferSecretary}" update="msg assistantPojoList" />  
-                            </p:pickList> 
+                                <p:ajax event="transfer" listener="#{editContractBean.onTransferSecretary}" update="msg assistantPojoList" />
+                            </p:pickList>
                         </h:panelGrid>
                 </h:panelGrid>
-                <b:commandButton id="UpdateContract"                                 
+                <b:commandButton id="UpdateContract"
                                  look="success"
                                  icon="ok"
-                                 value="Update Contract"
+                                 value="Edit Contract"
                                  action="index"
                                  actionListener="#{editContractBean.edit}"/>
             </h:form>

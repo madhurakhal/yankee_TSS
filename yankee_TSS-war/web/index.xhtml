@@ -7,19 +7,20 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <ui:composition template="/WEB-INF/templates/main-template.xhtml">
         <ui:param name="pageTitle" value="Welcome Man"/>
-        <ui:define name="main-content">           
-            
-            <h:button value="Admin Page" outcome="admin" 
+        <ui:define name="main-content">
+
+            <h:button value="Admin Page" outcome="admin"
                       rendered="#{request.isUserInRole('ADMIN')}" />
+
 
             <p:panelGrid columns="4" rendered="#{request.isUserInRole('STAFF')}">
                 <h3>#{loginBean.user.firstName} #{loginBean.user.lastName}</h3>
-                
-                <h:button value="Create Contract" outcome="createContract"/>                
-                <h:button value="Manage Contracts" outcome="manageContracts"/>                               
-                <h:button value="View Contract Statistics" outcome="viewContractStatistics"/> 
-            </p:panelGrid>         
-            
+
+                <h:button value="Create Contract" outcome="createContract"/>
+                <h:button value="Manage Contracts" outcome="manageContracts"/>
+                <h:button value="View Contract Statistics" outcome="viewContractStatistics"/>
+            </p:panelGrid>
+
             <p:growl id="msg" showDetail="true"/>
         </ui:define>
     </ui:composition>
