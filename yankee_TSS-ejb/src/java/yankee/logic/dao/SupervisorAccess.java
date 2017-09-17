@@ -71,12 +71,11 @@ public class SupervisorAccess extends AbstractAccess<SupervisorEntity> {
     @RolesAllowed("AUTHENTICATED")
     public List<SupervisorEntity> getSupervisorByPerson(PersonEntity person) {
        try {
-            em.flush();
-            em.clear();
             return em.createNamedQuery("getSupervisorByPerson", SupervisorEntity.class)
                     .setParameter("person", person)
                     .getResultList();
         } catch (NoResultException ex) {
+            System.out.println("Fataa");
             return null;
         } 
     }
