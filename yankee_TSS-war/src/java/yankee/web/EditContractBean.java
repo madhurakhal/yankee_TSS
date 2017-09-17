@@ -1,6 +1,5 @@
 package yankee.web;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -8,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -26,7 +24,7 @@ import org.primefaces.event.TransferEvent;
 import org.primefaces.model.DualListModel;
 import yankee.logic.ENUM.TimesheetFrequencyEnum;
 import yankee.logic.EmployeeBusinessLogic;
-import yankee.logic.to.Employee;
+import yankee.logic.to.Supervisor;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -152,8 +150,6 @@ public class EditContractBean {
         // Note the supervisor is just one for a given contract. So supervisorForContract can be used.
         secretaryPickupList = new DualListModel<>(new ArrayList<>(availableSecretaryList), secretariesForContract);
         assistantPickupList = new DualListModel<>(new ArrayList<>(availableAssistantList), assistantsForContract);
-        System.out.println("la haiiiiiiiiiiiiii" + supervisorForContract);
-        System.out.println(assistantPickupList);
 
     }
 
@@ -335,7 +331,13 @@ public class EditContractBean {
         System.out.println("Contract id" + contract_id);
         
         // TODO 
-        // 1. update supervisor for the contract
+        // 1. update supervisor for the contract if old supervisor is different
+        // 2. create all the secretaries i.e. secretaryPickupList.getTarget - secretariesForContract
+        // 3. create all the assistants i.e. assistantPickupList.getTarget - assistantsForContract
+        // 4. depending on start and end date and timesheets should be created. All timesheet should have contract associated to it.
+        
+        
+         
         
     }
 }

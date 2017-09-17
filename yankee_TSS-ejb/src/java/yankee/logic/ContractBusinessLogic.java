@@ -5,6 +5,7 @@
  */
 package yankee.logic;
 
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Remote;
 import yankee.logic.ENUM.RoleTypeEnum;
@@ -26,12 +27,14 @@ public interface ContractBusinessLogic {
     
     /**
      *
-     * @param name
-     * @param creatorUUID
-     * @param assignedRoleUUID
-     * @param assignedType
-     * @return
+     * @param contractName
+     * @param supervisor
+     * @param assistant
+     * @param secretary
+     * @param employee
+     * @return 
      */
-    public Contract createContract(String name, String creatorUUID, String assignedRoleUUID , RoleTypeEnum assignedType);
-        
+    public Contract createContract(String contractName, Person supervisor, Person assistant, Person secretary, Person employee);
+    
+    public Contract editContract(String contractUUID , Person supervisorPerson , List<Person> secretaries , List<Person> assistants , Date startDate, Date endDate );
 }
