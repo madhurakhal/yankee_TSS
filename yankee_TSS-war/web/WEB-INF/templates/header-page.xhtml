@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition>
+        <h:form id="navForm">
+        <header class="main-header">
+            <base href="${request.contextPath}/"/>
+            <p:outputPanel styleClass="navbar navbar-static-top">
+                <b:container fluid="true">
+                    <p:outputPanel styleClass="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <h:link  styleClass="navbar-brand" outcome="/index.xhtml"><b>Welcome</b></h:link>
+                    </p:outputPanel>
+                    <p:outputPanel styleClass="collapse navbar-collapse" id="navbar-collapse">
+                        <b:navbarLinks styleClass="nav navbar-nav">
+                            <b:navLink outcome="dashboard" value="Dashboard" rendered="#{not empty request.remoteUser}"></b:navLink>
+                            <b:navLink outcome="index" value="Home" rendered="#{empty request.remoteUser}"></b:navLink>
+                        </b:navbarLinks>
+                        
+                        <ui:fragment rendered="#{not empty request.remoteUser}">
+                            <b:navbarLinks styleClass="nav navbar-nav navbar-right">
+                                <b:navLink outcome="myaccount" value="#{loginBean.user.firstName} " icon="cog"/>
+                                <b:navCommandLink  value="Log Out" icon="log-out" action="#{loginBean.logout}"/>
+                            </b:navbarLinks>
+                        </ui:fragment>
+
+                        <ui:fragment rendered="#{empty request.remoteUser}">
+                            <b:navbarLinks styleClass="nav navbar-nav navbar-right">
+                                <b:navLink value="Log In" href="public/login.xhtml"/>
+                            </b:navbarLinks>
+                        </ui:fragment>
+
+                    </p:outputPanel>
+                </b:container>
+            </p:outputPanel>
+        </header></h:form>
+    </ui:composition>
+    
+</html>
+

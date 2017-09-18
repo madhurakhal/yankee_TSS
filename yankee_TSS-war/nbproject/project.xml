@@ -10,11 +10,11 @@
                     <file>${reference.yankee_TSS-ejb.dist}</file>
                 </library>
                 <library dirs="200">
-                    <file>${libs.primefaces.classpath}</file>
+                    <file>${file.reference.BootsFaces-OSP-1.1.1-dist.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.BootsFaces-OSP-1.1.1-dist.jar}</file>
+                    <file>${libs.primefaces.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
             </web-module-libraries>

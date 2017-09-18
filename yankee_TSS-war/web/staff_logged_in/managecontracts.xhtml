@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:b="http://bootsfaces.net/ui">
+
+    <ui:composition template="/WEB-INF/templates/main-template.xhtml">        
+        <ui:param name="pageTitle" value="Admin Page"/>
+        <ui:define name="main-content">
+            <b:form id="form">                
+                <p:growl  id="msgs" showDetail="true"/>                
+
+                <!-- BEGINS  For Supervisor -->
+                <p:outputPanel rendered = "#{!empty manageContractsBean.personsAssociatedToContractSupervisor}" styleClass="box">                    
+                    <p:outputPanel styleClass="box-header">  
+                        <p:outputLabel styleClass="pull-left">#{loginBean.user.firstName} #{loginBean.user.lastName} (As Supervisor)</p:outputLabel>
+                        <h:button value="Create Contract" outcome="createContract" styleClass="btn btn-primary pull-right btn-flat"/>
+                    </p:outputPanel>
+
+                    <p:outputPanel styleClass="box-body">                         
+                        <b:dataTable value="#{manageContractsBean.personsAssociatedToContractSupervisor}" 
+                                     var="persons" 
+                                     responsive = "true">
+                            <b:dataTableColumn value="#{persons.firstName} #{persons.lastName} (#{persons.emailAddress})" label="Employee"/>
+                            <b:dataTableColumn value="#{persons.contractStatusForRole}" label="Status" style="width:150px"/>
+
+                            <b:dataTableColumn label="Action " style="width:50px">
+                                <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-caret-right"  id="startPersonSuper" update="form" actionListener="#{manageContractsBean.onRowStart(persons.contractUUIDForRole)}">
+                                    <p:confirm header="Confirmation" message="Confirm Start?" icon="ui-icon-alert" />
+                                </p:commandButton>
+                                <p:commandButton  icon="fa fa-fw fa-info-circle"  id="viewPersonSuper" action="#{manageContractsBean.onRowView(persons.contractUUIDForRole)}"/>
+                                <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-edit" id="editPersonSuper" action="#{manageContractsBean.onRowEdit(persons.contractUUIDForRole)}"/>
+                                <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-remove"  id="deletePersonSuper"  action="#{manageContractsBean.onRowDelete(persons.contractUUIDForRole)}">
+                                    <p:confirm header="Confirmation" message="Confirm Delete?" icon="ui-icon-alert" />
+                                </p:commandButton>
+                            </b:dataTableColumn>
+                        </b:dataTable>
+                    </p:outputPanel>
+                </p:outputPanel>
+                <!-- ENDS  For Supervisor-->
+
+
+                <!-- BEGINS  For Assistant--> 
+                <p:outputPanel rendered = "#{!empty manageContractsBean.personsAssociatedToContractAssistant}" styleClass="box"> 
+                    <p:outputPanel styleClass="box-header">                   
+                        <p:outputLabel styleClass="pull-left">#{loginBean.user.firstName} #{loginBean.user.lastName} (As Assistant)</p:outputLabel>
+                    </p:outputPanel>
+
+                    <p:outputPanel styleClass="box-body">
+                        <b:dataTable value="#{manageContractsBean.personsAssociatedToContractAssistant}" 
+                                     var="persons" 
+                                     responsive = "true">
+
+                            <b:dataTableColumn value="#{persons.firstName} #{persons.lastName} (#{persons.emailAddress})" label="Employee"/>
+                            <b:dataTableColumn value="#{persons.contractStatusForRole}" label="Status" style="width:150px"/>                         
+
+                            <b:dataTableColumn label = "Action " style="width:50px">                                
+                                <p:commandButton rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-caret-right"  id="startPersonSecrs" action="#{manageContractsBean.onRowStart(persons.contractUUIDForRole)}">
+                                    <p:confirm header="Confirmation" message="Confirm Start?" icon="ui-icon-alert" />    
+                                </p:commandButton>
+                                <p:commandButton  icon="fa fa-fw fa-info-circle"  id="viewPersonSecrs" action="#{manageContractsBean.onRowView(persons.contractUUIDForRole)}"/>
+                                <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-edit" id="editPersonSecr" action="#{manageContractsBean.onRowEdit(persons.contractUUIDForRole)}"/>
+                                <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-remove"  id="deletePersonSecr"  action="#{manageContractsBean.onRowDelete(persons.contractUUIDForRole)}">
+                                    <p:confirm header="Confirmation" message="Confirm Delete?" icon="ui-icon-alert" />
+                                </p:commandButton>
+                            </b:dataTableColumn>
+                        </b:dataTable>
+                    </p:outputPanel>
+                </p:outputPanel>
+                <!-- ENDS  For Assistant-->
+
+
+                <!-- BEGINS  For Secretary-->
+                <p:outputPanel rendered = "#{!empty manageContractsBean.personsAssociatedToContractSecretary}" styleClass="box">                    
+                    <p:outputPanel styleClass="box-header">                   
+                        <p:outputLabel styleClass="pull-left">#{loginBean.user.firstName} #{loginBean.user.lastName} (As Secretary)</p:outputLabel>
+                    </p:outputPanel>
+
+                    <p:outputPanel styleClass="box-body"> 
+                        <b:dataTable value="#{manageContractsBean.personsAssociatedToContractSecretary}" 
+                                     var="persons" 
+                                     responsive = "true">
+
+                            <b:dataTableColumn value="#{persons.firstName} #{persons.lastName} (#{persons.emailAddress})" label="Employee"/>
+                            <b:dataTableColumn value="#{persons.contractStatusForRole}" label="Status" style="width:150px"/>                         
+
+                            <b:dataTableColumn label="Action " style="width:50px ">
+
+                                <p:commandButton  icon="fa fa-fw fa-info-circle"  id="viewPersonAssis" action="#{manageContractsBean.onRowView(persons.contractUUIDForRole)}"/>                            
+                                <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-edit" id="editPersonAssis" action="#{manageContractsBean.onRowEdit(persons.contractUUIDForRole)}"/>
+                                <p:commandButton  icon="fa fa-fw fa-print"  id="printPersonAssis"  action="#{manageContractsBean.onRowPrint(persons.contractUUIDForRole)}"/>
+                                <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-remove"  id="deletePersonAssis"  action="#{manageContractsBean.onRowDelete(persons.contractUUIDForRole)}">
+                                    <p:confirm header="Confirmation" message="Confirm Delete?" icon="ui-icon-alert" />
+                                </p:commandButton>
+
+                            </b:dataTableColumn>
+                        </b:dataTable>
+                    </p:outputPanel>
+                </p:outputPanel>
+                <!-- BEGINS  For Secretary-->
+
+
+                <!-- BEGINS  For Global Confirmation dialog-->
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+                <!-- ENDS  For Global Confirmation dialog-->
+            </b:form>
+
+        </ui:define>
+    </ui:composition>
+</html>
+

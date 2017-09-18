@@ -4,7 +4,6 @@
         <param-name>javax.faces.PROJECT_STAGE</param-name>
         <param-value>Development</param-value>
     </context-param>
-    
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
@@ -14,19 +13,105 @@
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>/faces/*</url-pattern>
     </servlet-mapping>
-    
-    
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
-    
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>faces/index.xhtml</welcome-file>
+        <welcome-file>index.xhtml</welcome-file>
     </welcome-file-list>
+    <security-constraint>
+        <display-name>Force HTTPS</display-name>
+        <web-resource-collection>
+            <web-resource-name>all resources</web-resource-name>
+            <description/>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <user-data-constraint>
+            <description>require encrypted transfer</description>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+    <mime-mapping>
+        <extension>json</extension>
+        <mime-type>application/json</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>woff</extension>
+        <mime-type>application/woff</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>ttf</extension>
+        <mime-type>application/ttf</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>woff2</extension>
+        <mime-type>application/woff2</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>eot</extension>
+        <mime-type>application/eot</mime-type>
+    </mime-mapping>
+    <security-constraint>
+        <display-name>Authenticated access only</display-name>
+        <web-resource-collection>
+            <web-resource-name>Create Course Page</web-resource-name>
+            <description/>
+            <url-pattern>/logged_in/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description>Auhtenticated users only</description>
+            <role-name>AUTHENTICATED</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>Admin Access</display-name>
+        <web-resource-collection>
+            <web-resource-name>Admin Pages</web-resource-name>
+            <description/>
+            <url-pattern>/admin/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description>Admins only</description>
+            <role-name>ADMIN</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>Staff Access</display-name>
+        <web-resource-collection>
+            <web-resource-name>Staff Pages</web-resource-name>
+            <description/>
+            <url-pattern>/faces/staff_logged_in/*</url-pattern>
+            <url-pattern>/staff_logged_in/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description>Staffs only</description>
+            <role-name>STAFF</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <realm-name>uniko-file-realm</realm-name>
+        <form-login-config>
+            <form-login-page>/public/login.xhtml</form-login-page>
+            <form-error-page>/public/login.xhtml</form-error-page>
+        </form-login-config>
+    </login-config>
+    <security-role>
+        <description/>
+        <role-name>AUTHENTICATED</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>ADMIN</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>STAFF</role-name>
+    </security-role>
 </web-app>

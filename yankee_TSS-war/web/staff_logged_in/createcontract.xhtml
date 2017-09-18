@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/WEB-INF/templates/main-template.xhtml">        
+        <ui:param name="pageTitle" value="Create Contract Page"/>
+        <ui:define name="main-content">
+            <b:row styleClass="text-center">
+                <p:outputPanel styleClass="box box-default">
+                    <p:outputPanel styleClass="box-header with-border">
+                        <h:outputLabel for="contractPersons" value="Create Contract For" />
+                    </p:outputPanel>
+                    <b:form id="createContractForm">
+                        <p:outputPanel styleClass="box-body">
+                            <p:outputPanel>
+                                <b:row>
+                                    <p:outputPanel styleClass="col-xs-12">
+                                        <b:formGroup>
+                                            <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="personInput">Select Person</h:outputLabel>
+                                            <b:column col-sm="10" col-xs="12">
+                                                <b:selectOneMenu id="contractPersons" value="#{createContractBean.contractTo}" immediate="true">
+                                                    <f:selectItem itemLabel="Choose person" noSelectionOption="true"/>
+                                                    <f:selectItems  value="#{createContractBean.persons}" var="entity" itemLabel="#{entity.firstName} #{entity.lastName}" itemValue="#{entity}"/>
+                                                    <f:ajax render="firstNameInput lastNameInput emailAddressInput" />
+                                                </b:selectOneMenu>
+                                            </b:column>
+                                        </b:formGroup>
+                                        <b:formGroup>
+                                            <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="firstNameInput">First Name </h:outputLabel>
+                                            <b:column col-sm="10" col-xs="12">
+                                                <h:inputText required="false" disabled="true" id="firstNameInput" value="#{createContractBean.contractTo.firstName}" styleClass="form-control"/>
+                                            </b:column>
+                                        </b:formGroup>
+
+                                        <b:formGroup>
+                                            <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="lastNameInput">Last Name</h:outputLabel>
+                                            <b:column  col-sm="10" col-xs="12">
+                                                <h:inputText required="false" disabled="true" id="lastNameInput" value="#{createContractBean.contractTo.lastName}" styleClass="form-control"/>
+                                            </b:column>
+
+                                        </b:formGroup>
+                                        <b:formGroup>
+                                            <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="emailAddressInput">Email</h:outputLabel>
+                                            <b:column col-sm="10" col-xs="12">
+                                                <h:inputText id="emailAddressInput" label="Email"
+                                                             value="#{createContractBean.contractTo.emailAddress}"
+                                                             required="false" disabled = "true"
+                                                             styleClass="form-control">
+                                                </h:inputText> 
+                                            </b:column>
+                                        </b:formGroup>
+                                    </p:outputPanel>
+                                </b:row>
+                            </p:outputPanel>
+                        </p:outputPanel>
+                        <p:outputPanel styleClass="box-footer">
+                            <b:commandButton id="createContractButton"
+                                             disabled="#{empty createContractBean.persons}"
+                                             look="success"
+                                             value="Create Contract"
+                                             action="index"
+                                             actionListener="#{createContractBean.create}"
+                                             styleClass="pull-right"
+                                             />
+                        </p:outputPanel>
+                    </b:form>  
+                </p:outputPanel>
+            </b:row>
+        </ui:define>
+    </ui:composition>
+</html>
+
