@@ -6,8 +6,15 @@
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui">
-    <ui:composition template="/WEB-INF/templates/main-template.xhtml">        
+    <ui:composition template="/WEB-INF/templates/main-template.xhtml">
         <ui:param name="pageTitle" value="Create Contract Page"/>
+        <ui:define name="breadcrumb">
+            <li>
+                <h:link disabled="true">
+                    Create Contract
+                </h:link>
+            </li>
+        </ui:define>
         <ui:define name="main-content">
             <b:row styleClass="text-center">
                 <p:outputPanel styleClass="box box-default">
@@ -50,7 +57,7 @@
                                                              value="#{createContractBean.contractTo.emailAddress}"
                                                              required="false" disabled = "true"
                                                              styleClass="form-control">
-                                                </h:inputText> 
+                                                </h:inputText>
                                             </b:column>
                                         </b:formGroup>
                                     </p:outputPanel>
@@ -58,6 +65,12 @@
                             </p:outputPanel>
                         </p:outputPanel>
                         <p:outputPanel styleClass="box-footer">
+                            <h:link
+                                styleClass="btn btn-danger pull-left"
+                                value="Cancel"
+                                outcome="dashboard"
+                                >
+                            </h:link>
                             <b:commandButton id="createContractButton"
                                              disabled="#{empty createContractBean.persons}"
                                              look="success"
@@ -67,7 +80,7 @@
                                              styleClass="pull-right"
                                              />
                         </p:outputPanel>
-                    </b:form>  
+                    </b:form>
                 </p:outputPanel>
             </b:row>
         </ui:define>

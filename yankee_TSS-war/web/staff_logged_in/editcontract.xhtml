@@ -8,72 +8,114 @@
       xmlns:b="http://bootsfaces.net/ui">
     <ui:composition template="/WEB-INF/templates/main-template.xhtml">
         <ui:param name="pageTitle" value="Create Contract Page"/>
+        <ui:define name="breadcrumb">
+            <li>
+                <h:link outcome="managecontracts">
+                    Manage Contracts
+                </h:link>
+            </li>
+            <li>
+                <h:link disabled="true">
+                    Edit Contract
+                </h:link>
+            </li>
+        </ui:define>
         <ui:define name="main-content">
             <h:form>
-                <p:breadCrumb>
-                    <p:menuitem value="Categories" url="/staff_logged_in/managecontracts.xhtml" />
-                    <p:menuitem value="Manage Contracts" url="/staff_logged_in/managecontracts.xhtml" />
-                    <p:menuitem value="Edit Contract" disabled="true" />
-                </p:breadCrumb>
+                <p:growl id="msg" showDetail="true" escape="false"/>
+                <b:row>
+                    <p:outputPanel styleClass="box box-default">
+                        <p:outputPanel styleClass="box-header text-center">
+                            <h:outputLabel id="currentContract" value=" Contract For : #{editContractBean.currentContractPerson.firstName} #{editContractBean.currentContractPerson.lastName} (#{editContractBean.currentContractPerson.emailAddress})"/>
+                        </p:outputPanel>
 
-                <p:growl id="msg" showDetail="true" escape="false" />
+                        <p:outputPanel styleClass="box-body top-border edit-contract">
+                            <b:column>
+                                <b:formGroup>
+                                    <h:outputLabel for="startDate" value="Contract Start Date" styleClass="col-xs-12 col-sm-3 control-label"/>
+                                    <b:column col-sm="6" col-xs="12">
+                                        <p:outputPanel styleClass="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <p:calendar id="startDate" value="#{editContractBean.startDate}" pattern="MM/dd/yyyy" styleClass="form-control"/>
+                                        </p:outputPanel>
+                                    </b:column>
+                                </b:formGroup>
+                                <b:formGroup>
+                                    <h:outputLabel for="endDate" value="Contract End Date" styleClass="col-xs-12 col-sm-3 control-label"/>
+                                    <b:column col-sm="6" col-xs="12">
+                                        <p:outputPanel styleClass="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <p:calendar id="endDate" value="#{editContractBean.endDate}" pattern="MM/dd/yyyy" styleClass="form-control"/>
+                                        </p:outputPanel>
 
+                                    </b:column>
+                                </b:formGroup>
+                                <b:formGroup>
+                                    <h:outputLabel for="timesheetFrequency" value="Timesheet Frequency" styleClass="col-xs-12 col-sm-3 control-label" />
+                                    <b:column col-sm="6" col-xs="12">
+                                        <b:selectOneMenu id="timesheetFrequency" value="#{editContractBean.timesheetFrequency}" immediate="true">
+                                            <f:selectItem itemLabel="Choose Frequency" noSelectionOption="true"/>
+                                            <f:selectItems  value="#{timesheetFrequencyBean.timesheetFrequencyEnum}"/>
+                                        </b:selectOneMenu>
+                                    </b:column>
+                                </b:formGroup>
 
+                                <b:formGroup>
+                                    <h:outputLabel for="changeSupervisor" value="Change Supervisor" styleClass="col-xs-12 col-sm-3 control-label"/>
+                                    <b:column col-sm="6" col-xs="12">
+                                        <b:selectOneMenu id="changeSupervisor" value="#{editContractBean.supervisorForContract}" immediate="true">
+                                            <f:selectItem value="#{editContractBean.supervisorForContract}" itemLabel="#{editContractBean.supervisorForContract.firstName} #{editContractBean.supervisorForContract.lastName}" noSelectionOption="true" itemValue="#{editContractBean.supervisorForContract}"/>
+                                            <f:selectItems  value="#{editContractBean.availableSupervisorList}" var="supervisorlist" itemLabel="#{supervisorlist.firstName} #{supervisorlist.lastName}" itemValue="#{supervisorlist}"/>
+                                        </b:selectOneMenu>
+                                    </b:column>
+                                </b:formGroup>
 
-                <h:panelGrid columns="1" style="width: 100%">
-                    <h:outputLabel id="currentContract" value=" Contract For : #{editContractBean.currentContractPerson.firstName} #{editContractBean.currentContractPerson.lastName} (#{editContractBean.currentContractPerson.emailAddress})"/>
+                                <b:formGroup>
+                                    <h:outputLabel for="assistantPojoList" value="Edit Assistants" styleClass="col-xs-12 col-sm-3 control-label" />
+                                    <b:column col-sm="9" col-xs="12">
+                                        <p:pickList id="assistantPojoList" value="#{editContractBean.assistantPickupList}" var="assistants" effect="bounce"
+                                                    itemValue="#{assistants}" itemLabel="#{assistants.firstName} #{assistants.lastName}" showCheckbox="true" responsive="true"
+                                                    showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" converter="personListConverter">
+                                            <f:facet name="sourceCaption">Add new Assistants</f:facet>
+                                            <f:facet name="targetCaption">Current Assistants </f:facet>
+                                            <p:ajax event="transfer"  listener="#{editContractBean.onTransferAssistant}" update="msg secretaryPojoList" />
+                                        </p:pickList>
+                                    </b:column>
+                                </b:formGroup>
 
+                                <b:formGroup>
+                                    <h:outputLabel for="secretaryPojoList" value="Edit Secretaries" styleClass="col-xs-12 col-sm-3 control-label"/>
+                                    <b:column col-sm="9" col-xs="12">
+                                        <p:pickList id="secretaryPojoList" value="#{editContractBean.secretaryPickupList}" var="secretaries" effect="bounce"
+                                                    itemValue="#{secretaries}" itemLabel="#{secretaries.firstName} #{secretaries.lastName}" showCheckbox="true" responsive="true"
+                                                    showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" converter="personListConverter"
+                                                    
+                                                    >
+                                            <f:facet name="sourceCaption">Add new Secretaries</f:facet>
+                                            <f:facet name="targetCaption">Current Secretaries </f:facet>
 
+                                            <p:ajax event="transfer" listener="#{editContractBean.onTransferSecretary}" update="msg assistantPojoList" />
+                                        </p:pickList>
+                                    </b:column>
+                                </b:formGroup>
+                            </b:column>
+                        </p:outputPanel>
 
-                        <h:panelGrid id = "panelcontractChange" columns="1" style="width: 100%; vertical-align: top;">
-                            <h:outputLabel for="startDate" value="Contract Start Date" />
-                            <p:calendar  id="startDate" value="#{editContractBean.startDate}" pattern="MM/dd/yyyy"/>
+                        <p:outputPanel styleClass="box-footer">
+                            <b:commandButton id="UpdateContract"
+                                             look="success"
+                                             value="Edit Contract"
+                                             action="index"
+                                             actionListener="#{editContractBean.edit}"
+                                             styleClass="pull-right"/>
+                        </p:outputPanel>
 
-                            <h:outputLabel for="endDate" value="Contract End Date" />
-                            <p:calendar id="endDate" value="#{editContractBean.endDate}" pattern="MM/dd/yyyy"/>
-
-
-                            <h:outputLabel for="timesheetFrequency" value="Timesheet Frequency" />
-                            <b:selectOneMenu id="timesheetFrequency" value="#{editContractBean.timesheetFrequency}" immediate="true">
-                                <f:selectItem itemLabel="Choose Frequency" noSelectionOption="true"/>
-                                <f:selectItems  value="#{timesheetFrequencyBean.timesheetFrequencyEnum}"/>
-
-                            </b:selectOneMenu>
-
-                            <h:outputLabel for="changeSupervisor" value="Change Supervisor" />
-                            <b:selectOneMenu id="changeSupervisor" value="#{editContractBean.supervisorForContract}" immediate="true">
-                                <f:selectItem value="#{editContractBean.supervisorForContract}" itemLabel="#{editContractBean.supervisorForContract.firstName} #{editContractBean.supervisorForContract.lastName}" noSelectionOption="true" itemValue="#{editContractBean.supervisorForContract}"/>
-                                <f:selectItems  value="#{editContractBean.availableSupervisorList}" var="supervisorlist" itemLabel="#{supervisorlist.firstName} #{supervisorlist.lastName}" itemValue="#{supervisorlist}"/>
-
-
-                            </b:selectOneMenu>
-
-                            <h:outputLabel for="assistantPojoList" value="Edit Assistants" />
-                            <p:pickList id="assistantPojoList" value="#{editContractBean.assistantPickupList}" var="assistants" effect="bounce"
-                                        itemValue="#{assistants}" itemLabel="#{assistants.firstName} #{assistants.lastName}" showCheckbox="true" responsive="true"
-                                        showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" converter="personListConverter">
-                                <f:facet name="sourceCaption">Add new Assistants</f:facet>
-                                <f:facet name="targetCaption">Current Assistants </f:facet>
-                                <p:ajax event="transfer"  listener="#{editContractBean.onTransferAssistant}" update="msg secretaryPojoList" />
-                            </p:pickList>
-
-                            <h:outputLabel for="secretaryPojoList" value="Edit Secretaries" />
-                            <p:pickList id="secretaryPojoList" value="#{editContractBean.secretaryPickupList}" var="secretaries" effect="bounce"
-                                        itemValue="#{secretaries}" itemLabel="#{secretaries.firstName} #{secretaries.lastName}" showCheckbox="true" responsive="true"
-                                        showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" converter="personListConverter">
-                                <f:facet name="sourceCaption">Add new Secretaries</f:facet>
-                                <f:facet name="targetCaption">Current Secretaries </f:facet>
-
-                                <p:ajax event="transfer" listener="#{editContractBean.onTransferSecretary}" update="msg assistantPojoList" />
-                            </p:pickList>
-                        </h:panelGrid>
-                </h:panelGrid>
-                <b:commandButton id="UpdateContract"
-                                 look="success"
-                                 icon="ok"
-                                 value="Edit Contract"
-                                 action="index"
-                                 actionListener="#{editContractBean.edit}"/>
+                    </p:outputPanel>
+                </b:row>
             </h:form>
 
         </ui:define>
