@@ -18,7 +18,7 @@
                                 <h:button value="Create Contract" outcome="createContract" styleClass="btn btn-primary pull-right btn-flat"/>
                             </p:outputPanel>
                             <p:outputPanel styleClass="box-body top-border">
-                                <b:dataTable value="#{manageContractsBean.persons_associatedto_contract}"
+                                <b:dataTable value="#{manageContractsBean.personsAssociatedToContract}"
                                              var="person"
                                              responsive="true">
                                     <b:dataTableColumn value="#{person.firstName}" label="Employee"/>

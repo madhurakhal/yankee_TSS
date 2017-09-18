@@ -31,4 +31,6 @@ public interface SupervisorBusinessLogic {
     public Supervisor getSupervisorByContract(String contractUUID);
     
     public List<Contract> getContracts(String personUUID);
+    
+    public List<Person> getPersonsUnderSupervisor(String supervisorPersonUUID);
 }

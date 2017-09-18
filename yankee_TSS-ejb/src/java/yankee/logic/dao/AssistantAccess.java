@@ -14,6 +14,7 @@ import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
 import yankee.entities.AssistantEntity;
 import yankee.entities.ContractEntity;
+import yankee.entities.PersonEntity;
 import yankee.entities.SecretaryEntity;
 import yankee.logic.ENUM.RoleTypeEnum;
 
@@ -76,6 +77,18 @@ public class AssistantAccess extends AbstractAccess<AssistantEntity> {
        try {
             return em.createNamedQuery("getAssistantsByContract", AssistantEntity.class)
                     .setParameter("contract", contract)
+                    .getResultList();
+        } catch (NoResultException ex) {
+            return null;
+        } 
+    }
+    
+    @RolesAllowed("AUTHENTICATED")
+    // Person being himself
+    public List<AssistantEntity> getAssistantsByPerson(PersonEntity person) {
+       try {
+            return em.createNamedQuery("getAssistantsByPerson", AssistantEntity.class)
+                    .setParameter("person", person)
                     .getResultList();
         } catch (NoResultException ex) {
             return null;

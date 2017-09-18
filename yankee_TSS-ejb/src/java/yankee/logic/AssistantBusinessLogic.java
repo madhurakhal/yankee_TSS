@@ -29,5 +29,7 @@ public interface AssistantBusinessLogic {
     public List<Assistant> getAssistantsByContract(String contractUUID);
     
     public Assistant getAssistantByUUID(String UUID);
+    
+    public List<Person> getPersonsUnderAssistant(String assistantPersonUUID);
         
 }
