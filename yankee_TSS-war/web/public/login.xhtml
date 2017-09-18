@@ -6,6 +6,13 @@
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <ui:composition template="/templates/main-template.xhtml">
+        <h:form>
+		<h:commandButton action="#{language.changeLanguage('')}"
+			value="En"/>
+		<h:outputText value=" " />
+		<h:commandButton action="#{language.changeLanguage('de')}"
+			value="De" />
+	</h:form>
         <ui:param name="pageTitle" value="Sign Up" />
         <ui:define name="main-content">
             <b:column styleClass="content">
@@ -13,7 +20,7 @@
                     <b:column col-xs="10" offset-xs="1" col-md="8" offset-md="2">
                         <b:column styleClass="box box-info">
                             <b:column styleClass="box-header with-border text-center">
-                                <h3 styleClass="box-title">Sign Up</h3>
+                                <h3 styleClass="box-title">${msg.signIn}</h3>
                             </b:column>
                             <b:form horizontal="true">
                                 <p:outputPanel styleClass="box-body">
@@ -37,6 +44,8 @@
                                 </p:outputPanel>
                                 <b:column col-xs="12" class="box-footer">
                                     <b:commandButton value="Sign In" styleClass="btn btn-info pull-right"/>
+                                    <b:commandButton value="de" styleClass="btn btn-info pull-right" action="#{language.changeLanguage('de')}"/>
+
                                 </b:column>
                             </b:form>
                         </b:column>

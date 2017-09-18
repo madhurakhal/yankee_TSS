@@ -4,4 +4,21 @@
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
    <resource-handler>org.omnifaces.resourcehandler.CombinedResourceHandler</resource-handler>
+   <application>
+      <locale-config>
+         <default-locale>en_US</default-locale>
+         <supported-locale>de</supported-locale>
+         <supported-locale>en</supported-locale>
+      </locale-config>
+      <resource-bundle>
+         <!--
+         specifying the resource-bundle in this config file enables
+         code completion in NetBeans xhtml editor,
+         whereas f:loadbundle does not
+         -->
+         <base-name>jee17.i18n.Messages</base-name>
+         <var>msg</var>
+      </resource-bundle>
+   </application>
+
 </faces-config>
