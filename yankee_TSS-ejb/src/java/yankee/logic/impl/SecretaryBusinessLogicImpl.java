@@ -9,21 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import yankee.entities.ContractEntity;
 import yankee.entities.EmployeeEntity;
 import yankee.entities.PersonEntity;
 import yankee.entities.SecretaryEntity;
-import yankee.entities.SupervisorEntity;
 import yankee.logic.SecretaryBusinessLogic;
 import yankee.logic.dao.ContractAccess;
 import yankee.logic.dao.EmployeeAccess;
 import yankee.logic.dao.PersonAccess;
 import yankee.logic.dao.SecretaryAccess;
 import yankee.logic.to.Contract;
-import yankee.logic.to.Employee;
 import yankee.logic.to.Person;
 import yankee.logic.to.Secretary;
-import yankee.logic.to.Supervisor;
 
 /**
  *
@@ -120,6 +116,8 @@ public class SecretaryBusinessLogicImpl implements SecretaryBusinessLogic {
                 p.setDateOfBirth(pe.getDateOfBirth());
                 p.setEmailAddress(pe.getEmailAddress());
                 p.setUserRoleRealm(pe.getUserRoleRealm());
+                p.setContractUUIDForRole(ee.getContract().getUuid());
+                p.setContractStatusForRole(ee.getContract().getStatus());
                 result.add(p);                
             }
         });    

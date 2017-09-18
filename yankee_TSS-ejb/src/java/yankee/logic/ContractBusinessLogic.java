@@ -36,4 +36,7 @@ public interface ContractBusinessLogic {
     public Contract createContract(String contractName, Person supervisor, Person assistant, Person secretary, Person employee);
     
     public Contract editContract(String contractUUID , Person supervisorPerson , List<Person> secretaries , boolean secretariesChanged, List<Person> assistants , boolean assistantsChanged, Date startDate, Date endDate );
+    
+    public Contract startContract(String contractUUID);
+    
 }

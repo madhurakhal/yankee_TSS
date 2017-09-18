@@ -44,6 +44,14 @@
             <to-view-id>/admin/administration.xhtml</to-view-id>
         </navigation-case>       
     </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/staff_logged_in/managecontracts.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>createContract</from-outcome>
+            <to-view-id>/staff_logged_in/createcontract.xhtml</to-view-id>
+        </navigation-case>      
+    </navigation-rule>
     <!--ENDSSSSS NAVIGATION FROM THOSE buttons in index.html Can delete-->
     
     <navigation-rule>

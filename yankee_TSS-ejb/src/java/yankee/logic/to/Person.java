@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Set;
 import yankee.entities.RoleEntity;
+import yankee.logic.ENUM.ContractStatusEnum;
 import yankee.logic.ENUM.PreferredLanguageENUM;
 
 public class Person extends Named {
@@ -16,6 +17,15 @@ public class Person extends Named {
     private LocalDate dateOfBirth;
     
     private String contractUUIDForRole;
+    private ContractStatusEnum contractStatusForRole;
+
+    public ContractStatusEnum getContractStatusForRole() {
+        return contractStatusForRole;
+    }
+
+    public void setContractStatusForRole(ContractStatusEnum contractStatusForRole) {
+        this.contractStatusForRole = contractStatusForRole;
+    }
 
     public String getContractUUIDForRole() {
         return contractUUIDForRole;

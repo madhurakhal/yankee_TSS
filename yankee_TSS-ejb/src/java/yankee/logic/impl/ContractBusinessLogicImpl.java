@@ -18,6 +18,7 @@ import yankee.entities.EmployeeEntity;
 import yankee.entities.SecretaryEntity;
 import yankee.entities.SupervisorEntity;
 import yankee.logic.ContractBusinessLogic;
+import yankee.logic.ENUM.ContractStatusEnum;
 import yankee.logic.ENUM.RoleTypeEnum;
 import yankee.logic.dao.AssistantAccess;
 import yankee.logic.dao.ContractAccess;
@@ -188,6 +189,13 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
 
         //4. Change start and end date
         // Also create timesheets depending on start and end date.
+        return new Contract(ce.getUuid(), ce.getName());
+    }
+    
+    @Override
+    public Contract startContract(String contractUUID){
+        ContractEntity ce = contractAccess.getByUuid(contractUUID);
+        ce.setStatus(ContractStatusEnum.STARTED);
         return new Contract(ce.getUuid(), ce.getName());
     }
 }
