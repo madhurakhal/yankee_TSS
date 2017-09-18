@@ -4,8 +4,11 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:b="http://bootsfaces.net/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    <ui:composition template="/templates/main-template.xhtml">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+ <ui:composition template="/WEB-INF/templates/main-template.xhtml">
+        <ui:param name="pageTitle" value="Sign Up" />
+        <ui:define name="main-content">
         <h:form>
 		<h:commandButton action="#{language.changeLanguage('')}"
 			value="En"/>
@@ -13,8 +16,6 @@
 		<h:commandButton action="#{language.changeLanguage('de')}"
 			value="De" />
 	</h:form>
-        <ui:param name="pageTitle" value="Sign Up" />
-        <ui:define name="main-content">
             <b:column styleClass="content">
                 <b:row>
                     <b:column col-xs="10" offset-xs="1" col-md="8" offset-md="2">
@@ -22,18 +23,25 @@
                             <b:column styleClass="box-header with-border text-center">
                                 <h3 styleClass="box-title">${msg.signIn}</h3>
                             </b:column>
-                            <b:form horizontal="true">
+                            <b:form horizontal="true" pt:action="j_security_check" pt:method="post" pt:name="loginForm" pt:role="form">
+                            <!--<form role="form" method="post" action="j_security_check" name="loginForm">-->
                                 <p:outputPanel styleClass="box-body">
                                     <b:formGroup>
                                         <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="email">Email</h:outputLabel>
                                         <b:column col-sm="10" col-xs="12">
-                                            <b:inputText id="email" styleClass="form-control" placeholder="Email"/>
+                                            <input  id="username" name="j_username"
+                                                    class="form-control"  type="text"
+                                                    placeholder="Username"
+                                                    autofocus="true" autocomplete="off"/>
                                         </b:column>
                                     </b:formGroup>
                                     <b:formGroup>
                                         <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="password">Password</h:outputLabel>
                                         <b:column col-xs="12" col-sm="10">
-                                            <b:inputText id="password" styleClass="form-control" placeholder="Password"/>
+                                            <input id="password" name="j_password"
+                                                   class="form-control" type="password"
+                                                   placeholder="Password"
+                                                   autocomplete="off"/>
                                         </b:column>
                                     </b:formGroup>
                                     <b:formGroup>
@@ -43,11 +51,12 @@
                                     </b:formGroup>
                                 </p:outputPanel>
                                 <b:column col-xs="12" class="box-footer">
-                                    <b:commandButton value="Sign In" styleClass="btn btn-info pull-right"/>
-                                    <b:commandButton value="de" styleClass="btn btn-info pull-right" action="#{language.changeLanguage('de')}"/>
-
+                                    <b:commandButton value="Sign In" styleClass="btn btn-info pull-right" pt:type="submit"/>
                                 </b:column>
                             </b:form>
+                            <b:alert severity="danger" rendered="${request.parameterMap.containsKey('j_username')}">
+                                Username or Password Incorrect!
+                            </b:alert>
                         </b:column>
                     </b:column>
                 </b:row>  
@@ -55,4 +64,3 @@
         </ui:define>
     </ui:composition>
 </html>
-

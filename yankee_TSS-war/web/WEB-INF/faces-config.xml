@@ -24,7 +24,7 @@
         </navigation-case>       
     </navigation-rule>
     
-    <!--EGINS NAVIGATION FROM THOSE buttons in index.html Can delete-->
+    <!--BEGINS NAVIGATION FROM THOSE buttons in index.html Can delete-->
     <navigation-rule>
         <from-view-id>/index.xhtml</from-view-id>
         <navigation-case>
@@ -90,7 +90,7 @@
          code completion in NetBeans xhtml editor,
          whereas f:loadbundle does not
          -->
-         <base-name>jee17.i18n.Messages</base-name>
+         <base-name>yankee.i18n.Messages</base-name>
          <var>msg</var>
       </resource-bundle>
    </application>

@@ -3,7 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jee17;
+package yankee.international;
+
 import java.io.Serializable;
 import java.util.Locale;
 
