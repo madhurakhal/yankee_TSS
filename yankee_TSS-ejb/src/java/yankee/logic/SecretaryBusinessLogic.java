@@ -29,4 +29,6 @@ public interface SecretaryBusinessLogic {
     public Secretary createSecretary(String name , String personUUID);
     
     public List<Secretary> getSecretariesByContract(String contractUUID);
+    
+    public List<Person> getPersonsUnderSecretary(String secretaryPersonUUID);
 }

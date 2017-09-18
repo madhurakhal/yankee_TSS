@@ -69,6 +69,7 @@ public class SupervisorAccess extends AbstractAccess<SupervisorEntity> {
     }
     
     @RolesAllowed("AUTHENTICATED")
+    // Person being himself
     public List<SupervisorEntity> getSupervisorByPerson(PersonEntity person) {
        try {
             return em.createNamedQuery("getSupervisorByPerson", SupervisorEntity.class)

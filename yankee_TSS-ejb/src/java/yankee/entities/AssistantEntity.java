@@ -15,7 +15,8 @@ import javax.persistence.Table;
     @NamedQuery(name = "getAssistantCount", query = "SELECT COUNT(p) FROM AssistantEntity p"),
     @NamedQuery(name = "getAssistantList", query = "SELECT p FROM AssistantEntity p ORDER BY p.name, p.uuid"),
     @NamedQuery(name = "getAssistantByName", query = "SELECT p FROM AssistantEntity p WHERE p.name = :name"),
-    @NamedQuery(name = "getAssistantsByContract", query = "SELECT p FROM AssistantEntity p WHERE p.contract = :contract")
+    @NamedQuery(name = "getAssistantsByContract", query = "SELECT p FROM AssistantEntity p WHERE p.contract = :contract"),    
+    @NamedQuery(name = "getAssistantsByPerson", query = "SELECT p FROM SupervisorEntity p WHERE p.person = :person")    
 })
 
 // TODO: REMOVE relation getter setter as per our requirement. delete set if in collection.

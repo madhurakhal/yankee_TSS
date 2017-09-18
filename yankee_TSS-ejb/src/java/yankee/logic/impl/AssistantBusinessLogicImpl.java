@@ -10,11 +10,13 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import yankee.entities.AssistantEntity;
+import yankee.entities.EmployeeEntity;
 import yankee.entities.PersonEntity;
 import yankee.entities.SecretaryEntity;
 import yankee.logic.AssistantBusinessLogic;
 import yankee.logic.dao.AssistantAccess;
 import yankee.logic.dao.ContractAccess;
+import yankee.logic.dao.EmployeeAccess;
 import yankee.logic.dao.PersonAccess;
 import yankee.logic.to.Assistant;
 import yankee.logic.to.Contract;
@@ -36,6 +38,9 @@ public class AssistantBusinessLogicImpl implements AssistantBusinessLogic {
     
     @EJB
     private ContractAccess contractAccess;
+    
+    @EJB
+    private EmployeeAccess employeeAccess;
 
     @Override
     public List<Assistant> getAssistantList(){
@@ -95,5 +100,28 @@ public class AssistantBusinessLogicImpl implements AssistantBusinessLogic {
         s.setPerson(new Person(se.getPerson().getUuid() , se.getPerson().getName()));
         s.setRoleType(se.getRollType());
         return s;
+    }
+    
+    
+        
+    @Override
+    public List<Person> getPersonsUnderAssistant(String assistantPersonUUID){
+        List<AssistantEntity> lse = assistantAccess.getAssistantsByPerson(personAccess.getByUuid(assistantPersonUUID));
+        List<Person> result = new ArrayList<>();
+        lse.forEach((se) -> {
+            EmployeeEntity ee = employeeAccess.getEmployeeByContract(se.getContract());
+            if (ee != null) {
+                PersonEntity pe = ee.getPerson();
+                Person p = new Person(pe.getUuid() ,pe.getName()) ;
+                p.setFirstName(pe.getFirstName());
+                p.setLastName(pe.getLastName());
+                p.setPreferredLanguage(pe.getPreferredLanguage());
+                p.setDateOfBirth(pe.getDateOfBirth());
+                p.setEmailAddress(pe.getEmailAddress());
+                p.setUserRoleRealm(pe.getUserRoleRealm());
+                result.add(p);                
+            }
+        });    
+        return result;
     }
 }

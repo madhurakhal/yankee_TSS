@@ -16,6 +16,7 @@ import yankee.entities.SecretaryEntity;
 import yankee.entities.SupervisorEntity;
 import yankee.logic.SecretaryBusinessLogic;
 import yankee.logic.dao.ContractAccess;
+import yankee.logic.dao.EmployeeAccess;
 import yankee.logic.dao.PersonAccess;
 import yankee.logic.dao.SecretaryAccess;
 import yankee.logic.to.Contract;
@@ -40,6 +41,9 @@ public class SecretaryBusinessLogicImpl implements SecretaryBusinessLogic {
     
     @EJB
     private PersonAccess personAccess;
+    
+    @EJB
+    private EmployeeAccess employeeAccess;
 
     @Override
     public List<Secretary> getSecretaryList() {
@@ -99,5 +103,26 @@ public class SecretaryBusinessLogicImpl implements SecretaryBusinessLogic {
         s.setPerson(new Person(se.getPerson().getUuid() , se.getPerson().getName()));
         s.setRoleType(se.getRollType());
         return s;
+    }
+    
+    @Override
+    public List<Person> getPersonsUnderSecretary(String secretaryPersonUUID){
+        List<SecretaryEntity> lse = secretaryAccess.getSecretariesByPerson(personAccess.getByUuid(secretaryPersonUUID));
+        List<Person> result = new ArrayList<>();
+        lse.forEach((se) -> {
+            EmployeeEntity ee = employeeAccess.getEmployeeByContract(se.getContract());
+            if (ee != null) {
+                PersonEntity pe = ee.getPerson();
+                Person p = new Person(pe.getUuid() ,pe.getName()) ;
+                p.setFirstName(pe.getFirstName());
+                p.setLastName(pe.getLastName());
+                p.setPreferredLanguage(pe.getPreferredLanguage());
+                p.setDateOfBirth(pe.getDateOfBirth());
+                p.setEmailAddress(pe.getEmailAddress());
+                p.setUserRoleRealm(pe.getUserRoleRealm());
+                result.add(p);                
+            }
+        });    
+        return result;
     }
 }

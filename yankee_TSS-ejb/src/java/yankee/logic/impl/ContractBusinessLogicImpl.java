@@ -151,14 +151,14 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
 
         // 2.
         // delete all secretaries for that contract and add new assigned secretaries
-        if (!secretaries.isEmpty()) {
-            if (secretariesChanged) {
-                List<SecretaryEntity> toDeleteSecretaries = secretaryAccess.getSecretariesByContract(ce);
-                // For loop to delete
-                for (SecretaryEntity delSecretary : toDeleteSecretaries){
-                    secretaryAccess.deleteEntity(delSecretary);
-                }
-                // Now we create the secretaries given in the list
+        if (secretariesChanged) {
+            List<SecretaryEntity> toDeleteSecretaries = secretaryAccess.getSecretariesByContract(ce);
+            // For loop to delete
+            for (SecretaryEntity delSecretary : toDeleteSecretaries) {
+                secretaryAccess.deleteEntity(delSecretary);
+            }
+            // Now we create the secretaries given in the list
+            if (!secretaries.isEmpty()) {
                 for (Person p : secretaries) {
                     SecretaryEntity se = secretaryAccess.createEntity(p.getName());
                     se.setPerson(personAccess.getByUuid(p.getUuid()));
@@ -169,15 +169,15 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
 
         // 3.
         // delete all assistants for that contract
-        if (!assistants.isEmpty()) {
-            if (assistantsChanged) {
-                // Deleting previous assistants
-                List<AssistantEntity> toDeleteAssistants = assistantAccess.getAssistantsByContract(ce);
-                for (AssistantEntity delAssistant: toDeleteAssistants){
-                    assistantAccess.deleteEntity(delAssistant);
-                }
-                
-                // Now we create the secretaries given in the list
+        if (assistantsChanged) {
+            // Deleting previous assistants
+            List<AssistantEntity> toDeleteAssistants = assistantAccess.getAssistantsByContract(ce);
+            for (AssistantEntity delAssistant : toDeleteAssistants) {
+                assistantAccess.deleteEntity(delAssistant);
+            }
+
+            // Now we create the secretaries given in the list
+            if (!assistants.isEmpty()) {
                 for (Person p : assistants) {
                     AssistantEntity ae = assistantAccess.createEntity(p.getName());
                     ae.setPerson(personAccess.getByUuid(p.getUuid()));
@@ -185,10 +185,9 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
                 }
             }
         }
-        
+
         //4. Change start and end date
         // Also create timesheets depending on start and end date.
-
         return new Contract(ce.getUuid(), ce.getName());
     }
 }

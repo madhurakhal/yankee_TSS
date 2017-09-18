@@ -12,10 +12,12 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import yankee.logic.EmployeeBusinessLogic;
+import yankee.logic.SecretaryBusinessLogic;
 import yankee.logic.SupervisorBusinessLogic;
 import yankee.logic.to.Contract;
 import yankee.logic.to.Employee;
 import yankee.logic.to.Person;
+import yankee.logic.to.Secretary;
 import yankee.logic.to.Supervisor;
 
 /*
@@ -32,13 +34,10 @@ public class ManageContractsBean {
     @EJB
     private SupervisorBusinessLogic supervisorBusinessLogic;
 
-    @EJB
-    private EmployeeBusinessLogic employeeBusinessLogic;
-
     @Inject
     private LoginBean loginBean;
 
-    private List<Person> persons_associatedto_contract = new ArrayList<>();
+    private List<Person> personsAssociatedToContract = new ArrayList<>();
     Map<String, String> person_to_contract = new HashMap<>();
     
 //    private String person_id;
@@ -60,39 +59,48 @@ public class ManageContractsBean {
 //        
 //        return
 //    }
-    public List<Person> getPersons_associatedto_contract() {
-        //because supervisor table will store supervisor id with contractid and person
-        List<Supervisor> ls = supervisorBusinessLogic.getSupervisorByPerson(loginBean.getUser().getUuid());
-        
-     
-        
-        ls.forEach((s) -> {
-            Employee e = employeeBusinessLogic.getEmployeeByContract(s.getContract().getUuid());
-            if (e != null) {
-                persons_associatedto_contract.add(e.getPerson());  
-                // Just a mapping so that contract is associaated to person
-                person_to_contract.put(e.getPerson().getUuid(), s.getContract().getUuid());
-            }
-        });      
-        return persons_associatedto_contract;
+    public List<Person> getPersonsAssociatedToContract() {
+//        //because supervisor table will store supervisor id with contractid and person
+//        List<Supervisor> ls = supervisorBusinessLogic.getSupervisorByPerson(loginBean.getUser().getUuid());
+//        
+//        //List<Secretary> lsecr = secretaryBusinessLogic.getSecretariesByPerson(loginBean.getUser().getUuid());
+//        
+//        ls.forEach((s) -> {
+//            Employee e = employeeBusinessLogic.getEmployeeByContract(s.getContract().getUuid());
+//            if (e != null) {
+//                persons_associatedto_contract.add(e.getPerson());  
+//                // Just a mapping so that contract is associaated to person
+//                person_to_contract.put(e.getPerson().getUuid(), s.getContract().getUuid());
+//            }
+//        });      
+//        return persons_associatedto_contract;
+        personsAssociatedToContract = supervisorBusinessLogic.getPersonsUnderSupervisor(loginBean.getUser().getUuid());
+        return personsAssociatedToContract;
     }
     
     
     
     
 
-    public void setPersons_associatedto_contract(List<Person> persons_associatedto_contract) {
-        this.persons_associatedto_contract = persons_associatedto_contract;
+    public void setPersonsAssociatedToContract(List<Person> persons_associatedto_contract) {
+        this.personsAssociatedToContract = persons_associatedto_contract;
     }   
     
-    public void onRowEdit(String person_uuid) throws IOException {
-        String contract_id = person_to_contract.get(person_uuid);
+    public void onRowEdit(String contract_uuid) throws IOException {
+        //String contract_id = person_to_contract.get(person_uuid);
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/staff_logged_in/editcontract.xhtml?id=" + contract_id);
+        ec.redirect(ec.getRequestContextPath() + "/staff_logged_in/editcontract.xhtml?id=" + contract_uuid);
     }
     
-    public void onRowDelete(String uuid) {
+    public void onRowDelete(String contract_uuid) {
         
-    }     
+    }   
+    
+    
+    // Need to get all persons who the current logged in user is 
+    // 1. supervisor.
+    // 2. Assistant
+    // 3. 
+    
     
 }

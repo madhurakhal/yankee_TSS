@@ -15,6 +15,16 @@ public class Person extends Named {
     private String emailAddress;
     private LocalDate dateOfBirth;
     
+    private String contractUUIDForRole;
+
+    public String getContractUUIDForRole() {
+        return contractUUIDForRole;
+    }
+
+    public void setContractUUIDForRole(String contractUUIDForRole) {
+        this.contractUUIDForRole = contractUUIDForRole;
+    }
+    
     private ArrayList<Role> roles;
     
     private PreferredLanguageENUM preferredLanguage;
