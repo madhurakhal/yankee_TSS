@@ -84,9 +84,15 @@ public class ManageContractsBean {
         
     }  
     
-    public void onRowView(String contract_uuid) {
-        
-    }  
+    public void onRowView(String contract_uuid) throws IOException {
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        ec.redirect(ec.getRequestContextPath() + "/staff_logged_in/viewcontractdetails.xhtml?id=" + contract_uuid);        
+    } 
+    
+     public void onRowPrint(String contract_uuid) throws IOException {
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        ec.redirect(ec.getRequestContextPath() + "/staff_logged_in/printpreviewcontract.xhtml?id=" + contract_uuid);        
+    }
     
     public void onRowStart(String contract_uuid){
         contractBusinessLogic.startContract(contract_uuid);

@@ -39,4 +39,6 @@ public interface ContractBusinessLogic {
     
     public Contract startContract(String contractUUID);
     
+    public Contract getContractByUUID(String contractUUID);
+    
 }

@@ -198,4 +198,19 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
         ce.setStatus(ContractStatusEnum.STARTED);
         return new Contract(ce.getUuid(), ce.getName());
     }
+    
+    @Override
+    public Contract getContractByUUID(String contractUUID){
+        ContractEntity ce = contractAccess.getByUuid(contractUUID);
+        Contract c = new Contract(ce.getUuid() , ce.getName());
+        c.setEndDate(ce.getEndDate());
+        c.setFrequency(ce.getFrequency());
+        c.setHoursPerWeek(ce.getHoursPerWeek());
+        c.setWorkingDaysPerWeek(ce.getWorkingDaysPerWeek());
+        c.setVacationDaysPerYear(ce.getVacationDaysPerYear());
+        c.setStatus(ce.getStatus());
+        c.setTerminationDate(ce.getTerminationDate());
+        return c;
+        
+    }
 }
