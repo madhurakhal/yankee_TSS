@@ -231,7 +231,7 @@ public class EditContractBean {
         if (availableSecretaryList.isEmpty()) {
             for (Person p : persons) {
                 System.out.println("People available for secretary" + p.getFirstName());
-                if (p.getUserRoleRealm() != null && !supervisorForContract.getUuid().equals(p.getUuid())) {
+                if (p.getUserRoleRealm() != null && !supervisorForContract.getUuid().equals(p.getUuid())&& !currentContractPerson.getUuid().equals(p.getUuid())) {
                     if (secretariesForContract.contains(p) || assistantsForContract.contains(p)) {
                     } else {
                         availableSecretaryList.add(p);
@@ -249,7 +249,7 @@ public class EditContractBean {
     public List<Person> getAvailableAssistantList() {
         if (availableAssistantList.isEmpty()) {
             for (Person p : persons) {
-                if (p.getUserRoleRealm() != null && !supervisorForContract.getUuid().equals(p.getUuid())) {
+                if (p.getUserRoleRealm() != null && !supervisorForContract.getUuid().equals(p.getUuid()) && !currentContractPerson.getUuid().equals(p.getUuid())) {
                     if (assistantsForContract.contains(p) || secretariesForContract.contains(p)) {
                     } else {
                         availableAssistantList.add(p);
@@ -270,9 +270,8 @@ public class EditContractBean {
             // fetch all contracts for pradip and get supervisor.
             // delete these supervisors from all persons.
             for (Person p : persons) {
-
                 boolean hashimAsSupervisor = false;
-                if (!supervisorForContract.equals(p) && p.getUserRoleRealm() != null && !currentContractPerson.equals(p)) {
+                if (!supervisorForContract.getUuid().equals(p.getUuid()) && p.getUserRoleRealm() != null && !currentContractPerson.getUuid().equals(p.getUuid())) {
                     System.out.println("At least here?" + p.getName());
                     List<Supervisor> ls = supervisorBusinessLogic.getSupervisorByPerson(p.getUuid());
 
