@@ -18,7 +18,8 @@
                                 <h:button value="Create Contract" outcome="createContract" styleClass="btn btn-primary pull-right btn-flat"/>
                             </p:outputPanel>
                             <p:outputPanel styleClass="box-body top-border">
-                                <b:dataTable value="#{manageContractsBean.personsAssociatedToContract}"
+                                <b:dataTable value="#{manageContractsBean.personsAssociatedToContractSupervisor}"
+
                                              var="person"
                                              responsive="true">
                                     <b:dataTableColumn value="#{person.firstName}" label="Employee"/>
@@ -30,7 +31,7 @@
                 </b:column>
 
             </b:row>
-            <h:button value="Admin Page" outcome="admin" 
+            <h:button value="Admin Page" outcome="admin"
                       rendered="#{request.isUserInRole('ADMIN')}" />
             <p:growl id="msg" showDetail="true"/>
         </ui:define>

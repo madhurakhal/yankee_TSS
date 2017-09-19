@@ -36,6 +36,7 @@
                                                 </b:selectOneMenu>
                                             </b:column>
                                         </b:formGroup>
+
                                         <b:formGroup>
                                             <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="firstNameInput">First Name </h:outputLabel>
                                             <b:column col-sm="10" col-xs="12">
@@ -59,7 +60,35 @@
                                                              styleClass="form-control">
                                                 </h:inputText>
                                             </b:column>
+                                        </b:formGroup> 
+
+                                        <b:formGroup>
+                                            <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="timesheetFrequency">Timesheet Frequency</h:outputLabel>
+                                            <b:column col-sm="10" col-xs="12">
+                                                <b:selectOneMenu id="timesheetFrequency" value="#{createContractBean.timesheetFrequency}" immediate="true">
+                                                    <f:selectItem itemLabel="Choose Frequency" noSelectionOption="true"/>
+                                                    <f:selectItems  value="#{timesheetFrequencyBean.timesheetFrequencyEnum}"/>
+
+                                                </b:selectOneMenu>
+                                            </b:column>
+                                        </b:formGroup>  
+
+                                        <b:formGroup>
+                                            <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="startDate" >Contract Start Date</h:outputLabel>
+                                            <b:column col-sm="10" col-xs="12">
+                                                <p:calendar  id="startDate" value="#{createContractBean.startDate}" pattern="MM/dd/yyyy"/>
+                                            </b:column>
                                         </b:formGroup>
+
+
+
+                                        <b:formGroup>
+                                            <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="endDate" >Contract end Date</h:outputLabel>
+                                            <b:column col-sm="10" col-xs="12">
+                                                <p:calendar  id="endDate" value="#{createContractBean.endDate}" pattern="MM/dd/yyyy"/>
+                                            </b:column>
+                                        </b:formGroup>
+
                                     </p:outputPanel>
                                 </b:row>
                             </p:outputPanel>

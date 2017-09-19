@@ -9,7 +9,6 @@ import java.util.List;
 import javax.ejb.Remote;
 import yankee.logic.to.Person;
 import yankee.logic.to.Secretary;
-import yankee.logic.to.Supervisor;
 
 /**
  *

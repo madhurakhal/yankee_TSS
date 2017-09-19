@@ -12,7 +12,6 @@ import javax.ejb.Stateless;
 import yankee.entities.AssistantEntity;
 import yankee.entities.EmployeeEntity;
 import yankee.entities.PersonEntity;
-import yankee.entities.SecretaryEntity;
 import yankee.logic.AssistantBusinessLogic;
 import yankee.logic.dao.AssistantAccess;
 import yankee.logic.dao.ContractAccess;
@@ -21,7 +20,6 @@ import yankee.logic.dao.PersonAccess;
 import yankee.logic.to.Assistant;
 import yankee.logic.to.Contract;
 import yankee.logic.to.Person;
-import yankee.logic.to.Secretary;
 
 /**
  *
@@ -119,6 +117,8 @@ public class AssistantBusinessLogicImpl implements AssistantBusinessLogic {
                 p.setDateOfBirth(pe.getDateOfBirth());
                 p.setEmailAddress(pe.getEmailAddress());
                 p.setUserRoleRealm(pe.getUserRoleRealm());
+                p.setContractUUIDForRole(ee.getContract().getUuid());
+                p.setContractStatusForRole(ee.getContract().getStatus());
                 result.add(p);                
             }
         });    

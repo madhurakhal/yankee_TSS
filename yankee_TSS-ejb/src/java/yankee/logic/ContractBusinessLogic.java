@@ -8,6 +8,7 @@ package yankee.logic;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Remote;
+import yankee.logic.ENUM.TimesheetFrequencyEnum;
 import yankee.logic.to.Contract;
 import yankee.logic.to.Person;
 
@@ -31,9 +32,17 @@ public interface ContractBusinessLogic {
      * @param assistant
      * @param secretary
      * @param employee
+     * @param startDate
+     * @param endDate
+     * @param timesheetFrequency
      * @return 
      */
-    public Contract createContract(String contractName, Person supervisor, Person assistant, Person secretary, Person employee);
+    public Contract createContract(String contractName, Person supervisor, Person assistant, Person secretary, Person employee, Date startDate , Date endDate , TimesheetFrequencyEnum timesheetFrequency);
     
     public Contract editContract(String contractUUID , Person supervisorPerson , List<Person> secretaries , boolean secretariesChanged, List<Person> assistants , boolean assistantsChanged, Date startDate, Date endDate );
+    
+    public Contract startContract(String contractUUID);
+    
+    public Contract getContractByUUID(String contractUUID);
+    
 }

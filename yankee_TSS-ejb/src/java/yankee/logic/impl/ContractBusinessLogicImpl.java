@@ -6,6 +6,7 @@
 package yankee.logic.impl;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -18,7 +19,9 @@ import yankee.entities.EmployeeEntity;
 import yankee.entities.SecretaryEntity;
 import yankee.entities.SupervisorEntity;
 import yankee.logic.ContractBusinessLogic;
+import yankee.logic.ENUM.ContractStatusEnum;
 import yankee.logic.ENUM.RoleTypeEnum;
+import yankee.logic.ENUM.TimesheetFrequencyEnum;
 import yankee.logic.dao.AssistantAccess;
 import yankee.logic.dao.ContractAccess;
 import yankee.logic.dao.EmployeeAccess;
@@ -70,16 +73,21 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
 
     // This roleTypeUUID is either supervisor, secretary, assistant, employee uuid
     @Override
-    public Contract createContract(String contractName, Person supervisor, Person assistant, Person secretary, Person employee) {
+    public Contract createContract(String contractName, Person supervisor, Person assistant, Person secretary, Person employee, Date startDate, Date endDate, TimesheetFrequencyEnum timesheetFrequency) {
 
         // When creating contract.
-        // 1. First create contract and get contract id.
+        // 1. First create contract and get contract id Also set start end date along with timesheetFrequency detail.
         // 2. now create employee with person associated to it.
         // 3. now create supervisor with person associated to it
         // 4. now create secretary as of yet in this createContract.
         // 5. now create assistant as of yet in this createContract.
         //1.
         ContractEntity ce = contractAccess.createEntity(contractName);
+        LocalDate lstartdate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate lenddate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        ce.setStartDate(lstartdate);
+        ce.setEndDate(lenddate);
+        ce.setFrequency(timesheetFrequency);
         System.out.println("Contract ko naam k ho ta" + ce.getName() + ce.getId());
 
         try {
@@ -132,9 +140,14 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
         // 4. Set start and end date.
 
         ContractEntity ce = contractAccess.getByUuid(contractUUID);
-
-        ce.setStartDate(LocalDate.MAX);
-        ce.setEndDate(LocalDate.MAX);
+        if (startDate != null) {
+            LocalDate lstartdate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            ce.setStartDate(lstartdate);
+        }
+        if (startDate != null) {
+            LocalDate lenddate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            ce.setEndDate(lenddate);
+        }
         // 1. 
         SupervisorEntity svePrev = supervisorAccess.getSupervisorByContract(contractAccess.getByUuid(contractUUID));
         // This means the current selected supervisor is different from one before
@@ -189,5 +202,28 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
         //4. Change start and end date
         // Also create timesheets depending on start and end date.
         return new Contract(ce.getUuid(), ce.getName());
+    }
+
+    @Override
+    public Contract startContract(String contractUUID) {
+        ContractEntity ce = contractAccess.getByUuid(contractUUID);
+        ce.setStatus(ContractStatusEnum.STARTED);
+        return new Contract(ce.getUuid(), ce.getName());
+    }
+
+    @Override
+    public Contract getContractByUUID(String contractUUID) {
+        ContractEntity ce = contractAccess.getByUuid(contractUUID);
+        Contract c = new Contract(ce.getUuid(), ce.getName());
+        c.setStartDate(ce.getStartDate());
+        c.setEndDate(ce.getEndDate());
+        c.setFrequency(ce.getFrequency());
+        c.setHoursPerWeek(ce.getHoursPerWeek());
+        c.setWorkingDaysPerWeek(ce.getWorkingDaysPerWeek());
+        c.setVacationDaysPerYear(ce.getVacationDaysPerYear());
+        c.setStatus(ce.getStatus());
+        c.setTerminationDate(ce.getTerminationDate());
+        return c;
+
     }
 }
