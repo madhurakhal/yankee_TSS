@@ -18,6 +18,39 @@ and open the template in the editor.
 #createContractForm .form-group {
     overflow: hidden;
 }
-.ui-outputpanel.box-body {
+.ui-outputpanel.box-body.top-border {
     border-top: 1px solid #696b6d;
+}
+.content-header {
+    min-height: 40px;
+}
+span.form-control {
+    padding: 0px;
+    marign: 0px;
+}
+span.form-control > input {
+    width: 100%;
+    padding: 0px;
+    height: 100%;
+    margin: 0px;
+    box-shadow: none;
+    border: none;
+}
+.edit-contract .form-group {
+    overflow: hidden;
+}
+.ui-inputfield {
+    box-shadow: none;
+}
+
+.ui-button {
+    box-shadow: none;
+    border: none;
+    background: #00c0ef;
+}
+.ui-chkbox-box{
+    border-radius: 50% !important;
+}
+.ui-chkbox {
+    padding: 0px 3px 0px 0px;
 }
