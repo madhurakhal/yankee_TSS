@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package yankee.international;
+package yankee.web;
 
 import java.io.Serializable;
 import java.util.Locale;
@@ -19,7 +19,7 @@ import javax.faces.context.FacesContext;
  
 @ManagedBean(name="language")
 @SessionScoped
-public class Language implements Serializable{
+public class LanguageBean implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
