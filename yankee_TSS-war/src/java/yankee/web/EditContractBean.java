@@ -1,5 +1,7 @@
 package yankee.web;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -67,7 +69,8 @@ public class EditContractBean {
     private Date startDate;
     private Date endDate;
     private TimesheetFrequencyEnum timesheetFrequency;
-    private Person currentContractPerson;
+    private Person currentContractPerson;    
+    private List<Person> persons = new ArrayList<>();
 
     public Person getCurrentContractPerson() {
         if (currentContractPerson == null) {
@@ -81,6 +84,7 @@ public class EditContractBean {
     }
 
     public TimesheetFrequencyEnum getTimesheetFrequency() {
+        timesheetFrequency = contractBusinessLogic.getContractByUUID(contract_id).getFrequency();
         return timesheetFrequency;
     }
 
@@ -89,6 +93,10 @@ public class EditContractBean {
     }
 
     public Date getStartDate() {
+        LocalDate localDate = contractBusinessLogic.getContractByUUID(contract_id).getStartDate();
+        if(localDate != null){
+        startDate = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        }
         return startDate;
     }
 
@@ -97,6 +105,9 @@ public class EditContractBean {
     }
 
     public Date getEndDate() {
+        LocalDate localDate = contractBusinessLogic.getContractByUUID(contract_id).getEndDate();
+        if(localDate != null){
+        endDate = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());  }      
         return endDate;
     }
 
@@ -104,7 +115,6 @@ public class EditContractBean {
         this.endDate = endDate;
     }
 
-    private List<Person> persons = new ArrayList<>();
 
     public List<Person> getPersons() {
         if (persons.isEmpty()) {
@@ -120,7 +130,6 @@ public class EditContractBean {
     }
 
     Map<String, String> person_to_contract = new HashMap<>();
-
     private String contract_id;
     private Person supervisorForContract;
     private List<Person> secretariesForContract = new ArrayList<>();

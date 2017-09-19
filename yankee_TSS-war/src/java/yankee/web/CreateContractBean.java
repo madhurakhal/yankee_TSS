@@ -1,5 +1,6 @@
 package yankee.web;
 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import javax.ejb.EJB;
@@ -17,6 +18,7 @@ import yankee.logic.to.Employee;
 import yankee.logic.to.Person;
 import yankee.logic.to.Supervisor;
 import org.primefaces.event.RowEditEvent;
+import yankee.logic.ENUM.TimesheetFrequencyEnum;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -50,6 +52,33 @@ public class CreateContractBean {
     private Person contractTo;
     private Person changedSupervisorPerson;
     private RoleTypeEnum yourRoleType;
+    private Date startDate;
+    private Date endDate;
+    private TimesheetFrequencyEnum timesheetFrequency;
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public TimesheetFrequencyEnum getTimesheetFrequency() {
+        return timesheetFrequency;
+    }
+
+    public void setTimesheetFrequency(TimesheetFrequencyEnum timesheetFrequency) {
+        this.timesheetFrequency = timesheetFrequency;
+    }
 
     public RoleTypeEnum getRoleType() {
         return roleType;
@@ -132,7 +161,7 @@ public class CreateContractBean {
             }
             supervisor = changedSupervisorPerson;
         }
-        contractBusinessLogic.createContract("contract" + employee.getName(), supervisor, assistant, secretary, employee);
+        contractBusinessLogic.createContract("contract" + employee.getName(), supervisor, assistant, secretary, employee , startDate , endDate , timesheetFrequency);
 
         FacesMessage msg = new FacesMessage("Contract Created");
         FacesContext.getCurrentInstance().addMessage(null, msg);

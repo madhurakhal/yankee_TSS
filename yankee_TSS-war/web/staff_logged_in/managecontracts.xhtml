@@ -57,12 +57,12 @@
                             <b:dataTableColumn value="#{persons.contractStatusForRole}" label="Status" style="width:150px"/>                         
 
                             <b:dataTableColumn label = "Action " style="width:50px">                                
-                                <p:commandButton rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-caret-right"  id="startPersonSecrs" action="#{manageContractsBean.onRowStart(persons.contractUUIDForRole)}">
+                                <p:commandButton rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-caret-right"  id="startPersonAssis" update="form" actionListener="#{manageContractsBean.onRowStart(persons.contractUUIDForRole)}">
                                     <p:confirm header="Confirmation" message="Confirm Start?" icon="ui-icon-alert" />    
                                 </p:commandButton>
-                                <p:commandButton  icon="fa fa-fw fa-info-circle"  id="viewPersonSecrs" action="#{manageContractsBean.onRowView(persons.contractUUIDForRole)}"/>
-                                <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-edit" id="editPersonSecr" action="#{manageContractsBean.onRowEdit(persons.contractUUIDForRole)}"/>
-                                <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-remove"  id="deletePersonSecr"  action="#{manageContractsBean.onRowDelete(persons.contractUUIDForRole)}">
+                                <p:commandButton  icon="fa fa-fw fa-info-circle"  id="viewPersonAssis" action="#{manageContractsBean.onRowView(persons.contractUUIDForRole)}"/>
+                                <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-edit" id="editPersonAssis" action="#{manageContractsBean.onRowEdit(persons.contractUUIDForRole)}"/>
+                                <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-remove"  id="deletePersonAssis"  action="#{manageContractsBean.onRowDelete(persons.contractUUIDForRole)}">
                                     <p:confirm header="Confirmation" message="Confirm Delete?" icon="ui-icon-alert" />
                                 </p:commandButton>
                             </b:dataTableColumn>
@@ -88,10 +88,10 @@
 
                             <b:dataTableColumn label="Action " style="width:50px ">
 
-                                <p:commandButton  icon="fa fa-fw fa-info-circle"  id="viewPersonAssis" action="#{manageContractsBean.onRowView(persons.contractUUIDForRole)}"/>                            
-                                <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-edit" id="editPersonAssis" action="#{manageContractsBean.onRowEdit(persons.contractUUIDForRole)}"/>
-                                <p:commandButton  icon="fa fa-fw fa-print"  id="printPersonAssis"  action="#{manageContractsBean.onRowPrint(persons.contractUUIDForRole)}"/>
-                                <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-remove"  id="deletePersonAssis"  action="#{manageContractsBean.onRowDelete(persons.contractUUIDForRole)}">
+                                <p:commandButton  icon="fa fa-fw fa-info-circle"  id="viewPersonSecrs" action="#{manageContractsBean.onRowView(persons.contractUUIDForRole)}"/>                            
+                                <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-edit" id="editPersonSecrs" action="#{manageContractsBean.onRowEdit(persons.contractUUIDForRole)}"/>
+                                <p:commandButton  icon="fa fa-fw fa-print"  id="printPersonSecrs"  action="#{manageContractsBean.onRowPrint(persons.contractUUIDForRole)}"/>
+                                <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-remove"  id="deletePersonSecrs"  action="#{manageContractsBean.onRowDelete(persons.contractUUIDForRole)}">
                                     <p:confirm header="Confirmation" message="Confirm Delete?" icon="ui-icon-alert" />
                                 </p:commandButton>
 
