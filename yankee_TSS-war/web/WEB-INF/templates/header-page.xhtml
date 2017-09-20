@@ -4,42 +4,77 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:b="http://bootsfaces.net/ui"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ps="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:composition>
         <h:form id="navForm">
-        <header class="main-header">
-            <base href="${request.contextPath}/"/>
-            <p:outputPanel styleClass="navbar navbar-static-top">
-                <b:container fluid="true">
-                    <p:outputPanel styleClass="navbar-header">
-                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
-                            <i class="fa fa-bars"></i>
-                        </button>
-                        <h:link  styleClass="navbar-brand" outcome="/index.xhtml"><b>Welcome</b></h:link>
-                    </p:outputPanel>
-                    <p:outputPanel styleClass="collapse navbar-collapse" id="navbar-collapse">
-                        <b:navbarLinks styleClass="nav navbar-nav">
-                            <b:navLink href="index.xhtml" value="Home"></b:navLink>
-                        </b:navbarLinks>
-
-                        <ui:fragment rendered="#{not empty request.remoteUser}">
-                            <b:navbarLinks styleClass="nav navbar-nav navbar-right">
-                                <b:navLink outcome="myaccount" value="#{loginBean.user.firstName} " icon="cog"/>
-                                <b:navCommandLink  value="Log Out" icon="log-out" action="#{loginBean.logout}"/>
+            <header class="main-header">
+                <base href="${request.contextPath}/"/>
+                <p:outputPanel styleClass="navbar navbar-static-top">
+                    <b:container fluid="true">
+                        <p:outputPanel styleClass="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <h:link  styleClass="navbar-brand" outcome="/index.xhtml"><b>Welcome</b></h:link>
+                        </p:outputPanel>
+                        <p:outputPanel styleClass="collapse navbar-collapse" id="navbar-collapse">
+                            <b:navbarLinks styleClass="nav navbar-nav">
+                                <b:navLink outcome="dashboard" value="Dashboard" rendered="#{not empty request.remoteUser}"></b:navLink>
+                                <b:navLink outcome="index" value="Home" rendered="#{empty request.remoteUser}"></b:navLink>
                             </b:navbarLinks>
-                        </ui:fragment>
-
-                        <ui:fragment rendered="#{empty request.remoteUser}">
                             <b:navbarLinks styleClass="nav navbar-nav navbar-right">
-                                <b:navLink value="Log In" href="public/login.xhtml"/>
-                            </b:navbarLinks>
-                        </ui:fragment>
+                                <li class="dropdown margin-right-25">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                        <span class="upper-text">
+                                            #{language.language}
+                                        </span>
+                                        <span class="glyphicon glyphicon-globe hidden-xs" aria-hidden="true">
+                                        </span>
+                                        <span class="hidden-lg hidden-md hidden-sm">
+                                            #{language.language}
+                                            <span class="caret"></span>
+                                        </span>
+                                    </a>
+                                    <c:set var="curLang" value="#{language.language}" scope="request"/>
 
-                    </p:outputPanel>
-                </b:container>
-            </p:outputPanel>
-        </header></h:form>
+                                    <ul class="dropdown-menu" ps:role="menu" ps:aria-labelledby="single-button">
+
+                                        <ui:repeat var="langs" value="#{language.availableLanguages.entrySet().toArray()}">
+                                            <b:navLink ps:role="menuitem">
+                                                <b:commandButton class="dropdown-item lang-btn" 
+                                                                 action="#{language.changeLanguage(langs.key)}"
+                                                                 >
+                                                    #{langs.value}
+                                                    <ui:fragment rendered="#{langs.key == curLang}">
+                                                        <span>&#10003;</span>
+                                                    </ui:fragment>
+                                                </b:commandButton>
+                                            </b:navLink>
+                                        </ui:repeat>
+                                    </ul>
+
+                                </li>
+                            </b:navbarLinks>
+                            <ui:fragment rendered="#{not empty request.remoteUser}">
+                                <b:navbarLinks styleClass="nav navbar-nav navbar-right">
+                                    <b:navLink outcome="myaccount" value="#{loginBean.user.firstName} " icon="cog"/>
+                                    <b:navCommandLink  value="Log Out" icon="log-out" action="#{loginBean.logout}"/>
+                                </b:navbarLinks>
+                            </ui:fragment>
+
+                            <ui:fragment rendered="#{empty request.remoteUser}">
+                                <b:navbarLinks styleClass="nav navbar-nav navbar-right">
+                                    <b:navLink value="Log In" href="public/login.xhtml"/>
+                                </b:navbarLinks>
+                            </ui:fragment>
+
+                        </p:outputPanel>
+                    </b:container>
+                </p:outputPanel>
+            </header></h:form>
     </ui:composition>
-    
+
 </html>
 

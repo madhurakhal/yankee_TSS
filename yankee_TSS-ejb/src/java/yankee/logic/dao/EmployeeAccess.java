@@ -1,11 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yankee.logic.dao;
 
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.security.RolesAllowed;
@@ -14,13 +8,8 @@ import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
 import yankee.entities.ContractEntity;
 import yankee.entities.EmployeeEntity;
-import yankee.entities.PersonEntity;
-import yankee.entities.SupervisorEntity;
 import yankee.logic.ENUM.RoleTypeEnum;
 
-/**
- * @author Dr. Volker Riediger <riediger@uni-koblenz.de>
- */
 @Stateless
 @LocalBean
 public class EmployeeAccess extends AbstractAccess<EmployeeEntity> {
@@ -60,8 +49,6 @@ public class EmployeeAccess extends AbstractAccess<EmployeeEntity> {
 
         try {
             // try to find supervisor
-            em.flush();
-            em.clear();
             return em.createNamedQuery("getEmployeeByName", EmployeeEntity.class)
                     .setParameter("name", name)
                     .getSingleResult();

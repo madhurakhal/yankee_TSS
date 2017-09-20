@@ -21,8 +21,6 @@ public abstract class AbstractAccess<E extends NamedEntity> {
 
     public E getByUuid(String uuid) {
         try {
-            em.flush();
-            em.clear();
             return em.createNamedQuery("getNamedEntityByUuid", getEntityClass())
                     .setParameter("uuid", uuid)
                     .getSingleResult();
@@ -47,5 +45,9 @@ public abstract class AbstractAccess<E extends NamedEntity> {
     
     public E updateEntity (E entity) {
         return em.merge(entity);
+    }
+    
+    public void deleteEntity(E entity){
+        em.remove(entity);
     }
 }

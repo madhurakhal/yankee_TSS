@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Set;
 import yankee.entities.RoleEntity;
+import yankee.logic.ENUM.ContractStatusEnum;
 import yankee.logic.ENUM.PreferredLanguageENUM;
 
 public class Person extends Named {
@@ -14,6 +15,25 @@ public class Person extends Named {
     private String lastName;
     private String emailAddress;
     private LocalDate dateOfBirth;
+    
+    private String contractUUIDForRole;
+    private ContractStatusEnum contractStatusForRole;
+
+    public ContractStatusEnum getContractStatusForRole() {
+        return contractStatusForRole;
+    }
+
+    public void setContractStatusForRole(ContractStatusEnum contractStatusForRole) {
+        this.contractStatusForRole = contractStatusForRole;
+    }
+
+    public String getContractUUIDForRole() {
+        return contractUUIDForRole;
+    }
+
+    public void setContractUUIDForRole(String contractUUIDForRole) {
+        this.contractUUIDForRole = contractUUIDForRole;
+    }
     
     private ArrayList<Role> roles;
     
@@ -78,5 +98,10 @@ public class Person extends Named {
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+    
+    @Override
+    public String toString() {
+        return String.format(firstName + ' ' + lastName );
     }
 }

@@ -1,5 +1,6 @@
 package yankee.web;
 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import javax.ejb.EJB;
@@ -8,17 +9,16 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import yankee.logic.AssistantBusinessLogic;
 import yankee.logic.ContractBusinessLogic;
 import yankee.logic.PersonBusinessLogic;
 import yankee.logic.ENUM.RoleTypeEnum;
 import yankee.logic.EmployeeBusinessLogic;
-import yankee.logic.SecretaryBusinessLogic;
 import yankee.logic.SupervisorBusinessLogic;
 import yankee.logic.to.Employee;
 import yankee.logic.to.Person;
 import yankee.logic.to.Supervisor;
 import org.primefaces.event.RowEditEvent;
+import yankee.logic.ENUM.TimesheetFrequencyEnum;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -48,28 +48,36 @@ public class CreateContractBean {
     private LoginBean loginBean;
 
     private List<Person> persons;
-    private RoleTypeEnum roleType;
+    private RoleTypeEnum roleType;  // CAN DELETEEEEEEEEE look at update PersonDetails method down.
     private Person contractTo;
-    private List<RoleTypeEnum> selectedRoleTypes;
+    private Person changedSupervisorPerson;
+    private RoleTypeEnum yourRoleType;
+    private Date startDate;
+    private Date endDate;
+    private TimesheetFrequencyEnum timesheetFrequency;
 
-    public List<RoleTypeEnum> getSelectedRoleTypes() {
-        return selectedRoleTypes;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public void setSelectedRoleTypes(List<RoleTypeEnum> selectedRoleTypes) {
-        this.selectedRoleTypes = selectedRoleTypes;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
-    public Person getContractTo() {
-        return contractTo;
+    public Date getEndDate() {
+        return endDate;
     }
 
-    public void setContractTo(Person contractTo) {
-        this.contractTo = contractTo;
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
-    public void setPersonBusinessLogic(PersonBusinessLogic personBusinessLogic) {
-        this.personBusinessLogic = personBusinessLogic;
+    public TimesheetFrequencyEnum getTimesheetFrequency() {
+        return timesheetFrequency;
+    }
+
+    public void setTimesheetFrequency(TimesheetFrequencyEnum timesheetFrequency) {
+        this.timesheetFrequency = timesheetFrequency;
     }
 
     public RoleTypeEnum getRoleType() {
@@ -80,48 +88,88 @@ public class CreateContractBean {
         this.roleType = roleType;
     }
 
+    public Person getChangedSupervisorPerson() {
+        return changedSupervisorPerson;
+    }
+
+    public void setChangedSupervisorPerson(Person changedSupervisorPerson) {
+        this.changedSupervisorPerson = changedSupervisorPerson;
+    }
+
+    public RoleTypeEnum getYourRoleType() {
+        return yourRoleType;
+    }
+
+    public void setYourRoleType(RoleTypeEnum yourRoleType) {
+        this.yourRoleType = yourRoleType;
+    }
+
+    public Person getContractTo() {
+        return contractTo;
+    }
+
+    public void setContractTo(Person contractTo) {
+        this.contractTo = contractTo;
+    }
+
     public List<Person> getPersons() {
         if (persons == null) {
-            //personBusinessLogic.createPerson("sbhattarai@uni-koblenz.de");
             persons = personBusinessLogic.getPersonList();
-            // Get the supervisor for the person who is trying to create contract
-            
+
             for (Iterator<Person> iter = persons.listIterator(); iter.hasNext();) {
                 Person all = iter.next();
+
+                // Get the supervisors for the person who is trying to create contract. He might have been supervisor for many contracts.
                 List<Supervisor> ls = supervisorBusinessLogic.getSupervisorByPerson(loginBean.getUser().getUuid());
                 if (all.getUuid() == null ? loginBean.getUser().getUuid() == null : all.getUuid().equals(loginBean.getUser().getUuid())){
-                   iter.remove(); 
+                   iter.remove();
                    continue;
                 }
                 for (Supervisor s : ls){
-                    System.out.println("okeyyy contract id for this supervisor" + s.getContract().getUuid());
                     Employee e = employeeBusinessLogic.getEmployeeByContract(s.getContract().getUuid());
-                    
                     if(e != null){
                         if(all.getUuid() == null ? e.getPerson().getUuid() == null : all.getUuid().equals(e.getPerson().getUuid())){
-                        System.out.println("Person to delete" +e.getPerson().getName());
                         iter.remove();}
-                    }                    
+                    }
                 }
-
-//                if (!"STAFF".equals(all.getUserRoleRealm())) {
-//                    iter.remove();
-//                }
             }
-//            for (Person i : persons) {
-//
-//                ArrayList<Role> roles = i.getRoles();
-//                System.out.println("email" + i.getEmailAddress());
-//                for (Role j : roles) {
-//                    System.out.println("name " + i.getFirstName());
-//                    System.out.println("huh" + j.getRoleType());
-//
-//                }
-//            }
-        }        
+        }
         return persons;
     }
 
+    public void create() {
+        // When create contract button pressed.
+        // First if person clicks on Set supervisor box
+        // select your role i.e assistant or secretary appears.
+        // Make private var as  1. yourRoleType       allowing for Assistant or Secretary enum.
+        //                      2. changedSupervisorPerson
+        Person supervisor = null;
+        System.out.println("Contract To is " + contractTo.getFirstName());
+        Person employee = contractTo;
+        Person assistant = null;
+        Person secretary = null;
+
+        if (yourRoleType == null){
+            supervisor = loginBean.getUser();
+        }
+        else{
+            if (yourRoleType == RoleTypeEnum.SECRETARY){
+                secretary = loginBean.getUser();
+            }
+            else{
+                assistant = loginBean.getUser();
+            }
+            supervisor = changedSupervisorPerson;
+        }
+        contractBusinessLogic.createContract("contract" + employee.getName(), supervisor, assistant, secretary, employee , startDate , endDate , timesheetFrequency);
+
+        FacesMessage msg = new FacesMessage("Contract Created");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
+
+
+    // NOT USED IN OUR MAIN CODES
     // Look this up on test.xhtml it makes use of it.
     public void updatePersonDetails(RowEditEvent event) {
         FacesMessage msg = new FacesMessage("Car Edited", ((Person) event.getObject()).getUuid());
@@ -130,46 +178,4 @@ public class CreateContractBean {
         personBusinessLogic.updatePersonDetails(selectedPerson_uuid, roleType);
         System.out.println("Am I here to update?" + roleType);
     }
-
-    // When create contract button pressed.
-    // Create Supervisor for the person who is logged in.
-    // Create the rolltype(Secretary / Assistant / Employee) selected for the person selected.
-    public void create() {
-        System.out.println("Called for contract create");
-        Person loggedInUser = loginBean.getUser();
-        // Make the current loggedin person as supervisor
-        String supervisorUUID;// i.e. supervisor or 
-
-        supervisorUUID = supervisorBusinessLogic.createSupervisor(loggedInUser.getName(), loggedInUser.getUuid()).getUuid();
-        String assignedRoleUUID;
-        assignedRoleUUID = employeeBusinessLogic.createEmployee(contractTo.getName(), contractTo.getUuid()).getUuid();
-              
-        // switch case to make role associated person
-        
-//        switch (roleType) {
-//            case ASSISTANT:
-//                assignedRoleUUID = assistantBusinessLogic.createAssistant(contractTo.getName(), contractTo.getUuid()).getUuid();
-//                break;
-//            case EMPLOYEE:
-//                assignedRoleUUID = employeeBusinessLogic.createEmployee(contractTo.getName(), contractTo.getUuid()).getUuid();
-//                break;
-//            case SECRETARY:
-//                assignedRoleUUID = secretaryBusinessLogic.createSecretary(contractTo.getName(), contractTo.getUuid()).getUuid();
-//                break;
-//            default:
-//                assignedRoleUUID = null;
-//                break;
-//        }
-
-        // Create new contract with all persons related to it i.e supervisor , assitant or employee or secretary
-        contractBusinessLogic.createContract("contract", supervisorUUID, assignedRoleUUID, RoleTypeEnum.EMPLOYEE);
-        // Get the person whose contract is to be created. 
-        // 
-        // Go through the roles and create roles for that person
-        System.out.println("Am I here to update?" + loggedInUser.getFirstName());
-        System.out.println("Am I here to update?" + roleType);
-        FacesMessage msg = new FacesMessage("Contract Created");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-    }   
-
 }

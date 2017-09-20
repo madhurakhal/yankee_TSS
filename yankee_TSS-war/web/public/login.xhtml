@@ -6,7 +6,7 @@
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
-    <ui:composition template="/WEB-INF/templates/main-template.xhtml">
+ <ui:composition template="/WEB-INF/templates/main-template.xhtml">
         <ui:param name="pageTitle" value="Sign Up" />
         <ui:define name="main-content">
             <b:column styleClass="content">
@@ -14,7 +14,7 @@
                     <b:column col-xs="10" offset-xs="1" col-md="8" offset-md="2">
                         <b:column styleClass="box box-info">
                             <b:column styleClass="box-header with-border text-center">
-                                <h3 styleClass="box-title">Sign In</h3>
+                                <h3 styleClass="box-title">${msg.signIn}</h3>
                             </b:column>
                             <b:form horizontal="true" pt:action="j_security_check" pt:method="post" pt:name="loginForm" pt:role="form">
                             <!--<form role="form" method="post" action="j_security_check" name="loginForm">-->
@@ -57,4 +57,3 @@
         </ui:define>
     </ui:composition>
 </html>
-

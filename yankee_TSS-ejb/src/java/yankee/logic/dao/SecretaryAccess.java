@@ -81,4 +81,16 @@ public class SecretaryAccess extends AbstractAccess<SecretaryEntity> {
             return null;
         } 
     }
+    
+     @RolesAllowed("AUTHENTICATED")
+    // Person being himself
+    public List<SecretaryEntity> getSecretariesByPerson(PersonEntity person) {
+       try {
+            return em.createNamedQuery("getSecretariesByPerson", SecretaryEntity.class)
+                    .setParameter("person", person)
+                    .getResultList();
+        } catch (NoResultException ex) {
+            return null;
+        } 
+    }
 }

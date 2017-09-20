@@ -7,6 +7,7 @@ package yankee.logic;
 
 import java.util.List;
 import javax.ejb.Remote;
+import yankee.logic.to.Contract;
 import yankee.logic.to.Person;
 import yankee.logic.to.Supervisor;
 
@@ -27,5 +28,9 @@ public interface SupervisorBusinessLogic {
     
     public List<Supervisor> getSupervisorByPerson(String personUUID);
     
-    public Supervisor getSupervisorByContract(String contractUUID);  
+    public Supervisor getSupervisorByContract(String contractUUID);
+    
+    public List<Contract> getContracts(String personUUID);
+    
+    public List<Person> getPersonsUnderSupervisor(String supervisorPersonUUID);
 }
