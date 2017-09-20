@@ -21,6 +21,12 @@
                 <h:button value="View Contract Statistics" outcome="viewContractStatistics"/>
             </p:panelGrid>
 
+            <h:form>
+                 <h:commandButton value="createTestData" action="#{testDataGeneratorBean.createTestData}" disabled="true"  ></h:commandButton>     
+                <h:commandButton value="Generate TimeSheets" action="#{testDataGeneratorBean.createTimeSheet}" disabled="false"></h:commandButton>
+                <h:commandButton value="view timesheet" action="#{testDataGeneratorBean.getTimeSheet}"> </h:commandButton>
+                
+            </h:form>
             <p:growl id="msg" showDetail="true"/>
         </ui:define>
     </ui:composition>

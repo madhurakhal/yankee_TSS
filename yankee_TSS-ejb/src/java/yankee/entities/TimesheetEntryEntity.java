@@ -9,12 +9,18 @@ import java.sql.Time;
 import java.time.LocalDate;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
  *
  * TODO: REMOVE relation getter setter as per our requirement. delete set if in collection.
  */
+
+@NamedQueries({
+@NamedQuery(name = "getEntryForTimeSheet", query = "SELECT p FROM TimesheetEntryEntity p WHERE p.timesheet.id = :timesheetId")
+})
 @Entity
 @Table(name = "TIMESHEETENTRY")
 public class TimesheetEntryEntity extends NamedEntity {

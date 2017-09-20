@@ -6,6 +6,7 @@
 package yankee.logic.to;
 
 import java.time.LocalDate;
+import java.util.List;
 import yankee.logic.ENUM.TimesheetStatusEnum;
 
 /**
@@ -69,6 +70,26 @@ public class TimeSheet {
     
     private Long id;
 
+    private String uuid;
+    
+    private List<TimeSheetEntry> timeSheetEntries;
+
+    public List<TimeSheetEntry> getTimeSheetEntries() {
+        return timeSheetEntries;
+    }
+
+    public void setTimeSheetEntries(List<TimeSheetEntry> timeSheetEntries) {
+        this.timeSheetEntries = timeSheetEntries;
+    }
+    
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
     public Long getId() {
         return id;
     }
