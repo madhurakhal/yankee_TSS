@@ -29,8 +29,8 @@
                                         <b:formGroup>
                                             <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="personInput">Select Person</h:outputLabel>
                                             <b:column col-sm="10" col-xs="12">
-                                                <b:selectOneMenu id="contractPersons" value="#{createContractBean.contractTo}" immediate="true">
-                                                    <f:selectItem itemLabel="Choose person" noSelectionOption="true"/>
+                                                <b:selectOneMenu id="contractPersons" value="#{createContractBean.contractTo}" required="true">
+                                                    <f:selectItem itemLabel="Choose person" itemValue="" noSelectionOption="true"/>
                                                     <f:selectItems  value="#{createContractBean.persons}" var="entity" itemLabel="#{entity.firstName} #{entity.lastName}" itemValue="#{entity}"/>
                                                     <f:ajax render="firstNameInput lastNameInput emailAddressInput" />
                                                 </b:selectOneMenu>
@@ -51,6 +51,7 @@
                                             </b:column>
 
                                         </b:formGroup>
+                                        
                                         <b:formGroup>
                                             <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="emailAddressInput">Email</h:outputLabel>
                                             <b:column col-sm="10" col-xs="12">
@@ -61,6 +62,30 @@
                                                 </h:inputText>
                                             </b:column>
                                         </b:formGroup> 
+                                        
+                                        <b:formGroup>
+                                            <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="workingDaysPerWeek">Working Days Per Week</h:outputLabel>
+                                            <b:column  col-sm="10" col-xs="12">
+                                                <h:inputText required="false" disabled="true" id="workingDaysPerWeek" value="#{wageAgreementBean.workingDaysPerWeek}" styleClass="form-control"/>
+                                            </b:column>
+
+                                        </b:formGroup>
+                                        
+                                        <b:formGroup>
+                                            <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="vacationDaysPerYear">Vacation Days Per Year</h:outputLabel>
+                                            <b:column  col-sm="10" col-xs="12">
+                                                <h:inputText required="false" disabled="true" id="vacationDaysPerYear" value="#{wageAgreementBean.vacationDaysPerYear}" styleClass="form-control"/>
+                                            </b:column>
+
+                                        </b:formGroup>
+                                        
+                                        
+                                        <b:formGroup>
+                                        <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="hoursPerWeek">Hours Per Week</h:outputLabel>
+                                        <b:column col-sm="10" col-xs="12">
+                                            <h:inputText required="true" id="hoursPerWeek" value="#{createContractBean.hoursPerWeek}" styleClass="form-control"/>
+                                        </b:column>
+                                    </b:formGroup>
 
                                         <b:formGroup>
                                             <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="timesheetFrequency">Timesheet Frequency</h:outputLabel>
@@ -76,7 +101,7 @@
                                         <b:formGroup>
                                             <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="startDate" >Contract Start Date</h:outputLabel>
                                             <b:column col-sm="10" col-xs="12">
-                                                <p:calendar  id="startDate" value="#{createContractBean.startDate}" pattern="MM/dd/yyyy"/>
+                                                <p:calendar  required = "true" id="startDate" value="#{createContractBean.startDate}" pattern="MM/dd/yyyy"/>
                                             </b:column>
                                         </b:formGroup>
 
@@ -85,7 +110,7 @@
                                         <b:formGroup>
                                             <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="endDate" >Contract end Date</h:outputLabel>
                                             <b:column col-sm="10" col-xs="12">
-                                                <p:calendar  id="endDate" value="#{createContractBean.endDate}" pattern="MM/dd/yyyy"/>
+                                                <p:calendar  id="endDate" required = "true" value="#{createContractBean.endDate}" pattern="MM/dd/yyyy"/>
                                             </b:column>
                                         </b:formGroup>
 

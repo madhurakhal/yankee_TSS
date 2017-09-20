@@ -30,7 +30,6 @@ import yankee.logic.dao.SecretaryAccess;
 import yankee.logic.dao.SupervisorAccess;
 import yankee.logic.to.Contract;
 import yankee.logic.to.Person;
-import yankee.logic.to.Supervisor;
 
 /**
  *

@@ -55,6 +55,15 @@ public class CreateContractBean {
     private Date startDate;
     private Date endDate;
     private TimesheetFrequencyEnum timesheetFrequency;
+    private Integer hoursPerWeek;
+
+    public Integer getHoursPerWeek() {
+        return hoursPerWeek;
+    }
+
+    public void setHoursPerWeek(Integer hoursPerWeek) {
+        this.hoursPerWeek = hoursPerWeek;
+    }
 
     public Date getStartDate() {
         return startDate;
