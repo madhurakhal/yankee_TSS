@@ -36,6 +36,8 @@ public class TimesheetEntity extends NamedEntity {
     private LocalDate startDate;
 
     private LocalDate endDate;
+    
+    private double hoursDue;   
 
     private LocalDate signedByEmployee;
 
@@ -52,6 +54,14 @@ public class TimesheetEntity extends NamedEntity {
     }
 
     public TimesheetEntity() {
+    }
+    
+    public double getHoursDue() {
+        return hoursDue;
+    }
+
+    public void setHoursDue(double hoursDue) {
+        this.hoursDue = hoursDue;
     }
 
     public TimesheetStatusEnum getStatus() {
