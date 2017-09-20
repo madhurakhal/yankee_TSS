@@ -7,6 +7,7 @@ package yankee.entities;
 
 import java.time.LocalDate;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import yankee.logic.ENUM.ContractStatusEnum;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -23,7 +24,9 @@ import yankee.logic.ENUM.TimesheetFrequencyEnum;
 @NamedQueries({
     @NamedQuery(name = "getContractCount", query = "SELECT COUNT(p) FROM ContractEntity p"),
     @NamedQuery(name = "getContractList", query = "SELECT p FROM ContractEntity p ORDER BY p.name, p.uuid"),
-    @NamedQuery(name = "getContractByName", query = "SELECT p FROM ContractEntity p WHERE p.name = :name")
+    @NamedQuery(name = "getContractByName", query = "SELECT p FROM ContractEntity p WHERE p.name = :name"),
+    @NamedQuery(name = "getContractEntityByUuid", query = "SELECT e FROM ContractEntity e WHERE e.uuid = :uuid")
+
 })
 /**
  *
@@ -52,16 +55,16 @@ public class ContractEntity extends NamedEntity {
     @OneToOne
     private SupervisorEntity supervisor;
 
-    @OneToMany(mappedBy = "contract")
+     @OneToMany(mappedBy = "contract",cascade= CascadeType.PERSIST)
     private Set<AssistantEntity> assistants;
     
-    @OneToMany(mappedBy = "contract")
+    @OneToMany(mappedBy = "contract",cascade= CascadeType.PERSIST)
     private Set<TimesheetEntity> timesheets;
     
     @OneToOne
     private EmployeeEntity employee;
 
-    @OneToMany(mappedBy = "contract")
+    @OneToMany(mappedBy = "contract",cascade= CascadeType.PERSIST)
     private Set<SecretaryEntity> secretaries;
 
     public ContractStatusEnum getStatus() {
