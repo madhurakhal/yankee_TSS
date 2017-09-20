@@ -8,6 +8,7 @@ package yankee.logic.impl;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -19,6 +20,7 @@ import yankee.logic.ENUM.TimesheetStatusEnum;
 import yankee.logic.TimeSheetBusinessLogic;
 import yankee.logic.dao.ContractAccess;
 import yankee.logic.dao.TimeSheetAccess;
+import yankee.logic.to.Contract;
 import yankee.logic.to.TimeSheet;
 
 /**
@@ -32,13 +34,12 @@ import yankee.logic.to.TimeSheet;
 @Stateless
 public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
 
-    
     @EJB
     private ContractAccess contractAccess;
-    
-    @EJB 
+
+    @EJB
     private TimeSheetAccess timeSheetAccess;
-    
+
     /**
      * Call this method when the Assistant starts the contract
      *
@@ -49,11 +50,8 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
      *
      * @return String message containing success or failure.
      */
-    
-    
-    
     @Override
-    public List<TimesheetEntity> createTimeSheet(final String uuid,final LocalDate startDate, final LocalDate endDate, final String timeSheetFrequency, final String contractStatus) {
+    public List<TimesheetEntity> createTimeSheet(final String uuid, final LocalDate startDate, final LocalDate endDate, final String timeSheetFrequency, final String contractStatus) {
 
         long diff;
         LocalDate timeSheetStartDate;
@@ -61,12 +59,11 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
         List<TimesheetEntity> timeSheets = null;
         ContractEntity centity = null;
         try {
-            
-            if(uuid!=null)
-            {
-                     centity=getContractByUUID("e88c3ba2-f2e7-49e6-a3c7-4d7bc0186941"); // hardcoding for testing purpose
+
+            if (uuid != null) {
+                centity = getContractByUUID("e88c3ba2-f2e7-49e6-a3c7-4d7bc0186941"); // hardcoding for testing purpose
             }
-            
+
             if (!contractStatus.equalsIgnoreCase(ContractStatusEnum.STARTED.toString())) {
                 throw new IllegalStateException("****Contract Status must be STARTED****");
             }
@@ -80,9 +77,9 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
                     timeSheetStartDate = startDate;
                     for (int i = 0; i < diff; i++) {
                         //tsEntity = new TimesheetEntity();
-                        tsEntity= timeSheetAccess.createEntity("TimeSheet");
-                         tsEntity.setStartDate(timeSheetStartDate);
-                        tsEntity.setEndDate(timeSheetStartDate.withDayOfMonth(timeSheetStartDate.lengthOfMonth()));
+                        tsEntity = timeSheetAccess.createEntity("TimeSheet");
+                        tsEntity.setStartDate(timeSheetStartDate);
+                        //tsEntity.setEndDate(timeSheetStartDate.withDayOfMonth(timeSheetStartDate.lengthOfMonth()));
                         tsEntity.setStatus(TimesheetStatusEnum.IN_PROGRESS);
                         tsEntity.setContract(centity);
                         timeSheetStartDate = timeSheetStartDate.plusMonths(1);
@@ -99,7 +96,7 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
                     LocalDate tempDate;
                     timeSheetStartDate = startDate;
                     for (int i = 1; i <= weeks; i++) {
-                        tsEntity= timeSheetAccess.createEntity("TimeSheet");
+                        tsEntity = timeSheetAccess.createEntity("TimeSheet");
                         //tsEntity = new TimesheetEntity();
                         tsEntity.setStartDate(timeSheetStartDate);
 
@@ -111,7 +108,7 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
                         if (timeSheetStartDate.isAfter(endDate)) {
                             edate = endDate.withDayOfMonth(endDate.lengthOfMonth());
                         }
-                        tsEntity.setEndDate(edate);
+                        //tsEntity.setEndDate(edate);
                         tsEntity.setContract(centity);
                         tsEntity.setStatus(TimesheetStatusEnum.IN_PROGRESS);                        //System.out.println("End of week::" + edate);                        timeSheets.add(tsEntity);
                     }
@@ -156,47 +153,71 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
     public List<TimeSheet> viewTimeSheet() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
-    public ContractEntity getContractByUUID(String uuid)
-    {
-           return contractAccess.getByUuid("e88c3ba2-f2e7-49e6-a3c7-4d7bc0186941");
+    public ContractEntity getContractByUUID(String uuid) {
+        return contractAccess.getByUuid("e88c3ba2-f2e7-49e6-a3c7-4d7bc0186941");
     }
-    
-    
+
     @Override
-    public List<TimeSheet> getAllTimeSheetsForContract(Long contractId) {
+    public List<TimeSheet> getAllTimeSheetsForContract(String contractId) {
 
         //contract uuid=e88c3ba2-f2e7-49e6-a3c7-4d7bc0186941
         List<TimesheetEntity> timeSheetList;
         List<TimeSheet> tsObjList = null;
-        try
-        {
-            if(contractId==null)
-            {
+        try {
+            if (contractId == null) {
                 throw new IllegalStateException("****ContractId cannot be null****");
             }
-            timeSheetList=timeSheetAccess.getTimeSheetsForContract(contractId);
-            
-            tsObjList=new ArrayList<TimeSheet>(timeSheetList.size());
+
+            timeSheetList = timeSheetAccess.getTimeSheetsForContract(contractId);
+
+            tsObjList = new ArrayList<>();
             TimeSheet ts;
-            for (final TimesheetEntity entity: timeSheetList)
-            {
-                ts=new TimeSheet();
+            for (final TimesheetEntity entity : timeSheetList) {
+                ts = new TimeSheet();
                 ts.setEndDate(entity.getEndDate());
                 ts.setId(entity.getId());
                 ts.setStartDate(entity.getStartDate());
                 ts.setStatus(entity.getStatus());
-                ts.setDisplayString(entity.getStartDate().toString()+" - "+ entity.getEndDate().toString());
+                ts.setDisplayString(entity.getStartDate().toString() + " - " + entity.getEndDate().toString());
                 tsObjList.add(ts);
             }
-        }
-        catch(IllegalStateException e)
-        {
+        } catch (IllegalStateException e) {
             System.err.println(e.getMessage());
             e.printStackTrace();
         }
 
+        return tsObjList;
+    }
+
+    @Override
+    public List<TimeSheet> getAllTimeSheetsByGivenDate(LocalDate givenDate) {
+        List<TimesheetEntity> timeSheetList;
+        List<TimeSheet> tsObjList = null;
+        try {
+            timeSheetList = timeSheetAccess.getAllTimeSheetsByGivenDate(givenDate);
+            tsObjList = new ArrayList<>();
+            TimeSheet ts;
+            for (final TimesheetEntity entity : timeSheetList) {
+                ts = new TimeSheet();
+                ts.setEndDate(entity.getEndDate());
+                ts.setId(entity.getId());
+                ts.setStartDate(entity.getStartDate());
+                ts.setStatus(entity.getStatus());
+                ts.setDisplayString(entity.getStartDate().toString() + " - " + entity.getEndDate().toString());
+
+//                ContractEntity contract = entity.getContract();
+//                // to get the contract id
+//                Contract c = new Contract(contract.getUuid(), contract.getName());
+//                // to do fill up contract transfer object
+//                ts.setContract(c);
+
+                tsObjList.add(ts);
+            }
+        } catch (IllegalStateException e) {
+            System.err.println(e.getMessage());
+        }
         return tsObjList;
     }
 

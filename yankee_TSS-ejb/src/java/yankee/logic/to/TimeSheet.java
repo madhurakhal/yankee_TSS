@@ -6,6 +6,7 @@
 package yankee.logic.to;
 
 import java.time.LocalDate;
+import java.util.Date;
 import yankee.logic.ENUM.TimesheetStatusEnum;
 
 /**
@@ -13,6 +14,15 @@ import yankee.logic.ENUM.TimesheetStatusEnum;
  * @author Shriharsh Ambhore (ashriharsh@uni-koblenz.de)
  */
 public class TimeSheet {
+
+    private Contract contract;
+    private TimesheetStatusEnum status;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private LocalDate signedByEmployee;
+    private LocalDate signedBySupervisor;
+    private String displayString;
+    private Long id;
 
     public TimesheetStatusEnum getStatus() {
         return status;
@@ -53,21 +63,6 @@ public class TimeSheet {
     public void setSignedBySupervisor(LocalDate signedBySupervisor) {
         this.signedBySupervisor = signedBySupervisor;
     }
-    
-    
-    private TimesheetStatusEnum status;
-    
-    private LocalDate startDate;
-
-    private LocalDate endDate;
-
-    private LocalDate signedByEmployee;
-
-    private LocalDate signedBySupervisor;
-    
-    private String displayString;
-    
-    private Long id;
 
     public Long getId() {
         return id;
@@ -83,6 +78,13 @@ public class TimeSheet {
 
     public void setDisplayString(String displayString) {
         this.displayString = displayString;
+    }
+
+     public void setContract(Contract contract) {
+        this.contract = contract;
+    }
+     public Contract getContract() {
+        return contract;
     }
     
     

@@ -5,12 +5,14 @@ package yankee.reminder.service;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+import java.time.LocalDate;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.mail.MessagingException;
 import yankee.logic.AssistantBusinessLogic;
+import yankee.logic.ENUM.TimesheetFrequencyEnum;
 import yankee.logic.ENUM.TimesheetStatusEnum;
 import static yankee.logic.ENUM.TimesheetStatusEnum.IN_PROGRESS;
 import yankee.logic.EmployeeBusinessLogic;
@@ -38,14 +40,17 @@ public class ReminderService {
 
     @EJB
     private SecretaryBusinessLogic secretaryBusinessLogic;
-    
+
     @EJB
     private SupervisorBusinessLogic supervisorBusinessLogic;
-    
+
     @EJB
     private AssistantBusinessLogic assistantBusinessLogic;
-    
-    
+
+    @EJB
+    Reminder reminder;
+
+    private Employee employee;
 
     private List<Employee> employees;
     private List<TimeSheet> timeSheets;
@@ -67,52 +72,52 @@ public class ReminderService {
         getDetailsToSendReminder();
     }
 
-    public void getDetailsToSendReminder() {
+    private void getDetailsToSendReminder() {
+        //Current Date
+        LocalDate today = LocalDate.now();
+        System.out.println("Current Date=" + today);
         try {
-            employees = employeeBusinessLogic.getEmployeeList();
-            System.out.println("list of employees  " + employees);
-        } catch (Exception e) {
-            System.out.println("Exception Occured from employee business logic!!");
+            timeSheets = timeSheetBusinessLogic.getAllTimeSheetsByGivenDate(today);
+            System.out.println("list of timesheets  " + timeSheets);
+        } catch (NumberFormatException ne) {
+            System.out.println("Exception Occured from timeSheetBusinessLogic!!");
         }
 
-        if (employees != null) {
-            for (Employee e : employees) {
-                String contractId = e.getContract().getUuid();
-                try {
-                    timeSheets = timeSheetBusinessLogic.getAllTimeSheetsForContract(Long.parseLong(contractId));
-                    System.out.println("list of timesheets  " + timeSheets);
-                } catch (NumberFormatException ne) {
-                    System.out.println("Exception Occured from timeSheetBusinessLogic!!");
-                }
-                if (timeSheets != null) {
-                    for (TimeSheet t : timeSheets) {
-                        System.out.println("Status =" + t.getStatus());
-                        timesheetstatus = t.getStatus();
+        if (timeSheets != null) {
+            for (TimeSheet t : timeSheets) {
+                String contractId = t.getContract().getUuid();
+                System.out.println("Status =" + t.getStatus());
+                timesheetstatus = t.getStatus();
 
-                        switch (timesheetstatus) {
-                            case IN_PROGRESS:
-                                // send email to employee
-                                sendReminderToEmployee(e);
-                                break;
-                            case SIGNED_BY_EMPLOYEE:
-                                // send email to supervisor and assistant
-                                sendReminderToSupervisorAssistant(contractId);
-                                break;
-
-                            case SIGNED_BY_SUPERVISOR:
-                                // send eamil to secretaries
-                                sendReminderToSecretaries(contractId);
-                                break;
+                switch (timesheetstatus) {
+                    case IN_PROGRESS:
+                        // send email to employee
+                        try {
+                            employee = employeeBusinessLogic.getEmployeeByContract(contractId);
+                            if (employee != null) {
+                                sendReminderToEmployee(employee);
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Exception Occured from employee business logic!!");
                         }
-                    }
+                        break;
+                    case SIGNED_BY_EMPLOYEE:
+                        // send email to supervisor and assistant
+                        sendReminderToSupervisorAssistant(contractId);
+                        break;
+
+                    case SIGNED_BY_SUPERVISOR:
+                        // send eamil to secretaries
+                        sendReminderToSecretaries(contractId);
+                        break;
                 }
             }
+
         }
     }
 
     private void sendReminder(String email, String subject, String message) {
         try {
-            Reminder reminder = new Reminder();
             reminder.sendMail(email, subject, message);
         } catch (MessagingException e) {
             System.out.println(e.getMessage());
@@ -130,17 +135,21 @@ public class ReminderService {
     }
 
     private void sendReminderToSupervisorAssistant(String contractId) {
-        Supervisor s = supervisorBusinessLogic.getSupervisorByContract(contractId);
-        if (s != null) {
-            String message = " Dear " + s.getPerson().getFirstName() + " " + s.getPerson().getLastName()
-                            + "\n\n " + " Time sheet is signed by supervisor ....."
-                            + "Regards \n\n Your System.";
+        try {
+            Supervisor s = supervisorBusinessLogic.getSupervisorByContract(contractId);
+            if (s != null) {
+                String message = " Dear " + s.getPerson().getFirstName() + " " + s.getPerson().getLastName()
+                        + "\n\n " + " Time sheet is signed by supervisor ....."
+                        + "Regards \n\n Your System.";
 
-                    String subject = "Time sheet need to be signed for ...";
-                    String email = s.getPerson().getEmailAddress();
-                    sendReminder(email, subject, message);
+                String subject = "Time sheet need to be signed for ...";
+                String email = s.getPerson().getEmailAddress();
+                sendReminder(email, subject, message);
+            }
+        } catch (Exception ex) {
+
         }
-        
+
         try {
             assistants = assistantBusinessLogic.getAssistantsByContract(contractId);
             if (assistants != null) {
@@ -178,4 +187,49 @@ public class ReminderService {
         } catch (Exception ex) {
         }
     }
+
+    /*public void getRequiredData() {
+        try {
+            employees = employeeBusinessLogic.getEmployeeList();
+            System.out.println("list of employees  " + employees);
+        } catch (Exception e) {
+            System.out.println("Exception Occured from employee business logic!!");
+        }
+
+        if (employees != null) {
+            for (Employee e : employees) {
+                String contractId = e.getContract().getUuid();
+                TimesheetFrequencyEnum contractFrequency = e.getContract().getFrequency();
+                try {
+                    timeSheets = timeSheetBusinessLogic.getAllTimeSheetsForContract(contractId);
+                    System.out.println("list of timesheets  " + timeSheets);
+                } catch (NumberFormatException ne) {
+                    System.out.println("Exception Occured from timeSheetBusinessLogic!!");
+                }
+                if (timeSheets != null) {
+                    for (TimeSheet t : timeSheets) {
+                        System.out.println("Status =" + t.getStatus());
+                        timesheetstatus = t.getStatus();
+
+                        switch (timesheetstatus) {
+                            case IN_PROGRESS:
+                                // send email to employee
+                                sendReminderToEmployee(e);
+                                break;
+                            case SIGNED_BY_EMPLOYEE:
+                                // send email to supervisor and assistant
+                                sendReminderToSupervisorAssistant(contractId);
+                                break;
+
+                            case SIGNED_BY_SUPERVISOR:
+                                // send eamil to secretaries
+                                sendReminderToSecretaries(contractId);
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+    } */
+
 }

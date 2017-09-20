@@ -7,6 +7,7 @@ package yankee.logic;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import yankee.entities.ContractEntity;
 import yankee.entities.TimesheetEntity;
@@ -25,6 +26,7 @@ public interface TimeSheetBusinessLogic extends Serializable {
     public String deleteTimeSheet();
     public List<TimeSheet>viewTimeSheet();
     public TimeSheet printTimeSheet();
-    public List<TimeSheet> getAllTimeSheetsForContract(Long contractId);
+    public List<TimeSheet> getAllTimeSheetsForContract(String contractId);
     public ContractEntity getContractByUUID(String uuid);
+    public List<TimeSheet> getAllTimeSheetsByGivenDate (LocalDate givenDate);
 }

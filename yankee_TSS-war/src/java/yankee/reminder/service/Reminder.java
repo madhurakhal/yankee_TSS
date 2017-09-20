@@ -10,6 +10,7 @@ package yankee.reminder.service;
 import java.io.Serializable;
 import java.util.Date;
 import javax.annotation.Resource;
+import javax.ejb.Stateless;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -21,6 +22,7 @@ import javax.mail.internet.MimeMessage;
  *
  * @author pradipgiri
  */
+@Stateless
 public class Reminder implements Serializable{
     
     @Resource(lookup = "mail/uniko-mail")

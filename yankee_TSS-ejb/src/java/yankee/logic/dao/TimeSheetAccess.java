@@ -5,9 +5,17 @@
  */
 package yankee.logic.dao;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.persistence.TemporalType;
+import static javax.persistence.TemporalType.DATE;
 import yankee.entities.TimesheetEntity;
 
 /**
@@ -36,11 +44,12 @@ public class TimeSheetAccess extends AbstractAccess<TimesheetEntity>{
     }
     
   
-    public List<TimesheetEntity> getTimeSheetsForContract(Long contractId) {
+    public List<TimesheetEntity> getTimeSheetsForContract(String contractId) {
         return em.createNamedQuery("getTimeSheetsForContract",TimesheetEntity.class).setParameter("contractId",contractId).getResultList();
     }
     
-    
-    
+    public List<TimesheetEntity> getAllTimeSheetsByGivenDate(LocalDate givenDate) {
+        return em.createNamedQuery("getAllRunningTimeSheet", TimesheetEntity.class).setParameter("givenDate", givenDate).getResultList();
+    }
     
 }
