@@ -54,3 +54,9 @@ span.form-control > input {
 .ui-chkbox {
     padding: 0px 3px 0px 0px;
 }
+.lang-btn {
+    border: none !important;
+    width: 100%;
+    color: black;
+    background-color: #fff;
+}
