@@ -12,6 +12,7 @@ import java.util.List;
 import yankee.entities.ContractEntity;
 import yankee.entities.TimesheetEntity;
 import yankee.logic.to.TimeSheet;
+import yankee.logic.to.TimeSheetEntry;
 
 /**
  *
@@ -20,13 +21,21 @@ import yankee.logic.to.TimeSheet;
 public interface TimeSheetBusinessLogic extends Serializable {
  
     public List<TimesheetEntity> createTimeSheet(String uuid,LocalDate startDate,LocalDate endDate,String timeSheetFrequency,String contractStatus);
-    public String addTimeSheetEntry();
-    public String editTimeSheetEntry();
-    public String removeTimeSheetEntry();
-    public String deleteTimeSheet();
+    public String addUpdateTimeSheetEntry(final TimeSheetEntry obj);
+    public String deleteTimeSheet(final String uuid);
     public List<TimeSheet>viewTimeSheet();
     public TimeSheet printTimeSheet();
+<<<<<<< HEAD
     public List<TimeSheet> getAllTimeSheetsForContract(String contractId);
+=======
+    public String submitTimeSheet(TimeSheet obj);
+    public List<TimeSheet> getAllTimeSheetsForContract(String uuid);
+>>>>>>> origin/master
     public ContractEntity getContractByUUID(String uuid);
+<<<<<<< HEAD
     public List<TimeSheet> getAllTimeSheetsByGivenDate (LocalDate givenDate);
+=======
+    public List<TimeSheetEntry> getEntriesForTimeSheet(String uuid);
+    
+>>>>>>> origin/master
 }

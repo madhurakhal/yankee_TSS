@@ -6,8 +6,15 @@
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui">
-    <ui:composition template="/WEB-INF/templates/main-template.xhtml">        
+    <ui:composition template="/WEB-INF/templates/main-template.xhtml">
         <ui:param name="pageTitle" value="Create Contract Page"/>
+        <ui:define name="breadcrumb">
+            <li>
+                <h:link disabled="true">
+                    Create Contract
+                </h:link>
+            </li>
+        </ui:define>
         <ui:define name="main-content">
             <b:row styleClass="text-center">
                 <p:outputPanel styleClass="box box-default">
@@ -29,6 +36,7 @@
                                                 </b:selectOneMenu>
                                             </b:column>
                                         </b:formGroup>
+
                                         <b:formGroup>
                                             <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="firstNameInput">First Name </h:outputLabel>
                                             <b:column col-sm="10" col-xs="12">
@@ -50,14 +58,48 @@
                                                              value="#{createContractBean.contractTo.emailAddress}"
                                                              required="false" disabled = "true"
                                                              styleClass="form-control">
-                                                </h:inputText> 
+                                                </h:inputText>
+                                            </b:column>
+                                        </b:formGroup> 
+
+                                        <b:formGroup>
+                                            <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="timesheetFrequency">Timesheet Frequency</h:outputLabel>
+                                            <b:column col-sm="10" col-xs="12">
+                                                <b:selectOneMenu id="timesheetFrequency" value="#{createContractBean.timesheetFrequency}" immediate="true">
+                                                    <f:selectItem itemLabel="Choose Frequency" noSelectionOption="true"/>
+                                                    <f:selectItems  value="#{timesheetFrequencyBean.timesheetFrequencyEnum}"/>
+
+                                                </b:selectOneMenu>
+                                            </b:column>
+                                        </b:formGroup>  
+
+                                        <b:formGroup>
+                                            <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="startDate" >Contract Start Date</h:outputLabel>
+                                            <b:column col-sm="10" col-xs="12">
+                                                <p:calendar  id="startDate" value="#{createContractBean.startDate}" pattern="MM/dd/yyyy"/>
                                             </b:column>
                                         </b:formGroup>
+
+
+
+                                        <b:formGroup>
+                                            <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="endDate" >Contract end Date</h:outputLabel>
+                                            <b:column col-sm="10" col-xs="12">
+                                                <p:calendar  id="endDate" value="#{createContractBean.endDate}" pattern="MM/dd/yyyy"/>
+                                            </b:column>
+                                        </b:formGroup>
+
                                     </p:outputPanel>
                                 </b:row>
                             </p:outputPanel>
                         </p:outputPanel>
                         <p:outputPanel styleClass="box-footer">
+                            <h:link
+                                styleClass="btn btn-danger pull-left"
+                                value="Cancel"
+                                outcome="dashboard"
+                                >
+                            </h:link>
                             <b:commandButton id="createContractButton"
                                              disabled="#{empty createContractBean.persons}"
                                              look="success"
@@ -67,7 +109,7 @@
                                              styleClass="pull-right"
                                              />
                         </p:outputPanel>
-                    </b:form>  
+                    </b:form>
                 </p:outputPanel>
             </b:row>
         </ui:define>

@@ -10,10 +10,7 @@ import java.time.LocalDate;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
-/**
- *
- * @author pradipgiri
- */
+
 @Converter(autoApply = true)
 public class LocalDateAttributeConverter implements AttributeConverter<LocalDate, Date> {
 

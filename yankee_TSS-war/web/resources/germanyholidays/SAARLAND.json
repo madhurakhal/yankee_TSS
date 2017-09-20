@@ -1,0 +1,1336 @@
+{
+    "SAARLAND":
+            [
+                {
+                    "date": {
+                        "day": 1,
+                        "month": 1,
+                        "year": 2017,
+                        "dayOfWeek": 7
+                    },
+                    "localName": "Neujahrstag",
+                    "englishName": "New Year's Day"
+                },
+                {
+                    "date": {
+                        "day": 14,
+                        "month": 4,
+                        "year": 2017,
+                        "dayOfWeek": 5
+                    },
+                    "localName": "Karfreitag",
+                    "englishName": "Good Friday"
+                },
+                {
+                    "date": {
+                        "day": 17,
+                        "month": 4,
+                        "year": 2017,
+                        "dayOfWeek": 1
+                    },
+                    "localName": "Ostermontag",
+                    "englishName": "Easter Monday"
+                },
+                {
+                    "date": {
+                        "day": 1,
+                        "month": 5,
+                        "year": 2017,
+                        "dayOfWeek": 1
+                    },
+                    "localName": "Tag der Arbeit",
+                    "englishName": "Labour Day"
+                },
+                {
+                    "date": {
+                        "day": 25,
+                        "month": 5,
+                        "year": 2017,
+                        "dayOfWeek": 4
+                    },
+                    "localName": "Christi Himmelfahrt",
+                    "englishName": "Ascension Day"
+                },
+                {
+                    "date": {
+                        "day": 5,
+                        "month": 6,
+                        "year": 2017,
+                        "dayOfWeek": 1
+                    },
+                    "localName": "Pfingstmontag",
+                    "englishName": "Whit Monday"
+                },
+                {
+                    "date": {
+                        "day": 15,
+                        "month": 6,
+                        "year": 2017,
+                        "dayOfWeek": 4
+                    },
+                    "localName": "Fronleichnam",
+                    "englishName": "Corpus Christi"
+                },
+                {
+                    "date": {
+                        "day": 15,
+                        "month": 8,
+                        "year": 2017,
+                        "dayOfWeek": 2
+                    },
+                    "localName": "Mariä Himmelfahrt",
+                    "englishName": "Assumption of Mary"
+                },
+                {
+                    "date": {
+                        "day": 3,
+                        "month": 10,
+                        "year": 2017,
+                        "dayOfWeek": 2
+                    },
+                    "localName": "Tag der Deutschen Einheit",
+                    "englishName": "German Unity Day"
+                },
+                {
+                    "date": {
+                        "day": 31,
+                        "month": 10,
+                        "year": 2017,
+                        "dayOfWeek": 2
+                    },
+                    "localName": "Reformationstag",
+                    "englishName": "Reformation Day",
+                    "note": "Extra holiday to commemorate 500th anniversary of the Reformation"
+                },
+                {
+                    "date": {
+                        "day": 1,
+                        "month": 11,
+                        "year": 2017,
+                        "dayOfWeek": 3
+                    },
+                    "localName": "Allerheiligen",
+                    "englishName": "All Saints' Day"
+                },
+                {
+                    "date": {
+                        "day": 25,
+                        "month": 12,
+                        "year": 2017,
+                        "dayOfWeek": 1
+                    },
+                    "localName": "Weihnachtstag",
+                    "englishName": "Christmas Day"
+                },
+                {
+                    "date": {
+                        "day": 26,
+                        "month": 12,
+                        "year": 2017,
+                        "dayOfWeek": 2
+                    },
+                    "localName": "Zweiter Weihnachtsfeiertag",
+                    "englishName": "St. Stephen's Day"
+                },
+                {
+                    "date": {
+                        "day": 1,
+                        "month": 1,
+                        "year": 2018,
+                        "dayOfWeek": 1
+                    },
+                    "localName": "Neujahrstag",
+                    "englishName": "New Year's Day"
+                },
+                {
+                    "date": {
+                        "day": 30,
+                        "month": 3,
+                        "year": 2018,
+                        "dayOfWeek": 5
+                    },
+                    "localName": "Karfreitag",
+                    "englishName": "Good Friday"
+                },
+                {
+                    "date": {
+                        "day": 2,
+                        "month": 4,
+                        "year": 2018,
+                        "dayOfWeek": 1
+                    },
+                    "localName": "Ostermontag",
+                    "englishName": "Easter Monday"
+                },
+                {
+                    "date": {
+                        "day": 1,
+                        "month": 5,
+                        "year": 2018,
+                        "dayOfWeek": 2
+                    },
+                    "localName": "Tag der Arbeit",
+                    "englishName": "Labour Day"
+                },
+                {
+                    "date": {
+                        "day": 10,
+                        "month": 5,
+                        "year": 2018,
+                        "dayOfWeek": 4
+                    },
+                    "localName": "Christi Himmelfahrt",
+                    "englishName": "Ascension Day"
+                },
+                {
+                    "date": {
+                        "day": 21,
+                        "month": 5,
+                        "year": 2018,
+                        "dayOfWeek": 1
+                    },
+                    "localName": "Pfingstmontag",
+                    "englishName": "Whit Monday"
+                },
+                {
+                    "date": {
+                        "day": 31,
+                        "month": 5,
+                        "year": 2018,
+                        "dayOfWeek": 4
+                    },
+                    "localName": "Fronleichnam",
+                    "englishName": "Corpus Christi"
+                },
+                {
+                    "date": {
+                        "day": 15,
+                        "month": 8,
+                        "year": 2018,
+                        "dayOfWeek": 3
+                    },
+                    "localName": "Mariä Himmelfahrt",
+                    "englishName": "Assumption of Mary"
+                },
+                {
+                    "date": {
+                        "day": 3,
+                        "month": 10,
+                        "year": 2018,
+                        "dayOfWeek": 3
+                    },
+                    "localName": "Tag der Deutschen Einheit",
+                    "englishName": "German Unity Day"
+                },
+                {
+                    "date": {
+                        "day": 1,
+                        "month": 11,
+                        "year": 2018,
+                        "dayOfWeek": 4
+                    },
+                    "localName": "Allerheiligen",
+                    "englishName": "All Saints' Day"
+                },
+                {
+                    "date": {
+                        "day": 25,
+                        "month": 12,
+                        "year": 2018,
+                        "dayOfWeek": 2
+                    },
+                    "localName": "Weihnachtstag",
+                    "englishName": "Christmas Day"
+                },
+                {
+                    "date": {
+                        "day": 26,
+                        "month": 12,
+                        "year": 2018,
+                        "dayOfWeek": 3
+                    },
+                    "localName": "Zweiter Weihnachtsfeiertag",
+                    "englishName": "St. Stephen's Day"
+                },
+                {
+                    "date": {
+                        "day": 1,
+                        "month": 1,
+                        "year": 2019,
+                        "dayOfWeek": 2
+                    },
+                    "localName": "Neujahrstag",
+                    "englishName": "New Year's Day"
+                },
+                {
+                    "date": {
+                        "day": 19,
+                        "month": 4,
+                        "year": 2019,
+                        "dayOfWeek": 5
+                    },
+                    "localName": "Karfreitag",
+                    "englishName": "Good Friday"
+                },
+                {
+                    "date": {
+                        "day": 22,
+                        "month": 4,
+                        "year": 2019,
+                        "dayOfWeek": 1
+                    },
+                    "localName": "Ostermontag",
+                    "englishName": "Easter Monday"
+                },
+                {
+                    "date": {
+                        "day": 1,
+                        "month": 5,
+                        "year": 2019,
+                        "dayOfWeek": 3
+                    },
+                    "localName": "Tag der Arbeit",
+                    "englishName": "Labour Day"
+                },
+                {
+                    "date": {
+                        "day": 30,
+                        "month": 5,
+                        "year": 2019,
+                        "dayOfWeek": 4
+                    },
+                    "localName": "Christi Himmelfahrt",
+                    "englishName": "Ascension Day"
+                },
+                {
+                    "date": {
+                        "day": 10,
+                        "month": 6,
+                        "year": 2019,
+                        "dayOfWeek": 1
+                    },
+                    "localName": "Pfingstmontag",
+                    "englishName": "Whit Monday"
+                },
+                {
+                    "date": {
+                        "day": 20,
+                        "month": 6,
+                        "year": 2019,
+                        "dayOfWeek": 4
+                    },
+                    "localName": "Fronleichnam",
+                    "englishName": "Corpus Christi"
+                },
+                {
+                    "date": {
+                        "day": 15,
+                        "month": 8,
+                        "year": 2019,
+                        "dayOfWeek": 4
+                    },
+                    "localName": "Mariä Himmelfahrt",
+                    "englishName": "Assumption of Mary"
+                },
+                {
+                    "date": {
+                        "day": 3,
+                        "month": 10,
+                        "year": 2019,
+                        "dayOfWeek": 4
+                    },
+                    "localName": "Tag der Deutschen Einheit",
+                    "englishName": "German Unity Day"
+                },
+                {
+                    "date": {
+                        "day": 1,
+                        "month": 11,
+                        "year": 2019,
+                        "dayOfWeek": 5
+                    },
+                    "localName": "Allerheiligen",
+                    "englishName": "All Saints' Day"
+                },
+                {
+                    "date": {
+                        "day": 25,
+                        "month": 12,
+                        "year": 2019,
+                        "dayOfWeek": 3
+                    },
+                    "localName": "Weihnachtstag",
+                    "englishName": "Christmas Day"
+                },
+                {
+                    "date": {
+                        "day": 26,
+                        "month": 12,
+                        "year": 2019,
+                        "dayOfWeek": 4
+                    },
+                    "localName": "Zweiter Weihnachtsfeiertag",
+                    "englishName": "St. Stephen's Day"
+                },
+                {
+                    "date": {
+                        "day": 1,
+                        "month": 1,
+                        "year": 2020,
+                        "dayOfWeek": 3
+                    },
+                    "localName": "Neujahrstag",
+                    "englishName": "New Year's Day"
+                },
+                {
+                    "date": {
+                        "day": 10,
+                        "month": 4,
+                        "year": 2020,
+                        "dayOfWeek": 5
+                    },
+                    "localName": "Karfreitag",
+                    "englishName": "Good Friday"
+                },
+                {
+                    "date": {
+                        "day": 13,
+                        "month": 4,
+                        "year": 2020,
+                        "dayOfWeek": 1
+                    },
+                    "localName": "Ostermontag",
+                    "englishName": "Easter Monday"
+                },
+                {
+                    "date": {
+                        "day": 1,
+                        "month": 5,
+                        "year": 2020,
+                        "dayOfWeek": 5
+                    },
+                    "localName": "Tag der Arbeit",
+                    "englishName": "Labour Day"
+                },
+                {
+                    "date": {
+                        "day": 21,
+                        "month": 5,
+                        "year": 2020,
+                        "dayOfWeek": 4
+                    },
+                    "localName": "Christi Himmelfahrt",
+                    "englishName": "Ascension Day"
+                },
+                {
+                    "date": {
+                        "day": 1,
+                        "month": 6,
+                        "year": 2020,
+                        "dayOfWeek": 1
+                    },
+                    "localName": "Pfingstmontag",
+                    "englishName": "Whit Monday"
+                },
+                {
+                    "date": {
+                        "day": 11,
+                        "month": 6,
+                        "year": 2020,
+                        "dayOfWeek": 4
+                    },
+                    "localName": "Fronleichnam",
+                    "englishName": "Corpus Christi"
+                },
+                {
+                    "date": {
+                        "day": 15,
+                        "month": 8,
+                        "year": 2020,
+                        "dayOfWeek": 6
+                    },
+                    "localName": "Mariä Himmelfahrt",
+                    "englishName": "Assumption of Mary"
+                },
+                {
+                    "date": {
+                        "day": 3,
+                        "month": 10,
+                        "year": 2020,
+                        "dayOfWeek": 6
+                    },
+                    "localName": "Tag der Deutschen Einheit",
+                    "englishName": "German Unity Day"
+                },
+                {
+                    "date": {
+                        "day": 1,
+                        "month": 11,
+                        "year": 2020,
+                        "dayOfWeek": 7
+                    },
+                    "localName": "Allerheiligen",
+                    "englishName": "All Saints' Day"
+                },
+                {
+                    "date": {
+                        "day": 25,
+                        "month": 12,
+                        "year": 2020,
+                        "dayOfWeek": 5
+                    },
+                    "localName": "Weihnachtstag",
+                    "englishName": "Christmas Day"
+                },
+                {
+                    "date": {
+                        "day": 26,
+                        "month": 12,
+                        "year": 2020,
+                        "dayOfWeek": 6
+                    },
+                    "localName": "Zweiter Weihnachtsfeiertag",
+                    "englishName": "St. Stephen's Day"
+                },
+                {
+                    "date": {
+                        "day": 1,
+                        "month": 1,
+                        "year": 2021,
+                        "dayOfWeek": 5
+                    },
+                    "localName": "Neujahrstag",
+                    "englishName": "New Year's Day"
+                },
+                {
+                    "date": {
+                        "day": 2,
+                        "month": 4,
+                        "year": 2021,
+                        "dayOfWeek": 5
+                    },
+                    "localName": "Karfreitag",
+                    "englishName": "Good Friday"
+                },
+                {
+                    "date": {
+                        "day": 5,
+                        "month": 4,
+                        "year": 2021,
+                        "dayOfWeek": 1
+                    },
+                    "localName": "Ostermontag",
+                    "englishName": "Easter Monday"
+                },
+                {
+                    "date": {
+                        "day": 1,
+                        "month": 5,
+                        "year": 2021,
+                        "dayOfWeek": 6
+                    },
+                    "localName": "Tag der Arbeit",
+                    "englishName": "Labour Day"
+                },
+                {
+                    "date": {
+                        "day": 13,
+                        "month": 5,
+                        "year": 2021,
+                        "dayOfWeek": 4
+                    },
+                    "localName": "Christi Himmelfahrt",
+                    "englishName": "Ascension Day"
+                },
+                {
+                    "date": {
+                        "day": 24,
+                        "month": 5,
+                        "year": 2021,
+                        "dayOfWeek": 1
+                    },
+                    "localName": "Pfingstmontag",
+                    "englishName": "Whit Monday"
+                },
+                {
+                    "date": {
+                        "day": 3,
+                        "month": 6,
+                        "year": 2021,
+                        "dayOfWeek": 4
+                    },
+                    "localName": "Fronleichnam",
+                    "englishName": "Corpus Christi"
+                },
+                {
+                    "date": {
+                        "day": 15,
+                        "month": 8,
+                        "year": 2021,
+                        "dayOfWeek": 7
+                    },
+                    "localName": "Mariä Himmelfahrt",
+                    "englishName": "Assumption of Mary"
+                },
+                {
+                    "date": {
+                        "day": 3,
+                        "month": 10,
+                        "year": 2021,
+                        "dayOfWeek": 7
+                    },
+                    "localName": "Tag der Deutschen Einheit",
+                    "englishName": "German Unity Day"
+                },
+                {
+                    "date": {
+                        "day": 1,
+                        "month": 11,
+                        "year": 2021,
+                        "dayOfWeek": 1
+                    },
+                    "localName": "Allerheiligen",
+                    "englishName": "All Saints' Day"
+                },
+                {
+                    "date": {
+                        "day": 25,
+                        "month": 12,
+                        "year": 2021,
+                        "dayOfWeek": 6
+                    },
+                    "localName": "Weihnachtstag",
+                    "englishName": "Christmas Day"
+                },
+                {
+                    "date": {
+                        "day": 26,
+                        "month": 12,
+                        "year": 2021,
+                        "dayOfWeek": 7
+                    },
+                    "localName": "Zweiter Weihnachtsfeiertag",
+                    "englishName": "St. Stephen's Day"
+                },
+                {
+                    "date": {
+                        "day": 1,
+                        "month": 1,
+                        "year": 2022,
+                        "dayOfWeek": 6
+                    },
+                    "localName": "Neujahrstag",
+                    "englishName": "New Year's Day"
+                },
+                {
+                    "date": {
+                        "day": 15,
+                        "month": 4,
+                        "year": 2022,
+                        "dayOfWeek": 5
+                    },
+                    "localName": "Karfreitag",
+                    "englishName": "Good Friday"
+                },
+                {
+                    "date": {
+                        "day": 18,
+                        "month": 4,
+                        "year": 2022,
+                        "dayOfWeek": 1
+                    },
+                    "localName": "Ostermontag",
+                    "englishName": "Easter Monday"
+                },
+                {
+                    "date": {
+                        "day": 1,
+                        "month": 5,
+                        "year": 2022,
+                        "dayOfWeek": 7
+                    },
+                    "localName": "Tag der Arbeit",
+                    "englishName": "Labour Day"
+                },
+                {
+                    "date": {
+                        "day": 26,
+                        "month": 5,
+                        "year": 2022,
+                        "dayOfWeek": 4
+                    },
+                    "localName": "Christi Himmelfahrt",
+                    "englishName": "Ascension Day"
+                },
+                {
+                    "date": {
+                        "day": 6,
+                        "month": 6,
+                        "year": 2022,
+                        "dayOfWeek": 1
+                    },
+                    "localName": "Pfingstmontag",
+                    "englishName": "Whit Monday"
+                },
+                {
+                    "date": {
+                        "day": 16,
+                        "month": 6,
+                        "year": 2022,
+                        "dayOfWeek": 4
+                    },
+                    "localName": "Fronleichnam",
+                    "englishName": "Corpus Christi"
+                },
+                {
+                    "date": {
+                        "day": 15,
+                        "month": 8,
+                        "year": 2022,
+                        "dayOfWeek": 1
+                    },
+                    "localName": "Mariä Himmelfahrt",
+                    "englishName": "Assumption of Mary"
+                },
+                {
+                    "date": {
+                        "day": 3,
+                        "month": 10,
+                        "year": 2022,
+                        "dayOfWeek": 1
+                    },
+                    "localName": "Tag der Deutschen Einheit",
+                    "englishName": "German Unity Day"
+                },
+                {
+                    "date": {
+                        "day": 1,
+                        "month": 11,
+                        "year": 2022,
+                        "dayOfWeek": 2
+                    },
+                    "localName": "Allerheiligen",
+                    "englishName": "All Saints' Day"
+                },
+                {
+                    "date": {
+                        "day": 25,
+                        "month": 12,
+                        "year": 2022,
+                        "dayOfWeek": 7
+                    },
+                    "localName": "Weihnachtstag",
+                    "englishName": "Christmas Day"
+                },
+                {
+                    "date": {
+                        "day": 26,
+                        "month": 12,
+                        "year": 2022,
+                        "dayOfWeek": 1
+                    },
+                    "localName": "Zweiter Weihnachtsfeiertag",
+                    "englishName": "St. Stephen's Day"
+                },
+                {
+                    "date": {
+                        "day": 1,
+                        "month": 1,
+                        "year": 2023,
+                        "dayOfWeek": 7
+                    },
+                    "localName": "Neujahrstag",
+                    "englishName": "New Year's Day"
+                },
+                {
+                    "date": {
+                        "day": 7,
+                        "month": 4,
+                        "year": 2023,
+                        "dayOfWeek": 5
+                    },
+                    "localName": "Karfreitag",
+                    "englishName": "Good Friday"
+                },
+                {
+                    "date": {
+                        "day": 10,
+                        "month": 4,
+                        "year": 2023,
+                        "dayOfWeek": 1
+                    },
+                    "localName": "Ostermontag",
+                    "englishName": "Easter Monday"
+                },
+                {
+                    "date": {
+                        "day": 1,
+                        "month": 5,
+                        "year": 2023,
+                        "dayOfWeek": 1
+                    },
+                    "localName": "Tag der Arbeit",
+                    "englishName": "Labour Day"
+                },
+                {
+                    "date": {
+                        "day": 18,
+                        "month": 5,
+                        "year": 2023,
+                        "dayOfWeek": 4
+                    },
+                    "localName": "Christi Himmelfahrt",
+                    "englishName": "Ascension Day"
+                },
+                {
+                    "date": {
+                        "day": 29,
+                        "month": 5,
+                        "year": 2023,
+                        "dayOfWeek": 1
+                    },
+                    "localName": "Pfingstmontag",
+                    "englishName": "Whit Monday"
+                },
+                {
+                    "date": {
+                        "day": 8,
+                        "month": 6,
+                        "year": 2023,
+                        "dayOfWeek": 4
+                    },
+                    "localName": "Fronleichnam",
+                    "englishName": "Corpus Christi"
+                },
+                {
+                    "date": {
+                        "day": 15,
+                        "month": 8,
+                        "year": 2023,
+                        "dayOfWeek": 2
+                    },
+                    "localName": "Mariä Himmelfahrt",
+                    "englishName": "Assumption of Mary"
+                },
+                {
+                    "date": {
+                        "day": 3,
+                        "month": 10,
+                        "year": 2023,
+                        "dayOfWeek": 2
+                    },
+                    "localName": "Tag der Deutschen Einheit",
+                    "englishName": "German Unity Day"
+                },
+                {
+                    "date": {
+                        "day": 1,
+                        "month": 11,
+                        "year": 2023,
+                        "dayOfWeek": 3
+                    },
+                    "localName": "Allerheiligen",
+                    "englishName": "All Saints' Day"
+                },
+                {
+                    "date": {
+                        "day": 25,
+                        "month": 12,
+                        "year": 2023,
+                        "dayOfWeek": 1
+                    },
+                    "localName": "Weihnachtstag",
+                    "englishName": "Christmas Day"
+                },
+                {
+                    "date": {
+                        "day": 26,
+                        "month": 12,
+                        "year": 2023,
+                        "dayOfWeek": 2
+                    },
+                    "localName": "Zweiter Weihnachtsfeiertag",
+                    "englishName": "St. Stephen's Day"
+                },
+                {
+                    "date": {
+                        "day": 1,
+                        "month": 1,
+                        "year": 2024,
+                        "dayOfWeek": 1
+                    },
+                    "localName": "Neujahrstag",
+                    "englishName": "New Year's Day"
+                },
+                {
+                    "date": {
+                        "day": 29,
+                        "month": 3,
+                        "year": 2024,
+                        "dayOfWeek": 5
+                    },
+                    "localName": "Karfreitag",
+                    "englishName": "Good Friday"
+                },
+                {
+                    "date": {
+                        "day": 1,
+                        "month": 4,
+                        "year": 2024,
+                        "dayOfWeek": 1
+                    },
+                    "localName": "Ostermontag",
+                    "englishName": "Easter Monday"
+                },
+                {
+                    "date": {
+                        "day": 1,
+                        "month": 5,
+                        "year": 2024,
+                        "dayOfWeek": 3
+                    },
+                    "localName": "Tag der Arbeit",
+                    "englishName": "Labour Day"
+                },
+                {
+                    "date": {
+                        "day": 9,
+                        "month": 5,
+                        "year": 2024,
+                        "dayOfWeek": 4
+                    },
+                    "localName": "Christi Himmelfahrt",
+                    "englishName": "Ascension Day"
+                },
+                {
+                    "date": {
+                        "day": 20,
+                        "month": 5,
+                        "year": 2024,
+                        "dayOfWeek": 1
+                    },
+                    "localName": "Pfingstmontag",
+                    "englishName": "Whit Monday"
+                },
+                {
+                    "date": {
+                        "day": 30,
+                        "month": 5,
+                        "year": 2024,
+                        "dayOfWeek": 4
+                    },
+                    "localName": "Fronleichnam",
+                    "englishName": "Corpus Christi"
+                },
+                {
+                    "date": {
+                        "day": 15,
+                        "month": 8,
+                        "year": 2024,
+                        "dayOfWeek": 4
+                    },
+                    "localName": "Mariä Himmelfahrt",
+                    "englishName": "Assumption of Mary"
+                },
+                {
+                    "date": {
+                        "day": 3,
+                        "month": 10,
+                        "year": 2024,
+                        "dayOfWeek": 4
+                    },
+                    "localName": "Tag der Deutschen Einheit",
+                    "englishName": "German Unity Day"
+                },
+                {
+                    "date": {
+                        "day": 1,
+                        "month": 11,
+                        "year": 2024,
+                        "dayOfWeek": 5
+                    },
+                    "localName": "Allerheiligen",
+                    "englishName": "All Saints' Day"
+                },
+                {
+                    "date": {
+                        "day": 25,
+                        "month": 12,
+                        "year": 2024,
+                        "dayOfWeek": 3
+                    },
+                    "localName": "Weihnachtstag",
+                    "englishName": "Christmas Day"
+                },
+                {
+                    "date": {
+                        "day": 26,
+                        "month": 12,
+                        "year": 2024,
+                        "dayOfWeek": 4
+                    },
+                    "localName": "Zweiter Weihnachtsfeiertag",
+                    "englishName": "St. Stephen's Day"
+                },
+                {
+                    "date": {
+                        "day": 1,
+                        "month": 1,
+                        "year": 2025,
+                        "dayOfWeek": 3
+                    },
+                    "localName": "Neujahrstag",
+                    "englishName": "New Year's Day"
+                },
+                {
+                    "date": {
+                        "day": 18,
+                        "month": 4,
+                        "year": 2025,
+                        "dayOfWeek": 5
+                    },
+                    "localName": "Karfreitag",
+                    "englishName": "Good Friday"
+                },
+                {
+                    "date": {
+                        "day": 21,
+                        "month": 4,
+                        "year": 2025,
+                        "dayOfWeek": 1
+                    },
+                    "localName": "Ostermontag",
+                    "englishName": "Easter Monday"
+                },
+                {
+                    "date": {
+                        "day": 1,
+                        "month": 5,
+                        "year": 2025,
+                        "dayOfWeek": 4
+                    },
+                    "localName": "Tag der Arbeit",
+                    "englishName": "Labour Day"
+                },
+                {
+                    "date": {
+                        "day": 29,
+                        "month": 5,
+                        "year": 2025,
+                        "dayOfWeek": 4
+                    },
+                    "localName": "Christi Himmelfahrt",
+                    "englishName": "Ascension Day"
+                },
+                {
+                    "date": {
+                        "day": 9,
+                        "month": 6,
+                        "year": 2025,
+                        "dayOfWeek": 1
+                    },
+                    "localName": "Pfingstmontag",
+                    "englishName": "Whit Monday"
+                },
+                {
+                    "date": {
+                        "day": 19,
+                        "month": 6,
+                        "year": 2025,
+                        "dayOfWeek": 4
+                    },
+                    "localName": "Fronleichnam",
+                    "englishName": "Corpus Christi"
+                },
+                {
+                    "date": {
+                        "day": 15,
+                        "month": 8,
+                        "year": 2025,
+                        "dayOfWeek": 5
+                    },
+                    "localName": "Mariä Himmelfahrt",
+                    "englishName": "Assumption of Mary"
+                },
+                {
+                    "date": {
+                        "day": 3,
+                        "month": 10,
+                        "year": 2025,
+                        "dayOfWeek": 5
+                    },
+                    "localName": "Tag der Deutschen Einheit",
+                    "englishName": "German Unity Day"
+                },
+                {
+                    "date": {
+                        "day": 1,
+                        "month": 11,
+                        "year": 2025,
+                        "dayOfWeek": 6
+                    },
+                    "localName": "Allerheiligen",
+                    "englishName": "All Saints' Day"
+                },
+                {
+                    "date": {
+                        "day": 25,
+                        "month": 12,
+                        "year": 2025,
+                        "dayOfWeek": 4
+                    },
+                    "localName": "Weihnachtstag",
+                    "englishName": "Christmas Day"
+                },
+                {
+                    "date": {
+                        "day": 26,
+                        "month": 12,
+                        "year": 2025,
+                        "dayOfWeek": 5
+                    },
+                    "localName": "Zweiter Weihnachtsfeiertag",
+                    "englishName": "St. Stephen's Day"
+                },
+                {
+                    "date": {
+                        "day": 1,
+                        "month": 1,
+                        "year": 2026,
+                        "dayOfWeek": 4
+                    },
+                    "localName": "Neujahrstag",
+                    "englishName": "New Year's Day"
+                },
+                {
+                    "date": {
+                        "day": 3,
+                        "month": 4,
+                        "year": 2026,
+                        "dayOfWeek": 5
+                    },
+                    "localName": "Karfreitag",
+                    "englishName": "Good Friday"
+                },
+                {
+                    "date": {
+                        "day": 6,
+                        "month": 4,
+                        "year": 2026,
+                        "dayOfWeek": 1
+                    },
+                    "localName": "Ostermontag",
+                    "englishName": "Easter Monday"
+                },
+                {
+                    "date": {
+                        "day": 1,
+                        "month": 5,
+                        "year": 2026,
+                        "dayOfWeek": 5
+                    },
+                    "localName": "Tag der Arbeit",
+                    "englishName": "Labour Day"
+                },
+                {
+                    "date": {
+                        "day": 14,
+                        "month": 5,
+                        "year": 2026,
+                        "dayOfWeek": 4
+                    },
+                    "localName": "Christi Himmelfahrt",
+                    "englishName": "Ascension Day"
+                },
+                {
+                    "date": {
+                        "day": 25,
+                        "month": 5,
+                        "year": 2026,
+                        "dayOfWeek": 1
+                    },
+                    "localName": "Pfingstmontag",
+                    "englishName": "Whit Monday"
+                },
+                {
+                    "date": {
+                        "day": 4,
+                        "month": 6,
+                        "year": 2026,
+                        "dayOfWeek": 4
+                    },
+                    "localName": "Fronleichnam",
+                    "englishName": "Corpus Christi"
+                },
+                {
+                    "date": {
+                        "day": 15,
+                        "month": 8,
+                        "year": 2026,
+                        "dayOfWeek": 6
+                    },
+                    "localName": "Mariä Himmelfahrt",
+                    "englishName": "Assumption of Mary"
+                },
+                {
+                    "date": {
+                        "day": 3,
+                        "month": 10,
+                        "year": 2026,
+                        "dayOfWeek": 6
+                    },
+                    "localName": "Tag der Deutschen Einheit",
+                    "englishName": "German Unity Day"
+                },
+                {
+                    "date": {
+                        "day": 1,
+                        "month": 11,
+                        "year": 2026,
+                        "dayOfWeek": 7
+                    },
+                    "localName": "Allerheiligen",
+                    "englishName": "All Saints' Day"
+                },
+                {
+                    "date": {
+                        "day": 25,
+                        "month": 12,
+                        "year": 2026,
+                        "dayOfWeek": 5
+                    },
+                    "localName": "Weihnachtstag",
+                    "englishName": "Christmas Day"
+                },
+                {
+                    "date": {
+                        "day": 26,
+                        "month": 12,
+                        "year": 2026,
+                        "dayOfWeek": 6
+                    },
+                    "localName": "Zweiter Weihnachtsfeiertag",
+                    "englishName": "St. Stephen's Day"
+                },
+                {
+                    "date": {
+                        "day": 1,
+                        "month": 1,
+                        "year": 2027,
+                        "dayOfWeek": 5
+                    },
+                    "localName": "Neujahrstag",
+                    "englishName": "New Year's Day"
+                },
+                {
+                    "date": {
+                        "day": 26,
+                        "month": 3,
+                        "year": 2027,
+                        "dayOfWeek": 5
+                    },
+                    "localName": "Karfreitag",
+                    "englishName": "Good Friday"
+                },
+                {
+                    "date": {
+                        "day": 29,
+                        "month": 3,
+                        "year": 2027,
+                        "dayOfWeek": 1
+                    },
+                    "localName": "Ostermontag",
+                    "englishName": "Easter Monday"
+                },
+                {
+                    "date": {
+                        "day": 1,
+                        "month": 5,
+                        "year": 2027,
+                        "dayOfWeek": 6
+                    },
+                    "localName": "Tag der Arbeit",
+                    "englishName": "Labour Day"
+                },
+                {
+                    "date": {
+                        "day": 6,
+                        "month": 5,
+                        "year": 2027,
+                        "dayOfWeek": 4
+                    },
+                    "localName": "Christi Himmelfahrt",
+                    "englishName": "Ascension Day"
+                },
+                {
+                    "date": {
+                        "day": 17,
+                        "month": 5,
+                        "year": 2027,
+                        "dayOfWeek": 1
+                    },
+                    "localName": "Pfingstmontag",
+                    "englishName": "Whit Monday"
+                },
+                {
+                    "date": {
+                        "day": 27,
+                        "month": 5,
+                        "year": 2027,
+                        "dayOfWeek": 4
+                    },
+                    "localName": "Fronleichnam",
+                    "englishName": "Corpus Christi"
+                },
+                {
+                    "date": {
+                        "day": 15,
+                        "month": 8,
+                        "year": 2027,
+                        "dayOfWeek": 7
+                    },
+                    "localName": "Mariä Himmelfahrt",
+                    "englishName": "Assumption of Mary"
+                },
+                {
+                    "date": {
+                        "day": 3,
+                        "month": 10,
+                        "year": 2027,
+                        "dayOfWeek": 7
+                    },
+                    "localName": "Tag der Deutschen Einheit",
+                    "englishName": "German Unity Day"
+                },
+                {
+                    "date": {
+                        "day": 1,
+                        "month": 11,
+                        "year": 2027,
+                        "dayOfWeek": 1
+                    },
+                    "localName": "Allerheiligen",
+                    "englishName": "All Saints' Day"
+                },
+                {
+                    "date": {
+                        "day": 25,
+                        "month": 12,
+                        "year": 2027,
+                        "dayOfWeek": 6
+                    },
+                    "localName": "Weihnachtstag",
+                    "englishName": "Christmas Day"
+                },
+                {
+                    "date": {
+                        "day": 26,
+                        "month": 12,
+                        "year": 2027,
+                        "dayOfWeek": 7
+                    },
+                    "localName": "Zweiter Weihnachtsfeiertag",
+                    "englishName": "St. Stephen's Day"
+                }
+            ]
+}

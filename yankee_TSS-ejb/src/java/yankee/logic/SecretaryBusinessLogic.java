@@ -9,7 +9,6 @@ import java.util.List;
 import javax.ejb.Remote;
 import yankee.logic.to.Person;
 import yankee.logic.to.Secretary;
-import yankee.logic.to.Supervisor;
 
 /**
  *
@@ -29,4 +28,6 @@ public interface SecretaryBusinessLogic {
     public Secretary createSecretary(String name , String personUUID);
     
     public List<Secretary> getSecretariesByContract(String contractUUID);
+    
+    public List<Person> getPersonsUnderSecretary(String secretaryPersonUUID);
 }

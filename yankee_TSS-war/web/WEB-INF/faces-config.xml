@@ -24,7 +24,7 @@
         </navigation-case>       
     </navigation-rule>
     
-    <!--EGINS NAVIGATION FROM THOSE buttons in index.html Can delete-->
+    <!--BEGINS NAVIGATION FROM THOSE buttons in index.html Can delete-->
     <navigation-rule>
         <from-view-id>/index.xhtml</from-view-id>
         <navigation-case>
@@ -43,6 +43,14 @@
             <from-outcome>admin</from-outcome>
             <to-view-id>/admin/administration.xhtml</to-view-id>
         </navigation-case>       
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/staff_logged_in/managecontracts.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>createContract</from-outcome>
+            <to-view-id>/staff_logged_in/createcontract.xhtml</to-view-id>
+        </navigation-case>      
     </navigation-rule>
     <!--ENDSSSSS NAVIGATION FROM THOSE buttons in index.html Can delete-->
     
@@ -69,4 +77,22 @@
             <to-view-id>/logged_in/dashboard.xhtml?faces-redirect=true</to-view-id>
         </navigation-case>
     </navigation-rule>
+   <resource-handler>org.omnifaces.resourcehandler.CombinedResourceHandler</resource-handler>
+   <application>
+      <locale-config>
+         <default-locale>en_US</default-locale>
+         <supported-locale>de</supported-locale>
+         <supported-locale>en</supported-locale>
+      </locale-config>
+      <resource-bundle>
+         <!--
+         specifying the resource-bundle in this config file enables
+         code completion in NetBeans xhtml editor,
+         whereas f:loadbundle does not
+         -->
+         <base-name>yankee.i18n.Messages</base-name>
+         <var>msg</var>
+      </resource-bundle>
+   </application>
+
 </faces-config>

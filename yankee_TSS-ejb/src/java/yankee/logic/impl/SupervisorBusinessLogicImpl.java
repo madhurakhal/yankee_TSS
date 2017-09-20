@@ -10,14 +10,13 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import yankee.entities.ContractEntity;
+import yankee.entities.EmployeeEntity;
 import yankee.entities.PersonEntity;
-import yankee.entities.SecretaryEntity;
 import yankee.entities.SupervisorEntity;
-import yankee.logic.SecretaryBusinessLogic;
 import yankee.logic.SupervisorBusinessLogic;
 import yankee.logic.dao.ContractAccess;
+import yankee.logic.dao.EmployeeAccess;
 import yankee.logic.dao.PersonAccess;
-import yankee.logic.dao.SecretaryAccess;
 import yankee.logic.dao.SupervisorAccess;
 import yankee.logic.to.Contract;
 import yankee.logic.to.Person;
@@ -38,6 +37,9 @@ public class SupervisorBusinessLogicImpl implements SupervisorBusinessLogic {
 
     @EJB
     private ContractAccess contractAccess;
+    
+    @EJB
+    private EmployeeAccess employeeAccess;
 
     @Override
     public List<Person> getSupervisorList() {
@@ -67,21 +69,29 @@ public class SupervisorBusinessLogicImpl implements SupervisorBusinessLogic {
 
     @Override
     public List<Supervisor> getSupervisorByPerson(String personUUID) {
+        System.out.println("HERE in beginning of getsupervisorbyperson" + personUUID);
+        System.out.println(personAccess.getByUuid(personUUID).getFirstName());
         List<SupervisorEntity> lse = supervisorAccess.getSupervisorByPerson(personAccess.getByUuid(personUUID));
+        System.out.println("Nothing in supervisor entity" + lse);
+        
         // Need to create a SUpervisor list from transfer object
         List<Supervisor> result = new ArrayList<>();
-        lse.stream().map((se) -> {
+        //lse.stream().map((se) -> {
+        for (SupervisorEntity se : lse){
             Supervisor p = new Supervisor(se.getUuid(), se.getName());
             ContractEntity contract = se.getContract();
             Contract c = new Contract(contract.getUuid(), contract.getName());
             // Fill up all other contract info
-            p.setContract(c);
-            return p;
-        }).forEachOrdered((p) -> {
+            p.setContract(c);            
+        //    return p;
+        //}).forEachOrdered((p) -> {
             //Should we also update person?
-            //p.setPerson(personAccess.getByUuid(personUUID));
+            PersonEntity pe = se.getPerson();
+            System.out.println("Am I here" + se.getPerson().getFirstName());
+            p.setPerson(new Person(pe.getUuid(),pe.getName()));
             result.add(p);
-        });
+        //});
+        }
         return result;
     }
 
@@ -107,5 +117,29 @@ public class SupervisorBusinessLogicImpl implements SupervisorBusinessLogic {
     @Override
     public List<Contract> getContracts(String personUUID) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
+    @Override
+    public List<Person> getPersonsUnderSupervisor(String supervisorPersonUUID){
+        List<SupervisorEntity> lse = supervisorAccess.getSupervisorByPerson(personAccess.getByUuid(supervisorPersonUUID));
+        List<Person> result = new ArrayList<>();
+        lse.forEach((se) -> {
+            EmployeeEntity ee = employeeAccess.getEmployeeByContract(se.getContract());
+            if (ee != null) {
+                PersonEntity pe = ee.getPerson();
+                Person p = new Person(pe.getUuid() ,pe.getName());
+                p.setFirstName(pe.getFirstName());
+                p.setLastName(pe.getLastName());
+                p.setPreferredLanguage(pe.getPreferredLanguage());
+                p.setDateOfBirth(pe.getDateOfBirth());
+                p.setEmailAddress(pe.getEmailAddress());
+                p.setUserRoleRealm(pe.getUserRoleRealm());
+                p.setContractUUIDForRole(ee.getContract().getUuid());
+                p.setContractStatusForRole(ee.getContract().getStatus());
+                result.add(p);                
+            }
+        });    
+        return result;
     }
 }

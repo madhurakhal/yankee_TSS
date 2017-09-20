@@ -23,8 +23,13 @@ import yankee.logic.ENUM.TimesheetStatusEnum;
 
 
 @NamedQueries({
+<<<<<<< HEAD
     @NamedQuery(name = "getTimeSheetsForContract", query = "SELECT p FROM TimesheetEntity p WHERE p.contract.uuid = :contractId"),
     @NamedQuery(name = "getAllRunningTimeSheet", query = "SELECT p FROM TimesheetEntity p WHERE p.endDate = :givenDate")
+=======
+    @NamedQuery(name = "getTimeSheetsForContract", query = "SELECT p FROM TimesheetEntity p WHERE p.contract.id = :contractId"),
+    @NamedQuery(name = "getTimeSheetEntityByUuid", query = "SELECT e FROM TimesheetEntity e WHERE e.uuid = :uuid")
+>>>>>>> origin/master
 })
 
 
@@ -37,6 +42,8 @@ public class TimesheetEntity extends NamedEntity {
     @Enumerated(EnumType.STRING)
     private TimesheetStatusEnum status;
     
+    //@Column
+   // @Convert(converter=LocalDateConverter.class)
     private LocalDate startDate;
     
     private LocalDate endDate;

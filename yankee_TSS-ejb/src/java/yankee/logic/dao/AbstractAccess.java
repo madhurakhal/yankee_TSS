@@ -46,4 +46,8 @@ public abstract class AbstractAccess<E extends NamedEntity> {
     public E updateEntity (E entity) {
         return em.merge(entity);
     }
+    
+    public void deleteEntity(E entity){
+        em.remove(entity);
+    }
 }
