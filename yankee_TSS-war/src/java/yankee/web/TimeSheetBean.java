@@ -127,10 +127,10 @@ public class TimeSheetBean {
     
     @PostConstruct
     public  void init()    {
-        /*if (timeSheetService != null) { 
-            final ContractEntity centity = timeSheetService.getContractByUUID("e88c3ba2-f2e7-49e6-a3c7-4d7bc0186941");
-            timesheets=timeSheetService.getAllTimeSheetsForContract(centity.getId());
-        }*/
+        if (timeSheetService != null) { 
+            final ContractEntity centity = timeSheetService.getContractByUUID("fa80898f-bd9d-40bd-8203-c7bff5f82d79");
+            timesheets=timeSheetService.getAllTimeSheetsForContract(centity.getUuid());
+        }
         //return timesheets;
     }
   

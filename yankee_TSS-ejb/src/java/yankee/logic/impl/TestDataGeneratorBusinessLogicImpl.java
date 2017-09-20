@@ -10,7 +10,7 @@ import java.time.Month;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import yankee.entities.ContractEntity;
-import static yankee.entities.ContractEntity_.supervisor;
+
 import yankee.entities.EmployeeEntity;
 import yankee.entities.PersonEntity;
 import yankee.entities.SupervisorEntity;
@@ -56,9 +56,9 @@ public class TestDataGeneratorBusinessLogicImpl implements TestDataGeneratorBusi
        System.out.println("creating a person");
        
        
-        PersonEntity p = personAccess.createEntity("Harsh");
+        PersonEntity p = personAccess.createEntity("Shriharsh");
         p.setLastName("Ambhore");
-        p.setFirstName("Harsh");
+        p.setFirstName("Shriharsh");
         p.setEmailAddress("ashriharsh@gmail.com");
         System.out.println("uuid ::"+p.getUuid());
         
@@ -122,7 +122,7 @@ public class TestDataGeneratorBusinessLogicImpl implements TestDataGeneratorBusi
         contract.setTerminationDate(null);
         contract.setName("NTDS EE Grading support");
         contract.setWorkingDaysPerWeek(5);
-       
+        
         contract.setSupervisor(se);
         contract.setEmployee(employee);
        // contract.setEmployee(employeAccess.getByUuid("30b58842-574e-41e6-8418-eda699c5d00d"));
@@ -149,19 +149,12 @@ public class TestDataGeneratorBusinessLogicImpl implements TestDataGeneratorBusi
         contract2.setName("Intro to web Grading support");
         contract2.setWorkingDaysPerWeek(5);
         
-        SupervisorEntity supervisor1=new SupervisorEntity();
-        supervisor.setId(204l);
-        EmployeeEntity employeeEntity1=new EmployeeEntity();
-        employeeEntity.setId(203l);
-        
-        contract2.setSupervisor(supervisor1);
-        contract2.setEmployee(employeeEntity1);
+        contract2.setSupervisor(se2);
+        contract2.setEmployee(employee2);
                
-        
         
     }
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
 }
-

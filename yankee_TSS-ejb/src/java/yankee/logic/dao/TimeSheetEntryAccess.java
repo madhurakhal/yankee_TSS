@@ -30,8 +30,18 @@ public class TimeSheetEntryAccess extends AbstractAccess<TimesheetEntryEntity>{
     @Override
     public long getEntityCount() {
         return 0;
-        
      }
+    
+    public java.util.List<TimesheetEntryEntity> getEntriesForTimeSheet(Long id)
+    {
+        return em.createNamedQuery("getEntryForTimeSheet",TimesheetEntryEntity.class).setParameter("timesheetId", id).getResultList();
+    }
+    
+    public TimesheetEntryEntity findByPrimaryKey(Long id)
+    {
+        return em.find(TimesheetEntryEntity.class, id);
+    }
+    
     
     
     

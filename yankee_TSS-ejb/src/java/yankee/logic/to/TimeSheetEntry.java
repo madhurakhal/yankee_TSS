@@ -20,6 +20,15 @@ public class TimeSheetEntry {
     private LocalDate entryDate;
     private Long timeSheetId;
     private String dateString;
+    private String uudi;
+
+    public String getUudi() {
+        return uudi;
+    }
+
+    public void setUudi(String uudi) {
+        this.uudi = uudi;
+    }
 
     public String getDateString() {
         return dateString;

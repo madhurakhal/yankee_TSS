@@ -24,12 +24,41 @@ and open the template in the editor.
                        <f:selectItems value="#{timeSheetBean.timesheets}" var="timesheet" itemValue="#{timesheet.uuid}" itemLabel="#{timesheet.displayString}"/>
                        <f:ajax event="valueChange" listener="#{timeSheetBean.ajaxListener}" />
                     </h:selectOneMenu>
-                   <p:dataGrid columns="7" rows="5" id="timesheets"  var="ts" layout="grid" value="#{timeSheetBean.timesheets}">
+                   <!--<p:dataGrid columns="7" rows="5" id="timesheets"  var="ts" layout="grid" value="#{timeSheetBean.timesheets}">
                        <p:panel header="#{ts.displayString}">
                        
                        </p:panel>
+                   </p:dataGrid> -->
+                   
+                   <p:dataTable id="tbl" var="timesheet" value="#{timeSheetBean.timesheets}" paginator="true" rows="10">
+                       <p:column>
+                           <f:facet name="header">
+                               <h:outputText value="TimeSheet"/>
+                           </f:facet>
+                           <h:outputText value="#{timesheet.displayString}"/>
+                       </p:column>
+                   
+                         <p:column>
+                           <f:facet name="Header">
+                               <h:outputText value="TimeSheet Status"/>
+                           </f:facet>
+                           <h:outputText value="#{timesheet.status}"/>
+                       </p:column>
                        
-                   </p:dataGrid>
+                       <p:column>
+                           <f:facet name="Header">
+                               <h:outputText value="Action"/>
+                           </f:facet>
+                           <h:commandButton value="Delete" ></h:commandButton>
+                           <h:commandButton value="Add Entry" styleClass="btn btn-primary pull-right btn-flat"/>
+                           <h:commandButton value="Submit"></h:commandButton>
+                           
+                       </p:column>
+                   
+                       
+                       
+                   </p:dataTable>
+                   
             </h:form>
 
         </ui:define>
