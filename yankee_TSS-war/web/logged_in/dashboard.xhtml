@@ -14,7 +14,7 @@
                     <b:form>
                         <p:outputPanel styleClass="box">
                             <p:outputPanel styleClass="box-header">
-                                <p:outputLabel styleClass="pull-left">Associated Contracts</p:outputLabel>
+                                <p:outputLabel styleClass="pull-left">#{msg.associatedContracts}</p:outputLabel>
                                 <h:button value="Create Contract" outcome="createContract" styleClass="btn btn-primary pull-right btn-flat"/>
                             </p:outputPanel>
                             <p:outputPanel styleClass="box-body top-border">
@@ -31,7 +31,7 @@
                 </b:column>
 
             </b:row>
-            <h:button value="Admin Page" outcome="admin"
+            <h:button value="#{msg.adminPage}" outcome="admin"
                       rendered="#{request.isUserInRole('ADMIN')}" />
             <p:growl id="msg" showDetail="true"/>
         </ui:define>
