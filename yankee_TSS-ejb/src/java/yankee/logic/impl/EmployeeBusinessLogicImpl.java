@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yankee.logic.impl;
 
 import java.util.List;
@@ -17,10 +12,6 @@ import yankee.logic.dao.PersonAccess;
 import yankee.logic.to.Employee;
 import yankee.logic.to.Person;
 
-/**
- *
- * @author Sabs
- */
 @Stateless
 public class EmployeeBusinessLogicImpl implements EmployeeBusinessLogic {
 
