@@ -25,17 +25,9 @@ public interface TimeSheetBusinessLogic extends Serializable {
     public String deleteTimeSheet(final String uuid);
     public List<TimeSheet>viewTimeSheet();
     public TimeSheet printTimeSheet();
-<<<<<<< HEAD
-    public List<TimeSheet> getAllTimeSheetsForContract(String contractId);
-=======
-    public String submitTimeSheet(TimeSheet obj);
-    public List<TimeSheet> getAllTimeSheetsForContract(String uuid);
->>>>>>> origin/master
+    public List<TimeSheet> getAllTimeSheetsForContract(String contractId);    
+    public String submitTimeSheet(TimeSheet obj);   
     public ContractEntity getContractByUUID(String uuid);
-<<<<<<< HEAD
     public List<TimeSheet> getAllTimeSheetsByGivenDate (LocalDate givenDate);
-=======
     public List<TimeSheetEntry> getEntriesForTimeSheet(String uuid);
-    
->>>>>>> origin/master
 }

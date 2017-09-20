@@ -6,11 +6,8 @@
 package yankee.logic.to;
 
 import java.time.LocalDate;
-<<<<<<< HEAD
 import java.util.Date;
-=======
 import java.util.List;
->>>>>>> origin/master
 import yankee.logic.ENUM.TimesheetStatusEnum;
 
 /**
