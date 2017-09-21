@@ -82,7 +82,7 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
 
     // This roleTypeUUID is either supervisor, secretary, assistant, employee uuid
     @Override
-    public Contract createContract(String contractName, Person supervisor, Person assistant, Person secretary, Person employee, Date startDate, Date endDate, TimesheetFrequencyEnum timesheetFrequency , double hoursPerWeek, Integer workingDaysPerWeek, Integer vacationDaysPerYear) {
+    public Contract createContract(String contractName, Person supervisor, Person assistant, Person secretary, Person employee, Date startDate, Date endDate, TimesheetFrequencyEnum timesheetFrequency , double hoursPerWeek, int workingDaysPerWeek, int vacationDaysPerYear) {
 
         // When creating contract.
         // 1. First create contract and get contract id Also set start end date along with timesheetFrequency detail.
@@ -90,14 +90,18 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
         // 3. now create supervisor with person associated to it
         // 4. now create secretary as of yet in this createContract.
         // 5. now create assistant as of yet in this createContract.
+        
         //1.
         ContractEntity ce = contractAccess.createEntity(contractName);
         LocalDate lstartdate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate lenddate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         ce.setStartDate(lstartdate);
         ce.setEndDate(lenddate);
+        if (timesheetFrequency != null){
         ce.setFrequency(timesheetFrequency);
+    }
         ce.setHoursPerWeek(hoursPerWeek);
+        
         ce.setVacationDaysPerYear(vacationDaysPerYear);
         ce.setWorkingDaysPerWeek(workingDaysPerWeek);
         
@@ -218,11 +222,11 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
 
     @Override
     public Contract startContract(String contractUUID) {
-        // Create timesheets       
         
         ContractEntity ce = contractAccess.getByUuid(contractUUID);
-        ce.setStatus(ContractStatusEnum.STARTED);  
-        //timeSheetBusinessLogic.createTimeSheet(contractUUID, ce.getStartDate(), ce.getEndDate(), ce.getFrequency(), ce.getStatus());
+        ce.setStatus(ContractStatusEnum.STARTED); 
+        // Create timesheets 
+        timeSheetBusinessLogic.createTimeSheet(contractUUID);
         
         return new Contract(ce.getUuid(), ce.getName());
     }

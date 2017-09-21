@@ -6,9 +6,12 @@
 package yankee.logic.dao;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import yankee.entities.TimesheetEntity;
+import yankee.logic.ENUM.TimesheetStatusEnum;
 
 /**
  *
@@ -29,6 +32,20 @@ public class TimeSheetAccess extends AbstractAccess<TimesheetEntity>{
     protected TimesheetEntity newEntity() {
         return new TimesheetEntity(true);
     }
+    
+    // ADDED For Review Sabin
+    @Override
+    public TimesheetEntity createEntity(String name) {
+        name = name.trim().toLowerCase();
+        TimesheetEntity tse = super.createEntity(name);
+        try {
+            tse.setStatus(TimesheetStatusEnum.IN_PROGRESS);
+        }catch (Exception ex) {
+            Logger.getLogger(SupervisorAccess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return tse;
+    }
+    //
 
     @Override
     public long getEntityCount() {

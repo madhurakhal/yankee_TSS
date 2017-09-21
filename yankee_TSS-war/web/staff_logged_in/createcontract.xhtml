@@ -66,7 +66,7 @@
                                         <b:formGroup>
                                             <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="workingDaysPerWeek">Working Days Per Week</h:outputLabel>
                                             <b:column  col-sm="10" col-xs="12">
-                                                <h:inputText required="false" disabled="true" id="workingDaysPerWeek" value="#{wageAgreementBean.workingDaysPerWeek}" styleClass="form-control"/>
+                                                <h:inputText immediate="true" readonly="#{facesContext.renderResponse}" id="workingDaysPerWeek" value="#{createContractBean.workingDaysPerWeek}" styleClass="form-control"/>
                                             </b:column>
 
                                         </b:formGroup>
@@ -74,7 +74,7 @@
                                         <b:formGroup>
                                             <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="vacationDaysPerYear">Vacation Days Per Year</h:outputLabel>
                                             <b:column  col-sm="10" col-xs="12">
-                                                <h:inputText required="false" disabled="true" id="vacationDaysPerYear" value="#{wageAgreementBean.vacationDaysPerYear}" styleClass="form-control"/>
+                                                <h:inputText immediate="true" readonly="#{facesContext.renderResponse}" id="vacationDaysPerYear" value="#{createContractBean.vacationDaysPerYear}" styleClass="form-control"/>
                                             </b:column>
 
                                         </b:formGroup>

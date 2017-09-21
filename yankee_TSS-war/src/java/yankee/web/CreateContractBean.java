@@ -65,6 +65,7 @@ public class CreateContractBean {
     }
 
     public void setWorkingDaysPerWeek(Integer workingDaysPerWeek) {
+        System.out.println("HEREEEEEE for workindDays");
         this.workingDaysPerWeek = workingDaysPerWeek;
     }
     
@@ -74,6 +75,7 @@ public class CreateContractBean {
     }
 
     public void setVacationDaysPerYear(Integer vacationDaysPerYear) {
+        System.out.println("HERE FOR vacation days");
         this.vacationDaysPerYear = vacationDaysPerYear;
     }
     
@@ -192,7 +194,8 @@ public class CreateContractBean {
             }
             supervisor = changedSupervisorPerson;
         }
-        contractBusinessLogic.createContract("contract" + employee.getName(), supervisor, assistant, secretary, employee , startDate , endDate , timesheetFrequency, hoursPerWeek , workingDaysPerWeek , vacationDaysPerYear );
+        System.out.println(" What values do thaey have and what type" + workingDaysPerWeek + vacationDaysPerYear);
+        contractBusinessLogic.createContract("contract" + employee.getName(), supervisor, assistant, secretary, employee , startDate , endDate , timesheetFrequency, (double)hoursPerWeek , workingDaysPerWeek , vacationDaysPerYear );
 
         FacesMessage msg = new FacesMessage("Contract Created");
         FacesContext.getCurrentInstance().addMessage(null, msg);

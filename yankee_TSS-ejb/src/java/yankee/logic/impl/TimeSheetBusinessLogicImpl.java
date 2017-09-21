@@ -6,6 +6,7 @@
 package yankee.logic.impl;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -25,6 +26,7 @@ import yankee.logic.dao.TimeSheetAccess;
 import yankee.logic.dao.TimeSheetEntryAccess;
 import yankee.logic.to.TimeSheet;
 import yankee.logic.to.TimeSheetEntry;
+import yankee.logic.to.TimesheetT;
 
 
 
@@ -51,6 +53,7 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
     /**
      * Call this method when the Assistant starts the contract
      *
+     * @param contractUUID
      * @param uuid specifying the unique identifier for the contract
      * @param startDate specifying the start date of the contract.
      * @param endDate specifying the end date of the contract.
@@ -59,6 +62,96 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
      *
      * @return String message containing success or failure.
      */
+    
+    // BEGINS .....  TO REVIEW Code For CreateTimeSheet.   
+    
+    @Override
+    public List<TimesheetT> createTimeSheet(final String contractUUID){
+        // Steps for creating timesheet
+        // 1. Get the contract for the contractUUID.
+        // 2. Check if contract started.
+        // 3. Check if timesheetfrequency exists
+        // 4. case of timesheetFrequency 
+        // 5. Create time sheet in INPROGRESS state
+        
+        //1.
+        ContractEntity ce = contractAccess.getByUuid(contractUUID);
+        
+        //2.
+        if(ce.getStatus().equals(ContractStatusEnum.STARTED)){
+            if(ce.getFrequency() != null){
+                // Gets the period between these days. Can access months day and year by just period.days()..
+                Period period = Period.between(ce.getStartDate(), ce.getEndDate());
+                switch (ce.getFrequency()){
+                    case MONTHLY:
+                        for (int i = 0; i <= period.getMonths(); i++) {
+                            TimesheetEntity tsEntity = timeSheetAccess.createEntity("TimeSheet");
+                            tsEntity.setStartDate(ce.getStartDate().plusMonths(i));
+                            tsEntity.setEndDate(ce.getStartDate().plusMonths( i + 1).minusDays(1));
+                            
+                            // NEEED TO PERFORM HOURS DUEEE
+                            //tsEntity.setHoursDue(i);
+                            // NEEED TO PERFORM HOURS DUEEE
+                            
+                            // IN PROGRESS has to be always set when created.. So we will do it in createEntity.
+                            
+                            tsEntity.setContract(ce);                     
+                            
+                            // Now Create Time Sheet Entry at the timesheet period.                            
+                            Period tEntryPeriod = Period.between(tsEntity.getStartDate() ,tsEntity.getEndDate());
+                            for(int j = 0 ; j <= tEntryPeriod.getDays() ; j++){
+                                TimesheetEntryEntity entryEntity = timeSheetEntryAccess.createEntity("TimeSheetEntry");
+                                entryEntity.setEntryDate(tsEntity.getStartDate().plusDays(j));
+                                entryEntity.setTimesheet(tsEntity);
+                            }          
+                        }                   
+                        break;
+                        
+                    case WEEKLY:
+                        for (int i = 0; i <= period.getDays() / 7; i++) {
+                            TimesheetEntity tsEntity = timeSheetAccess.createEntity("TimeSheet");
+                            tsEntity.setStartDate(ce.getStartDate().plusWeeks(i));
+                            
+                            // The last days end date might just be few days and not week. End date = contract end date.
+                            if ( i == ((period.getDays() / 7))){
+                                tsEntity.setEndDate(ce.getEndDate());
+                            }
+                            else{
+                                tsEntity.setEndDate(ce.getStartDate().plusWeeks( i + 1).minusDays(1));
+                            }
+                            
+                            // NEEED TO PERFORM HOURS DUEEE
+                            //tsEntity.setHoursDue(i);
+                            // NEEED TO PERFORM HOURS DUEEE
+                            
+                            // IN PROGRESS has to be always set when created.. So we will do it in createEntity.
+                            
+                            
+                            
+                            tsEntity.setContract(ce); 
+                            
+                            // Now Create Time Sheet Entry at the timesheet period.                            
+                            Period tEntryPeriod = Period.between(tsEntity.getStartDate() ,tsEntity.getEndDate());
+                            for(int j = 0 ; j <= tEntryPeriod.getDays() ; j++){
+                                TimesheetEntryEntity entryEntity = timeSheetEntryAccess.createEntity("TimeSheetEntry");
+                                entryEntity.setEntryDate(tsEntity.getStartDate().plusDays(j));
+                                entryEntity.setTimesheet(tsEntity);
+                            }                            
+                        }                        
+                        break;
+                        
+                    default:
+                        break;
+                }
+            }
+        }
+        return null;
+    }    
+    // ENDS ..... TO REView Code for Create TimeSheet
+    
+    
+    
+    
     @Override
     public List<TimesheetEntity> createTimeSheet(final String uuid, final LocalDate startDate, final LocalDate endDate, final String timeSheetFrequency, final String contractStatus) {
 

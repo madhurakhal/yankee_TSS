@@ -12,6 +12,7 @@ import yankee.entities.ContractEntity;
 import yankee.entities.TimesheetEntity;
 import yankee.logic.to.TimeSheet;
 import yankee.logic.to.TimeSheetEntry;
+import yankee.logic.to.TimesheetT;
 
 /**
  *
@@ -28,5 +29,8 @@ public interface TimeSheetBusinessLogic extends Serializable {
     public List<TimeSheet> getAllTimeSheetsForContract(String uuid);
     public ContractEntity getContractByUUID(String uuid);
     public List<TimeSheetEntry> getEntriesForTimeSheet(String uuid);
+    
+    // TO REVIEW
+    public List<TimesheetT> createTimeSheet(final String contractUUID);
     
 }
