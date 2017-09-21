@@ -2,14 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/Shriharsh/Documents/NetBeansProjects/yankee_TSS_TS/yankee_TSS-ejb/src/java/yankee/logic/impl/TimeSheetBusinessLogicImpl.java</file>
-            <file>file:/C:/Users/Shriharsh/Documents/NetBeansProjects/yankee_TSS_TS/yankee_TSS-ejb/src/java/yankee/logic/to/TimeSheetEntry.java</file>
-            <file>file:/C:/Users/Shriharsh/Documents/NetBeansProjects/yankee_TSS_TS/yankee_TSS-ejb/src/java/yankee/entities/TimesheetEntryEntity.java</file>
-            <file>file:/C:/Users/Shriharsh/Documents/NetBeansProjects/yankee_TSS_TS/yankee_TSS-ejb/src/java/yankee/logic/TimeSheetBusinessLogic.java</file>
-            <file>file:/C:/Users/Shriharsh/Documents/NetBeansProjects/yankee_TSS_TS/yankee_TSS-ejb/src/java/yankee/logic/dao/TimeSheetAccess.java</file>
-            <file>file:/C:/Users/Shriharsh/Documents/NetBeansProjects/yankee_TSS_TS/yankee_TSS-ejb/src/java/yankee/entities/NamedEntity.java</file>
-            <file>file:/C:/Users/Shriharsh/Documents/NetBeansProjects/yankee_TSS_TS/yankee_TSS-ejb/src/java/yankee/logic/dao/TimeSheetEntryAccess.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

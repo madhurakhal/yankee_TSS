@@ -20,7 +20,7 @@ import yankee.logic.ENUM.TimesheetStatusEnum;
 
 
 @NamedQueries({
-    @NamedQuery(name = "getTimeSheetsForContract", query = "SELECT p FROM TimesheetEntity p WHERE p.contract.id = :contractId"),
+    @NamedQuery(name = "getTimeSheetsForContract", query = "SELECT p FROM TimesheetEntity p WHERE p.contract.uuid = :contractUUID"),
     @NamedQuery(name = "getTimeSheetEntityByUuid", query = "SELECT e FROM TimesheetEntity e WHERE e.uuid = :uuid")
 })
 

@@ -8,6 +8,7 @@ package yankee.logic.impl;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -82,7 +83,7 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
 
     // This roleTypeUUID is either supervisor, secretary, assistant, employee uuid
     @Override
-    public Contract createContract(String contractName, Person supervisor, Person assistant, Person secretary, Person employee, Date startDate, Date endDate, TimesheetFrequencyEnum timesheetFrequency , double hoursPerWeek, Integer workingDaysPerWeek, Integer vacationDaysPerYear) {
+    public Contract createContract(String contractName, Person supervisor, Person assistant, Person secretary, Person employee, Date startDate, Date endDate, TimesheetFrequencyEnum timesheetFrequency , double hoursPerWeek, int workingDaysPerWeek, int vacationDaysPerYear) {
 
         // When creating contract.
         // 1. First create contract and get contract id Also set start end date along with timesheetFrequency detail.
@@ -90,14 +91,18 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
         // 3. now create supervisor with person associated to it
         // 4. now create secretary as of yet in this createContract.
         // 5. now create assistant as of yet in this createContract.
+        
         //1.
         ContractEntity ce = contractAccess.createEntity(contractName);
         LocalDate lstartdate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate lenddate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate lenddate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();        
         ce.setStartDate(lstartdate);
         ce.setEndDate(lenddate);
+        if (timesheetFrequency != null){
         ce.setFrequency(timesheetFrequency);
+    }
         ce.setHoursPerWeek(hoursPerWeek);
+        
         ce.setVacationDaysPerYear(vacationDaysPerYear);
         ce.setWorkingDaysPerWeek(workingDaysPerWeek);
         
@@ -218,12 +223,14 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
 
     @Override
     public Contract startContract(String contractUUID) {
-        // Create timesheets       
         
         ContractEntity ce = contractAccess.getByUuid(contractUUID);
-        ce.setStatus(ContractStatusEnum.STARTED);  
-        //timeSheetBusinessLogic.createTimeSheet(contractUUID, ce.getStartDate(), ce.getEndDate(), ce.getFrequency(), ce.getStatus());
+        ce.setStatus(ContractStatusEnum.STARTED); 
+        // Create timesheets 
+        timeSheetBusinessLogic.createTimeSheet(contractUUID);
         
+        // Now updating the total hours due for contract. Subject to change when timesheet entries changes.
+        getUpdateContractStatistics(contractUUID);
         return new Contract(ce.getUuid(), ce.getName());
     }
 
@@ -246,25 +253,22 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
     @Override 
     public Contract getUpdateContractStatistics(String contractUUID){
         ContractEntity ce = contractAccess.getByUuid(contractUUID);
-        ce.setStatus(ContractStatusEnum.STARTED);
         
         // Calculating vacation hours.
         LocalDate date1 = ce.getStartDate();
-        LocalDate date2 = ce.getEndDate();
-        Period period = Period.between(date1, date2);        
-        double durationOfContract = (double) period.getMonths() ;
-        double vacationHours = ce.getVacationDaysPerYear()*(durationOfContract / 12) * (ce.getHoursPerWeek() / ce.getWorkingDaysPerWeek());
+        LocalDate date2 = ce.getEndDate();               
+        double durationOfContract = (double) ChronoUnit.MONTHS.between(date1, date2);
+        double vacationHours = ce.getVacationDaysPerYear()* (durationOfContract / 12) * (ce.getHoursPerWeek() / ce.getWorkingDaysPerWeek());
         ce.setVacationHours(vacationHours);
         
         // Calculating Total hours due.
         // load each timesheet for this contract. and sum each timesheets hoursdue.
-        List<TimesheetEntity> lte = timeSheetAccess.getTimeSheetsForContract(Long.MIN_VALUE);
+        List<TimesheetEntity> lte = timeSheetAccess.getTimeSheetsForContract(contractUUID);
         double totalhoursDue = 0.0;
         for (TimesheetEntity te : lte){
             totalhoursDue += te.getHoursDue();
         }
-        ce.setHoursDue(totalhoursDue);  
-        
+        ce.setHoursDue(totalhoursDue);          
         
         // Fill All Contract details        
         Contract contract = new Contract(ce.getUuid() , ce.getName());

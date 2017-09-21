@@ -12,6 +12,7 @@ import yankee.entities.ContractEntity;
 import yankee.entities.TimesheetEntity;
 import yankee.logic.to.TimeSheet;
 import yankee.logic.to.TimeSheetEntry;
+import yankee.logic.to.TimesheetT;
 
 /**
  *
@@ -19,7 +20,7 @@ import yankee.logic.to.TimeSheetEntry;
  */
 public interface TimeSheetBusinessLogic extends Serializable {
  
-    public void createTimeSheet(final String uuid);
+    //public void createTimeSheet(final String uuid);
     public String addUpdateTimeSheetEntry(final TimeSheetEntry obj);
     public String deleteTimeSheetEntry(final String uuid);
     public String deleteTimeSheet(final String contractUuid,final Boolean isTerminateContract);
@@ -29,5 +30,8 @@ public interface TimeSheetBusinessLogic extends Serializable {
     public List<TimeSheet> getAllTimeSheetsForContract(final String uuid);
     public ContractEntity getContractByUUID(final String uuid);
     public List<TimeSheetEntry> getEntriesForTimeSheet(final String uuid);
+    
+    // TO REVIEW
+    public List<TimesheetT> createTimeSheet(final String contractUUID);
     
 }
