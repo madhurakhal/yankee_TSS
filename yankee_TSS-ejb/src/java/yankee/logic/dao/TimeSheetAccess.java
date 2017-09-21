@@ -53,8 +53,8 @@ public class TimeSheetAccess extends AbstractAccess<TimesheetEntity>{
     }
     
   
-    public List<TimesheetEntity> getTimeSheetsForContract(final Long contractId) {
-        return em.createNamedQuery("getTimeSheetsForContract",TimesheetEntity.class).setParameter("contractId",contractId).getResultList();
+    public List<TimesheetEntity> getTimeSheetsForContract(String contractUUID) {
+        return em.createNamedQuery("getTimeSheetsForContract",TimesheetEntity.class).setParameter("contractUUID",contractUUID).getResultList();
     }
     
     

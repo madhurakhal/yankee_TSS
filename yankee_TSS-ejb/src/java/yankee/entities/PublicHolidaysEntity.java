@@ -12,7 +12,8 @@ import yankee.logic.ENUM.GermanyStatesEnum;
 @NamedQueries({
     @NamedQuery(name = "getPublicHolidaysCount", query = "SELECT COUNT(p) FROM PublicHolidaysEntity p"),
     @NamedQuery(name = "getPublicHolidaysList", query = "SELECT p FROM PublicHolidaysEntity p ORDER BY p.name, p.uuid"),
-    @NamedQuery(name = "getPublicHolidaysByState", query = "SELECT p FROM PublicHolidaysEntity p WHERE p.stateGermany = :state")
+    @NamedQuery(name = "getPublicHolidaysByState", query = "SELECT p FROM PublicHolidaysEntity p WHERE p.stateGermany = :state"),
+    @NamedQuery(name = "getPublicHolidaysByStateAndDate", query = "SELECT p FROM PublicHolidaysEntity p WHERE p.stateGermany = :state AND p.holidayDate = :date")        
 })
 
 // TODO: REMOVE relation getter setter as per our requirement. delete set if in collection.

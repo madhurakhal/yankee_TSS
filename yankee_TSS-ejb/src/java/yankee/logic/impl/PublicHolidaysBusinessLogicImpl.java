@@ -94,4 +94,11 @@ public class PublicHolidaysBusinessLogicImpl implements PublicHolidaysBusinessLo
         Long countEntity = publicHolidaysAccess.getEntityCount();
         return (countEntity.intValue() == 0);
     }
+
+    @Override
+    public boolean isPublicHoliday(int day, int month, int year, GermanyStatesEnum state) {
+        LocalDate date = LocalDate.of(year, month, day);
+        PublicHolidaysEntity phe = publicHolidaysAccess.getPublicHolidaysByStateAndDate(state , date);
+        return (phe != null);
+    }
 }
