@@ -49,6 +49,8 @@ public class ContractEntity extends NamedEntity {
     
     private LocalDate terminationDate;
     private double hoursPerWeek;
+    private double vacationHours;
+    private double hoursDue;
     private int workingDaysPerWeek;
     private int vacationDaysPerYear;
 
@@ -169,6 +171,23 @@ public class ContractEntity extends NamedEntity {
 
     public void setAssistants(Set<AssistantEntity> assistants) {
         this.assistants = assistants;
+    }
+    
+    
+    public double getVacationHours() {
+        return vacationHours;
+    }
+
+    public void setVacationHours(double vacationHours) {
+        this.vacationHours = vacationHours;
+    }
+
+    public double getHoursDue() {
+        return hoursDue;
+    }
+
+    public void setHoursDue(double hoursDue) {
+        this.hoursDue = hoursDue;
     }
 
     public ContractEntity() {
