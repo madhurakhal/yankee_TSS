@@ -33,15 +33,7 @@ public abstract class NamedEntity implements Serializable {
     @Column(unique = true, length = 36)
     private String uuid;
 
-    private boolean isActive;
-
-    public boolean isIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(boolean isActive) {
-        this.isActive = isActive;
-    }
+   
     
     
     private String name;
