@@ -12,7 +12,6 @@ import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.mail.MessagingException;
 import yankee.logic.AssistantBusinessLogic;
-import yankee.logic.ENUM.TimesheetFrequencyEnum;
 import yankee.logic.ENUM.TimesheetStatusEnum;
 import static yankee.logic.ENUM.TimesheetStatusEnum.IN_PROGRESS;
 import yankee.logic.EmployeeBusinessLogic;
@@ -29,6 +28,7 @@ import yankee.logic.to.TimeSheet;
  *
  * @author pradipgiri
  */
+
 @Singleton
 public class ReminderService {
 

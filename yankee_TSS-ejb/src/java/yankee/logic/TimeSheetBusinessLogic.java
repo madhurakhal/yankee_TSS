@@ -30,4 +30,7 @@ public interface TimeSheetBusinessLogic extends Serializable {
     public ContractEntity getContractByUUID(String uuid);
     public List<TimeSheet> getAllTimeSheetsByGivenDate (LocalDate givenDate);
     public List<TimeSheetEntry> getEntriesForTimeSheet(String uuid);
+    
+    public List<TimeSheet> getAllTimeSheetsSignedBySupervisor (LocalDate givenDate);
+    
 }

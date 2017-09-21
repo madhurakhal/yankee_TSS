@@ -8,7 +8,6 @@ package yankee.logic.impl;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,8 +22,8 @@ import yankee.logic.ENUM.TimesheetStatusEnum;
 import yankee.logic.TimeSheetBusinessLogic;
 import yankee.logic.dao.ContractAccess;
 import yankee.logic.dao.TimeSheetAccess;
-import yankee.logic.to.Contract;
 import yankee.logic.dao.TimeSheetEntryAccess;
+import yankee.logic.to.Contract;
 import yankee.logic.to.TimeSheet;
 import yankee.logic.to.TimeSheetEntry;
 
@@ -321,11 +320,41 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
                 ts.setStatus(entity.getStatus());
                 ts.setDisplayString(entity.getStartDate().toString() + " - " + entity.getEndDate().toString());
 
-//                ContractEntity contract = entity.getContract();
-//                // to get the contract id
-//                Contract c = new Contract(contract.getUuid(), contract.getName());
-//                // to do fill up contract transfer object
-//                ts.setContract(c);
+                ContractEntity contract = entity.getContract();
+                // to get the contract id
+                Contract c = new Contract(contract.getUuid(), contract.getName());
+                // to do fill up contract transfer object
+                ts.setContract(c);
+
+                tsObjList.add(ts);
+            }
+        } catch (IllegalStateException e) {
+            System.err.println(e.getMessage());
+        }
+        return tsObjList;
+    }
+    
+    @Override
+    public List<TimeSheet> getAllTimeSheetsSignedBySupervisor(LocalDate givenDate) {
+        List<TimesheetEntity> timeSheetList;
+        List<TimeSheet> tsObjList = null;
+        try {
+            timeSheetList = timeSheetAccess.getAllTimeSheetsSignedBySupervisor(givenDate);
+            tsObjList = new ArrayList<>();
+            TimeSheet ts;
+            for (final TimesheetEntity entity : timeSheetList) {
+                ts = new TimeSheet();
+                ts.setEndDate(entity.getEndDate());
+                ts.setId(entity.getId());
+                ts.setStartDate(entity.getStartDate());
+                ts.setStatus(entity.getStatus());
+                ts.setDisplayString(entity.getStartDate().toString() + " - " + entity.getEndDate().toString());
+
+                ContractEntity contract = entity.getContract();
+                // to get the contract id
+                Contract c = new Contract(contract.getUuid(), contract.getName());
+                // to do fill up contract transfer object
+                ts.setContract(c);
 
                 tsObjList.add(ts);
             }
