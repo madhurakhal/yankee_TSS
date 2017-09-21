@@ -64,16 +64,16 @@
                                         </b:formGroup>
 
                                         <b:formGroup>
-                                            <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="workingDaysPerWeek">Working Days Per Week</h:outputLabel>
-                                            <b:column  col-sm="10" col-xs="12">
+                                            <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="workingDaysPerWeek">Working Days Per Week</h:outputLabel>
+                                            <b:column  col-sm="6" col-xs="12">
                                                 <h:inputText required="false" disabled="true" id="workingDaysPerWeek" value="#{wageAgreementBean.workingDaysPerWeek}" styleClass="form-control"/>
                                             </b:column>
 
                                         </b:formGroup>
 
                                         <b:formGroup>
-                                            <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="vacationDaysPerYear">Vacation Days Per Year</h:outputLabel>
-                                            <b:column  col-sm="10" col-xs="12">
+                                            <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="vacationDaysPerYear">Vacation Days Per Year</h:outputLabel>
+                                            <b:column  col-sm="6" col-xs="12">
                                                 <h:inputText required="false" disabled="true" id="vacationDaysPerYear" value="#{wageAgreementBean.vacationDaysPerYear}" styleClass="form-control"/>
                                             </b:column>
 
@@ -81,9 +81,9 @@
 
 
                                         <b:formGroup>
-                                        <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="hoursPerWeek">Hours Per Week</h:outputLabel>
-                                        <b:column col-sm="10" col-xs="12">
-                                            <h:inputText required="true" id="hoursPerWeek" value="#{createContractBean.hoursPerWeek}" styleClass="form-control"/>
+                                        <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="hoursPerWeek">Hours Per Week</h:outputLabel>
+                                        <b:column col-sm="6" col-xs="12">
+                                            <h:inputText required="true" id="hoursPerWeek" value="#{createContractBean.hoursPerWeek}" styleClass="form-control" onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;"/>
                                         </b:column>
                                     </b:formGroup>
 
