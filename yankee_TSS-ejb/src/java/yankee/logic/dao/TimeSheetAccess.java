@@ -36,11 +36,15 @@ public class TimeSheetAccess extends AbstractAccess<TimesheetEntity>{
     }
     
   
-    public List<TimesheetEntity> getTimeSheetsForContract(Long contractId) {
+    public List<TimesheetEntity> getTimeSheetsForContract(final Long contractId) {
         return em.createNamedQuery("getTimeSheetsForContract",TimesheetEntity.class).setParameter("contractId",contractId).getResultList();
     }
     
     
+    public TimesheetEntity findByPrimaryKey(final Long id)
+    {
+        return em.find(TimesheetEntity.class, id);
+    }
     
     
 }

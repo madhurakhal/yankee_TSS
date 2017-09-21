@@ -26,7 +26,7 @@ import yankee.logic.to.Contract;
 @ManagedBean
 @ViewScoped
 @Named
-public class viewContractDetailsBean {
+public class ContractDetailsBean {
 
     @EJB
     private SupervisorBusinessLogic supervisorBusinessLogic;
@@ -49,6 +49,7 @@ public class viewContractDetailsBean {
     private String contract_id;
     private Person currentContractPerson;
     private Contract contractinfo;
+    
     private Person supervisorForContract;
     private List<Person> secretariesForContract = new ArrayList<>();
     private List<Person> assistantsForContract = new ArrayList<>();
@@ -128,4 +129,44 @@ public class viewContractDetailsBean {
         }
         return assistantsForContract;
     }
+    
+    
+    
+    
+// RELATED TO STATISTICSSSSSSSSss
+    
+    private int TotalHoursDue;
+    private List<Integer> HoursDuePerTimeSheet;
+    private int vacationHours;
+
+    public int getTotalHoursDue() {
+        return TotalHoursDue;
+    }
+
+    public void setTotalHoursDue(int TotalHoursDue) {
+        this.TotalHoursDue = TotalHoursDue;
+    }
+
+    public List<Integer> getHoursDuePerTimeSheet() {
+        return HoursDuePerTimeSheet;
+    }
+
+    public void setHoursDuePerTimeSheet(List<Integer> HoursDuePerTimeSheet) {
+        this.HoursDuePerTimeSheet = HoursDuePerTimeSheet;
+    }
+
+    public int getVacationHours() {
+        return vacationHours;
+    }
+
+    public void setVacationHours(int vacationHours) {
+        this.vacationHours = vacationHours;
+    }
+    
+    
+        
+    
+    
+    
+    
 }

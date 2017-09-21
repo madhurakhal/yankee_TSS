@@ -35,14 +35,19 @@ public interface ContractBusinessLogic {
      * @param startDate
      * @param endDate
      * @param timesheetFrequency
+     * @param hoursPerWeek
+     * @param workingDaysPerWeek
+     * @param vacationDaysPerYear
      * @return 
      */
-    public Contract createContract(String contractName, Person supervisor, Person assistant, Person secretary, Person employee, Date startDate , Date endDate , TimesheetFrequencyEnum timesheetFrequency);
+    public Contract createContract(String contractName, Person supervisor, Person assistant, Person secretary, Person employee, Date startDate , Date endDate , TimesheetFrequencyEnum timesheetFrequency, double hoursPerWeek, Integer workingDaysPerWeek, Integer vacationDaysPerYear);
     
     public Contract editContract(String contractUUID , Person supervisorPerson , List<Person> secretaries , boolean secretariesChanged, List<Person> assistants , boolean assistantsChanged, Date startDate, Date endDate );
     
     public Contract startContract(String contractUUID);
     
     public Contract getContractByUUID(String contractUUID);
+    
+    public Contract getUpdateContractStatistics(String contractUUID);
     
 }

@@ -34,6 +34,7 @@ public class ContractAccess extends AbstractAccess<ContractEntity> {
     @Override
     protected Class<ContractEntity> getEntityClass() {
         return ContractEntity.class;
+        
     }
 
     @Override
@@ -45,5 +46,10 @@ public class ContractAccess extends AbstractAccess<ContractEntity> {
     public long getEntityCount() {
         return em.createNamedQuery("getContractCount", Long.class
         ).getSingleResult();
+    }
+    
+    public ContractEntity getContractEntity(String uuid)
+    {
+        return em.createNamedQuery("getContractEntityByUuid", ContractEntity.class).setParameter("uuid",uuid).getSingleResult();
     }
 }
