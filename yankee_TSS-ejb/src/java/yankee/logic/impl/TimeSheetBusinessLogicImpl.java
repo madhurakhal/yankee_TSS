@@ -10,18 +10,14 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import yankee.entities.ContractEntity;
 import yankee.entities.TimesheetEntity;
 import yankee.entities.TimesheetEntryEntity;
 import yankee.logic.ENUM.ContractStatusEnum;
-import yankee.logic.ENUM.DayOfWeekEnum;
 import yankee.logic.ENUM.GermanyStatesEnum;
-import yankee.logic.ENUM.TimesheetFrequencyEnum;
 import yankee.logic.ENUM.TimesheetStatusEnum;
 import yankee.logic.PublicHolidaysBusinessLogic;
 import yankee.logic.TimeSheetBusinessLogic;
@@ -60,13 +56,8 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
      *
      * @param contractUUID
      * @param uuid specifying the unique identifier for the contract
-     * @param startDate specifying the start date of the contract.
-     * @param endDate specifying the end date of the contract.
-     * @param timeSheetFrequency specifying the frequency of the TimeSheet.
-     * @param contractStatus specifying the status of the contract.
-     *
-     * @return String message containing success or failure.
      */
+    
     // BEGINS .....  TO REVIEW Code For CreateTimeSheet.   
     @Override
     public List<TimesheetT> createTimeSheet(final String contractUUID) {
@@ -236,109 +227,115 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
         return workingDaysEnum;
     }
 
-    @Override
-    public List<TimesheetEntity> createTimeSheet(final String uuid, final LocalDate startDate, final LocalDate endDate, final String timeSheetFrequency, final String contractStatus) {
+    
+//    @Override
+//    public void createTimeSheet(final String uuid) {
+//
+//        long diff;
+//        LocalDate timeSheetStartDate;
+//        LocalDate timeSheetEndDate;
+//        float weeks;
+//        ContractEntity centity = null;
+//        String contractStatus;
+//        String timeSheetFrequency;
+//        LocalDate startDate;
+//        LocalDate endDate;
+//        try {
+//            if (centity != null) {
+//                contractStatus = centity.getStatus().toString();
+//                timeSheetFrequency =centity.getFrequency().toString();
+//                startDate= centity.getStartDate();
+//                endDate= centity.getEndDate();
+//                
+//                if (!contractStatus.equalsIgnoreCase(ContractStatusEnum.STARTED.toString())) {
+//                    throw new IllegalStateException("****Contract Status must be STARTED****");
+//                }
+//
+//                TimesheetEntity tsEntity;
+//                TimesheetEntryEntity entryEntity;
+//                List<TimesheetEntryEntity> timeSheetEntrylist;
+//                LocalDate tempDate;
+//
+//                if (timeSheetFrequency != null) {
+//
+//                    if (timeSheetFrequency.equalsIgnoreCase(TimesheetFrequencyEnum.MONTHLY.toString())) {
+//                        diff = ChronoUnit.MONTHS.between(startDate, endDate);
+//                        timeSheetStartDate = startDate;
+//
+//                        for (int i = 0; i < diff; i++) {
+//                            //tsEntity = new TimesheetEntity();
+//                            timeSheetEntrylist = new ArrayList<TimesheetEntryEntity>();
+//                            tsEntity = timeSheetAccess.createEntity("TimeSheet");
+//                            tsEntity.setStartDate(timeSheetStartDate);
+//                            timeSheetEndDate = timeSheetStartDate.withDayOfMonth(timeSheetStartDate.lengthOfMonth());
+//                            tsEntity.setEndDate(timeSheetEndDate);
+//                            tsEntity.setStatus(TimesheetStatusEnum.IN_PROGRESS);
+//                            tsEntity.setContract(centity);
+//                            timeSheetStartDate = timeSheetStartDate.plusMonths(1);
+//                            tempDate = tsEntity.getStartDate();
+//
+//                            while (!tempDate.isAfter(timeSheetEndDate)) {
+//                                entryEntity = timeSheetEntryAccess.createEntity("TimeSheetEntry");
+//                                entryEntity.setEntryDate(tempDate);
+//                                entryEntity.setTimesheet(tsEntity);
+//                                tempDate = tempDate.plusDays(1);
+//                                timeSheetEntrylist.add(entryEntity);
+//                            }
+//                            tsEntity.setEntries((Set) timeSheetEntrylist);
+//                            //timeSheets.add(tsEntity);
+//                        }
+//
+//                    } else {
+//
+//                        diff = ChronoUnit.DAYS.between(startDate, endDate);
+//                        weeks = diff / 7;
+//                        if (diff % 7 != 0) {
+//                            weeks = weeks + 1;
+//                        }
+//                        timeSheetStartDate = startDate;
+//                        for (int i = 1; i <= weeks; i++) {
+//
+//                            timeSheetEntrylist = new ArrayList<TimesheetEntryEntity>();
+//                            tsEntity = timeSheetAccess.createEntity("TimeSheet");
+//                            tsEntity.setStartDate(timeSheetStartDate);
+//
+//                            timeSheetStartDate = timeSheetStartDate.plusWeeks(1);
+//                            tempDate = timeSheetStartDate;
+//
+//                            LocalDate edate = tempDate.minusDays(1);
+//                            if (timeSheetStartDate.isAfter(endDate)) {
+//                                edate = endDate.withDayOfMonth(endDate.lengthOfMonth());
+//                            }
+//                            tsEntity.setEndDate(edate);
+//                            tsEntity.setContract(centity);
+//                            tsEntity.setStatus(TimesheetStatusEnum.IN_PROGRESS);                        //System.out.println("End of week::" + edate);                        timeSheets.add(tsEntity);
+//
+//                            tempDate = tsEntity.getStartDate();
+//                            while (!tempDate.isAfter(edate)) {
+//                                entryEntity = timeSheetEntryAccess.createEntity("TimeSheetEntry_for_timesheet_" + tsEntity.getId());
+//                                entryEntity.setEntryDate(tempDate);
+//                                tempDate = tempDate.plusDays(1);
+//                                entryEntity.setTimesheet(tsEntity);
+//                                timeSheetEntrylist.add(entryEntity);
+//                            }
+//                            tsEntity.setEntries(new HashSet(timeSheetEntrylist));
+//
+//                        }
+//
+//                    }
+//                }
+//            }
+//        } catch (IllegalStateException e) {
+//            System.err.print(e.getMessage());
+//        }
+//    }
+//
+//     
+    
+    /*
+     * // check if the timesheet is in in_progress state and contract is
+     * started then only allow to perform action
 
-        long diff;
-        LocalDate timeSheetStartDate;
-        LocalDate timeSheetEndDate;
-        float weeks;
-        List<TimesheetEntity> timeSheets = null;
-        ContractEntity centity = null;
-        try {
-
-            if (uuid != null) {
-                centity = getContractByUUID("fa80898f-bd9d-40bd-8203-c7bff5f82d79"); // hardcoding for testing purpose
-            }
-
-            if (!contractStatus.equalsIgnoreCase(ContractStatusEnum.STARTED.toString())) {
-                throw new IllegalStateException("****Contract Status must be STARTED****");
-            }
-
-            timeSheets = new ArrayList<TimesheetEntity>();
-            TimesheetEntity tsEntity;
-            TimesheetEntryEntity entryEntity;
-            List<TimesheetEntryEntity> timeSheetEntrylist;
-            LocalDate tempDate;
-
-            if (timeSheetFrequency != null) {
-
-                if (timeSheetFrequency.equalsIgnoreCase(TimesheetFrequencyEnum.MONTHLY.toString())) {
-                    diff = ChronoUnit.MONTHS.between(startDate, endDate);
-                    timeSheetStartDate = startDate;
-
-                    for (int i = 0; i < diff; i++) {
-                        //tsEntity = new TimesheetEntity();
-                        timeSheetEntrylist = new ArrayList<TimesheetEntryEntity>();
-                        tsEntity = timeSheetAccess.createEntity("TimeSheet");
-                        tsEntity.setStartDate(timeSheetStartDate);
-                        timeSheetEndDate = timeSheetStartDate.withDayOfMonth(timeSheetStartDate.lengthOfMonth());
-                        tsEntity.setEndDate(timeSheetEndDate);
-                        tsEntity.setStatus(TimesheetStatusEnum.IN_PROGRESS);
-                        tsEntity.setContract(centity);
-                        timeSheetStartDate = timeSheetStartDate.plusMonths(1);
-                        tempDate = tsEntity.getStartDate();
-
-                        while (!tempDate.isAfter(timeSheetEndDate)) {
-                            entryEntity = timeSheetEntryAccess.createEntity("TimeSheetEntry");
-                            entryEntity.setEntryDate(tempDate);
-                            entryEntity.setTimesheet(tsEntity);
-                            tempDate = tempDate.plusDays(1);
-                            timeSheetEntrylist.add(entryEntity);
-                        }
-                        tsEntity.setEntries((Set) timeSheetEntrylist);
-                        //timeSheets.add(tsEntity);
-                    }
-
-                } else {
-
-                    diff = ChronoUnit.DAYS.between(startDate, endDate);
-                    weeks = diff / 7;
-                    if (diff % 7 != 0) {
-                        weeks = weeks + 1;
-                    }
-                    timeSheetStartDate = startDate;
-                    for (int i = 1; i <= weeks; i++) {
-
-                        timeSheetEntrylist = new ArrayList<TimesheetEntryEntity>();
-                        tsEntity = timeSheetAccess.createEntity("TimeSheet");
-                        tsEntity.setStartDate(timeSheetStartDate);
-
-                        timeSheetStartDate = timeSheetStartDate.plusWeeks(1);
-                        tempDate = timeSheetStartDate;
-
-                        LocalDate edate = tempDate.minusDays(1);
-                        if (timeSheetStartDate.isAfter(endDate)) {
-                            edate = endDate.withDayOfMonth(endDate.lengthOfMonth());
-                        }
-                        tsEntity.setEndDate(edate);
-                        tsEntity.setContract(centity);
-                        tsEntity.setStatus(TimesheetStatusEnum.IN_PROGRESS);                        //System.out.println("End of week::" + edate);                        timeSheets.add(tsEntity);
-
-                        tempDate = tsEntity.getStartDate();
-                        while (!tempDate.isAfter(edate)) {
-                            entryEntity = timeSheetEntryAccess.createEntity("TimeSheetEntry_for_timesheet_" + tsEntity.getId());
-                            entryEntity.setEntryDate(tempDate);
-                            tempDate = tempDate.plusDays(1);
-                            entryEntity.setTimesheet(tsEntity);
-                            timeSheetEntrylist.add(entryEntity);
-                        }
-                        tsEntity.setEntries(new HashSet(timeSheetEntrylist));
-
-                    }
-
-                }
-
-            }
-        } catch (IllegalStateException e) {
-            System.err.print(e.getMessage());
-            e.printStackTrace();
-        }
-        return timeSheets;
-
-    }
-
-    /**
      *
      * @param TimeSheetEntry object containing the values to be saved/updated
      * @return String containing message.
@@ -347,28 +344,61 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
     public String addUpdateTimeSheetEntry(final TimeSheetEntry obj) {
         String messageString = null;
         try {
-            String uuid = obj.getUudi();
+            String uuid = obj.getUuid();
             if (uuid == null) {
                 throw new IllegalStateException("parameter cannot be null!!");
             }
             TimesheetEntryEntity tsEntry = timeSheetEntryAccess.findByPrimaryKey(timeSheetEntryAccess.getByUuid(uuid).getId());
-
             tsEntry.setDescription(obj.getDescription());
             tsEntry.setEndTime(obj.getEndTime());
             tsEntry.setStartTime(obj.getStartTime());
 
             messageString = "Saved!!"; // need to do internationalization;
 
+            final String timeSheetStatus = tsEntry.getTimesheet().getStatus().toString();
+            final ContractEntity contract = contractAccess.findByPrimaryKey(tsEntry.getTimesheet().getContract().getId());
+
+            if (timeSheetStatus.equalsIgnoreCase("IN_PROGRESS") && contract.getStatus().toString().equalsIgnoreCase("STARTED")) {
+
+                tsEntry.setDescription(obj.getDescription());
+                tsEntry.setEndTime(obj.getEndTime());
+                tsEntry.setStartTime(obj.getStartTime());
+
+                messageString = "Saved!!"; // need to do internationalization;
+
+            } else {
+                throw new IllegalStateException("Please check contract status or timesheet status");
+            }
         } catch (IllegalStateException e) {
             System.err.println(e.getMessage());
-            e.printStackTrace();
         }
         return messageString;
     }
 
     @Override
-    public String deleteTimeSheet(final String uuid) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String deleteTimeSheet(final String contractUuid, Boolean isTerminateContract) {
+        List<TimesheetEntity> removeList;
+        try {
+            if (contractUuid == null) {
+                throw new IllegalStateException("Uuid cannot be null");
+            }
+            // get all timesheets for a contract 
+
+            List<TimesheetEntity> timeSheets = timeSheetAccess.getTimeSheetsForContract(contractUuid);
+
+            if (isTerminateContract) {
+                removeList = new ArrayList<TimesheetEntity>();
+                for (final TimesheetEntity e : timeSheets) {
+                    if (TimesheetStatusEnum.IN_PROGRESS.toString().equalsIgnoreCase(e.getStatus().toString())) {
+                        removeList.add(e);
+                    }
+                }
+            }
+
+        } catch (IllegalStateException e) {
+                System.err.println(e.getMessage());
+        }
+        return "Success";
     }
 
     @Override
@@ -423,7 +453,7 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
             }
         } catch (IllegalStateException e) {
             System.err.println(e.getMessage());
-            e.printStackTrace();
+
         }
 
         return tsObjList;
@@ -452,7 +482,7 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
             TimeSheetEntry entryObj;
 
             for (TimesheetEntryEntity e : objList) {
-                entryObj = new TimeSheetEntry();
+                entryObj = new TimeSheetEntry(e.getUuid(), e.getName());
                 entryObj.setEntryDate(e.getEntryDate());
                 entryObj.setDateString(e.getEntryDate().toString());
                 entryObj.setDescription(e.getDescription());
@@ -468,45 +498,65 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
             }
         } catch (IllegalStateException e) {
             System.err.println(e.getMessage());
-            e.printStackTrace();
         }
         return entryList;
     }
 
     /**
+     * // CALL this method when and emp/supervisor wants to sign the timesheet
      *
-     * @param obj TimeSheet object containing the details.
+     * @param uuid of the timesheet
+     * @param submittedByEmp set true if submitted by emp . Set false if submitted by supervisor. Set null if not called by emp or supervisor.
+     * 
      * @return String message.
      */
     @Override
-    public String submitTimeSheet(final TimeSheet obj) {
+    public String submitTimeSheet(final String uuid, final Boolean submittedByEmp) {
 
         String messageString = null;
         try {
-            String uuid = obj.getUuid();
             if (uuid == null) {
                 throw new IllegalStateException("uuid of timesheet cannot ne null!!");
             }
 
             TimesheetEntity tsEntity = timeSheetAccess.findByPrimaryKey(timeSheetAccess.getByUuid(uuid).getId());
 
-            if (tsEntity.getSignedByEmployee() != null && tsEntity.getSignedBySupervisor() != null) {
-                // do stuff
-                tsEntity.setSignedByEmployee(obj.getSignedByEmployee());
-                tsEntity.setSignedBySupervisor(obj.getSignedBySupervisor());
-                tsEntity.setStatus(TimesheetStatusEnum.SIGNED_BY_EMPLOYEE);
+            // signed by employee should come here
+                if (submittedByEmp) {
 
+                    tsEntity.setSignedByEmployee(LocalDate.now());
+                    tsEntity.setStatus(TimesheetStatusEnum.SIGNED_BY_EMPLOYEE);
+                } else {
+                    // signed by supervisor should come here
+                    tsEntity.setSignedBySupervisor(LocalDate.now());
+                    tsEntity.setStatus(TimesheetStatusEnum.SIGNED_BY_SUPERVISOR);
+                }
                 messageString = "TimeSheet Submitted Successfully!";
-            } else {
-                messageString = "TimeSheet already submitted!";
                 return messageString;
-            }
 
         } catch (IllegalStateException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
-
         return messageString;
     }
 
+    @Override
+    public String deleteTimeSheetEntry(String uuid) {
+        String messageString = null;
+        try {
+            if (uuid == null) {
+                throw new IllegalStateException("please a timeSheet entry");
+            }
+            TimesheetEntryEntity entry = timeSheetEntryAccess.findByPrimaryKey(timeSheetEntryAccess.getByUuid(uuid).getId());
+            entry.setDescription(null);
+            entry.setStartTime(null);
+            entry.setEndTime(null);
+
+            messageString = "Entry removed";
+
+        } catch (IllegalStateException e) {
+            System.err.println(e.getMessage());
+        }
+        return messageString;
+    }
 }

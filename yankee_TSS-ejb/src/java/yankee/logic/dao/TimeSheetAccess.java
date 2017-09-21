@@ -63,5 +63,13 @@ public class TimeSheetAccess extends AbstractAccess<TimesheetEntity>{
         return em.find(TimesheetEntity.class, id);
     }
     
+    public void deleteTimeSheet(final List<TimesheetEntity>objList)
+    {
+        for(TimesheetEntity e:objList)
+        {
+            em.remove(e);
+        }
+        
+    }
     
 }

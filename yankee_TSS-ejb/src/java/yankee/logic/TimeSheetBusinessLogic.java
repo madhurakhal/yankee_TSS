@@ -20,15 +20,16 @@ import yankee.logic.to.TimesheetT;
  */
 public interface TimeSheetBusinessLogic extends Serializable {
  
-    public List<TimesheetEntity> createTimeSheet(String uuid,LocalDate startDate,LocalDate endDate,String timeSheetFrequency,String contractStatus);
+    //public void createTimeSheet(final String uuid);
     public String addUpdateTimeSheetEntry(final TimeSheetEntry obj);
-    public String deleteTimeSheet(final String uuid);
+    public String deleteTimeSheetEntry(final String uuid);
+    public String deleteTimeSheet(final String contractUuid,final Boolean isTerminateContract);
     public List<TimeSheet>viewTimeSheet();
     public TimeSheet printTimeSheet();
-    public String submitTimeSheet(TimeSheet obj);
-    public List<TimeSheet> getAllTimeSheetsForContract(String uuid);
-    public ContractEntity getContractByUUID(String uuid);
-    public List<TimeSheetEntry> getEntriesForTimeSheet(String uuid);
+    public String submitTimeSheet(final String uudi,final Boolean submittedByEmp);
+    public List<TimeSheet> getAllTimeSheetsForContract(final String uuid);
+    public ContractEntity getContractByUUID(final String uuid);
+    public List<TimeSheetEntry> getEntriesForTimeSheet(final String uuid);
     
     // TO REVIEW
     public List<TimesheetT> createTimeSheet(final String contractUUID);
