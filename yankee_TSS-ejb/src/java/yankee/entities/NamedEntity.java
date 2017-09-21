@@ -19,8 +19,10 @@ import javax.persistence.NamedQuery;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+
 @NamedQuery(name = "getNamedEntityByUuid",
-        query = "SELECT e FROM NamedEntity e WHERE e.uuid = :uuid")
+        query = "SELECT e FROM NamedEntity e WHERE e.uuid = :uuid and e.isActive = :true")
+
 public abstract class NamedEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -31,6 +33,17 @@ public abstract class NamedEntity implements Serializable {
     @Column(unique = true, length = 36)
     private String uuid;
 
+    private boolean isActive;
+
+    public boolean isIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
+    }
+    
+    
     private String name;
 
     public NamedEntity() {

@@ -60,7 +60,7 @@ public class TimeSheetBean {
     
     
     public void ajaxListener(AjaxBehaviorEvent e)
-    {
+    {/*
         //String uuid=e.getNewValue().toString();
         System.out.println("yankee.web.TimeSheetBean.valueChangeEvent()"+uuid);
         
@@ -88,7 +88,7 @@ public class TimeSheetBean {
             objList.add(tsObj);
         }
         timeSheetEntries=objList;
-        }
+        }*/
     }
 
     public TimeSheet getTimeSheetFor() {

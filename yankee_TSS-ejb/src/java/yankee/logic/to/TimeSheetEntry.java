@@ -12,7 +12,7 @@ import java.time.LocalDate;
  *
  * @author Shriharsh Ambhore (ashriharsh@uni-koblenz.de)
  */
-public class TimeSheetEntry {
+public class TimeSheetEntry extends Named{
     
     private String description;
     private Time startTime;
@@ -20,16 +20,12 @@ public class TimeSheetEntry {
     private LocalDate entryDate;
     private Long timeSheetId;
     private String dateString;
-    private String uudi;
 
-    public String getUudi() {
-        return uudi;
+    public TimeSheetEntry(String uuid, String name) {
+        super(uuid, name);
     }
 
-    public void setUudi(String uudi) {
-        this.uudi = uudi;
-    }
-
+   
     public String getDateString() {
         return dateString;
     }

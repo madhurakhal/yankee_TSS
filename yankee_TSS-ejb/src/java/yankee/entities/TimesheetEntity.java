@@ -43,6 +43,8 @@ public class TimesheetEntity extends NamedEntity {
     private LocalDate signedByEmployee;
 
     private LocalDate signedBySupervisor;
+    
+    private Double hoursDue;
 
     @ManyToOne
     private ContractEntity contract;

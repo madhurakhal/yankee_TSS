@@ -52,4 +52,11 @@ public class ContractAccess extends AbstractAccess<ContractEntity> {
     {
         return em.createNamedQuery("getContractEntityByUuid", ContractEntity.class).setParameter("uuid",uuid).getSingleResult();
     }
+
+    public ContractEntity findByPrimaryKey(final Long id)
+    {
+        return em.find(ContractEntity.class, id);
+    }
+    
+
 }
