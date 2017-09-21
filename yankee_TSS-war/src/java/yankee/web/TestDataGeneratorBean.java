@@ -52,7 +52,7 @@ public class TestDataGeneratorBean implements Serializable{
       if(timeSheetService!=null)
       {
           ContractEntity centity=timeSheetService.getContractByUUID("e88c3ba2-f2e7-49e6-a3c7-4d7bc0186941");
-          List<TimesheetEntity> timeSheetList=timeSheetService.createTimeSheet(centity.getUuid(),centity.getStartDate(), centity.getEndDate(),centity.getFrequency().toString(), centity.getStatus().toString());
+          timeSheetService.createTimeSheet(centity.getUuid());
       
       }
       

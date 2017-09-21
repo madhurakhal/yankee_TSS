@@ -20,9 +20,9 @@ import yankee.logic.ENUM.TimesheetStatusEnum;
 
 
 @NamedQueries({
-    @NamedQuery(name = "getTimeSheetsForContract", query = "SELECT p FROM TimesheetEntity p WHERE p.contract.uuid = :contractId"),
-    @NamedQuery(name = "getAllRunningTimeSheet", query = "SELECT p FROM TimesheetEntity p WHERE p.endDate = :givenDate"),
+    @NamedQuery(name = "getTimeSheetsForContract", query = "SELECT p FROM TimesheetEntity p WHERE p.contract.uuid = :contractUUID"),
     @NamedQuery(name = "getTimeSheetEntityByUuid", query = "SELECT e FROM TimesheetEntity e WHERE e.uuid = :uuid"),
+    @NamedQuery(name = "getAllRunningTimeSheet", query = "SELECT p FROM TimesheetEntity p WHERE p.endDate = :givenDate"),
     @NamedQuery(name = "getAllTimeSheetsSignedBySupervisor", query = "SELECT p FROM TimesheetEntity p WHERE p.signedBySupervisor = :givenDate")
 })
 
@@ -41,6 +41,8 @@ public class TimesheetEntity extends NamedEntity {
     private LocalDate startDate;
     
     private LocalDate endDate;
+    
+    private double hoursDue;   
 
     private LocalDate signedByEmployee;
 
@@ -57,6 +59,14 @@ public class TimesheetEntity extends NamedEntity {
     }
 
     public TimesheetEntity() {
+    }
+    
+    public double getHoursDue() {
+        return hoursDue;
+    }
+
+    public void setHoursDue(double hoursDue) {
+        this.hoursDue = hoursDue;
     }
 
     public TimesheetStatusEnum getStatus() {

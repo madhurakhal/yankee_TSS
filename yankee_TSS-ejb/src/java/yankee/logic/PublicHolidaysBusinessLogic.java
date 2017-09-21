@@ -28,5 +28,5 @@ public interface PublicHolidaysBusinessLogic {
     
     public boolean databaseEmpty();
     public void createPublicHolidays(String name, GermanyStatesEnum stateName ,int day , int month, int year , int dayOfWeek, String localName , String englishName);
-        
+    public boolean isPublicHoliday(int day , int month , int year , GermanyStatesEnum state);   
 }

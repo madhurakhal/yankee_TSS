@@ -55,6 +55,39 @@ public class CreateContractBean {
     private Date startDate;
     private Date endDate;
     private TimesheetFrequencyEnum timesheetFrequency;
+    private Integer hoursPerWeek;
+    private Integer workingDaysPerWeek;
+    private Integer vacationDaysPerYear;
+
+    public Integer getWorkingDaysPerWeek() {
+        workingDaysPerWeek = 5;        
+        return workingDaysPerWeek;
+    }
+
+    public void setWorkingDaysPerWeek(Integer workingDaysPerWeek) {
+        System.out.println("HEREEEEEE for workindDays");
+        this.workingDaysPerWeek = workingDaysPerWeek;
+    }
+    
+    public Integer getVacationDaysPerYear() {
+        vacationDaysPerYear = 20;
+        return vacationDaysPerYear;
+    }
+
+    public void setVacationDaysPerYear(Integer vacationDaysPerYear) {
+        System.out.println("HERE FOR vacation days");
+        this.vacationDaysPerYear = vacationDaysPerYear;
+    }
+    
+   
+
+    public Integer getHoursPerWeek() {
+        return hoursPerWeek;
+    }
+
+    public void setHoursPerWeek(Integer hoursPerWeek) {
+        this.hoursPerWeek = hoursPerWeek;
+    }
 
     public Date getStartDate() {
         return startDate;
@@ -161,7 +194,8 @@ public class CreateContractBean {
             }
             supervisor = changedSupervisorPerson;
         }
-        contractBusinessLogic.createContract("contract" + employee.getName(), supervisor, assistant, secretary, employee , startDate , endDate , timesheetFrequency);
+        System.out.println(" What values do thaey have and what type" + workingDaysPerWeek + vacationDaysPerYear);
+        contractBusinessLogic.createContract("contract" + employee.getName(), supervisor, assistant, secretary, employee , startDate , endDate , timesheetFrequency, (double)hoursPerWeek , workingDaysPerWeek , vacationDaysPerYear );
 
         FacesMessage msg = new FacesMessage("Contract Created");
         FacesContext.getCurrentInstance().addMessage(null, msg);

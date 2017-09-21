@@ -6,7 +6,9 @@
 package yankee.logic.impl;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -18,19 +20,21 @@ import yankee.entities.ContractEntity;
 import yankee.entities.EmployeeEntity;
 import yankee.entities.SecretaryEntity;
 import yankee.entities.SupervisorEntity;
+import yankee.entities.TimesheetEntity;
 import yankee.logic.ContractBusinessLogic;
 import yankee.logic.ENUM.ContractStatusEnum;
 import yankee.logic.ENUM.RoleTypeEnum;
 import yankee.logic.ENUM.TimesheetFrequencyEnum;
+import yankee.logic.TimeSheetBusinessLogic;
 import yankee.logic.dao.AssistantAccess;
 import yankee.logic.dao.ContractAccess;
 import yankee.logic.dao.EmployeeAccess;
 import yankee.logic.dao.PersonAccess;
 import yankee.logic.dao.SecretaryAccess;
 import yankee.logic.dao.SupervisorAccess;
+import yankee.logic.dao.TimeSheetAccess;
 import yankee.logic.to.Contract;
 import yankee.logic.to.Person;
-import yankee.logic.to.Supervisor;
 
 /**
  *
@@ -56,6 +60,12 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
 
     @EJB
     private SupervisorAccess supervisorAccess;
+    
+    @EJB
+    private TimeSheetAccess timeSheetAccess;
+    
+    @EJB
+    private TimeSheetBusinessLogic timeSheetBusinessLogic;
 
     @Override
     public List<Person> getContractList() {
@@ -73,7 +83,7 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
 
     // This roleTypeUUID is either supervisor, secretary, assistant, employee uuid
     @Override
-    public Contract createContract(String contractName, Person supervisor, Person assistant, Person secretary, Person employee, Date startDate, Date endDate, TimesheetFrequencyEnum timesheetFrequency) {
+    public Contract createContract(String contractName, Person supervisor, Person assistant, Person secretary, Person employee, Date startDate, Date endDate, TimesheetFrequencyEnum timesheetFrequency , double hoursPerWeek, int workingDaysPerWeek, int vacationDaysPerYear) {
 
         // When creating contract.
         // 1. First create contract and get contract id Also set start end date along with timesheetFrequency detail.
@@ -81,13 +91,21 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
         // 3. now create supervisor with person associated to it
         // 4. now create secretary as of yet in this createContract.
         // 5. now create assistant as of yet in this createContract.
+        
         //1.
         ContractEntity ce = contractAccess.createEntity(contractName);
         LocalDate lstartdate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate lenddate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate lenddate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();        
         ce.setStartDate(lstartdate);
         ce.setEndDate(lenddate);
+        if (timesheetFrequency != null){
         ce.setFrequency(timesheetFrequency);
+    }
+        ce.setHoursPerWeek(hoursPerWeek);
+        
+        ce.setVacationDaysPerYear(vacationDaysPerYear);
+        ce.setWorkingDaysPerWeek(workingDaysPerWeek);
+        
         System.out.println("Contract ko naam k ho ta" + ce.getName() + ce.getId());
 
         try {
@@ -139,6 +157,7 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
         // 3. Similar as 2. This time assistant
         // 4. Set start and end date.
 
+        
         ContractEntity ce = contractAccess.getByUuid(contractUUID);
         if (startDate != null) {
             LocalDate lstartdate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -198,16 +217,20 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
                 }
             }
         }
-
-        //4. Change start and end date
-        // Also create timesheets depending on start and end date.
+        //4. Change start and end date  IMPLEMENTED AT BEGINNING OF this function
         return new Contract(ce.getUuid(), ce.getName());
     }
 
     @Override
     public Contract startContract(String contractUUID) {
+        
         ContractEntity ce = contractAccess.getByUuid(contractUUID);
-        ce.setStatus(ContractStatusEnum.STARTED);
+        ce.setStatus(ContractStatusEnum.STARTED); 
+        // Create timesheets 
+        timeSheetBusinessLogic.createTimeSheet(contractUUID);
+        
+        // Now updating the total hours due for contract. Subject to change when timesheet entries changes.
+        getUpdateContractStatistics(contractUUID);
         return new Contract(ce.getUuid(), ce.getName());
     }
 
@@ -226,4 +249,35 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
         return c;
 
     }
+    
+    @Override 
+    public Contract getUpdateContractStatistics(String contractUUID){
+        ContractEntity ce = contractAccess.getByUuid(contractUUID);
+        
+        // Calculating vacation hours.
+        LocalDate date1 = ce.getStartDate();
+        LocalDate date2 = ce.getEndDate();               
+        double durationOfContract = (double) ChronoUnit.MONTHS.between(date1, date2);
+        double vacationHours = ce.getVacationDaysPerYear()* (durationOfContract / 12) * (ce.getHoursPerWeek() / ce.getWorkingDaysPerWeek());
+        ce.setVacationHours(vacationHours);
+        
+        // Calculating Total hours due.
+        // load each timesheet for this contract. and sum each timesheets hoursdue.
+        List<TimesheetEntity> lte = timeSheetAccess.getTimeSheetsForContract(contractUUID);
+        double totalhoursDue = 0.0;
+        for (TimesheetEntity te : lte){
+            totalhoursDue += te.getHoursDue();
+        }
+        ce.setHoursDue(totalhoursDue);          
+        
+        // Fill All Contract details        
+        Contract contract = new Contract(ce.getUuid() , ce.getName());
+        contract.setStatus(ce.getStatus());
+        // Fill allll
+        return contract;
+        
+                
+        
+    }
+    
 }
