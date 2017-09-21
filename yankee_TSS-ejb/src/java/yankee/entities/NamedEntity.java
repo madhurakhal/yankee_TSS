@@ -21,7 +21,7 @@ import javax.persistence.NamedQuery;
 @Inheritance(strategy = InheritanceType.JOINED)
 
 @NamedQuery(name = "getNamedEntityByUuid",
-        query = "SELECT e FROM NamedEntity e WHERE e.uuid = :uuid and e.isActive = :true")
+        query = "SELECT e FROM NamedEntity e WHERE e.uuid = :uuid")
 
 public abstract class NamedEntity implements Serializable {
 
