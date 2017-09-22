@@ -55,19 +55,6 @@ public class ContractDetailsBean {
     private List<Person> assistantsForContract = new ArrayList<>();
     private List<Person> persons = new ArrayList<>();
 
-    public Person getCurrentContractPerson() {
-        if (currentContractPerson == null) {
-            currentContractPerson = employeeBusinessLogic.getEmployeeByContract(contract_id).getPerson();
-        }
-        return currentContractPerson;
-    }
-
-    public List<Person> getPersons() {
-        if (persons.isEmpty()) {
-            persons = personBusinessLogic.getPersonList();
-        }
-        return persons;
-    }
 
     @PostConstruct
     public void init() {
@@ -85,6 +72,21 @@ public class ContractDetailsBean {
     }
 
     // BEGINS GETTER AND SETTER for contract id then current assistant , supervisor, secretaries for given contract
+    
+    public Person getCurrentContractPerson() {
+        if (currentContractPerson == null) {
+            currentContractPerson = employeeBusinessLogic.getEmployeeByContract(contract_id).getPerson();
+        }
+        return currentContractPerson;
+    }
+
+    public List<Person> getPersons() {
+        if (persons.isEmpty()) {
+            persons = personBusinessLogic.getPersonList();
+        }
+        return persons;
+    }
+    
     public String getContract_id() {
         if (contract_id == null) {
             Map<String, String> params = FacesContext.getCurrentInstance()
@@ -133,19 +135,8 @@ public class ContractDetailsBean {
     
     
     
-// RELATED TO STATISTICSSSSSSSSss
-    
-    private int TotalHoursDue;
+// RELATED TO STATISTICSSSSSSSSss For TimeSheet NEEEEED TO TALK TO HARSHIII
     private List<Integer> HoursDuePerTimeSheet;
-    private int vacationHours;
-
-    public int getTotalHoursDue() {
-        return TotalHoursDue;
-    }
-
-    public void setTotalHoursDue(int TotalHoursDue) {
-        this.TotalHoursDue = TotalHoursDue;
-    }
 
     public List<Integer> getHoursDuePerTimeSheet() {
         return HoursDuePerTimeSheet;
@@ -153,14 +144,6 @@ public class ContractDetailsBean {
 
     public void setHoursDuePerTimeSheet(List<Integer> HoursDuePerTimeSheet) {
         this.HoursDuePerTimeSheet = HoursDuePerTimeSheet;
-    }
-
-    public int getVacationHours() {
-        return vacationHours;
-    }
-
-    public void setVacationHours(int vacationHours) {
-        this.vacationHours = vacationHours;
     }
     
     

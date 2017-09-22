@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yankee.logic.dao;
 
 import java.util.List;
@@ -18,9 +13,7 @@ import yankee.entities.PersonEntity;
 import yankee.logic.to.Person;
 import org.riediger.ldap.DirectoryLookup;
 
-/**
- * @author Dr. Volker Riediger <riediger@uni-koblenz.de>
- */
+
 @Stateless
 @LocalBean
 public class PersonAccess extends AbstractAccess<PersonEntity> {
@@ -35,17 +28,11 @@ public class PersonAccess extends AbstractAccess<PersonEntity> {
         PersonEntity pe = super.createEntity(name);
 
         try {
-            // try to find firstname and lastname in directory
-            System.out.println("Here Before");
             org.riediger.ldap.Person p = directoryLookup.lookupPerson(name);
-            System.out.println("Here After" + p);
             if (p != null) {
                 pe.setFirstName(p.getFirstName());
-                pe.setLastName(p.getLastName());
-                // Have to get these details from somewhere. Since directory lookup only gives firstname and last name
-                pe.setDateOfBirth(null);
+                pe.setLastName(p.getLastName()); 
                 pe.setEmailAddress(name);
-                System.out.println("I am here to create this entity." + p.getFirstName());
             }
         } catch (NamingException ex) {
             Logger.getLogger(PersonAccess.class.getName()).log(Level.SEVERE, null, ex);
@@ -77,21 +64,17 @@ public class PersonAccess extends AbstractAccess<PersonEntity> {
     @RolesAllowed("AUTHENTICATED")
     public PersonEntity getPersonByName(String name) {
         name = name.trim().toLowerCase();
-        System.out.println("DO I COME TO CREATE A PERSON BY ITS NAME :- " + name);
         try {
-            em.flush();
-            em.clear();
-            // try to find a person
             return em.createNamedQuery("getPersonByName", PersonEntity.class)
                     .setParameter("name", name)
                     .getSingleResult();
         } catch (NoResultException ex) {
-            // Create a PersonEntity for the name.
-            System.out.println("NOW is there a exception? when creating name? i.e creating entity");
+            // Create entity if not available
             return this.createEntity(name);
         }
     }
 
+    // NEEED TO REVIEW...
     @RolesAllowed("AUTHENTICATED")
     public void storePersonDetails(Person person) {
         System.err.println("storePersonDetails " + person.getUuid());
