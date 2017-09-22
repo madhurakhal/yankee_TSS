@@ -272,7 +272,6 @@ public class EditContractBean {
             for (Person p : persons) {
                 boolean hashimAsSupervisor = false;
                 if (!supervisorForContract.getUuid().equals(p.getUuid()) && p.getUserRoleRealm() != null && !currentContractPerson.getUuid().equals(p.getUuid())) {
-                    System.out.println("At least here?" + p.getName());
                     List<Supervisor> ls = supervisorBusinessLogic.getSupervisorByPerson(p.getUuid());
 
                     for (Supervisor s : ls) {

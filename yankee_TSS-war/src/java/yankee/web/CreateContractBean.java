@@ -1,5 +1,6 @@
 package yankee.web;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -19,6 +20,7 @@ import yankee.logic.to.Person;
 import yankee.logic.to.Supervisor;
 import org.primefaces.event.RowEditEvent;
 import yankee.logic.ENUM.TimesheetFrequencyEnum;
+import yankee.logic.dao.PersonAccess;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -48,6 +50,18 @@ public class CreateContractBean {
     private LoginBean loginBean;
 
     private List<Person> persons;
+    private List<Person> availableSupervisorList = new ArrayList<>();
+    private Person supervisorForContract;
+    private boolean personSelected  = true;
+
+    public boolean isPersonSelected() {
+        return personSelected;
+    }
+
+    public void setPersonSelected(boolean personSelected) {
+        this.personSelected = personSelected;
+    }
+    
     private RoleTypeEnum roleType;  // CAN DELETEEEEEEEEE look at update PersonDetails method down.
     private Person contractTo;
     private Person changedSupervisorPerson;
@@ -60,7 +74,7 @@ public class CreateContractBean {
     private Integer vacationDaysPerYear;
 
     public Integer getWorkingDaysPerWeek() {
-        workingDaysPerWeek = 5;        
+        workingDaysPerWeek = 5;
         return workingDaysPerWeek;
     }
 
@@ -68,7 +82,7 @@ public class CreateContractBean {
         System.out.println("HEREEEEEE for workindDays");
         this.workingDaysPerWeek = workingDaysPerWeek;
     }
-    
+
     public Integer getVacationDaysPerYear() {
         vacationDaysPerYear = 20;
         return vacationDaysPerYear;
@@ -78,8 +92,6 @@ public class CreateContractBean {
         System.out.println("HERE FOR vacation days");
         this.vacationDaysPerYear = vacationDaysPerYear;
     }
-    
-   
 
     public Integer getHoursPerWeek() {
         return hoursPerWeek;
@@ -122,6 +134,7 @@ public class CreateContractBean {
     }
 
     public Person getChangedSupervisorPerson() {
+        changedSupervisorPerson = loginBean.getUser();
         return changedSupervisorPerson;
     }
 
@@ -154,15 +167,16 @@ public class CreateContractBean {
 
                 // Get the supervisors for the person who is trying to create contract. He might have been supervisor for many contracts.
                 List<Supervisor> ls = supervisorBusinessLogic.getSupervisorByPerson(loginBean.getUser().getUuid());
-                if (all.getUuid() == null ? loginBean.getUser().getUuid() == null : all.getUuid().equals(loginBean.getUser().getUuid())){
-                   iter.remove();
-                   continue;
+                if (all.getUuid() == null ? loginBean.getUser().getUuid() == null : all.getUuid().equals(loginBean.getUser().getUuid())) {
+                    iter.remove();
+                    continue;
                 }
-                for (Supervisor s : ls){
+                for (Supervisor s : ls) {
                     Employee e = employeeBusinessLogic.getEmployeeByContract(s.getContract().getUuid());
-                    if(e != null){
-                        if(all.getUuid() == null ? e.getPerson().getUuid() == null : all.getUuid().equals(e.getPerson().getUuid())){
-                        iter.remove();}
+                    if (e != null) {
+                        if (all.getUuid() == null ? e.getPerson().getUuid() == null : all.getUuid().equals(e.getPerson().getUuid())) {
+                            iter.remove();
+                        }
                     }
                 }
             }
@@ -182,27 +196,62 @@ public class CreateContractBean {
         Person assistant = null;
         Person secretary = null;
 
-        if (yourRoleType == null){
+        if (changedSupervisorPerson != null){                        
             supervisor = loginBean.getUser();
-        }
-        else{
-            if (yourRoleType == RoleTypeEnum.SECRETARY){
-                secretary = loginBean.getUser();
-            }
-            else{
-                assistant = loginBean.getUser();
-            }
+        } else {
+            assistant = loginBean.getUser();
             supervisor = changedSupervisorPerson;
         }
+        System.out.println("Supervisor" + changedSupervisorPerson);
+        
         System.out.println(" What values do thaey have and what type" + workingDaysPerWeek + vacationDaysPerYear);
-        contractBusinessLogic.createContract("contract" + employee.getName(), supervisor, assistant, secretary, employee , startDate , endDate , timesheetFrequency, (double)hoursPerWeek , workingDaysPerWeek , vacationDaysPerYear );
+        //contractBusinessLogic.createContract("contract" + employee.getName(), supervisor, assistant, secretary, employee, startDate, endDate, timesheetFrequency, (double) hoursPerWeek, workingDaysPerWeek, vacationDaysPerYear);
 
         FacesMessage msg = new FacesMessage("Contract Created");
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
+    // Test for supervisor 
+    public List<Person> getAvailableSupervisorList() {
+        if(contractTo == null){
+            return availableSupervisorList;
+        }        
+        personSelected = false;
+        if (availableSupervisorList.isEmpty()) {
+            for (Person p : personBusinessLogic.getPersonList()) {
+                boolean hashimAsSupervisor = false;
+                if (p.getUserRoleRealm() != null && !contractTo.getUuid().equals(p.getUuid())) {
+                    List<Supervisor> ls = supervisorBusinessLogic.getSupervisorByPerson(p.getUuid());
+                    for (Supervisor s : ls) {
+                        Employee e = employeeBusinessLogic.getEmployeeByContract(s.getContract().getUuid());
+                        if (e != null) {
+                            if (e.getPerson().getUuid().equals(contractTo.getUuid())) {
+                                hashimAsSupervisor = true;                                
+                            }
+                        }
+                    };
+                    if (!hashimAsSupervisor) {
+                        availableSupervisorList.add(p);
+                    }
+                }
+            }
+        }
+        return availableSupervisorList;
+    }
+    
+    public void setAvailableSupervisorList(List<Person> availableSupervisorList) {
+        this.availableSupervisorList = availableSupervisorList;
+    }
+    
+    public void updateVal(){
+        getAvailableSupervisorList();
+    }
 
-
+    public void updateSupervisor(){
+        Person s = loginBean.getUser();
+        setChangedSupervisorPerson(s);
+    }
+    
     // NOT USED IN OUR MAIN CODES
     // Look this up on test.xhtml it makes use of it.
     public void updatePersonDetails(RowEditEvent event) {

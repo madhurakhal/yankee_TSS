@@ -32,7 +32,15 @@
                                                 <b:selectOneMenu id="contractPersons" value="#{createContractBean.contractTo}" required="true">
                                                     <f:selectItem itemLabel="Choose person" itemValue="" noSelectionOption="true"/>
                                                     <f:selectItems  value="#{createContractBean.persons}" var="entity" itemLabel="#{entity.firstName} #{entity.lastName}" itemValue="#{entity}"/>
-                                                    <f:ajax render="firstNameInput lastNameInput emailAddressInput" />
+                                                    <f:ajax render="firstNameInput lastNameInput emailAddressInput availableSupervisor" listener="#{createContractBean.updateVal}"/>
+                                                </b:selectOneMenu>
+                                            </b:column>
+                                        </b:formGroup>
+                                        <b:formGroup id="availableSupervisor" >
+                                            <h:outputLabel  styleClass="col-xs-12 col-sm-2 control-label" for="supervisorInput">On Behalf of Supervisor</h:outputLabel>
+                                            <b:column col-sm="10" col-xs="12" >
+                                                <b:selectOneMenu value="#{createContractBean.changedSupervisorPerson}">                                                    
+                                                    <f:selectItems  value="#{createContractBean.availableSupervisorList}" var="supervisorlist" itemLabel="#{supervisorlist.firstName} #{supervisorlist.lastName}" itemValue="#{supervisorlist}"/>                                                                                                       
                                                 </b:selectOneMenu>
                                             </b:column>
                                         </b:formGroup>
@@ -51,7 +59,7 @@
                                             </b:column>
 
                                         </b:formGroup>
-                                        
+
                                         <b:formGroup>
                                             <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="emailAddressInput">Email</h:outputLabel>
                                             <b:column col-sm="10" col-xs="12">
@@ -62,7 +70,7 @@
                                                 </h:inputText>
                                             </b:column>
                                         </b:formGroup> 
-                                        
+
                                         <b:formGroup>
                                             <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="workingDaysPerWeek">Working Days Per Week</h:outputLabel>
                                             <b:column  col-sm="10" col-xs="12">
@@ -70,7 +78,7 @@
                                             </b:column>
 
                                         </b:formGroup>
-                                        
+
                                         <b:formGroup>
                                             <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="vacationDaysPerYear">Vacation Days Per Year</h:outputLabel>
                                             <b:column  col-sm="10" col-xs="12">
@@ -78,14 +86,14 @@
                                             </b:column>
 
                                         </b:formGroup>
-                                        
-                                        
+
+
                                         <b:formGroup>
-                                        <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="hoursPerWeek">Hours Per Week</h:outputLabel>
-                                        <b:column col-sm="10" col-xs="12">
-                                            <h:inputText required="true" id="hoursPerWeek" value="#{createContractBean.hoursPerWeek}" styleClass="form-control"/>
-                                        </b:column>
-                                    </b:formGroup>
+                                            <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="hoursPerWeek">Hours Per Week</h:outputLabel>
+                                            <b:column col-sm="10" col-xs="12">
+                                                <h:inputText required="true" id="hoursPerWeek" value="#{createContractBean.hoursPerWeek}" styleClass="form-control"/>
+                                            </b:column>
+                                        </b:formGroup>
 
                                         <b:formGroup>
                                             <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="timesheetFrequency">Timesheet Frequency</h:outputLabel>
