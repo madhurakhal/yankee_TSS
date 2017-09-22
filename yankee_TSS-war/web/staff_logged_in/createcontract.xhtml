@@ -36,11 +36,11 @@
                                                 </b:selectOneMenu>
                                             </b:column>
                                         </b:formGroup>
-                                        <b:formGroup id="availableSupervisor" >
+                                        <b:formGroup >
                                             <h:outputLabel  styleClass="col-xs-12 col-sm-2 control-label" for="supervisorInput">On Behalf of Supervisor</h:outputLabel>
                                             <b:column col-sm="10" col-xs="12" >
-                                                <b:selectOneMenu value="#{createContractBean.changedSupervisorPerson}">                                                    
-                                                    <f:selectItems  value="#{createContractBean.availableSupervisorList}" var="supervisorlist" itemLabel="#{supervisorlist.firstName} #{supervisorlist.lastName}" itemValue="#{supervisorlist}"/>                                                                                                       
+                                                <b:selectOneMenu id= "availableSupervisor" disabled="true" value="#{createContractBean.changedSupervisorPerson}">                                                    
+                                                    <f:selectItems   value="#{createContractBean.availableSupervisorList}" var="supervisorlist" itemLabel="#{supervisorlist.firstName} #{supervisorlist.lastName}" itemValue="#{supervisorlist}"/>                                                                                                      
                                                 </b:selectOneMenu>
                                             </b:column>
                                         </b:formGroup>

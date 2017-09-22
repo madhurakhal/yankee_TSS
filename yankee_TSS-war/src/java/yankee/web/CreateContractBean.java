@@ -8,6 +8,7 @@ import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import yankee.logic.ContractBusinessLogic;
@@ -196,7 +197,7 @@ public class CreateContractBean {
         Person assistant = null;
         Person secretary = null;
 
-        if (changedSupervisorPerson != null){                        
+        if (changedSupervisorPerson == null){                        
             supervisor = loginBean.getUser();
         } else {
             assistant = loginBean.getUser();
@@ -204,8 +205,7 @@ public class CreateContractBean {
         }
         System.out.println("Supervisor" + changedSupervisorPerson);
         
-        System.out.println(" What values do thaey have and what type" + workingDaysPerWeek + vacationDaysPerYear);
-        //contractBusinessLogic.createContract("contract" + employee.getName(), supervisor, assistant, secretary, employee, startDate, endDate, timesheetFrequency, (double) hoursPerWeek, workingDaysPerWeek, vacationDaysPerYear);
+        contractBusinessLogic.createContract("contract" + employee.getName(), supervisor, assistant, secretary, employee, startDate, endDate, timesheetFrequency, (double) hoursPerWeek, workingDaysPerWeek, vacationDaysPerYear);
 
         FacesMessage msg = new FacesMessage("Contract Created");
         FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -245,11 +245,6 @@ public class CreateContractBean {
     
     public void updateVal(){
         getAvailableSupervisorList();
-    }
-
-    public void updateSupervisor(){
-        Person s = loginBean.getUser();
-        setChangedSupervisorPerson(s);
     }
     
     // NOT USED IN OUR MAIN CODES
