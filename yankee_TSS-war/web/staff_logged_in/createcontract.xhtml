@@ -16,6 +16,35 @@
             </li>
         </ui:define>
         <ui:define name="main-content">
+            <f:verbatim>
+                <script type="text/javascript">
+                   //<![CDATA[
+                        var date1 = new Date();
+                        var currentMonth = date1.getMonth();
+                        function enableOnlyFirstDay(date) {
+                            if (date.getTime() - 8640000 >= date1.getTime()) {
+                                if (date.getDate() === 1) return [true];
+                            }
+                            return [false];
+                        }
+                        function enableOnlyLastDay(date) {
+                            var startDate = document.getElementById('createContractForm:startDate_input').value
+                            if (startDate === '') {
+                                return [false];
+                            }
+                            
+                            var d1 = new Date(startDate);
+                            if (date.getTime() > d1.getTime()) {
+                                var lastDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+                                if (date.getDate() === lastDate.getDate()) {
+                                    return [true];
+                                }
+                            }
+                            return [false];
+                        }
+                    //]]> 
+                </script>
+            </f:verbatim>
             <b:row styleClass="text-center">
                 <p:outputPanel styleClass="box box-default">
                     <p:outputPanel styleClass="box-header with-border">
@@ -64,7 +93,7 @@
                                         </b:formGroup>
 
                                         <b:formGroup>
-                                            <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="workingDaysPerWeek">Working Days Per Week</h:outputLabel>
+                                            <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="workingDaysPerWeek">#{msg.workingDaysPerWeek}</h:outputLabel>
                                             <b:column  col-sm="6" col-xs="12">
                                                 <h:inputText immediate="true" readonly="#{facesContext.renderResponse}" id="workingDaysPerWeek" value="#{createContractBean.workingDaysPerWeek}" styleClass="form-control"/>
                                             </b:column>
@@ -72,7 +101,7 @@
                                         </b:formGroup>
 
                                         <b:formGroup>
-                                            <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="vacationDaysPerYear">Vacation Days Per Year</h:outputLabel>
+                                            <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="vacationDaysPerYear">#{msg.vacationPerYear}</h:outputLabel>
                                             <b:column  col-sm="6" col-xs="12">
                                                 <h:inputText immediate="true" readonly="#{facesContext.renderResponse}" id="vacationDaysPerYear" value="#{createContractBean.vacationDaysPerYear}" styleClass="form-control"/>
                                             </b:column>
@@ -81,7 +110,7 @@
 
 
                                         <b:formGroup>
-                                        <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="hoursPerWeek">Hours Per Week</h:outputLabel>
+                                            <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="hoursPerWeek">#{msg.hoursPerWeek}</h:outputLabel>
                                         <b:column col-sm="6" col-xs="12">
                                             <h:inputText required="true" id="hoursPerWeek" value="#{createContractBean.hoursPerWeek}" styleClass="form-control" onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;"/>
                                         </b:column>
@@ -104,7 +133,7 @@
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
-                                                    <p:calendar id="startDate" value="#{createContractBean.startDate}" pattern="MM/dd/yyyy" styleClass="form-control"/>
+                                                    <p:calendar id="startDate" value="#{createContractBean.startDate}" pattern="MM/dd/yyyy" styleClass="form-control" beforeShowDay="enableOnlyFirstDay" readonly="#{facesContext.renderResponse}"/>
                                                 </p:outputPanel>
                                             </b:column>
                                         </b:formGroup>
@@ -118,11 +147,10 @@
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
-                                                    <p:calendar id="endDate" value="#{createContractBean.endDate}" pattern="MM/dd/yyyy" styleClass="form-control"/>
+                                                    <p:calendar id="endDate" value="#{createContractBean.endDate}" pattern="MM/dd/yyyy" styleClass="form-control" beforeShowDay="enableOnlyLastDay" readonly="#{facesContext.renderResponse}"/>
                                                 </p:outputPanel>
                                             </b:column>
                                         </b:formGroup>
-
                                     </p:outputPanel>
                                 </b:row>
                             </p:outputPanel>
