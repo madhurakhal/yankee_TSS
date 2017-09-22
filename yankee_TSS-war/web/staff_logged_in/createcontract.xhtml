@@ -61,7 +61,15 @@
                                                 <b:selectOneMenu id="contractPersons" value="#{createContractBean.contractTo}" immediate="true">
                                                     <f:selectItem itemLabel="#{msg.selectPerson}" noSelectionOption="true"/>
                                                     <f:selectItems  value="#{createContractBean.persons}" var="entity" itemLabel="#{entity.firstName} #{entity.lastName}" itemValue="#{entity}"/>
-                                                    <f:ajax render="firstNameInput lastNameInput emailAddressInput" />
+                                                    <f:ajax render="firstNameInput lastNameInput emailAddressInput availableSupervisor" listener="#{createContractBean.updateVal}"/>
+                                                </b:selectOneMenu>
+                                            </b:column>
+                                        </b:formGroup>
+                                        <b:formGroup >
+                                            <h:outputLabel  styleClass="col-xs-12 col-sm-2 control-label" for="supervisorInput">On Behalf of Supervisor</h:outputLabel>
+                                            <b:column col-sm="10" col-xs="12" >
+                                                <b:selectOneMenu id= "availableSupervisor" disabled="true" value="#{createContractBean.changedSupervisorPerson}">                                                    
+                                                    <f:selectItems   value="#{createContractBean.availableSupervisorList}" var="supervisorlist" itemLabel="#{supervisorlist.firstName} #{supervisorlist.lastName}" itemValue="#{supervisorlist}"/>                                                                                                      
                                                 </b:selectOneMenu>
                                             </b:column>
                                         </b:formGroup>
@@ -90,7 +98,7 @@
                                                              styleClass="form-control">
                                                 </h:inputText>
                                             </b:column>
-                                        </b:formGroup>
+                                        </b:formGroup> 
 
                                         <b:formGroup>
                                             <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="workingDaysPerWeek">#{msg.workingDaysPerWeek}</h:outputLabel>
