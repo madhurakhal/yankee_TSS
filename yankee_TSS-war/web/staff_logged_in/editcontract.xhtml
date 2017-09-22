@@ -21,6 +21,35 @@
             </li>
         </ui:define>
         <ui:define name="main-content">
+            <f:verbatim>
+                <script type="text/javascript">
+                   //<![CDATA[
+                        var date1 = new Date();
+                        var currentMonth = date1.getMonth();
+                        function enableOnlyFirstDay(date) {
+                            if (date.getTime() - 8640000 >= date1.getTime()) {
+                                if (date.getDate() === 1) return [true];
+                            }
+                            return [false];
+                        }
+                        function enableOnlyLastDay(date) {
+                            var startDate = document.querySelector('input[id$="startDate_input"]').value
+                            if (startDate === '') {
+                                return [false];
+                            }
+                            
+                            var d1 = new Date(startDate);
+                            if (date.getTime() > d1.getTime()) {
+                                var lastDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+                                if (date.getDate() === lastDate.getDate()) {
+                                    return [true];
+                                }
+                            }
+                            return [false];
+                        }
+                    //]]> 
+                </script>
+            </f:verbatim>
             <h:form>
                 <p:growl id="msg" showDetail="true" escape="false"/>
                 <b:row>
@@ -37,7 +66,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <p:calendar id="startDate" value="#{editContractBean.startDate}" pattern="MM/dd/yyyy" styleClass="form-control"/>
+                                            <p:calendar id="startDate" value="#{editContractBean.startDate}" pattern="MM/dd/yyyy" styleClass="form-control" beforeShowDay="enableOnlyFirstDay" readonly="#{facesContext.renderResponse}"/>
                                         </p:outputPanel>
                                     </b:column>
                                 </b:formGroup>
@@ -48,7 +77,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <p:calendar id="endDate" value="#{editContractBean.endDate}" pattern="MM/dd/yyyy" styleClass="form-control"/>
+                                            <p:calendar id="endDate" value="#{editContractBean.endDate}" pattern="MM/dd/yyyy" styleClass="form-control" beforeShowDay="enableOnlyLastDay" readonly="#{facesContext.renderResponse}"/>
                                         </p:outputPanel>
                                     </b:column>
                                 </b:formGroup>
