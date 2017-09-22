@@ -2,30 +2,106 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:b="http://bootsfaces.net/ui">
     <ui:composition template="/WEB-INF/templates/main-template.xhtml">
-        <ui:param name="pageTitle" value="Welcome Man"/>
+        <ui:param name="pageTitle" value="Create Contract Page"/>
+        <ui:define name="breadcrumb">
+            <li>
+                <h:link outcome="managecontracts">
+                    Manage Contracts
+                </h:link>
+            </li>
+            <li>
+                <h:link disabled="true">
+                    View Contract Details
+                </h:link>
+            </li>
+        </ui:define>
         <ui:define name="main-content">
             <h:form>
-            <p:breadCrumb>
-                    <p:menuitem value="Categories" url="/staff_logged_in/managecontracts.xhtml" />
-                    <p:menuitem value="Manage Contracts" url="/staff_logged_in/managecontracts.xhtml" />
-                    <p:menuitem value="View Details" disabled="true" />
-            </p:breadCrumb>
-            <f:view>
-                Contract Person = <h:outputText value="#{viewContractDetailsBean.currentContractPerson.firstName} #{viewContractDetailsBean.currentContractPerson.lastName}" />
-                <br />
-                Assistants = <h:outputText value="#{viewContractDetailsBean.assistantsForContract}" />
-                Secretaries = <h:outputText value="#{viewContractDetailsBean.assistantsForContract}" />
-                Started = <h:outputText value="#{viewContractDetailsBean.contractinfo.startDate}" />
-                Ended = <h:outputText value="#{viewContractDetailsBean.contractinfo.endDate}" />
-            </f:view>
+                <p:growl id="msg" showDetail="true" escape="false"/>
+                <b:row>
+                    <p:outputPanel styleClass="box box-default">
+                        <p:outputPanel styleClass="box-header text-center">
+                            <h:outputLabel id="currentContract" value=" Contract For : #{contractDetailsBean.currentContractPerson.firstName} #{editContractBean.currentContractPerson.lastName} (#{editContractBean.currentContractPerson.emailAddress})"/>
+                        </p:outputPanel>                        
+                        <p:outputPanel styleClass="box-body top-border edit-contract">
+                            <b:column>                                
+                                <b:formGroup>
+                                    <h:outputLabel value="Supervisor" styleClass="col-xs-12 col-sm-3 control-label"/>
+                                    <b:column col-sm="6" col-xs="12">
+                                        <h:outputLabel value="#{contractDetailsBean.supervisorForContract.firstName}#{contractDetailsBean.supervisorForContract.lastName}"/>
+                                    </b:column>
+                                </b:formGroup>
+                                <b:formGroup>
+                                    <h:outputLabel for="startDate" value="Contract Start Date" styleClass="col-xs-12 col-sm-3 control-label"/>
+                                    <b:column col-sm="6" col-xs="12">
+                                        <h:outputLabel value="#{contractDetailsBean.contractinfo.startDate.dayOfMonth} #{contractDetailsBean.contractinfo.startDate.month} #{contractDetailsBean.contractinfo.startDate.year} (#{contractDetailsBean.contractinfo.startDate.dayOfWeek})"/>
+                                    </b:column>
+                                </b:formGroup>
+                                <b:formGroup>
+                                    <h:outputLabel for="endDate" value="Contract End Date" styleClass="col-xs-12 col-sm-3 control-label"/>
+                                    <b:column col-sm="6" col-xs="12">
+                                        <h:outputLabel value="#{contractDetailsBean.contractinfo.endDate.dayOfMonth} #{contractDetailsBean.contractinfo.endDate.month} #{contractDetailsBean.contractinfo.endDate.year} (#{contractDetailsBean.contractinfo.endDate.dayOfWeek})"/>
+                                    </b:column>
+                                </b:formGroup>
+                                <b:formGroup>
+                                    <h:outputLabel for="timesheetFrequency" value="Timesheet Frequency" styleClass="col-xs-12 col-sm-3 control-label" />
+                                    <b:column col-sm="6" col-xs="12">
+                                        <h:outputLabel value="#{contractDetailsBean.contractinfo.frequency}"/>
+                                    </b:column>
+                                </b:formGroup>
 
-            <p:growl id="msg" showDetail="true"/>
+
+                                <b:formGroup>
+                                    <h:outputLabel value="Assistants" styleClass="col-xs-12 col-sm-3 control-label" />
+                                    <b:column col-sm="9" col-xs="12">
+                                        <p:dataList value="#{contractDetailsBean.assistantsForContract}" var="assistants" type="definition">                                            
+                                            -> #{assistants.firstName} #{assistants.lastName}
+                                        </p:dataList>
+                                    </b:column>
+                                </b:formGroup>
+
+                                <b:formGroup>
+                                    <h:outputLabel value="Secretaries" styleClass="col-xs-12 col-sm-3 control-label" />
+                                    <b:column col-sm="9" col-xs="12">
+                                        <p:dataList value="#{contractDetailsBean.secretariesForContract}" var="secretaries" type="definition">                                            
+                                            -> #{secretaries.firstName} #{secretaries.lastName}
+                                        </p:dataList>
+                                    </b:column>
+                                </b:formGroup>
+
+                                <b:formGroup>
+                                    <h:outputLabel value="Hours Per Week" styleClass="col-xs-12 col-sm-3 control-label" />
+                                    <b:column col-sm="9" col-xs="12">
+                                        <h:outputLabel value="#{contractDetailsBean.contractinfo.hoursPerWeek}"/>
+                                    </b:column>
+                                </b:formGroup>
+                                
+                                <b:formGroup>
+                                    <h:outputLabel value="Total Hours Due" styleClass="col-xs-12 col-sm-3 control-label" />
+                                    <b:column col-sm="9" col-xs="12">
+                                        <h:outputLabel value="#{contractDetailsBean.contractinfo.hoursDue}"/>
+                                    </b:column>
+                                </b:formGroup>
+
+                                <b:formGroup>
+                                    <h:outputLabel value="Vacation Hours" styleClass="col-xs-12 col-sm-3 control-label" />
+                                    <b:column col-sm="9" col-xs="12">
+                                        <h:outputLabel value="#{contractDetailsBean.contractinfo.vacationHours}"/>
+                                    </b:column>
+                                </b:formGroup>
+                            </b:column>
+                        </p:outputPanel>
+
+                    </p:outputPanel>
+                </b:row>
             </h:form>
+
         </ui:define>
     </ui:composition>
 </html>
+
