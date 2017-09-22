@@ -22,6 +22,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "EMPLOYEE")
+
 public class EmployeeEntity extends RoleEntity {
     private static final long serialVersionUID = 1L;
     

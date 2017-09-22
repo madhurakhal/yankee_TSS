@@ -6,28 +6,50 @@
 package yankee.logic.to;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
+import yankee.logic.ENUM.ContractStatusEnum;
+import yankee.logic.ENUM.TimesheetFrequencyEnum;
 import yankee.logic.ENUM.TimesheetStatusEnum;
+import yankee.logic.to.Named;
 
 /**
  *
- * @author Shriharsh Ambhore (ashriharsh@uni-koblenz.de)
+ * @author Shriharsh
  */
-public class TimeSheet {
-
-    private Contract contract;
+public class TimesheetT extends Named{
+    
     private TimesheetStatusEnum status;
+    
     private LocalDate startDate;
+
     private LocalDate endDate;
+    
+    private double hoursDue;
+
     private LocalDate signedByEmployee;
+
     private LocalDate signedBySupervisor;
+    
     private String displayString;
-    private Long id;
+    
+    private List<TimeSheetEntry> timeSheetEntries;
+    
+    public TimesheetT(String uuid, String name) {
+        super(uuid, name);
+    }
 
     public TimesheetStatusEnum getStatus() {
         return status;
     }
+    
+        public double getHoursDue() {
+        return hoursDue;
+    }
+
+    public void setHoursDue(double hoursDue) {
+        this.hoursDue = hoursDue;
+    }
+
 
     public void setStatus(TimesheetStatusEnum status) {
         this.status = status;
@@ -63,11 +85,7 @@ public class TimeSheet {
 
     public void setSignedBySupervisor(LocalDate signedBySupervisor) {
         this.signedBySupervisor = signedBySupervisor;
-    }
-
-    private String uuid;
-    
-    private List<TimeSheetEntry> timeSheetEntries;
+    }    
 
     public List<TimeSheetEntry> getTimeSheetEntries() {
         return timeSheetEntries;
@@ -75,22 +93,6 @@ public class TimeSheet {
 
     public void setTimeSheetEntries(List<TimeSheetEntry> timeSheetEntries) {
         this.timeSheetEntries = timeSheetEntries;
-    }
-    
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getDisplayString() {
@@ -100,13 +102,5 @@ public class TimeSheet {
     public void setDisplayString(String displayString) {
         this.displayString = displayString;
     }
-
-     public void setContract(Contract contract) {
-        this.contract = contract;
-    }
-     public Contract getContract() {
-        return contract;
-    }
-    
     
 }
