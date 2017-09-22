@@ -11,12 +11,12 @@
         <ui:define name="breadcrumb">
             <li>
                 <h:link outcome="managecontracts">
-                    Manage Contracts
+                    #{msg.manageContracts}
                 </h:link>
             </li>
             <li>
                 <h:link disabled="true">
-                    Edit Contract
+                    #{msg.editContract}
                 </h:link>
             </li>
         </ui:define>
@@ -60,7 +60,7 @@
                         <p:outputPanel styleClass="box-body top-border edit-contract">
                             <b:column>
                                 <b:formGroup>
-                                    <h:outputLabel for="startDate" value="Contract Start Date" styleClass="col-xs-12 col-sm-3 control-label"/>
+                                    <h:outputLabel for="startDate" value="#{msg.contractStartDate}" styleClass="col-xs-12 col-sm-3 control-label"/>
                                     <b:column col-sm="6" col-xs="12">
                                         <p:outputPanel styleClass="input-group">
                                             <div class="input-group-addon">
@@ -71,7 +71,7 @@
                                     </b:column>
                                 </b:formGroup>
                                 <b:formGroup>
-                                    <h:outputLabel for="endDate" value="Contract End Date" styleClass="col-xs-12 col-sm-3 control-label"/>
+                                    <h:outputLabel for="endDate" value="#{msg.contractEndDate}" styleClass="col-xs-12 col-sm-3 control-label"/>
                                     <b:column col-sm="6" col-xs="12">
                                         <p:outputPanel styleClass="input-group">
                                             <div class="input-group-addon">
@@ -82,7 +82,7 @@
                                     </b:column>
                                 </b:formGroup>
                                 <b:formGroup>
-                                    <h:outputLabel for="timesheetFrequency" value="Timesheet Frequency" styleClass="col-xs-12 col-sm-3 control-label" />
+                                    <h:outputLabel for="timesheetFrequency" value="#{msg.timeSheetFrequency}" styleClass="col-xs-12 col-sm-3 control-label" />
                                     <b:column col-sm="6" col-xs="12">
                                         <b:selectOneMenu id="timesheetFrequency" value="#{editContractBean.timesheetFrequency}" immediate="true">
                                             <f:selectItem itemLabel="Choose Frequency" noSelectionOption="true"/>
@@ -92,7 +92,7 @@
                                 </b:formGroup>
                                 
                                 <b:formGroup>
-                                            <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="workingDaysPerWeek">Working Days Per Week</h:outputLabel>
+                                    <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="workingDaysPerWeek">#{msg.workingDaysPerWeek}</h:outputLabel>
                                             <b:column  col-sm="6" col-xs="12">
                                                 <h:inputText immediate="true" readonly="#{facesContext.renderResponse}" id="workingDaysPerWeek" value="#{createContractBean.workingDaysPerWeek}" styleClass="form-control"/>
                                             </b:column>
@@ -100,7 +100,7 @@
                                         </b:formGroup>
 
                                         <b:formGroup>
-                                            <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="vacationDaysPerYear">Vacation Days Per Year</h:outputLabel>
+                                            <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="vacationDaysPerYear">#{msg.vacationPerYear}</h:outputLabel>
                                             <b:column  col-sm="6" col-xs="12">
                                                 <h:inputText immediate="true" readonly="#{facesContext.renderResponse}" id="vacationDaysPerYear" value="#{createContractBean.vacationDaysPerYear}" styleClass="form-control"/>
                                             </b:column>
@@ -109,7 +109,7 @@
 
 
                                         <b:formGroup>
-                                        <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="hoursPerWeek">Hours Per Week</h:outputLabel>
+                                            <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="hoursPerWeek">#{msg.hoursPerWeek}</h:outputLabel>
                                         <b:column col-sm="6" col-xs="12">
                                             <h:inputText required="true" id="hoursPerWeek" value="#{createContractBean.hoursPerWeek}" styleClass="form-control" onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;"/>
                                         </b:column>
@@ -126,28 +126,28 @@
                                 </b:formGroup>
 
                                 <b:formGroup>
-                                    <h:outputLabel for="assistantPojoList" value="Edit Assistants" styleClass="col-xs-12 col-sm-3 control-label" />
+                                    <h:outputLabel for="assistantPojoList" value="#{msg.editAssistants}" styleClass="col-xs-12 col-sm-3 control-label" />
                                     <b:column col-sm="9" col-xs="12">
                                         <p:pickList id="assistantPojoList" value="#{editContractBean.assistantPickupList}" var="assistants" effect="bounce"
                                                     itemValue="#{assistants}" itemLabel="#{assistants.firstName} #{assistants.lastName}" showCheckbox="true" responsive="true"
                                                     showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" converter="personListConverter">
-                                            <f:facet name="sourceCaption">Add new Assistants</f:facet>
-                                            <f:facet name="targetCaption">Current Assistants </f:facet>
+                                            <f:facet name="sourceCaption">#{msg.addNewAssistants}</f:facet>
+                                            <f:facet name="targetCaption">#{msg.currentAssistants} </f:facet>
                                             <p:ajax event="transfer"  listener="#{editContractBean.onTransferAssistant}" update="msg secretaryPojoList" />
                                         </p:pickList>
                                     </b:column>
                                 </b:formGroup>
 
                                 <b:formGroup>
-                                    <h:outputLabel for="secretaryPojoList" value="Edit Secretaries" styleClass="col-xs-12 col-sm-3 control-label"/>
+                                    <h:outputLabel for="secretaryPojoList" value="#{msg.editSecretaries}" styleClass="col-xs-12 col-sm-3 control-label"/>
                                     <b:column col-sm="9" col-xs="12">
                                         <p:pickList id="secretaryPojoList" value="#{editContractBean.secretaryPickupList}" var="secretaries" effect="bounce"
                                                     itemValue="#{secretaries}" itemLabel="#{secretaries.firstName} #{secretaries.lastName}" showCheckbox="true" responsive="true"
                                                     showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" converter="personListConverter"
 
                                                     >
-                                            <f:facet name="sourceCaption">Add new Secretaries</f:facet>
-                                            <f:facet name="targetCaption">Current Secretaries </f:facet>
+                                            <f:facet name="sourceCaption">#{msg.addNewSecretaries}</f:facet>
+                                            <f:facet name="targetCaption">#{msg.currentSecretaries}</f:facet>
 
                                             <p:ajax event="transfer" listener="#{editContractBean.onTransferSecretary}" update="msg assistantPojoList" />
                                         </p:pickList>
@@ -159,7 +159,7 @@
                         <p:outputPanel styleClass="box-footer">
                             <b:commandButton id="UpdateContract"
                                              look="success"
-                                             value="Edit Contract"
+                                             value="#{msg.editContract}"
                                              action="index"
                                              actionListener="#{editContractBean.edit}"
                                              styleClass="pull-right"/>
