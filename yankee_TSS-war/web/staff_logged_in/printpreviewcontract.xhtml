@@ -2,33 +2,121 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:b="http://bootsfaces.net/ui">
     <ui:composition template="/WEB-INF/templates/main-template.xhtml">
-        <ui:param name="pageTitle" value="Welcome Man"/>
+        <ui:param name="pageTitle" value="Create Contract Page"/>
+        <ui:define name="breadcrumb">
+            <li>
+                <h:link outcome="managecontracts">
+                    Manage Contracts
+                </h:link>
+            </li>
+            <li>
+                <h:link disabled="true">
+                    Print Contract
+                </h:link>
+            </li>
+        </ui:define>
         <ui:define name="main-content">
             <h:form>
-                <p:breadCrumb>
-                    <p:menuitem value="Categories" url="/staff_logged_in/managecontracts.xhtml" />
-                    <p:menuitem value="Manage Contracts" url="/staff_logged_in/managecontracts.xhtml" />
-                    <p:menuitem value="Print Contract Paper" disabled="true" />
-                </p:breadCrumb>
-                    <p:outputPanel id="printcontract">
-                        Contract Person = <h:outputText value="#{viewContractDetailsBean.currentContractPerson.firstName} #{viewContractDetailsBean.currentContractPerson.lastName}" />
-                        <br />
-                        Assistants = <h:outputText value="#{viewContractDetailsBean.assistantsForContract}" />
-                        Secretaries = <h:outputText value="#{viewContractDetailsBean.assistantsForContract}" />
-                        Started = <h:outputText value="#{viewContractDetailsBean.contractinfo.startDate}" />
-                        Ended = <h:outputText value="#{viewContractDetailsBean.contractinfo.endDate}" />
-                    </p:outputPanel> 
-                <p:commandButton value="Print" type="button" icon="ui-icon-print" style="display:block;margin-bottom: 20px">
-                    <p:printer target="printcontract" />
-                </p:commandButton>
+                <p:growl id="msg" showDetail="true" escape="false"/>
+                <b:row>
+                    <p:outputPanel id = "printContract" styleClass="box box-default">
+                        <p:outputPanel styleClass="box-header text-center"> 
+                            <!--image of koblenz landau-->
+                            <h:outputLabel value="Employment Contract"/>
+                        </p:outputPanel>  
 
-                <p:growl id="msg" showDetail="true"/>
+                        <p:outputPanel styleClass="box-body top-border text-center">
+                            <p:outputPanel>
+                                This Employment Contract states the terms and conditions that govern the contractual agreement betweeen                               
+                            </p:outputPanel>
+                            <b:formGroup>
+                                <h:outputLabel value="Supervisor : #{contractDetailsBean.supervisorForContract.firstName} #{contractDetailsBean.supervisorForContract.lastName}"/>                              
+                            </b:formGroup>                       
+
+                            <p:outputPanel>
+                                having its principal place of employement at [University Koblenz Landau], and 
+                            </p:outputPanel>                       
+                            <b:formGroup>
+                                <h:outputLabel value="Employee : [#{printpreviewcontractBean.currentContractPerson.firstName} #{printpreviewcontractBean.currentContractPerson.lastName}]"/>
+
+                            </b:formGroup>
+                            <p:outputPanel>
+                                who agrees to be bound by this Contract.                                
+                            </p:outputPanel>                           
+
+                        </p:outputPanel>
+
+
+                        <p:outputPanel styleClass="box-body top-border">
+                            <p:outputPanel>
+                                NOW, Therefore, in consideration of the mutual covenants and promises made by the parties hereto, the Company and the Temp (individually, each a “Party” and collectively, the “Parties”) covenant and agree as follows:
+                            </p:outputPanel>    
+                            <p:outputPanel>
+                                <br/>TERM. The term of this Temporary Employment Contract shall commence on
+                                <h:outputLabel value="#{contractDetailsBean.contractinfo.startDate.dayOfMonth} #{contractDetailsBean.contractinfo.startDate.month} #{contractDetailsBean.contractinfo.startDate.year} (#{contractDetailsBean.contractinfo.startDate.dayOfWeek})"/>                                 
+                                and end on 
+                                <h:outputLabel value="#{contractDetailsBean.contractinfo.endDate.dayOfMonth} #{contractDetailsBean.contractinfo.endDate.month} #{contractDetailsBean.contractinfo.endDate.year} (#{contractDetailsBean.contractinfo.endDate.dayOfWeek})"/>.
+                            </p:outputPanel>
+
+                            <p:outputPanel>
+                                <br/>TIMESHEET FREQUENCY. The time sheets frequency is set to <h:outputLabel value="#{contractDetailsBean.contractinfo.frequency}"/>
+
+                            </p:outputPanel>
+
+                            <p:outputPanel rendered="#{!empty contractDetailsBean.assistantsForContract}">
+                                <br/>ASSISTANTS. The Contract can be assisted under following listed member <br/>
+
+                                <p:dataList value="#{contractDetailsBean.assistantsForContract}" var="assistants" type="definition">                                            
+                                    #{assistants.firstName} #{assistants.lastName}
+                                </p:dataList>                         
+                            </p:outputPanel>
+
+                            <p:outputPanel rendered="#{!empty contractDetailsBean.secretariesForContract}">
+                                <br/>SECRETARIES. The Contract will be bound to have following member as secretary <br/>                                
+                                <p:dataList value="#{contractDetailsBean.secretariesForContract}" var="secretaries" type="definition">                                            
+                                    #{secretaries.firstName} #{secretaries.lastName}
+                                </p:dataList>                         
+                            </p:outputPanel>
+                            <p:outputPanel>
+                                <br/>HOURS OF WORK. The hours of work shall be on working days except public holidays at hours determined by the employer provided that ordinary working hours shall not exceed 
+                                <h:outputLabel value="#{printpreviewcontractBean.contractinfo.hoursPerWeek}"/> hours per week.
+                            </p:outputPanel>
+                        </p:outputPanel>
+
+                        <p:outputPanel styleClass="box-footer">
+                            <p:outputPanel>
+                                IN WITNESS WHEREOF, each of the Parties has executed this Temporary Employment Contract, both Parties by its duly authorized officer, as of the day and year set forth below.
+                            </p:outputPanel>
+                            <br/>
+                            <br/>                         
+                            ____________________________ ______________
+                            <br/>
+                            Supervisor SIGN/DATE
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/> 
+                            ____________________________ ______________
+                            <br/>
+                            Employee SIGN/DATE                       
+
+                        </p:outputPanel>
+                    </p:outputPanel>
+                    <p:commandButton id="print"
+                                     value="Print"
+                                     action ="index"
+                                     styleClass="pull-right">
+                        <p:printer target="printContract" />
+                    </p:commandButton> 
+                </b:row>
             </h:form>
+
         </ui:define>
     </ui:composition>
 </html>
+

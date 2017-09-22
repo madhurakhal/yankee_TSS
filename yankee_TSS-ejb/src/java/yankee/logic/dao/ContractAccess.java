@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yankee.logic.dao;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.LocalBean;
@@ -12,9 +8,7 @@ import javax.ejb.Stateless;
 import yankee.entities.ContractEntity;
 import yankee.logic.ENUM.ContractStatusEnum;
 
-/**
- * @author Dr. Volker Riediger <riediger@uni-koblenz.de>
- */
+
 @Stateless
 @LocalBean
 public class ContractAccess extends AbstractAccess<ContractEntity> {
@@ -33,10 +27,9 @@ public class ContractAccess extends AbstractAccess<ContractEntity> {
 
     @Override
     protected Class<ContractEntity> getEntityClass() {
-        return ContractEntity.class;
-        
+        return ContractEntity.class;        
     }
-
+    
     @Override
     protected ContractEntity newEntity() {
         return new ContractEntity(true);
@@ -48,11 +41,20 @@ public class ContractAccess extends AbstractAccess<ContractEntity> {
         ).getSingleResult();
     }
     
+     public List<ContractEntity> getContractList() {
+        return em.createNamedQuery("getContractList", ContractEntity.class
+        ).getResultList();
+    }
+    
+   
+   ///////////////////////////////////////////////////////////////////////////
+    // Should be able to DELETE 
     public ContractEntity getContractEntity(String uuid)
     {
         return em.createNamedQuery("getContractEntityByUuid", ContractEntity.class).setParameter("uuid",uuid).getSingleResult();
     }
 
+    // TO REVIEW???? 
     public ContractEntity findByPrimaryKey(final Long id)
     {
         return em.find(ContractEntity.class, id);

@@ -1,14 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yankee.logic.impl;
 
 import java.time.LocalDate;
-import java.time.Period;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -36,10 +31,6 @@ import yankee.logic.dao.TimeSheetAccess;
 import yankee.logic.to.Contract;
 import yankee.logic.to.Person;
 
-/**
- *
- * @author Sabs
- */
 @Stateless
 public class ContractBusinessLogicImpl implements ContractBusinessLogic {
 
@@ -60,30 +51,40 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
 
     @EJB
     private SupervisorAccess supervisorAccess;
-    
+
     @EJB
     private TimeSheetAccess timeSheetAccess;
-    
+
     @EJB
     private TimeSheetBusinessLogic timeSheetBusinessLogic;
 
     @Override
-    public List<Person> getContractList() {
-//        List<PersonEntity> l = personAccess.getPersonList();
-//        List<Person> result = new ArrayList<>(l.size());
-//        for (PersonEntity pe : l) {
-//            Person p = new Person(pe.getUuid(), pe.getName());
-//            p.setFirstName(pe.getFirstName());
-//            p.setLastName(pe.getLastName());
-//            p.setDateOfBirth(pe.getDateOfBirth());
-//            result.add(p);
-//        }
-        return null;
+    public List<Contract> getContractList() {
+        List<ContractEntity> lce = contractAccess.getContractList();
+        if (lce == null) {
+            return null;
+        }
+        List<Contract> result = new ArrayList<>();
+        for (ContractEntity ce : lce) {
+            Contract c = new Contract(ce.getUuid(), ce.getName());
+            c.setStartDate(ce.getStartDate());
+            c.setEndDate(ce.getEndDate());
+            c.setFrequency(ce.getFrequency());
+            c.setHoursPerWeek(ce.getHoursPerWeek());
+            c.setWorkingDaysPerWeek(ce.getWorkingDaysPerWeek());
+            c.setVacationDaysPerYear(ce.getVacationDaysPerYear());
+            c.setStatus(ce.getStatus());
+            c.setTerminationDate(ce.getTerminationDate());
+            c.setVacationHours(ce.getVacationHours());
+            c.setHoursDue(ce.getHoursDue());
+            result.add(c);
+        }
+        return result;
+
     }
 
-    // This roleTypeUUID is either supervisor, secretary, assistant, employee uuid
     @Override
-    public Contract createContract(String contractName, Person supervisor, Person assistant, Person secretary, Person employee, Date startDate, Date endDate, TimesheetFrequencyEnum timesheetFrequency , double hoursPerWeek, int workingDaysPerWeek, int vacationDaysPerYear) {
+    public Contract createContract(String contractName, Person supervisor, Person assistant, Person secretary, Person employee, Date startDate, Date endDate, TimesheetFrequencyEnum timesheetFrequency, double hoursPerWeek, int workingDaysPerWeek, int vacationDaysPerYear) {
 
         // When creating contract.
         // 1. First create contract and get contract id Also set start end date along with timesheetFrequency detail.
@@ -91,21 +92,20 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
         // 3. now create supervisor with person associated to it
         // 4. now create secretary as of yet in this createContract.
         // 5. now create assistant as of yet in this createContract.
-        
         //1.
         ContractEntity ce = contractAccess.createEntity(contractName);
         LocalDate lstartdate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate lenddate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();        
+        LocalDate lenddate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         ce.setStartDate(lstartdate);
         ce.setEndDate(lenddate);
-        if (timesheetFrequency != null){
-        ce.setFrequency(timesheetFrequency);
-    }
+        if (timesheetFrequency != null) {
+            ce.setFrequency(timesheetFrequency);
+        }
         ce.setHoursPerWeek(hoursPerWeek);
-        
+
         ce.setVacationDaysPerYear(vacationDaysPerYear);
         ce.setWorkingDaysPerWeek(workingDaysPerWeek);
-        
+
         System.out.println("Contract ko naam k ho ta" + ce.getName() + ce.getId());
 
         try {
@@ -157,7 +157,6 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
         // 3. Similar as 2. This time assistant
         // 4. Set start and end date.
 
-        
         ContractEntity ce = contractAccess.getByUuid(contractUUID);
         if (startDate != null) {
             LocalDate lstartdate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -223,14 +222,14 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
 
     @Override
     public Contract startContract(String contractUUID) {
-        
+
         ContractEntity ce = contractAccess.getByUuid(contractUUID);
-        ce.setStatus(ContractStatusEnum.STARTED); 
+        ce.setStatus(ContractStatusEnum.STARTED);
         // Create timesheets 
         timeSheetBusinessLogic.createTimeSheet(contractUUID);
-        
+
         // Now updating the total hours due for contract. Subject to change when timesheet entries changes.
-        getUpdateContractStatistics(contractUUID);
+        updateContractStatistics(contractUUID);
         return new Contract(ce.getUuid(), ce.getName());
     }
 
@@ -246,38 +245,32 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
         c.setVacationDaysPerYear(ce.getVacationDaysPerYear());
         c.setStatus(ce.getStatus());
         c.setTerminationDate(ce.getTerminationDate());
+        c.setVacationHours(ce.getVacationHours());
+        c.setHoursDue(ce.getHoursDue());
         return c;
 
     }
-    
-    @Override 
-    public Contract getUpdateContractStatistics(String contractUUID){
+
+    @Override
+    public void updateContractStatistics(String contractUUID) {
         ContractEntity ce = contractAccess.getByUuid(contractUUID);
-        
+
         // Calculating vacation hours.
         LocalDate date1 = ce.getStartDate();
-        LocalDate date2 = ce.getEndDate();               
-        double durationOfContract = (double) ChronoUnit.MONTHS.between(date1, date2);
-        double vacationHours = ce.getVacationDaysPerYear()* (durationOfContract / 12) * (ce.getHoursPerWeek() / ce.getWorkingDaysPerWeek());
+        LocalDate date2 = ce.getEndDate();
+        double durationOfContract = (double) ChronoUnit.MONTHS.between(date1, date2) + 1;
+        double vacationHours = (double) ce.getVacationDaysPerYear() * (durationOfContract / 12) * (ce.getHoursPerWeek() / ce.getWorkingDaysPerWeek());
         ce.setVacationHours(vacationHours);
-        
+
         // Calculating Total hours due.
         // load each timesheet for this contract. and sum each timesheets hoursdue.
         List<TimesheetEntity> lte = timeSheetAccess.getTimeSheetsForContract(contractUUID);
         double totalhoursDue = 0.0;
-        for (TimesheetEntity te : lte){
+        for (TimesheetEntity te : lte) {
             totalhoursDue += te.getHoursDue();
         }
-        ce.setHoursDue(totalhoursDue);          
-        
-        // Fill All Contract details        
-        Contract contract = new Contract(ce.getUuid() , ce.getName());
-        contract.setStatus(ce.getStatus());
-        // Fill allll
-        return contract;
-        
-                
-        
+        ce.setHoursDue(totalhoursDue);
+
     }
-    
+
 }
