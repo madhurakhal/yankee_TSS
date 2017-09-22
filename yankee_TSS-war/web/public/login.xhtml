@@ -14,7 +14,7 @@
                     <b:column col-xs="10" offset-xs="1" col-md="8" offset-md="2">
                         <b:column styleClass="box box-info">
                             <b:column styleClass="box-header with-border text-center">
-                                <h3 styleClass="box-title">${msg.signIn}</h3>
+                                <h3 styleClass="box-title">#{msg.signIn}</h3>
                             </b:column>
                             <b:form horizontal="true" pt:action="j_security_check" pt:method="post" pt:name="loginForm" pt:role="form">
                             <!--<form role="form" method="post" action="j_security_check" name="loginForm">-->
@@ -24,7 +24,7 @@
                                         <b:column col-sm="10" col-xs="12">
                                             <input  id="username" name="j_username"
                                                     class="form-control"  type="text"
-                                                    placeholder="Username"
+                                                    placeholder="#{msg.userName}"
                                                     autofocus="true" autocomplete="off"/>
                                         </b:column>
                                     </b:formGroup>
@@ -33,22 +33,22 @@
                                         <b:column col-xs="12" col-sm="10">
                                             <input id="password" name="j_password"
                                                    class="form-control" type="password"
-                                                   placeholder="Password"
+                                                   placeholder="#{msg.password}"
                                                    autocomplete="off"/>
                                         </b:column>
                                     </b:formGroup>
                                     <b:formGroup>
                                         <b:column col-sm="10" offset-sm="2">
-                                            <b:selectBooleanCheckbox value="checked" caption="Remember Me"/>
+                                            <b:selectBooleanCheckbox value="checked" caption="#{msg.rememberMe}"/>
                                         </b:column>
                                     </b:formGroup>
                                 </p:outputPanel>
                                 <b:column col-xs="12" class="box-footer">
-                                    <b:commandButton value="Sign In" styleClass="btn btn-info pull-right" pt:type="submit"/>
+                                    <b:commandButton value="#{msg.logIn}" styleClass="btn btn-info pull-right" pt:type="submit"/>
                                 </b:column>
                             </b:form>
                             <b:alert severity="danger" rendered="${request.parameterMap.containsKey('j_username')}">
-                                Username or Password Incorrect!
+                                #{msg.userNamePasswordIncorrect}
                             </b:alert>
                         </b:column>
                     </b:column>

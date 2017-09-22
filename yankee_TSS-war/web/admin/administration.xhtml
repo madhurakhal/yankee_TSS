@@ -8,13 +8,13 @@
     <ui:composition template="/WEB-INF/templates/main-template.xhtml">        
         <ui:param name="pageTitle" value="Admin Page"/>
         <ui:define name="main-content">
-            <h2>ALL about admining hehe</h2>
+            <h2>#{msg.administration}</h2>
             <h:form enctype="multipart/form-data">
                 <p:growl id="messages" showDetail="true" />
                 <h:outputLabel for="name" value="Note: Your database has now loaded entries for public holidays." rendered = "#{!publicHolidaysBean.databaseEmpty}"/>
 <!--                <p:fileUpload value="{fileUploadBean.jsonFile}" mode="simple" skinSimple="true"  allowTypes="*.*;"/>
                 <p:commandButton value="Submit" ajax="false" actionListener="{fileUploadBean.upload}" update="msgs" />-->
-                <p:commandButton rendered = "#{publicHolidaysBean.databaseEmpty}" value="Load Public Holidays To Database " ajax="false" actionListener="#{publicHolidaysBean.test}" update="msgs" />
+<p:commandButton rendered = "#{publicHolidaysBean.databaseEmpty}" value="#{msg.loadPublicHolidaysToDatabase}" ajax="false" actionListener="#{publicHolidaysBean.test}" update="msgs" />
             </h:form>
             
             

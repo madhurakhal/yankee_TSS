@@ -17,11 +17,11 @@
                             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
                                 <i class="fa fa-bars"></i>
                             </button>
-                            <h:link  styleClass="navbar-brand" outcome="/index.xhtml"><b>Welcome</b></h:link>
+                            <h:link  styleClass="navbar-brand" outcome="/index.xhtml"><b>#{msg.welcome}</b></h:link>
                         </p:outputPanel>
                         <p:outputPanel styleClass="collapse navbar-collapse" id="navbar-collapse">
                             <b:navbarLinks styleClass="nav navbar-nav">
-                                <b:navLink outcome="dashboard" value="Dashboard" rendered="#{not empty request.remoteUser}"></b:navLink>
+                                <b:navLink outcome="dashboard" value="#{msg.dashBoard}" rendered="#{not empty request.remoteUser}"></b:navLink>
                                 <b:navLink outcome="index" value="Home" rendered="#{empty request.remoteUser}"></b:navLink>
                             </b:navbarLinks>
                             <b:navbarLinks styleClass="nav navbar-nav navbar-right">
@@ -40,7 +40,6 @@
                                     <c:set var="curLang" value="#{language.language}" scope="request"/>
 
                                     <ul class="dropdown-menu" ps:role="menu" ps:aria-labelledby="single-button">
-
                                         <ui:repeat var="langs" value="#{language.availableLanguages.entrySet().toArray()}">
                                             <b:navLink ps:role="menuitem">
                                                 <b:commandButton class="dropdown-item lang-btn" 
@@ -54,19 +53,18 @@
                                             </b:navLink>
                                         </ui:repeat>
                                     </ul>
-
                                 </li>
                             </b:navbarLinks>
                             <ui:fragment rendered="#{not empty request.remoteUser}">
                                 <b:navbarLinks styleClass="nav navbar-nav navbar-right">
                                     <b:navLink outcome="myaccount" value="#{loginBean.user.firstName} " icon="cog"/>
-                                    <b:navCommandLink  value="Log Out" icon="log-out" action="#{loginBean.logout}"/>
+                                    <b:navCommandLink  value="#{msg.logOut}" icon="log-out" action="#{loginBean.logout}"/>
                                 </b:navbarLinks>
                             </ui:fragment>
 
                             <ui:fragment rendered="#{empty request.remoteUser}">
                                 <b:navbarLinks styleClass="nav navbar-nav navbar-right">
-                                    <b:navLink value="Log In" href="public/login.xhtml"/>
+                                    <b:navLink value="#{msg.logIn}" href="public/login.xhtml"/>
                                 </b:navbarLinks>
                             </ui:fragment>
 
