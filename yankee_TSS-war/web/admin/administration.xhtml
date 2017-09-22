@@ -4,22 +4,64 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:b="http://bootsfaces.net/ui">
     <ui:composition template="/WEB-INF/templates/main-template.xhtml">        
         <ui:param name="pageTitle" value="Admin Page"/>
         <ui:define name="main-content">
-            <h2>#{msg.administration}</h2>
-            <h:form enctype="multipart/form-data">
+            <h2>#{msg.administration}</h2>         
+
+            <b:row styleClass="text-center">
+                <p:outputPanel styleClass="box box-default">
+                    <p:outputPanel styleClass="box-header with-border">
+                        <h:outputLabel for="contractPersons" value="Some Admin Tasks" />
+                    </p:outputPanel>
+                    <b:form id="GermanState">
+                        <p:outputPanel styleClass="box-body">
+                            <p:outputPanel>
+                                <b:row>
+                                    <p:outputPanel styleClass="col-xs-12">
+                                        <b:formGroup>
+                                            <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="personInput">Select German State</h:outputLabel>
+                                            <b:column col-sm="6" col-xs="12">
+                                                <b:selectOneMenu id="germanStateChoose" value="#{administrationBean.selectedState}" immediate="true">
+                                                    <f:selectItem itemLabel="Select State" noSelectionOption="true"/>
+                                                    <f:selectItems  value="#{administrationBean.germanyState}" var="entity" itemValue="#{entity}"/>                                                    
+                                                </b:selectOneMenu>
+                                            </b:column>
+                                        </b:formGroup>
+                                    </p:outputPanel>
+                                </b:row>
+                            </p:outputPanel> 
+                            <p:growl id="msg" showDetail="true"/>
+                            
+                            <b:commandButton id="setState"
+                                             look="success"
+                                             value="Set State"
+                                             actionListener="#{administrationBean.setState}"
+                                             styleClass="pull-right"
+                                             />
+                            
+                             <h:form enctype="multipart/form-data">
                 <p:growl id="messages" showDetail="true" />
                 <h:outputLabel for="name" value="Note: Your database has now loaded entries for public holidays." rendered = "#{!publicHolidaysBean.databaseEmpty}"/>
-<!--                <p:fileUpload value="{fileUploadBean.jsonFile}" mode="simple" skinSimple="true"  allowTypes="*.*;"/>
-                <p:commandButton value="Submit" ajax="false" actionListener="{fileUploadBean.upload}" update="msgs" />-->
-<p:commandButton rendered = "#{publicHolidaysBean.databaseEmpty}" value="#{msg.loadPublicHolidaysToDatabase}" ajax="false" actionListener="#{publicHolidaysBean.test}" update="msgs" />
+                <!--                <p:fileUpload value="{fileUploadBean.jsonFile}" mode="simple" skinSimple="true"  allowTypes="*.*;"/>
+                                <p:commandButton value="Submit" ajax="false" actionListener="{fileUploadBean.upload}" update="msgs" />-->
+                <p:commandButton rendered = "#{publicHolidaysBean.databaseEmpty}" value="#{msg.loadPublicHolidaysToDatabase}" ajax="false" actionListener="#{publicHolidaysBean.test}" update="msgs" />
+
+
             </h:form>
-            
-            
-            
-            
+
+                        </p:outputPanel>
+                    </b:form>
+                </p:outputPanel>
+            </b:row>
+
+
+
+
+
+
         </ui:define>
     </ui:composition>
 </html>
