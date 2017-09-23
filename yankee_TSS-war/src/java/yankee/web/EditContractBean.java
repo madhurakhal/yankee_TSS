@@ -176,6 +176,8 @@ public class EditContractBean {
     private Person supervisorForContract;
     private List<Person> secretariesForContract = new ArrayList<>();
     private List<Person> assistantsForContract = new ArrayList<>();
+    private List<Person> _secretariesForContract = new ArrayList<>();
+    private List<Person> _assistantsForContract = new ArrayList<>();
 
     private List<Person> availableSecretaryList = new ArrayList<>();
     private List<Person> availableAssistantList = new ArrayList<>();
@@ -197,8 +199,8 @@ public class EditContractBean {
         // First we will get all the assistant , supervisor , secretary for the given contract
         getSupervisorForContract();
         getPreviousSelectedSupervisor();
-        getAssistantsForContract();
-        getSecretariesForContract();
+        _assistantsForContract = new ArrayList<>(getAssistantsForContract());
+        _secretariesForContract = new ArrayList<>(getSecretariesForContract());
 
         // After current assistant, supervisor and secretary are recieved. we set out the available for adding list of 
         // assistant, supervisor and secretary
@@ -439,7 +441,7 @@ public class EditContractBean {
         // Make changes for all contract details.
         System.out.println("Supervisor" + supervisorForContract);
         System.out.println("New secretaries" + secretaryPickupList.getTarget());
-        System.out.println("New secretaries" + assistantPickupList.getTarget());
+        System.out.println("New assistant" + assistantPickupList.getTarget());
         System.out.println("Start date" + startDate);
         System.out.println("End date" + endDate);
         System.out.println("Contract id" + contract_id);
@@ -450,14 +452,17 @@ public class EditContractBean {
         // 3. create all the assistants i.e. assistantPickupList.getTarget - assistantsForContract
         // 4. depending on start and end date and timesheets should be created. All timesheet should have contract associated to it.
         final Set<Person> newSecretaries = new HashSet<>(secretaryPickupList.getTarget());
-        final Set<Person> prevSecretaries = new HashSet<>(secretariesForContract);
+        final Set<Person> prevSecretaries = new HashSet<>(_secretariesForContract);
         boolean secretariesChanged = !(newSecretaries.equals(prevSecretaries));
         System.out.println("Secretaries Changed " + secretariesChanged);
 
+        
         final Set<Person> newAssistants = new HashSet<>(assistantPickupList.getTarget());
-        final Set<Person> prevAssistants = new HashSet<>(assistantsForContract);
+        final Set<Person> prevAssistants = new HashSet<>(_assistantsForContract);
         boolean assistantsChanged = !(newAssistants.equals(prevAssistants));
+        System.out.println("Previous Assistants " + _assistantsForContract);
         System.out.println("Assistants Changed " + assistantsChanged);
+        
 
         contractBusinessLogic.editContract(contract_id, supervisorForContract, secretaryPickupList.getTarget(), secretariesChanged, assistantPickupList.getTarget(), assistantsChanged, startDate, endDate , timesheetFrequency , workingDaysPerWeek , vacationDaysPerYear , hoursPerWeek);
         FacesMessage msg = new FacesMessage("Contract Has Been Updated");
