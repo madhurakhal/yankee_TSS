@@ -35,7 +35,9 @@ public interface TimeSheetBusinessLogic extends Serializable {
     // TO REVIEW
     public List<TimesheetT> createTimeSheet(final String contractUUID); 
     public String submitTimeSheet(TimeSheet obj);   
-    public List<TimeSheet> getAllTimeSheetsByGivenDate (LocalDate givenDate);    
+    public List<TimesheetT> getAllTimeSheetsByGivenDate (LocalDate givenDate);    
     public List<TimeSheet> getAllTimeSheetsSignedBySupervisor (LocalDate givenDate);
+    
+    public void deleteOldTimeSheetSignedBySupervisor(LocalDate oldDate);
     
 }

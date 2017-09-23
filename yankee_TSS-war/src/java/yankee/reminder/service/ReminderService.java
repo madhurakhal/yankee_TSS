@@ -23,6 +23,7 @@ import yankee.logic.to.Employee;
 import yankee.logic.to.Secretary;
 import yankee.logic.to.Supervisor;
 import yankee.logic.to.TimeSheet;
+import yankee.logic.to.TimesheetT;
 
 /**
  *
@@ -53,7 +54,7 @@ public class ReminderService {
     private Employee employee;
 
     private List<Employee> employees;
-    private List<TimeSheet> timeSheets;
+    private List<TimesheetT> timeSheets;
     private List<Secretary> secretaries;
     private List<Assistant> assistants;
 
@@ -66,6 +67,7 @@ public class ReminderService {
         })
      */
     // Scheduler ejb to do certain task based on param, - 7 means last 7 days of the month
+    //@Schedule(hour = "06", minute = "59", second = "59", persistent = false)
     @Schedule(minute = "*/1", hour = "*", persistent = false)
     public void runTask() {
         System.out.println("This task is executed");
@@ -78,13 +80,13 @@ public class ReminderService {
         System.out.println("Current Date=" + today);
         try {
             timeSheets = timeSheetBusinessLogic.getAllTimeSheetsByGivenDate(today);
-            System.out.println("list of timesheets  " + timeSheets);
+            System.out.println("list of timesheets = " + timeSheets);
         } catch (NumberFormatException ne) {
             System.out.println("Exception Occured from timeSheetBusinessLogic!!");
         }
 
         if (timeSheets != null) {
-            for (TimeSheet t : timeSheets) {
+            for (TimesheetT t : timeSheets) {
                 String contractId = t.getContract().getUuid();
                 System.out.println("Status =" + t.getStatus());
                 timesheetstatus = t.getStatus();
@@ -127,7 +129,7 @@ public class ReminderService {
     private void sendReminderToEmployee(Employee e) {
         String message = " Dear " + e.getPerson().getFirstName() + " " + e.getPerson().getLastName()
                 + "\n\n " + " Time sheet is signed by supervisor ....."
-                + "Regards \n\n Your System.";
+                + "\n\n Regards"+ "\n\n" + "Your System";
 
         String subject = "Time sheet need to be signed for ...";
         String email = e.getPerson().getEmailAddress();

@@ -66,6 +66,10 @@ public class TimeSheetAccess extends AbstractAccess<TimesheetEntity>{
         return em.createNamedQuery("getAllTimeSheetsSignedBySupervisor", TimesheetEntity.class).setParameter("givenDate", givenDate).getResultList();
     }
     
+    public void deleteOldTimeSheetSignedBySupervisor(LocalDate oldDate) {
+        em.createNamedQuery("deleteOldTimeSheetSignedBySupervisor", TimesheetEntity.class).setParameter("oldDate", oldDate).getResultList();
+    }
+    
     public TimesheetEntity findByPrimaryKey(final Long id)
     {
         return em.find(TimesheetEntity.class, id);

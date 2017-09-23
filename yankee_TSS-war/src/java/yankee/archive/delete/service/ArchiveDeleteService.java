@@ -8,6 +8,7 @@ package yankee.archive.delete.service;
 import java.time.LocalDate;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.ejb.Remote;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import yankee.logic.TimeSheetBusinessLogic;
@@ -26,7 +27,7 @@ public class ArchiveDeleteService {
     
     private List<TimeSheet> timeSheets;
 
-    @Schedule(minute = "*/1", hour = "*", persistent = false)
+    @Schedule(minute = "*/2", hour = "*", persistent = false)
     public void runDeleteTask() {
         System.out.println("This task is executed from run delete task");
         getDetailsToDeleteTimeSheetsAndContracts(2);
@@ -39,8 +40,7 @@ public class ArchiveDeleteService {
         System.out.println("The date before two year is = " + x);
         
         try {
-            timeSheets = timeSheetBusinessLogic.getAllTimeSheetsByGivenDate(today);
-            System.out.println("list of timesheets  " + timeSheets);
+              timeSheetBusinessLogic.deleteOldTimeSheetSignedBySupervisor(x);
         } catch (NumberFormatException ne) {
             System.out.println("Exception Occured from timeSheetBusinessLogic!!");
         }
