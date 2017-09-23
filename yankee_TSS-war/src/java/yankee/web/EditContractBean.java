@@ -29,6 +29,7 @@ import org.primefaces.model.DualListModel;
 import yankee.logic.ContractBusinessLogic;
 import yankee.logic.ENUM.TimesheetFrequencyEnum;
 import yankee.logic.EmployeeBusinessLogic;
+import yankee.logic.to.Contract;
 import yankee.logic.to.Employee;
 import yankee.logic.to.Supervisor;
 
@@ -68,9 +69,49 @@ public class EditContractBean {
 
     private Date startDate;
     private Date endDate;
-    private TimesheetFrequencyEnum timesheetFrequency;
+    private TimesheetFrequencyEnum timesheetFrequency;    
+    private double hoursPerWeek;
+    private Integer workingDaysPerWeek;    
+    private Integer vacationDaysPerYear;    
     private Person currentContractPerson;    
+    private Contract contractInfo;
+
+    public Contract getContractInfo() {
+        contractInfo = contractBusinessLogic.getContractByUUID(contract_id);
+        return contractInfo;
+    }
+
+    public void setContractInfo(Contract contractInfo) {
+        this.contractInfo = contractInfo;
+    }
     private List<Person> persons = new ArrayList<>();
+
+    public double getHoursPerWeek() {
+        hoursPerWeek = contractInfo.getHoursPerWeek();
+        return hoursPerWeek;
+    }
+
+    public void setHoursPerWeek(double hoursPerWeek) {
+        this.hoursPerWeek = hoursPerWeek;
+    }
+    
+    public Integer getWorkingDaysPerWeek() {
+        workingDaysPerWeek = contractInfo.getWorkingDaysPerWeek();
+        return workingDaysPerWeek;
+    }
+
+    public void setWorkingDaysPerWeek(Integer workingDaysPerWeek) {
+        this.workingDaysPerWeek = workingDaysPerWeek;
+    }
+
+    public Integer getVacationDaysPerYear() {
+        vacationDaysPerYear =  contractInfo.getVacationDaysPerYear();
+        return vacationDaysPerYear;
+    }
+
+    public void setVacationDaysPerYear(Integer vacationDaysPerYear) {
+        this.vacationDaysPerYear = vacationDaysPerYear;
+    }
 
     public Person getCurrentContractPerson() {
         if (currentContractPerson == null) {
@@ -84,7 +125,7 @@ public class EditContractBean {
     }
 
     public TimesheetFrequencyEnum getTimesheetFrequency() {
-        timesheetFrequency = contractBusinessLogic.getContractByUUID(contract_id).getFrequency();
+        timesheetFrequency = contractInfo.getFrequency();
         return timesheetFrequency;
     }
 
@@ -150,6 +191,7 @@ public class EditContractBean {
         getContract_id();
         getPersons();
         getCurrentContractPerson();
+        getContractInfo();
 
         // First we will get all the assistant , supervisor , secretary for the given contract
         getSupervisorForContract();
@@ -383,7 +425,8 @@ public class EditContractBean {
         boolean assistantsChanged = !(newAssistants.equals(prevAssistants));
         System.out.println("Assistants Changed " + assistantsChanged);
 
-        contractBusinessLogic.editContract(contract_id, supervisorForContract, secretaryPickupList.getTarget(), secretariesChanged, assistantPickupList.getTarget(), assistantsChanged, startDate, endDate);
-
+        contractBusinessLogic.editContract(contract_id, supervisorForContract, secretaryPickupList.getTarget(), secretariesChanged, assistantPickupList.getTarget(), assistantsChanged, startDate, endDate , timesheetFrequency , workingDaysPerWeek , vacationDaysPerYear , hoursPerWeek);
+        FacesMessage msg = new FacesMessage("Contract Has Been Updated");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 }

@@ -16,6 +16,7 @@ import javax.ejb.Stateless;
 import yankee.entities.ContractEntity;
 import yankee.entities.TimesheetEntity;
 import yankee.entities.TimesheetEntryEntity;
+import yankee.logic.AdministrationBusinessLogic;
 import yankee.logic.ENUM.ContractStatusEnum;
 import yankee.logic.ENUM.GermanyStatesEnum;
 import yankee.logic.ENUM.TimesheetStatusEnum;
@@ -53,7 +54,7 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
     private PublicHolidaysBusinessLogic publicHolidaysBusinessLogic;
     
     @EJB
-    private AdministrationBusinessLogicImpl administrationBusinessLogicImpl;
+    private AdministrationBusinessLogic administrationBusinessLogic;
 
     /**
      * Call this method when the Assistant starts the contract
@@ -82,7 +83,7 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
                 //Period period = Period.between(ce.getStartDate(), ce.getEndDate());
                 GermanyStatesEnum statesEnum;
                 try{
-                    statesEnum = administrationBusinessLogicImpl.getAdminSetState().getGermanState();} 
+                    statesEnum = administrationBusinessLogic.getAdminSetState().getGermanState();} 
                 catch(Exception e){
                     statesEnum = GermanyStatesEnum.RHINELANDPALATINATE;
                 }

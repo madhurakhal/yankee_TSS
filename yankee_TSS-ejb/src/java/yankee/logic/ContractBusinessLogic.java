@@ -14,7 +14,7 @@ public interface ContractBusinessLogic {
 
     public Contract createContract(String contractName, Person supervisor, Person assistant, Person secretary, Person employee, Date startDate , Date endDate , TimesheetFrequencyEnum timesheetFrequency, double hoursPerWeek, int workingDaysPerWeek, int vacationDaysPerYear);
     
-    public Contract editContract(String contractUUID , Person supervisorPerson , List<Person> secretaries , boolean secretariesChanged, List<Person> assistants , boolean assistantsChanged, Date startDate, Date endDate );
+    public Contract editContract(String contractUUID , Person supervisorPerson , List<Person> secretaries , boolean secretariesChanged, List<Person> assistants , boolean assistantsChanged, Date startDate, Date endDate, TimesheetFrequencyEnum timesheetFrequency , int workingDaysPerWeek , int vacationDaysPerYear , double hoursPerWeek);
     
     public Contract startContract(String contractUUID);
     

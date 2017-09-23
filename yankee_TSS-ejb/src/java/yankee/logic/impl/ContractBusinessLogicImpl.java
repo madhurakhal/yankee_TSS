@@ -148,7 +148,7 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
     }
 
     @Override
-    public Contract editContract(String contractUUID, Person supervisorPerson, List<Person> secretaries, boolean secretariesChanged, List<Person> assistants, boolean assistantsChanged, Date startDate, Date endDate) {
+    public Contract editContract(String contractUUID, Person supervisorPerson, List<Person> secretaries, boolean secretariesChanged, List<Person> assistants, boolean assistantsChanged, Date startDate, Date endDate, TimesheetFrequencyEnum timesheetFrequency , int workingDaysPerWeek , int vacationDaysPerYear , double hoursPerWeek) {
         // When updating contract 
         // We will receive 
         // 1. new supervisorFor contract .. check for null if no change. Delete and create if not null and associate this contract id.
@@ -166,6 +166,11 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
             LocalDate lenddate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             ce.setEndDate(lenddate);
         }
+        ce.setFrequency(timesheetFrequency);
+        ce.setWorkingDaysPerWeek(workingDaysPerWeek);
+        ce.setVacationDaysPerYear(vacationDaysPerYear);
+        ce.setHoursPerWeek(hoursPerWeek);        
+        
         // 1. 
         SupervisorEntity svePrev = supervisorAccess.getSupervisorByContract(contractAccess.getByUuid(contractUUID));
         // This means the current selected supervisor is different from one before
