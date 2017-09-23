@@ -15,6 +15,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import yankee.logic.AssistantBusinessLogic;
@@ -190,11 +191,12 @@ public class EditContractBean {
         System.out.println("called me init only once yes?");
         getContract_id();
         getPersons();
-        getCurrentContractPerson();
+        getCurrentContractPerson();        
         getContractInfo();
 
         // First we will get all the assistant , supervisor , secretary for the given contract
         getSupervisorForContract();
+        getPreviousSelectedSupervisor();
         getAssistantsForContract();
         getSecretariesForContract();
 
@@ -227,6 +229,7 @@ public class EditContractBean {
     public Person getSupervisorForContract() {
         if (supervisorForContract == null) {
             supervisorForContract = supervisorBusinessLogic.getSupervisorByContract(contract_id).getPerson();
+ _helperCurrentSupervisor = supervisorForContract;
         }
         return supervisorForContract;
     }
@@ -311,9 +314,10 @@ public class EditContractBean {
 
             // fetch all contracts for pradip and get supervisor.
             // delete these supervisors from all persons.
+            availableSupervisorList.add(supervisorForContract);
             for (Person p : persons) {
                 boolean hashimAsSupervisor = false;
-                if (!supervisorForContract.getUuid().equals(p.getUuid()) && p.getUserRoleRealm() != null && !currentContractPerson.getUuid().equals(p.getUuid())) {
+                if (p.getUserRoleRealm() != null && !currentContractPerson.getUuid().equals(p.getUuid())) {
                     List<Supervisor> ls = supervisorBusinessLogic.getSupervisorByPerson(p.getUuid());
 
                     for (Supervisor s : ls) {
@@ -399,6 +403,36 @@ public class EditContractBean {
         FacesContext.getCurrentInstance().addMessage(null, msg);
 
     }
+    
+    private Person previousSelectedSupervisor;
+    private Person _helperCurrentSupervisor;
+
+    public Person getPreviousSelectedSupervisor() {
+        previousSelectedSupervisor = supervisorForContract;
+        return previousSelectedSupervisor;
+    }
+
+    public void setPreviousSelectedSupervisor(Person previousSelectedSupervisor) {
+        this.previousSelectedSupervisor = previousSelectedSupervisor;
+    }
+    
+    public void onChangeSupervisor(AjaxBehaviorEvent event){
+        System.out.println("PREVIOUSSSSSSSSSSSSSSSSSSSSS" + previousSelectedSupervisor );
+        System.out.println("SELECTTTTTTTTTTTTTTTTTTTTTTTTTTT" + supervisorForContract.getFirstName());
+        secretaryPickupList.getSource().remove(supervisorForContract);
+        assistantPickupList.getSource().remove(supervisorForContract);
+        assistantPickupList.getTarget().remove(supervisorForContract);
+        
+        if (!previousSelectedSupervisor.getUuid().equals(_helperCurrentSupervisor.getUuid())){
+            secretaryPickupList.getSource().add(previousSelectedSupervisor);
+            assistantPickupList.getSource().add(previousSelectedSupervisor);
+        }
+        else {            
+            assistantPickupList.getTarget().add(previousSelectedSupervisor);
+        }
+        previousSelectedSupervisor = supervisorForContract;
+    }
+    
 
     public void edit() {
         System.out.println("Edit in progress");
