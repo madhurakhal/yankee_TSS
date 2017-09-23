@@ -8,7 +8,6 @@ import javax.ejb.Stateless;
 import yankee.entities.ContractEntity;
 import yankee.logic.ENUM.ContractStatusEnum;
 
-
 @Stateless
 @LocalBean
 public class ContractAccess extends AbstractAccess<ContractEntity> {
@@ -19,7 +18,7 @@ public class ContractAccess extends AbstractAccess<ContractEntity> {
         ContractEntity se = super.createEntity(name);
         try {
             se.setStatus(ContractStatusEnum.PREPARED);
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             Logger.getLogger(ContractAccess.class.getName()).log(Level.SEVERE, null, ex);
         }
         return se;
@@ -27,9 +26,9 @@ public class ContractAccess extends AbstractAccess<ContractEntity> {
 
     @Override
     protected Class<ContractEntity> getEntityClass() {
-        return ContractEntity.class;        
+        return ContractEntity.class;
     }
-    
+
     @Override
     protected ContractEntity newEntity() {
         return new ContractEntity(true);
@@ -40,25 +39,22 @@ public class ContractAccess extends AbstractAccess<ContractEntity> {
         return em.createNamedQuery("getContractCount", Long.class
         ).getSingleResult();
     }
-    
-     public List<ContractEntity> getContractList() {
+
+    public List<ContractEntity> getContractList() {
         return em.createNamedQuery("getContractList", ContractEntity.class
         ).getResultList();
     }
-    
-   
-   ///////////////////////////////////////////////////////////////////////////
+
+
+    ///////////////////////////////////////////////////////////////////////////
     // Should be able to DELETE 
-    public ContractEntity getContractEntity(String uuid)
-    {
-        return em.createNamedQuery("getContractEntityByUuid", ContractEntity.class).setParameter("uuid",uuid).getSingleResult();
+    public ContractEntity getContractEntity(String uuid) {
+        return em.createNamedQuery("getContractEntityByUuid", ContractEntity.class).setParameter("uuid", uuid).getSingleResult();
     }
 
     // TO REVIEW???? 
-    public ContractEntity findByPrimaryKey(final Long id)
-    {
+    public ContractEntity findByPrimaryKey(final Long id) {
         return em.find(ContractEntity.class, id);
     }
-    
 
 }

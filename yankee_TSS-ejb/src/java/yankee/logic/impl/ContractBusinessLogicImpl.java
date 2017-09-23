@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import yankee.entities.AssistantEntity;
@@ -148,7 +149,7 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
     }
 
     @Override
-    public Contract editContract(String contractUUID, Person supervisorPerson, List<Person> secretaries, boolean secretariesChanged, List<Person> assistants, boolean assistantsChanged, Date startDate, Date endDate, TimesheetFrequencyEnum timesheetFrequency , int workingDaysPerWeek , int vacationDaysPerYear , double hoursPerWeek) {
+    public Contract editContract(String contractUUID, Person supervisorPerson, List<Person> secretaries, boolean secretariesChanged, List<Person> assistants, boolean assistantsChanged, Date startDate, Date endDate, TimesheetFrequencyEnum timesheetFrequency, int workingDaysPerWeek, int vacationDaysPerYear, double hoursPerWeek) {
         // When updating contract 
         // We will receive 
         // 1. new supervisorFor contract .. check for null if no change. Delete and create if not null and associate this contract id.
@@ -169,8 +170,8 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
         ce.setFrequency(timesheetFrequency);
         ce.setWorkingDaysPerWeek(workingDaysPerWeek);
         ce.setVacationDaysPerYear(vacationDaysPerYear);
-        ce.setHoursPerWeek(hoursPerWeek);        
-        
+        ce.setHoursPerWeek(hoursPerWeek);
+
         // 1. 
         SupervisorEntity svePrev = supervisorAccess.getSupervisorByContract(contractAccess.getByUuid(contractUUID));
         // This means the current selected supervisor is different from one before
@@ -275,7 +276,32 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
             totalhoursDue += te.getHoursDue();
         }
         ce.setHoursDue(totalhoursDue);
+    }
 
+    @RolesAllowed("STAFF")
+    @Override
+    public void deleteContract(String contractUUID) {
+        // Also delete employee for that contract id
+
+        ContractEntity ce = contractAccess.getByUuid(contractUUID);
+
+        SupervisorEntity svePrev = supervisorAccess.getSupervisorByContract(ce);
+        supervisorAccess.deleteEntity(svePrev);
+
+        List<SecretaryEntity> toDeleteSecretaries = secretaryAccess.getSecretariesByContract(ce);
+        for (SecretaryEntity delSecretary : toDeleteSecretaries) {
+            secretaryAccess.deleteEntity(delSecretary);
+        }
+        
+        EmployeeEntity toDeleteEmployee = employeeAccess.getEmployeeByContract(ce);
+        employeeAccess.deleteEntity(toDeleteEmployee);
+        
+        List<AssistantEntity> toDeleteAssistants = assistantAccess.getAssistantsByContract(ce);
+        for (AssistantEntity delEmployee : toDeleteAssistants) {
+            assistantAccess.deleteEntity(delEmployee);
+        }
+
+        contractAccess.deleteEntity(contractAccess.getContractEntity(contractUUID));
     }
 
 }

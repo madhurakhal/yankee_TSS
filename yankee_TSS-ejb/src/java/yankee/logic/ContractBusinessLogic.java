@@ -22,4 +22,6 @@ public interface ContractBusinessLogic {
     
     public void updateContractStatistics(String contractUUID);
     
+    public void deleteContract(String contractUUID);
+    
 }

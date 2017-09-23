@@ -81,7 +81,12 @@ public class ManageContractsBean {
     }
     
     public void onRowDelete(String contract_uuid) {
-        
+        FacesMessage msg = new FacesMessage();
+        msg.setSeverity(FacesMessage.SEVERITY_INFO);
+        msg.setSummary("Contract Deleted");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+  
+        contractBusinessLogic.deleteContract(contract_uuid);      
     }  
     
     public void onRowView(String contract_uuid) throws IOException {
