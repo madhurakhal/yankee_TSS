@@ -5,12 +5,16 @@
  */
 package yankee.web;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.ValueChangeEvent;
@@ -47,50 +51,16 @@ public class TimeSheetBean {
         this.uuid = uuid;
     }
     private String uuid;
+
     private List<TimeSheetEntry> timeSheetEntries;
 
     public List<TimeSheetEntry> getTimeSheetEntries() {
         return timeSheetEntries;
     }
 
-    
     @EJB
     TimeSheetAccess timeSheetAccess;
-    
-    
-    
-    public void ajaxListener(AjaxBehaviorEvent e)
-    {/*
-        //String uuid=e.getNewValue().toString();
-        System.out.println("yankee.web.TimeSheetBean.valueChangeEvent()"+uuid);
-        
-        TimeSheet selectedTimeSheetObj=null;
-        for(TimeSheet ts:timesheets)
-        {
-            if(ts.getUuid().equalsIgnoreCase(uuid))
-            {
-                selectedTimeSheetObj=ts;
-                break;
-            }
-        }
-        
-        if(selectedTimeSheetObj!=null){
-        LocalDate startDate=selectedTimeSheetObj.getStartDate();
-        LocalDate endDate=selectedTimeSheetObj.getEndDate();
-        TimeSheetEntry tsObj;
-        List<TimeSheetEntry> objList=new ArrayList<TimeSheetEntry>();
-        while(!startDate.isAfter(endDate))
-        {
-            tsObj=new TimeSheetEntry();
-            tsObj.setEntryDate(startDate);
-            tsObj.setDateString(startDate.toString());
-            startDate=startDate.plusDays(1);
-            objList.add(tsObj);
-        }
-        timeSheetEntries=objList;
-        }*/
-    }
-
+   
     public TimeSheet getTimeSheetFor() {
         return timeSheetFor;
     }
@@ -98,7 +68,6 @@ public class TimeSheetBean {
     public void setTimeSheetFor(TimeSheet timeSheetFor) {
         this.timeSheetFor = timeSheetFor;
     }
-    
     
     @EJB
     private TimeSheetBusinessLogic timeSheetService;
@@ -111,10 +80,6 @@ public class TimeSheetBean {
         this.timeSheetService = timeSheetService;
     }
 
-    /*public List<TimeSheet> getTimesheets() {
-        return timesheets;
-    }*/
-
     public void setTimesheets(List<TimeSheet> timesheets) {
         this.timesheets = timesheets;
     }
@@ -122,16 +87,35 @@ public class TimeSheetBean {
     public List<TimeSheet> getTimesheets() {
         return timesheets;
     }
-
-    
+  
     
     @PostConstruct
     public  void init()    {
         if (timeSheetService != null) { 
-            final ContractEntity centity = timeSheetService.getContractByUUID("fa80898f-bd9d-40bd-8203-c7bff5f82d79");
-            timesheets=timeSheetService.getAllTimeSheetsForContract(centity.getUuid());
+
+          //  final ContractEntity centity = timeSheetService.getContractByUUID("8901039d-bbbe-4e3d-93b9-9bda4a014d1a");
+          //  timesheets=timeSheetService.getAllTimeSheetsForContract(centity.getUuid());
         }
-        //return timesheets;
+    }
+  
+    public void onSubmitRow(String timeSheet_uuid)
+    {   
+        timeSheetService.submitTimeSheet(timeSheet_uuid, Boolean.TRUE);
+        
+     } 
+    
+    public void onRowView(String timeSheetUUId,String displayStrings)throws IOException {
+        
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        ec.redirect(ec.getRequestContextPath() + "/public/view_timesheet_entries.xhtml?id=" + timeSheetUUId);
+        
+    }
+    
+       
+    public void addNewEntry(String timeSheetUUId,String displayString)throws IOException
+    {
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        ec.redirect(ec.getRequestContextPath() + "/public/timesheet_entry.xhtml?id=" + timeSheetUUId+"&timeSheetDateRange="+displayString);
     }
   
 
