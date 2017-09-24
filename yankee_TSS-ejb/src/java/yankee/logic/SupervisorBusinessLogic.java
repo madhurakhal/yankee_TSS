@@ -26,6 +26,8 @@ public interface SupervisorBusinessLogic {
     
     public Supervisor createSupervisor(String name , String personUUID);
     
+    // This will get all supervisor detail.. ie contract id and so on when the Person field in it given
+    // i.e. Supervisor detail where person is personUUID.
     public List<Supervisor> getSupervisorByPerson(String personUUID);
     
     public Supervisor getSupervisorByContract(String contractUUID);

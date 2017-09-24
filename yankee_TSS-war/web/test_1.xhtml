@@ -3,22 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:b="http://bootsfaces.net/ui">
+      xmlns:p="http://primefaces.org/ui"      
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    
     <ui:composition template="/WEB-INF/templates/main-template.xhtml">        
-        <ui:param name="pageTitle" value="#{msg.adminPage}"/>
+        <ui:param name="pageTitle" value="Admin Page"/>
         <ui:define name="main-content">
-            <b:row>
-                <b:column
-                    col-xs="10" offset-xs="1"
-                    col-md="8" offset-md="2"
-                    >
-                    
-                    
-                </b:column>
-            </b:row>
-           
+            <p>
+                <h:outputText value = "#{reminder.employees}"/>
+            </p>
+            
         </ui:define>
     </ui:composition>
 </html>
+

@@ -1,8 +1,6 @@
 package yankee.web;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -10,7 +8,6 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.inject.Named;
 import yankee.logic.AssistantBusinessLogic;
 import yankee.logic.ContractBusinessLogic;
 import yankee.logic.PersonBusinessLogic;
@@ -19,14 +16,12 @@ import yankee.logic.SupervisorBusinessLogic;
 import yankee.logic.to.Assistant;
 import yankee.logic.to.Person;
 import yankee.logic.to.Secretary;
-import yankee.logic.ENUM.TimesheetFrequencyEnum;
 import yankee.logic.EmployeeBusinessLogic;
 import yankee.logic.to.Contract;
 
 @ManagedBean
 @ViewScoped
-@Named
-public class ContractDetailsBean {
+public class PrintpreviewcontractBean {
 
     @EJB
     private SupervisorBusinessLogic supervisorBusinessLogic;

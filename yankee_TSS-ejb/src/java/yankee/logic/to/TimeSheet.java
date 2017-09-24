@@ -74,6 +74,16 @@ public class TimeSheet extends Named{
     
   
     
+    private Contract contract;
+
+    public Contract getContract() {
+        return contract;
+    }
+
+    public void setContract(Contract contract) {
+        this.contract = contract;
+    }
+    
     private List<TimeSheetEntry> timeSheetEntries;
 
     public List<TimeSheetEntry> getTimeSheetEntries() {
