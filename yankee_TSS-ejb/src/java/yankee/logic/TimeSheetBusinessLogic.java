@@ -36,4 +36,6 @@ public interface TimeSheetBusinessLogic extends Serializable {
     public List<TimeSheet> getAllTimeSheetsByGivenDate (LocalDate givenDate);    
     public List<TimeSheet> getAllTimeSheetsSignedBySupervisor (LocalDate givenDate);
     
+    public void deleteOldTimeSheetSignedBySupervisor(LocalDate oldDate);
+    
 }

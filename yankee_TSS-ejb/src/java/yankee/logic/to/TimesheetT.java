@@ -34,6 +34,8 @@ public class TimesheetT extends Named{
     
     private List<TimeSheetEntry> timeSheetEntries;
     
+    private Contract contract;
+    
     public TimesheetT(String uuid, String name) {
         super(uuid, name);
     }
@@ -101,6 +103,13 @@ public class TimesheetT extends Named{
 
     public void setDisplayString(String displayString) {
         this.displayString = displayString;
+    }
+    
+    public void setContract(Contract contract) {
+        this.contract = contract;
+    }
+     public Contract getContract() {
+        return contract;
     }
     
 }
