@@ -10,6 +10,11 @@
         <ui:param name="pageTitle" value="Create Contract Page"/>
         <ui:define name="breadcrumb">
             <li>
+                <h:link outcome="dashboard">
+                    <i class="fa fa-dashboard"></i>Home
+                </h:link>
+            </li>
+            <li>
                 <h:link outcome="managecontracts">
                     Manage Contracts
                 </h:link>
@@ -26,7 +31,7 @@
                 <b:row>
                     <p:outputPanel styleClass="box box-default">
                         <p:outputPanel styleClass="box-header text-center">
-                            <h:outputLabel id="currentContract" value=" Contract For : #{contractDetailsBean.currentContractPerson.firstName} #{editContractBean.currentContractPerson.lastName} (#{editContractBean.currentContractPerson.emailAddress})"/>
+                            <h:outputLabel id="currentContract" value="#{msg.contractFor} : #{contractDetailsBean.currentContractPerson.firstName} #{editContractBean.currentContractPerson.lastName} (#{editContractBean.currentContractPerson.emailAddress})"/>
                         </p:outputPanel>                        
                         <p:outputPanel styleClass="box-body top-border edit-contract">
                             <b:column>                                
@@ -37,19 +42,19 @@
                                     </b:column>
                                 </b:formGroup>
                                 <b:formGroup>
-                                    <h:outputLabel for="startDate" value="Contract Start Date" styleClass="col-xs-12 col-sm-3 control-label"/>
+                                    <h:outputLabel for="startDate" value="#{msg.contractStartDate}" styleClass="col-xs-12 col-sm-3 control-label"/>
                                     <b:column col-sm="6" col-xs="12">
                                         <h:outputLabel value="#{contractDetailsBean.contractinfo.startDate.dayOfMonth} #{contractDetailsBean.contractinfo.startDate.month} #{contractDetailsBean.contractinfo.startDate.year} (#{contractDetailsBean.contractinfo.startDate.dayOfWeek})"/>
                                     </b:column>
                                 </b:formGroup>
                                 <b:formGroup>
-                                    <h:outputLabel for="endDate" value="Contract End Date" styleClass="col-xs-12 col-sm-3 control-label"/>
+                                    <h:outputLabel for="endDate" value="#{msg.contractEndDate}" styleClass="col-xs-12 col-sm-3 control-label"/>
                                     <b:column col-sm="6" col-xs="12">
                                         <h:outputLabel value="#{contractDetailsBean.contractinfo.endDate.dayOfMonth} #{contractDetailsBean.contractinfo.endDate.month} #{contractDetailsBean.contractinfo.endDate.year} (#{contractDetailsBean.contractinfo.endDate.dayOfWeek})"/>
                                     </b:column>
                                 </b:formGroup>
                                 <b:formGroup>
-                                    <h:outputLabel for="timesheetFrequency" value="Timesheet Frequency" styleClass="col-xs-12 col-sm-3 control-label" />
+                                    <h:outputLabel for="timesheetFrequency" value="#{msg.timeSheetFrequency}" styleClass="col-xs-12 col-sm-3 control-label" />
                                     <b:column col-sm="6" col-xs="12">
                                         <h:outputLabel value="#{contractDetailsBean.contractinfo.frequency}"/>
                                     </b:column>
@@ -57,7 +62,7 @@
 
 
                                 <b:formGroup>
-                                    <h:outputLabel value="Assistants" styleClass="col-xs-12 col-sm-3 control-label" />
+                                    <h:outputLabel value="#{msg.assistants}" styleClass="col-xs-12 col-sm-3 control-label" />
                                     <b:column col-sm="9" col-xs="12">
                                         <p:dataList value="#{contractDetailsBean.assistantsForContract}" var="assistants" type="definition">                                            
                                             -> #{assistants.firstName} #{assistants.lastName}
@@ -66,7 +71,7 @@
                                 </b:formGroup>
 
                                 <b:formGroup>
-                                    <h:outputLabel value="Secretaries" styleClass="col-xs-12 col-sm-3 control-label" />
+                                    <h:outputLabel value="#{msg.secretaries}" styleClass="col-xs-12 col-sm-3 control-label" />
                                     <b:column col-sm="9" col-xs="12">
                                         <p:dataList value="#{contractDetailsBean.secretariesForContract}" var="secretaries" type="definition">                                            
                                             -> #{secretaries.firstName} #{secretaries.lastName}
@@ -75,21 +80,21 @@
                                 </b:formGroup>
 
                                 <b:formGroup>
-                                    <h:outputLabel value="Hours Per Week" styleClass="col-xs-12 col-sm-3 control-label" />
+                                    <h:outputLabel value="#{msg.hoursPerWeek}" styleClass="col-xs-12 col-sm-3 control-label" />
                                     <b:column col-sm="9" col-xs="12">
                                         <h:outputLabel value="#{contractDetailsBean.contractinfo.hoursPerWeek}"/>
                                     </b:column>
                                 </b:formGroup>
                                 
                                 <b:formGroup>
-                                    <h:outputLabel value="Total Hours Due" styleClass="col-xs-12 col-sm-3 control-label" />
+                                    <h:outputLabel value="#{msg.totalHoursDue}" styleClass="col-xs-12 col-sm-3 control-label" />
                                     <b:column col-sm="9" col-xs="12">
                                         <h:outputLabel value="#{contractDetailsBean.contractinfo.hoursDue}"/>
                                     </b:column>
                                 </b:formGroup>
 
                                 <b:formGroup>
-                                    <h:outputLabel value="Vacation Hours" styleClass="col-xs-12 col-sm-3 control-label" />
+                                    <h:outputLabel value="#{msg.vacationHours}" styleClass="col-xs-12 col-sm-3 control-label" />
                                     <b:column col-sm="9" col-xs="12">
                                         <h:outputLabel value="#{contractDetailsBean.contractinfo.vacationHours}"/>
                                     </b:column>
