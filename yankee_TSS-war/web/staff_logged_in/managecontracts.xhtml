@@ -29,106 +29,107 @@
                 </p:outputPanel>
             </p:outputPanel>
             <b:form id="form">                              
+                <b:tabView> 
+                    <b:tab title="As Supervisor">  
+                        <!-- BEGINS  For Supervisor -->
+                        <p:outputPanel rendered = "#{not empty manageContractsBean.personsAssociatedToContractSupervisor}" styleClass="box">                    
+                            <p:outputPanel styleClass="box-header">  
+                                <p:outputLabel styleClass="pull-left">#{loginBean.user.firstName} #{loginBean.user.lastName} (As Supervisor)</p:outputLabel>
+                                <!--                        <h:button value="Create Contract" outcome="createContract" styleClass="btn btn-primary pull-right btn-flat"/>-->
+                            </p:outputPanel>
 
-                <!-- BEGINS  For Supervisor -->
-                <p:outputPanel rendered = "#{not empty manageContractsBean.personsAssociatedToContractSupervisor}" styleClass="box">                    
-                    <p:outputPanel styleClass="box-header">  
-                        <p:outputLabel styleClass="pull-left">#{loginBean.user.firstName} #{loginBean.user.lastName} (As Supervisor)</p:outputLabel>
-                        <!--                        <h:button value="Create Contract" outcome="createContract" styleClass="btn btn-primary pull-right btn-flat"/>-->
-                    </p:outputPanel>
+                            <p:outputPanel styleClass="box-body top-border">                         
+                                <b:dataTable value="#{manageContractsBean.personsAssociatedToContractSupervisor}" 
+                                             var="persons" 
+                                             responsive = "true">
+                                    <b:dataTableColumn value="#{persons.firstName} #{persons.lastName} (#{persons.emailAddress})" label="#{msg.employee}"/>
+                                    <b:dataTableColumn value="#{persons.contractStatusForRole}" label="Status" style="width:150px"/>
 
-                    <p:outputPanel styleClass="box-body top-border">                         
-                        <b:dataTable value="#{manageContractsBean.personsAssociatedToContractSupervisor}" 
-                                     var="persons" 
-                                     responsive = "true">
-                            <b:dataTableColumn value="#{persons.firstName} #{persons.lastName} (#{persons.emailAddress})" label="#{msg.employee}"/>
-                            <b:dataTableColumn value="#{persons.contractStatusForRole}" label="Status" style="width:150px"/>
+                                    <b:dataTableColumn label="#{msg.action} " style="width:60px">
+                                        <p:commandButton styleClass="flat"  rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-caret-right"  id="startPersonSuper" update="form" actionListener="#{manageContractsBean.onRowStart(persons.contractUUIDForRole)}">
+                                            <p:confirm header="Confirmation" message="Confirm Start?" icon="ui-icon-alert" />
+                                        </p:commandButton>
+                                        <p:commandButton  icon="fa fa-fw fa-info-circle"  id="viewPersonSuper" action="#{manageContractsBean.onRowView(persons.contractUUIDForRole)}"/>
+                                        <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-edit" id="editPersonSuper" action="#{manageContractsBean.onRowEdit(persons.contractUUIDForRole)}"/>
+                                        <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-remove"  id="deletePersonSuper" update="form" action="#{manageContractsBean.onRowDelete(persons.contractUUIDForRole)}">
 
-                            <b:dataTableColumn label="#{msg.action} " style="width:60px">
-                                <p:commandButton styleClass="flat"  rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-caret-right"  id="startPersonSuper" update="form" actionListener="#{manageContractsBean.onRowStart(persons.contractUUIDForRole)}">
-                                    <p:confirm header="Confirmation" message="Confirm Start?" icon="ui-icon-alert" />
-                                </p:commandButton>
-                                <p:commandButton  icon="fa fa-fw fa-info-circle"  id="viewPersonSuper" action="#{manageContractsBean.onRowView(persons.contractUUIDForRole)}"/>
-                                <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-edit" id="editPersonSuper" action="#{manageContractsBean.onRowEdit(persons.contractUUIDForRole)}"/>
-                                <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-remove"  id="deletePersonSuper" update="form" action="#{manageContractsBean.onRowDelete(persons.contractUUIDForRole)}">
+                                            <p:confirm header="Confirmation" message="Confirm Delete?" icon="ui-icon-alert" />
 
-                                    <p:confirm header="Confirmation" message="Confirm Delete?" icon="ui-icon-alert" />
+                                        </p:commandButton>
+                                    </b:dataTableColumn>
+                                </b:dataTable>
+                            </p:outputPanel>
+                        </p:outputPanel>
+                        <!-- ENDS  For Supervisor-->
+                    </b:tab>
+                    <b:tab title="As Assistant">
+                        <!-- BEGINS  For Assistant--> 
+                        <p:outputPanel rendered = "#{!empty manageContractsBean.personsAssociatedToContractAssistant}" styleClass="box"> 
+                            <p:outputPanel styleClass="box-body">
 
-                                </p:commandButton>
-                            </b:dataTableColumn>
-                        </b:dataTable>
-                    </p:outputPanel>
-                </p:outputPanel>
-                <!-- ENDS  For Supervisor-->
-        </b:tab>
-        <b:tab title="As Assistant">
-            <!-- BEGINS  For Assistant--> 
-                <p:outputPanel rendered = "#{!empty manageContractsBean.personsAssociatedToContractAssistant}" styleClass="box"> 
-                    <p:outputPanel styleClass="box-body">
+                                <b:dataTable value="#{manageContractsBean.personsAssociatedToContractAssistant}" 
+                                             var="persons" 
+                                             responsive = "true">
 
-                        <b:dataTable value="#{manageContractsBean.personsAssociatedToContractAssistant}" 
-                                     var="persons" 
-                                     responsive = "true">
+                                    <b:dataTableColumn value="#{persons.firstName} #{persons.lastName} (#{persons.emailAddress})" label="Employee"/>
+                                    <b:dataTableColumn value="#{persons.contractStatusForRole}" label="Status" styleClass="col-sm-2"/>                         
 
-                            <b:dataTableColumn value="#{persons.firstName} #{persons.lastName} (#{persons.emailAddress})" label="Employee"/>
-                            <b:dataTableColumn value="#{persons.contractStatusForRole}" label="Status" styleClass="col-sm-2"/>                         
+                                    <b:dataTableColumn label = "Action " styleClass="col-sm-4">                                
+                                        <p:commandButton styleClass="btn-flat flat" rendered="#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-caret-right"  id="startPersonAssis" update="form" actionListener="#{manageContractsBean.onRowStart(persons.contractUUIDForRole)}">
+                                            <p:confirm header="Confirmation" message="Confirm Start?" icon="ui-icon-alert" />    
+                                        </p:commandButton>
+                                        <p:commandButton styleClass="btn-flat flat" icon="fa fa-fw fa-info-circle"  id="viewPersonAssis" action="#{manageContractsBean.onRowView(persons.contractUUIDForRole)}"/>
+                                        <p:commandButton styleClass="btn-flat flat" rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-edit" id="editPersonAssis" action="#{manageContractsBean.onRowEdit(persons.contractUUIDForRole)}"/>
+                                        <p:commandButton styleClass="btn-flat flat" rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-remove"  update="@this" id="deletePersonAssis" action="#{manageContractsBean.onRowDelete(persons.contractUUIDForRole)}">
+                                            <!--<p:confirm header="Confirmation" message="Confirm Delete?" icon="ui-icon-alert" />--> 
 
-                            <b:dataTableColumn label = "Action " styleClass="col-sm-4">                                
-                                <p:commandButton styleClass="btn-flat flat" rendered="#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-caret-right"  id="startPersonAssis" update="form" actionListener="#{manageContractsBean.onRowStart(persons.contractUUIDForRole)}">
-                                    <p:confirm header="Confirmation" message="Confirm Start?" icon="ui-icon-alert" />    
-                                </p:commandButton>
-                                <p:commandButton styleClass="btn-flat flat" icon="fa fa-fw fa-info-circle"  id="viewPersonAssis" action="#{manageContractsBean.onRowView(persons.contractUUIDForRole)}"/>
-                                <p:commandButton styleClass="btn-flat flat" rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-edit" id="editPersonAssis" action="#{manageContractsBean.onRowEdit(persons.contractUUIDForRole)}"/>
-                                <p:commandButton styleClass="btn-flat flat" rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-remove"  update="@this" id="deletePersonAssis" action="#{manageContractsBean.onRowDelete(persons.contractUUIDForRole)}">
-                                    <!--<p:confirm header="Confirmation" message="Confirm Delete?" icon="ui-icon-alert" />--> 
-
-                                </p:commandButton>
-                            </b:dataTableColumn>
-                        </b:dataTable>
-                    </p:outputPanel>
-                </p:outputPanel>
-                <!-- ENDS  For Assistant-->
-        </b:tab>
-        <b:tab title="As Secretary">
-            <!-- BEGINS  For Secretary-->
-                <p:outputPanel rendered = "#{!empty manageContractsBean.personsAssociatedToContractSecretary}" styleClass="box">                    
-                    <p:outputPanel styleClass="box-body"> 
-                        <b:dataTable value="#{manageContractsBean.personsAssociatedToContractSecretary}" 
-                                     var="persons" 
-                                     responsive = "true">
-                            <b:dataTableColumn value="#{persons.firstName} #{persons.lastName} (#{persons.emailAddress})" label="Employee"/>
-                            <b:dataTableColumn value="#{persons.contractStatusForRole}" label="Status" style="width:150px"/>                         
-                            <b:dataTableColumn label="Action " style="width:50px" styleClass="manage-btn-controllers">
-                                <p:commandButton styleClass="btn-flat"  icon="fa fa-fw fa-info-circle"  id="viewPersonSecrs" action="#{manageContractsBean.onRowView(persons.contractUUIDForRole)}"/>                            
-                                <p:commandButton styleClass="btn-flat" rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-edit" id="editPersonSecrs" action="#{manageContractsBean.onRowEdit(persons.contractUUIDForRole)}"/>
-                                <p:commandButton styleClass="btn-flat" icon="fa fa-fw fa-print"  id="printPersonSecrs"  action="#{manageContractsBean.onRowPrint(persons.contractUUIDForRole)}"/>
-                                <p:commandButton styleClass="btn btn-flat" rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-remove"  id="deletePersonSecrs" action="#{manageContractsBean.onRowDelete(persons.contractUUIDForRole)}">
-                                    <p:confirm header="Confirmation" message="Confirm Delete?" icon="ui-icon-alert" />
-                                </p:commandButton>
-                            </b:dataTableColumn>
-                        </b:dataTable>
-                    </p:outputPanel>
-                </p:outputPanel>
-                <!-- BEGINS  For Secretary-->
-        </b:tab>
-    </b:tabView>
-                
-                
-                
-                
-                
-                
-                
-                
-                
-
-                
+                                        </p:commandButton>
+                                    </b:dataTableColumn>
+                                </b:dataTable>
+                            </p:outputPanel>
+                        </p:outputPanel>
+                        <!-- ENDS  For Assistant-->
+                    </b:tab>
+                    <b:tab title="As Secretary">
+                        <!-- BEGINS  For Secretary-->
+                        <p:outputPanel rendered = "#{!empty manageContractsBean.personsAssociatedToContractSecretary}" styleClass="box">                    
+                            <p:outputPanel styleClass="box-body"> 
+                                <b:dataTable value="#{manageContractsBean.personsAssociatedToContractSecretary}" 
+                                             var="persons" 
+                                             responsive = "true">
+                                    <b:dataTableColumn value="#{persons.firstName} #{persons.lastName} (#{persons.emailAddress})" label="Employee"/>
+                                    <b:dataTableColumn value="#{persons.contractStatusForRole}" label="Status" style="width:150px"/>                         
+                                    <b:dataTableColumn label="Action " style="width:50px" styleClass="manage-btn-controllers">
+                                        <p:commandButton styleClass="btn-flat"  icon="fa fa-fw fa-info-circle"  id="viewPersonSecrs" action="#{manageContractsBean.onRowView(persons.contractUUIDForRole)}"/>                            
+                                        <p:commandButton styleClass="btn-flat" rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-edit" id="editPersonSecrs" action="#{manageContractsBean.onRowEdit(persons.contractUUIDForRole)}"/>
+                                        <p:commandButton styleClass="btn-flat" icon="fa fa-fw fa-print"  id="printPersonSecrs"  action="#{manageContractsBean.onRowPrint(persons.contractUUIDForRole)}"/>
+                                        <p:commandButton styleClass="btn btn-flat" rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-remove"  id="deletePersonSecrs" action="#{manageContractsBean.onRowDelete(persons.contractUUIDForRole)}">
+                                            <p:confirm header="Confirmation" message="Confirm Delete?" icon="ui-icon-alert" />
+                                        </p:commandButton>
+                                    </b:dataTableColumn>
+                                </b:dataTable>
+                            </p:outputPanel>
+                        </p:outputPanel>
+                        <!-- BEGINS  For Secretary-->
+                    </b:tab>
+                </b:tabView>
 
 
-                
 
 
-                
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
                 <!-- BEGINS  For Global Confirmation dialog-->
