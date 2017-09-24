@@ -22,7 +22,7 @@ import yankee.logic.ENUM.TimesheetStatusEnum;
 @NamedQueries({
     @NamedQuery(name = "getTimeSheetsForContract", query = "SELECT p FROM TimesheetEntity p WHERE p.contract.uuid = :contractUUID"),
     @NamedQuery(name = "getTimeSheetEntityByUuid", query = "SELECT e FROM TimesheetEntity e WHERE e.uuid = :uuid"),
-    @NamedQuery(name = "getAllRunningTimeSheet", query = "SELECT p FROM TimesheetEntity p WHERE p.endDate = :givenDate"),
+    @NamedQuery(name = "getAllRunningTimeSheet", query = "SELECT p FROM TimesheetEntity p WHERE p.endDate <= :givenDate AND p.status <> yankee.logic.ENUM.TimesheetStatusEnum.ARCHIVED"),
     @NamedQuery(name = "getAllTimeSheetsSignedBySupervisor", query = "SELECT p FROM TimesheetEntity p WHERE p.signedBySupervisor = :givenDate"),
     @NamedQuery(name = "deleteOldTimeSheetSignedBySupervisor", query = "DELETE FROM TimesheetEntity p WHERE p.signedBySupervisor <= :oldDate")
 })

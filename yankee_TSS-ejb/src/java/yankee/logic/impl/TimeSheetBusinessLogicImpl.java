@@ -16,6 +16,7 @@ import javax.ejb.Stateless;
 import yankee.entities.ContractEntity;
 import yankee.entities.TimesheetEntity;
 import yankee.entities.TimesheetEntryEntity;
+import yankee.logic.AdministrationBusinessLogic;
 import yankee.logic.ENUM.ContractStatusEnum;
 import yankee.logic.ENUM.GermanyStatesEnum;
 import yankee.logic.ENUM.TimesheetStatusEnum;
@@ -51,6 +52,9 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
     
     @EJB
     private PublicHolidaysBusinessLogic publicHolidaysBusinessLogic;
+    
+    @EJB
+    private AdministrationBusinessLogic administrationBusinessLogic;
 
     /**
      * Call this method when the Assistant starts the contract
@@ -76,6 +80,12 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
             if (ce.getFrequency() != null) {
                 // Gets the period between these days. Can access months day and year by just period.days()..
                 //Period period = Period.between(ce.getStartDate(), ce.getEndDate());
+                GermanyStatesEnum statesEnum;
+                try{
+                    statesEnum = administrationBusinessLogic.getAdminSetState().getGermanState();} 
+                catch(Exception e){
+                    statesEnum = GermanyStatesEnum.RHINELANDPALATINATE;
+                }
                 switch (ce.getFrequency()) {
                     case MONTHLY:
                         int monthsInPeriod = (int) ChronoUnit.MONTHS.between(ce.getStartDate(), ce.getEndDate());
@@ -107,10 +117,10 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
                                     workingDaysInPeriod += 1;
 
                                     // Check if that current date is public holiday for the Given state. NOTE state is to obtained from tss setup.
-                                    if (publicHolidaysBusinessLogic.databaseEmpty()) {
-                                        throw new IllegalStateException("Public Holidays not loaded in DATABASE. Ask Admin to load public Holidays");                                        
-                                    }
-                                    if (publicHolidaysBusinessLogic.isPublicHoliday(tsEntryDate.getDayOfMonth(), tsEntryDate.getMonthValue(), tsEntryDate.getYear(), GermanyStatesEnum.BADENWURTTENMERG)) {
+                                    if(publicHolidaysBusinessLogic.databaseEmpty()){
+                                       throw new IllegalStateException("Public Holidays not loaded in DATABASE. Ask Admin to load public Holidays"); 
+                                    }                                    
+                                    if (publicHolidaysBusinessLogic.isPublicHoliday(tsEntryDate.getDayOfMonth(), tsEntryDate.getMonthValue(), tsEntryDate.getYear(), statesEnum)) {
                                         System.out.println("IS IT PUBLICCCCCCCCC HOLIDAYyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy" + tsEntryDate);                                        
                                         publicHolidaysInPeriod += 1;
                                     }
@@ -163,7 +173,7 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
                                     if (publicHolidaysBusinessLogic.databaseEmpty()) {
                                         throw new IllegalStateException("Public Holidays not loaded in DATABASE. Ask Admin to load public Holidays");                                        
                                     }
-                                    if (publicHolidaysBusinessLogic.isPublicHoliday(tsEntryDate.getDayOfMonth(), tsEntryDate.getMonthValue(), tsEntryDate.getYear(), GermanyStatesEnum.BADENWURTTENMERG)) {
+                                    if (publicHolidaysBusinessLogic.isPublicHoliday(tsEntryDate.getDayOfMonth(), tsEntryDate.getMonthValue(), tsEntryDate.getYear(), statesEnum)) {
                                         System.out.println("IS IT PUBLICCCCCCCCC HOLIDAYyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy" + tsEntryDate);                                        
                                         publicHolidaysInPeriod += 1;
                                     }
