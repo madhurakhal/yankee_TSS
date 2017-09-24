@@ -13,7 +13,11 @@ import yankee.logic.ENUM.TimesheetStatusEnum;
  *
  * @author Shriharsh Ambhore (ashriharsh@uni-koblenz.de)
  */
-public class TimeSheet {
+public class TimeSheet extends Named{
+
+    public TimeSheet(String uuid, String name) {
+        super(uuid, name);
+    }
 
     public TimesheetStatusEnum getStatus() {
         return status;
