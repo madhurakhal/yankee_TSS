@@ -104,6 +104,26 @@
 
                     </p:outputPanel>
                 </b:row>
+                
+               <!-- BEGINS  TimeSheets Details for this contract.--> 
+               <b:dataTable id="tbl" var="timesheet" value="#{contractDetailsBean.timesheets}" responsive="true">
+                    <b:dataTableColumn value="#{timesheet.displayString}" label="TimeSheet"/>
+                    <b:dataTableColumn value="#{timesheet.status}" label="TimeSheet Status"/>
+                    
+                    <b:dataTableColumn label="Action " style="width:50px" >
+                        <p:commandButton  icon="fa fa-fw fa-paper-plane" id="submitTimeSheet" action="#{contractDetailsBean.onSubmitRow(timesheet.uuid)}">
+                         <!-- <p:confirm header="Confirmation" message="Comfirm Submit timesheet?" icon="ui-icon-alert" />-->
+                        </p:commandButton>
+                        <p:tooltip id="submitIconToolTip" for="submitTimeSheet" position="bottom" value="Submit TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
+
+                        <p:commandButton  icon="fa fa-fw fa-plus"  id="addNewEntry"  action="#{contractDetailsBean.addNewEntry(timesheet.uuid,timesheet.displayString)}"/>
+                        <p:tooltip id="addNewIconToolTip" for="addNewEntry" position="bottom" value="Add TimeSheet entry" showEffect="clip" hideEffect="explode"></p:tooltip>
+
+                        <p:commandButton  icon="fa fa-fw fa-television" id="viewTimeSheet" action="#{contractDetailsBean.onRowView(timesheet.uuid,timesheet.displayString)}"/>
+                        <p:tooltip id="viewIconToolTip" for="viewTimeSheet" position="bottom" value="View TimeSheet Entries" showEffect="clip" hideEffect="explode"></p:tooltip>
+                    </b:dataTableColumn>
+                </b:dataTable>
+                <!-- ENDS  TimeSheets Details for this contract.--> 
             </h:form>
 
         </ui:define>

@@ -182,6 +182,8 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
         // This means the current selected supervisor is different from one before
         if (!supervisorPerson.getUuid().equals(svePrev.getPerson().getUuid())) {
             // delete old supervisor for this contract
+            
+            contractAccess.getByUuid(contractUUID).setSupervisor(null);
             supervisorAccess.deleteEntity(svePrev);
 
             // create new supervisor with this contract id
@@ -189,6 +191,7 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
             SupervisorEntity sve = supervisorAccess.createEntity(supervisorPerson.getName());
             sve.setPerson(personAccess.getByUuid(supervisorPerson.getUuid()));
             sve.setContract(ce);
+            contractAccess.getByUuid(contractUUID).setSupervisor(sve);
         }
 
         // 2.
