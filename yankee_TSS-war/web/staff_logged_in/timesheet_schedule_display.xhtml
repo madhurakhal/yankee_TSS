@@ -17,13 +17,26 @@ and open the template in the editor.
         <ui:param name="pageTitle" value="Admin Page"/>
         <ui:define name="main-content">
             <p></p>
-            <h:form id="timesheetscheduleDisplay">
-                   <h:outputLabel value="Select the timesheet for:" for="timeSheetForContract"/>
-                   <h:selectOneMenu  id="timeSheetForContract" value="#{timeSheetBean.timeSheetFor}" onchange="sub">
-                        <f:selectItems value="#{timeSheetBean.timesheets}" var="timesheet" itemValue="#{timesheet.uuid}" itemLabel="#{timesheet.displayString}"/>
-                    </h:selectOneMenu> 
-                <p:dataGrid columns="7" rows="5" id="timesheetgrid" layout="grid" >
-                </p:dataGrid>
+            <h:form id="timesheetscheduleDisplay" >
+                                   
+                <b:dataTable id="tbl" var="timesheet" value="#{timeSheetBean.timesheets}" responsive="true">
+                    <b:dataTableColumn value="#{timesheet.displayString}" label="TimeSheet"/>
+                    <b:dataTableColumn value="#{timesheet.status}" label="TimeSheet Status"/>
+                    
+                    <b:dataTableColumn label="Action " style="width:50px" >
+                        <p:commandButton  icon="fa fa-fw fa-paper-plane" id="submitTimeSheet" action="#{timeSheetBean.onSubmitRow(timesheet.uuid)}">
+                         <!-- <p:confirm header="Confirmation" message="Comfirm Submit timesheet?" icon="ui-icon-alert" />-->
+                        </p:commandButton>
+                        <p:tooltip id="submitIconToolTip" for="submitTimeSheet" position="bottom" value="Submit TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
+
+                        <p:commandButton  icon="fa fa-fw fa-plus"  id="addNewEntry"  action="#{timeSheetBean.addNewEntry(timesheet.uuid,timesheet.displayString)}"/>
+                        <p:tooltip id="addNewIconToolTip" for="addNewEntry" position="bottom" value="Add TimeSheet entry" showEffect="clip" hideEffect="explode"></p:tooltip>
+
+                        <p:commandButton  icon="fa fa-fw fa-television" id="viewTimeSheet" action="#{timeSheetBean.onRowView(timesheet.uuid,timesheet.displayString)}"/>
+                        <p:tooltip id="viewIconToolTip" for="viewTimeSheet" position="bottom" value="View TimeSheet Entries" showEffect="clip" hideEffect="explode"></p:tooltip>
+                    </b:dataTableColumn>
+                </b:dataTable>
+                   
             </h:form>
 
         </ui:define>
