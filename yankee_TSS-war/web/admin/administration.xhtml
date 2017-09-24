@@ -20,7 +20,7 @@
                                 <p:outputPanel rendered = "#{publicHolidaysBean.databaseEmpty}">
                                     <p:commandButton value="#{msg.loadPublicHolidaysToDatabase}" ajax="false" actionListener="#{publicHolidaysBean.test}" update="msgs" styleClass="btn btn-flat btn-primary"/>
                                 </p:outputPanel>
-                                <p:outputPanel styleClass="col-xs-12" rendered = "#{not empty publicHolidaysBean.databaseEmpty}">
+                                <p:outputPanel styleClass="col-xs-12" rendered ="#{!publicHolidaysBean.databaseEmpty}">
                                     <b:formGroup>
                                         <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="personInput">#{msg.selectGermanState}</h:outputLabel>
                                         <b:column col-sm="6" col-xs="12">
@@ -40,7 +40,7 @@
                                          value="#{msg.setState}"
                                          actionListener="#{administrationBean.setState}"
                                          styleClass="pull-right"
-                                         rendered = "#{not empty publicHolidaysBean.databaseEmpty}"
+                                         rendered = "#{!publicHolidaysBean.databaseEmpty}"
                                          />
                     </p:outputPanel>
                 </b:form>
