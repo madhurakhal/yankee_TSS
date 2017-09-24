@@ -21,6 +21,16 @@ public class TimeSheetEntry extends Named{
     private Long timeSheetId;
     private String dateString;
 
+    private Double hours;
+
+    public Double getHours() {
+        return hours;
+    }
+
+    public void setHours(Double hours) {
+        this.hours = hours;
+    }
+    
     public TimeSheetEntry(String uuid, String name) {
         super(uuid, name);
     }
