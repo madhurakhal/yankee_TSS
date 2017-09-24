@@ -17,6 +17,7 @@ public class TimeSheetEntry extends Named{
     private String description;
     private Time startTime;
     private Time endTime;
+    
     private LocalDate entryDate;
     private Long timeSheetId;
     private String dateString;
