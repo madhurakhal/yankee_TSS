@@ -10,6 +10,11 @@
         <ui:param name="pageTitle" value="Create Contract Page"/>
         <ui:define name="breadcrumb">
             <li>
+                <h:link outcome="dashboard">
+                    <i class="fa fa-dashboard"></i>Home
+                </h:link>
+            </li>
+            <li>
                 <h:link disabled="true">
                     #{msg.createContract}
                 </h:link>
@@ -174,7 +179,7 @@
                                              disabled="#{empty createContractBean.persons}"
                                              look="success"
                                              value="#{msg.createContract}"
-                                             action="index"
+                                             action="managecontracts?faces-redirect=true"
                                              actionListener="#{createContractBean.create}"
                                              styleClass="pull-right"
                                              />
