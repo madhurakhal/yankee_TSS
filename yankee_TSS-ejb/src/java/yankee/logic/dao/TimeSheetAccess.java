@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.LocalBean;
+import java.time.LocalDate;
 import javax.ejb.Stateless;
 import yankee.entities.TimesheetEntity;
 import yankee.logic.ENUM.TimesheetStatusEnum;
@@ -58,6 +59,14 @@ public class TimeSheetAccess extends AbstractAccess<TimesheetEntity>{
     }
     
     
+    public List<TimesheetEntity> getTimeSheetsForContractByID(Long contractId)
+    {
+        return em.createNamedQuery("getTimeSheetsForContractById",TimesheetEntity.class).setParameter("contractId",contractId).getResultList();
+        
+    }
+    
+    
+    
     public TimesheetEntity findByPrimaryKey(final Long id)
     {
         return em.find(TimesheetEntity.class, id);
@@ -71,5 +80,6 @@ public class TimeSheetAccess extends AbstractAccess<TimesheetEntity>{
         }
         
     }
-    
+ 
+       
 }
