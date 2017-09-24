@@ -452,7 +452,7 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
             List<TimeSheetEntry> entryList;
             for (final TimesheetEntity entity : timeSheetList) {
                 entryList = new ArrayList<TimeSheetEntry>();
-                ts = new TimeSheet();
+                ts = new TimeSheet(entity.getUuid(), entity.getName());
                 ts.setEndDate(entity.getEndDate());
                 ts.setId(entity.getId());
                 ts.setStartDate(entity.getStartDate());
@@ -582,7 +582,7 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
             tsObjList = new ArrayList<>();
             TimeSheet ts;
             for (final TimesheetEntity entity : timeSheetList) {
-                ts = new TimeSheet();
+                ts = new TimeSheet(entity.getUuid() , entity.getName());
                 ts.setEndDate(entity.getEndDate());
                 ts.setId(entity.getId());
                 ts.setStartDate(entity.getStartDate());
@@ -612,7 +612,7 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
             tsObjList = new ArrayList<>();
             TimeSheet ts;
             for (final TimesheetEntity entity : timeSheetList) {
-                ts = new TimeSheet();
+                ts = new TimeSheet(entity.getUuid(),entity.getName());
                 ts.setEndDate(entity.getEndDate());
                 ts.setId(entity.getId());
                 ts.setStartDate(entity.getStartDate());
