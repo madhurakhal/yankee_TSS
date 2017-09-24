@@ -461,21 +461,21 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
             final List<TimesheetEntryEntity> objList = timeSheetEntryAccess.getTimeSheetEntriesForTimeSheet(timeSheetId);
             TimeSheetEntry entryObj;
 
-            for (TimesheetEntryEntity e : objList) {
-                entryObj = new TimeSheetEntry(e.getUuid(), e.getName());
-                entryObj.setEntryDate(e.getEntryDate());
-                entryObj.setDateString(e.getEntryDate().toString());
-                entryObj.setDescription(e.getDescription());
-                entryObj.setEndTime(e.getEndTime());
-                entryObj.setStartTime(e.getStartTime());
-                if (e.getEntryDate().getDayOfWeek().toString().equalsIgnoreCase("sunday") || e.getEntryDate().getDayOfWeek().toString().equalsIgnoreCase("saturday")) {
-                    isHoliday = Boolean.TRUE;
-                } else {
-                    isHoliday = Boolean.FALSE;
-                }
-                entryObj.setIsHoliday(isHoliday);
-                entryList.add(entryObj);
-            }
+//            for (TimesheetEntryEntity e : objList) {
+//                entryObj = new TimeSheetEntry(e.getUuid(), e.getName());
+//                entryObj.setEntryDate(e.getEntryDate());
+//                entryObj.setDateString(e.getEntryDate().toString());
+//                entryObj.setDescription(e.getDescription());
+//                entryObj.setEndTime(e.getEndTime());
+//                entryObj.setStartTime(e.getStartTime());
+//                if (e.getEntryDate().getDayOfWeek().toString().equalsIgnoreCase("sunday") || e.getEntryDate().getDayOfWeek().toString().equalsIgnoreCase("saturday")) {
+//                    isHoliday = Boolean.TRUE;
+//                } else {
+//                    isHoliday = Boolean.FALSE;
+//                }
+//                entryObj.setIsHoliday(isHoliday);
+//                entryList.add(entryObj);
+//            }
         } catch (IllegalStateException e) {
             System.err.println(e.getMessage());
         }

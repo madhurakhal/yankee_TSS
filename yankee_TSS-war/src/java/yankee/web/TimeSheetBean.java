@@ -93,7 +93,7 @@ public class TimeSheetBean {
     public  void init()    {
         if (timeSheetService != null) { 
 
-            final ContractEntity centity = timeSheetService.getContractByUUID("8901039d-bbbe-4e3d-93b9-9bda4a014d1a");
+            final ContractEntity centity = timeSheetService.getContractByUUID("6922ca4d-5a15-4d73-954e-24cc2199b471");
             timesheets=timeSheetService.getAllTimeSheetsForContract(centity.getUuid());
         }
     }
