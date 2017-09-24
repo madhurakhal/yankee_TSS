@@ -7,6 +7,7 @@ package yankee.logic.to;
 
 import java.sql.Time;
 import java.time.LocalDate;
+import java.util.Date;
 
 /**
  *
@@ -18,11 +19,32 @@ public class TimeSheetEntry extends Named{
     private Time startTime;
     private Time endTime;
     
+    private java.util.Date  tempStartDate;
+    private java.util.Date  tempEndDate;
+
+    
+    
     private LocalDate entryDate;
     private Long timeSheetId;
     private String dateString;
 
     private Double hours;
+
+    public Date getTempStartDate() {
+        return tempStartDate;
+    }
+
+    public void setTempStartDate(Date tempStartDate) {
+        this.tempStartDate = tempStartDate;
+    }
+
+    public Date getTempEndDate() {
+        return tempEndDate;
+    }
+
+    public void setTempEndDate(Date tempEndDate) {
+        this.tempEndDate = tempEndDate;
+    }
 
     public Double getHours() {
         return hours;

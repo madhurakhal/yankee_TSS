@@ -5,6 +5,7 @@
  */
 package yankee.web;
 
+import java.io.Serializable;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import java.util.List;
@@ -25,7 +26,7 @@ import yankee.logic.to.TimeSheetEntry;
 @ManagedBean
 @Named(value = "timeSheetEntryBean")
 @ViewScoped
-public class TimeSheetEntryBean{
+public class TimeSheetEntryBean implements Serializable{
 
     /**
      * Creates a new instance of TimeSheetEntryBean
@@ -130,6 +131,7 @@ public class TimeSheetEntryBean{
    
    public void saveEntry(String uuid)
    {
+       if(timeSheetService!=null)
        timeSheetService.addUpdateTimeSheetEntry(selectedEntry);
    
    }

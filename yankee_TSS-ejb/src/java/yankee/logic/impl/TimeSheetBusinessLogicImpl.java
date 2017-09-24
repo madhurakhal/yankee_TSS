@@ -347,21 +347,17 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
                 throw new IllegalStateException("parameter cannot be null!!");
             }
             TimesheetEntryEntity tsEntry = timeSheetEntryAccess.findByPrimaryKey(timeSheetEntryAccess.getByUuid(uuid).getId());
-            tsEntry.setDescription(obj.getDescription());
-            tsEntry.setEndTime(obj.getEndTime());
-            tsEntry.setStartTime(obj.getStartTime());
-
-            messageString = "Saved!!"; // need to do internationalization;
-
             final String timeSheetStatus = tsEntry.getTimesheet().getStatus().toString();
             final ContractEntity contract = contractAccess.findByPrimaryKey(tsEntry.getTimesheet().getContract().getId());
 
             if (timeSheetStatus.equalsIgnoreCase("IN_PROGRESS") && contract.getStatus().toString().equalsIgnoreCase("STARTED")) {
 
                 tsEntry.setDescription(obj.getDescription());
-                tsEntry.setEndTime(obj.getEndTime());
+                tsEntry.setEndTime(new java.sql.Time(obj.getTempEndDate().getTime()));
+                tsEntry.setStartTime(new java.sql.Time(obj.getTempStartDate().getTime()));
                 tsEntry.setStartTime(obj.getStartTime());
-
+                tsEntry.setHours(obj.getHours());
+                
                 messageString = "Saved!!"; // need to do internationalization;
 
             } else {
@@ -467,6 +463,7 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
                 entryObj.setDateString(e.getEntryDate().toString());
                 entryObj.setDescription(e.getDescription());
                 entryObj.setEndTime(e.getEndTime());
+                entryObj.setHours(e.getHours()==null?0.0:e.getHours());
                 entryObj.setStartTime(e.getStartTime());
                 if (e.getEntryDate().getDayOfWeek().toString().equalsIgnoreCase("sunday") || e.getEntryDate().getDayOfWeek().toString().equalsIgnoreCase("saturday")) {
                     isHoliday = Boolean.TRUE;
