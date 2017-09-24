@@ -24,9 +24,8 @@
         </navigation-case>       
     </navigation-rule>
     
-    <!--BEGINS NAVIGATION FROM THOSE buttons in index.html Can delete-->
-    <navigation-rule>
-        <from-view-id>/index.xhtml</from-view-id>
+        <navigation-rule>
+        <from-view-id>/logged_in/dashboard.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>createContract</from-outcome>
             <to-view-id>/staff_logged_in/createcontract.xhtml</to-view-id>
@@ -36,13 +35,23 @@
             <to-view-id>/staff_logged_in/managecontracts.xhtml</to-view-id>
         </navigation-case>          
         <navigation-case>
-            <from-outcome>viewContractStatistics</from-outcome>
-            <to-view-id>/staff_logged_in/viewcontract_statistics.xhtml</to-view-id>
+            <from-outcome>yourContracts</from-outcome>
+            <to-view-id>/logged_in/employeecontracts.xhtml</to-view-id>
         </navigation-case>  
         <navigation-case>
             <from-outcome>admin</from-outcome>
             <to-view-id>/admin/administration.xhtml</to-view-id>
         </navigation-case>       
+    </navigation-rule>
+    
+    
+    <!--BEGINS NAVIGATION FROM THOSE buttons in index.html Can delete-->
+    <navigation-rule>
+        <from-view-id>/logged_in/contractdetails.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>contractdetails</from-outcome>
+            <to-view-id>/logged_in/logged_in/employeecontracts.xhtml</to-view-id>
+        </navigation-case>      
     </navigation-rule>
     
     <navigation-rule>
