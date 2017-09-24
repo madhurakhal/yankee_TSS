@@ -26,6 +26,24 @@ public class Contract extends Named{
     private int vacationDaysPerYear;
     private double vacationHours;
     private double hoursDue;
+    private Employee employee;    
+    private Supervisor supervisor;
+
+    public Supervisor getSupervisor() {
+        return supervisor;
+    }
+
+    public void setSupervisor(Supervisor supervisor) {
+        this.supervisor = supervisor;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
 
     public Contract(String uuid, String name) {
         super(uuid, name);

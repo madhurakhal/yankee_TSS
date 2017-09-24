@@ -9,6 +9,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
 import yankee.entities.AdministrationEntity;
+import yankee.logic.ENUM.GermanyStatesEnum;
 
 
 @Stateless
@@ -17,8 +18,9 @@ public class AdministrationtAccess extends AbstractAccess<AdministrationEntity> 
 
     @Override
     public AdministrationEntity createEntity(String name) {
-        name = name.trim().toLowerCase();
+        name = name.trim().toLowerCase();        
         AdministrationEntity se = super.createEntity(name);
+        se.setGermanState(GermanyStatesEnum.RHINELANDPALATINATE);
         return se;
     }
 

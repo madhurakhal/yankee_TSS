@@ -9,14 +9,15 @@
     <ui:composition template="/WEB-INF/templates/main-template.xhtml">        
         <ui:param name="pageTitle" value="Admin Page"/>
         <ui:define name="main-content">
-            <b:form id="form">                              
-
+            <b:form id="form"> 
+                
+                <p:growl id="msgs" showDetail="true" />
+ 
+    <h3 style="margin-top:0">#{loginBean.user.firstName} #{loginBean.user.lastName}</h3>
+    <b:tabView> 
+        <b:tab title="As Supervisor">            
                 <!-- BEGINS  For Supervisor -->
-                <p:outputPanel rendered = "#{!empty manageContractsBean.personsAssociatedToContractSupervisor}" styleClass="box">                    
-                    <p:outputPanel styleClass="box-header">  
-                        <p:outputLabel styleClass="pull-left">#{loginBean.user.firstName} #{loginBean.user.lastName} (As Supervisor)</p:outputLabel>
-                        <h:button value="Create Contract" outcome="createContract" styleClass="btn btn-primary pull-right btn-flat"/>
-                    </p:outputPanel>
+                <p:outputPanel rendered = "#{!empty manageContractsBean.personsAssociatedToContractSupervisor}" styleClass="box">                          
 
                     <p:outputPanel styleClass="box-body">                         
                         <b:dataTable value="#{manageContractsBean.personsAssociatedToContractSupervisor}" 
@@ -41,14 +42,10 @@
                     </p:outputPanel>
                 </p:outputPanel>
                 <!-- ENDS  For Supervisor-->
-
-
-                <!-- BEGINS  For Assistant--> 
+        </b:tab>
+        <b:tab title="As Assistant">
+            <!-- BEGINS  For Assistant--> 
                 <p:outputPanel rendered = "#{!empty manageContractsBean.personsAssociatedToContractAssistant}" styleClass="box"> 
-                    <p:outputPanel styleClass="box-header">                   
-                        <p:outputLabel styleClass="pull-left">#{loginBean.user.firstName} #{loginBean.user.lastName} (As Assistant)</p:outputLabel>
-                    </p:outputPanel>
-
                     <p:outputPanel styleClass="box-body">
                         <b:dataTable value="#{manageContractsBean.personsAssociatedToContractAssistant}" 
                                      var="persons" 
@@ -71,14 +68,10 @@
                     </p:outputPanel>
                 </p:outputPanel>
                 <!-- ENDS  For Assistant-->
-
-
-                <!-- BEGINS  For Secretary-->
+        </b:tab>
+        <b:tab title="As Secretary">
+            <!-- BEGINS  For Secretary-->
                 <p:outputPanel rendered = "#{!empty manageContractsBean.personsAssociatedToContractSecretary}" styleClass="box">                    
-                    <p:outputPanel styleClass="box-header">                   
-                        <p:outputLabel styleClass="pull-left">#{loginBean.user.firstName} #{loginBean.user.lastName} (As Secretary)</p:outputLabel>
-                    </p:outputPanel>
-
                     <p:outputPanel styleClass="box-body"> 
                         <b:dataTable value="#{manageContractsBean.personsAssociatedToContractSecretary}" 
                                      var="persons" 
@@ -101,6 +94,25 @@
                     </p:outputPanel>
                 </p:outputPanel>
                 <!-- BEGINS  For Secretary-->
+        </b:tab>
+    </b:tabView>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+
+                
+
+
+                
+
+
+                
 
 
                 <!-- BEGINS  For Global Confirmation dialog-->

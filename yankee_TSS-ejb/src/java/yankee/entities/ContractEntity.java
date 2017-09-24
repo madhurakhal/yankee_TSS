@@ -25,7 +25,9 @@ import yankee.logic.ENUM.TimesheetFrequencyEnum;
     @NamedQuery(name = "getContractCount", query = "SELECT COUNT(p) FROM ContractEntity p"),
     @NamedQuery(name = "getContractList", query = "SELECT p FROM ContractEntity p ORDER BY p.name, p.uuid"),
     @NamedQuery(name = "getContractByName", query = "SELECT p FROM ContractEntity p WHERE p.name = :name"),
-    @NamedQuery(name = "getContractEntityByUuid", query = "SELECT e FROM ContractEntity e WHERE e.uuid = :uuid")
+    @NamedQuery(name = "getContractEntityByUuid", query = "SELECT e FROM ContractEntity e WHERE e.uuid = :uuid"),
+    @NamedQuery(name = "getContractByEmployee" , query = "SELECT e FROM ContractEntity e WHERE e.employee = :employee"),
+    @NamedQuery(name = "getContractByPerson" , query = "SELECT e FROM ContractEntity e WHERE e.employee.person = :person")
 
 })
 /**

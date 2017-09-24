@@ -3,9 +3,14 @@ package yankee.logic.dao;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.persistence.NoResultException;
 import yankee.entities.ContractEntity;
+import yankee.entities.EmployeeEntity;
+import yankee.entities.PersonEntity;
+import yankee.entities.SupervisorEntity;
 import yankee.logic.ENUM.ContractStatusEnum;
 
 @Stateless
@@ -43,6 +48,28 @@ public class ContractAccess extends AbstractAccess<ContractEntity> {
     public List<ContractEntity> getContractList() {
         return em.createNamedQuery("getContractList", ContractEntity.class
         ).getResultList();
+    }
+    
+    public List<ContractEntity> getContractByEmployee(EmployeeEntity employee){
+        try {
+            return em.createNamedQuery("getContractByEmployee", ContractEntity.class)
+                    .setParameter("employee", employee)
+                    .getResultList();
+        } catch (NoResultException ex) {
+            return null;
+        } 
+    }
+    
+    @RolesAllowed("AUTHENTICATED")
+    // Person being himself
+    public List<ContractEntity> getContractsByPerson(PersonEntity person) {
+       try {
+            return em.createNamedQuery("getContractByPerson", ContractEntity.class)
+                    .setParameter("person", person)
+                    .getResultList();
+        } catch (NoResultException ex) {
+            return null;
+        } 
     }
 
 

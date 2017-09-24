@@ -14,6 +14,7 @@ import javax.ejb.Stateless;
 import yankee.entities.AssistantEntity;
 import yankee.entities.ContractEntity;
 import yankee.entities.EmployeeEntity;
+import yankee.entities.PersonEntity;
 import yankee.entities.SecretaryEntity;
 import yankee.entities.SupervisorEntity;
 import yankee.entities.TimesheetEntity;
@@ -30,7 +31,9 @@ import yankee.logic.dao.SecretaryAccess;
 import yankee.logic.dao.SupervisorAccess;
 import yankee.logic.dao.TimeSheetAccess;
 import yankee.logic.to.Contract;
+import yankee.logic.to.Employee;
 import yankee.logic.to.Person;
+import yankee.logic.to.Supervisor;
 
 @Stateless
 public class ContractBusinessLogicImpl implements ContractBusinessLogic {
@@ -115,11 +118,13 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
             System.out.println("Employee ko naam k ho ta" + ee.getName() + ee.getId());
             ee.setPerson(personAccess.getByUuid(employee.getUuid()));
             ee.setContract(ce);
+            ce.setEmployee(ee);
 
             //3.
             SupervisorEntity sve = supervisorAccess.createEntity(supervisor.getName());
             sve.setPerson(personAccess.getByUuid(supervisor.getUuid()));
             sve.setContract(ce);
+            ce.setSupervisor(sve);
 
             //4. Note not necessary that you will be provided with person secretary. So can be null
             // Usually if when creating contract assistant and secretary trying to create contract for supervisor.
@@ -284,6 +289,8 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
         // Also delete employee for that contract id
 
         ContractEntity ce = contractAccess.getByUuid(contractUUID);
+        ce.setEmployee(null);
+        ce.setSupervisor(null);
 
         SupervisorEntity svePrev = supervisorAccess.getSupervisorByContract(ce);
         supervisorAccess.deleteEntity(svePrev);
@@ -292,16 +299,69 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
         for (SecretaryEntity delSecretary : toDeleteSecretaries) {
             secretaryAccess.deleteEntity(delSecretary);
         }
-        
+
         EmployeeEntity toDeleteEmployee = employeeAccess.getEmployeeByContract(ce);
         employeeAccess.deleteEntity(toDeleteEmployee);
-        
+
         List<AssistantEntity> toDeleteAssistants = assistantAccess.getAssistantsByContract(ce);
         for (AssistantEntity delEmployee : toDeleteAssistants) {
             assistantAccess.deleteEntity(delEmployee);
         }
 
         contractAccess.deleteEntity(contractAccess.getContractEntity(contractUUID));
+    }
+
+    @Override
+    public List<Contract> getContractsByPerson(String personUUID) {
+            //Because all users logged in doesnot have to be as employee
+            List<ContractEntity> lce = contractAccess.getContractsByPerson(personAccess.getByUuid(personUUID));
+
+            if (lce == null) {
+                return null;
+            }
+            List<Contract> result = new ArrayList<>();
+            for (ContractEntity ce : lce) {
+                Contract c = new Contract(ce.getUuid(), ce.getName());
+                c.setStartDate(ce.getStartDate());
+                c.setEndDate(ce.getEndDate());
+                c.setFrequency(ce.getFrequency());
+                c.setHoursPerWeek(ce.getHoursPerWeek());
+                c.setWorkingDaysPerWeek(ce.getWorkingDaysPerWeek());
+                c.setVacationDaysPerYear(ce.getVacationDaysPerYear());
+                c.setStatus(ce.getStatus());
+                c.setTerminationDate(ce.getTerminationDate());
+                c.setVacationHours(ce.getVacationHours());
+                c.setHoursDue(ce.getHoursDue());
+                
+//                // Set Employee
+//                Employee e = new Employee(ce.getEmployee().getUuid(), ce.getEmployee().getName());
+//                Person pE = new Person(e.getPerson().getUuid(), e.getPerson().getName());
+//                pE.setFirstName(e.getPerson().getFirstName());
+//                pE.setLastName(e.getPerson().getLastName());
+//                pE.setDateOfBirth(e.getPerson().getDateOfBirth());
+//                pE.setEmailAddress(e.getPerson().getEmailAddress());
+//                pE.setUserRoleRealm(e.getPerson().getUserRoleRealm());
+//                pE.setPreferredLanguage(e.getPerson().getPreferredLanguage());
+//                e.setPerson(pE);
+//                c.setEmployee(e);
+
+                // Set Supervisor
+                Supervisor s = new Supervisor(ce.getSupervisor().getUuid(), ce.getSupervisor().getName());
+                
+                PersonEntity person = ce.getSupervisor().getPerson();
+                Person pS = new Person(person.getUuid(), person.getName());
+                pS.setFirstName(person.getFirstName());
+                pS.setLastName(person.getLastName());
+                pS.setDateOfBirth(person.getDateOfBirth());
+                pS.setEmailAddress(person.getEmailAddress());
+                pS.setUserRoleRealm(person.getUserRoleRealm());
+                pS.setPreferredLanguage(person.getPreferredLanguage());                
+                s.setPerson(pS);
+                c.setSupervisor(s);
+                
+                result.add(c);
+            }
+            return result;
     }
 
 }
