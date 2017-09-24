@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:outputPanel styleClass="box box-default">
+            <p:outputPanel styleClass="box-header with-border text-center">
+                <h3>#{loginBean.user.firstName} #{loginBean.user.lastName}</h3>
+            </p:outputPanel>
+            <p:outputPanel styleClass="box-body table-responsive">
+                <table class="table table-bordered flat">
+                    <tbody class="text-center">
+                        <tr>
+                            <td class="responsive-td"><h:button value="#{msg.createContract}" outcome="createContract" styleClass="btn btn-primary btn-flat"/></td>
+                            <td class="responsive-td"><h:button value="#{msg.manageContracts}" outcome="manageContracts" styleClass="btn btn-primary btn-flat"/></td>
+                            <td class="responsive-td"><h:button value="#{msg.yourContracts}" outcome="yourContracts" styleClass="btn btn-primary btn-flat"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </p:outputPanel>
+        </p:outputPanel>
+
+    </ui:composition>
+
+</html>

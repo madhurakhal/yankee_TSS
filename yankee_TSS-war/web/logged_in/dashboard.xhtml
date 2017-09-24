@@ -4,36 +4,33 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:b="http://bootsfaces.net/ui">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <ui:composition template="/WEB-INF/templates/main-template.xhtml">
         <ui:param name="pageTitle" value="Welcome Man"/>
+        <ui:define name="breadcrumb">
+            <li>
+                <h:link outcome="dashboard">
+                    <i class="fa fa-dashboard"></i>Home
+                </h:link>
+            </li>
+            <li>
+                <h:link disabled="true">
+                    #{msg.dashBoard}
+                </h:link>
+            </li>
+        </ui:define>
         <ui:define name="main-content">
-            <b:row rendered="#{request.isUserInRole('STAFF')}">
-                <b:column>
-                    <b:form>
-                        <p:outputPanel styleClass="box">
-                            <p:outputPanel styleClass="box-header">
-                                <p:outputLabel styleClass="pull-left">Associated Contracts</p:outputLabel>
-                                <h:button value="Create Contract" outcome="createContract" styleClass="btn btn-primary pull-right btn-flat"/>
-                            </p:outputPanel>
-                            <p:outputPanel styleClass="box-body top-border">
-                                <b:dataTable value="#{manageContractsBean.personsAssociatedToContractSupervisor}"
+            <ui:fragment rendered="#{request.isUserInRole('ADMIN')}">
+                <ui:include src="../admin/administration.xhtml"></ui:include>
+            </ui:fragment>
 
-                                             var="person"
-                                             responsive="true">
-                                    <b:dataTableColumn value="#{person.firstName}" label="Employee"/>
-                                    <b:dataTableColumn value="#{person.firstName}" label="Status"/>
-                                </b:dataTable>
-                            </p:outputPanel>
-                        </p:outputPanel>
-                    </b:form>
-                </b:column>
-
-            </b:row>
-            <h:button value="Admin Page" outcome="admin"
-                      rendered="#{request.isUserInRole('ADMIN')}" />
-            <p:growl id="msg" showDetail="true"/>
+            <ui:fragment rendered="#{request.isUserInRole('STAFF')}">
+                <ui:include src="./staff-dashboard.xhtml"></ui:include>
+            </ui:fragment>
+            
+            <ui:fragment rendered="#{not request.isUserInRole('STAFF')}">
+                <ui:include src="./employee-dashboard.xhtml"></ui:include>
+            </ui:fragment>
         </ui:define>
     </ui:composition>
 </html>

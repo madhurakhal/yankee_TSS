@@ -1,14 +1,17 @@
 package yankee.logic.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import yankee.entities.ContractEntity;
 import yankee.entities.EmployeeEntity;
 import yankee.entities.PersonEntity;
 import yankee.logic.EmployeeBusinessLogic;
 import yankee.logic.dao.ContractAccess;
 import yankee.logic.dao.EmployeeAccess;
 import yankee.logic.dao.PersonAccess;
+import yankee.logic.to.Contract;
 import yankee.logic.to.Employee;
 import yankee.logic.to.Person;
 
@@ -23,19 +26,32 @@ public class EmployeeBusinessLogicImpl implements EmployeeBusinessLogic {
 
     @EJB
     private ContractAccess contractAccess;
+    
 
     @Override
     public List<Employee> getEmployeeList() {
-//        List<PersonEntity> l = personAccess.getPersonList();
-//        List<Person> result = new ArrayList<>(l.size());
-//        for (PersonEntity pe : l) {
-//            Person p = new Person(pe.getUuid(), pe.getName());
-//            p.setFirstName(pe.getFirstName());
-//            p.setLastName(pe.getLastName());
-//            p.setDateOfBirth(pe.getDateOfBirth());
-//            result.add(p);
-//        }
-        return null;
+        List<EmployeeEntity> le = employeeAccess.getEmployeeList();
+        if (le == null){return null;}
+        List<Employee> result = new ArrayList<>();
+        for (EmployeeEntity ee : le) {
+            Employee e = new Employee(ee.getUuid(), ee.getName());
+            PersonEntity person = ee.getPerson();
+           
+            Person p = new Person(person.getUuid() , person.getName());
+            p.setFirstName(person.getFirstName());
+            p.setLastName(person.getLastName());
+            p.setEmailAddress(person.getEmailAddress());
+            e.setPerson(p);
+            
+            ContractEntity contract = ee.getContract();
+           // to get the contract id
+            Contract c = new Contract(contract.getUuid() , contract.getName());
+            // to do fill up contract transfer object
+            e.setContract(c);
+            
+            result.add(e);
+        }
+        return result;
     }
 
     @Override

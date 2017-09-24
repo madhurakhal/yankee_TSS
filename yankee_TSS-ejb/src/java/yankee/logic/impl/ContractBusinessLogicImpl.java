@@ -1,23 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yankee.logic.impl;
 
 import java.time.LocalDate;
-import java.time.Period;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import yankee.entities.AssistantEntity;
 import yankee.entities.ContractEntity;
 import yankee.entities.EmployeeEntity;
+import yankee.entities.PersonEntity;
 import yankee.entities.SecretaryEntity;
 import yankee.entities.SupervisorEntity;
 import yankee.entities.TimesheetEntity;
@@ -34,12 +31,10 @@ import yankee.logic.dao.SecretaryAccess;
 import yankee.logic.dao.SupervisorAccess;
 import yankee.logic.dao.TimeSheetAccess;
 import yankee.logic.to.Contract;
+import yankee.logic.to.Employee;
 import yankee.logic.to.Person;
+import yankee.logic.to.Supervisor;
 
-/**
- *
- * @author Sabs
- */
 @Stateless
 public class ContractBusinessLogicImpl implements ContractBusinessLogic {
 
@@ -60,30 +55,40 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
 
     @EJB
     private SupervisorAccess supervisorAccess;
-    
+
     @EJB
     private TimeSheetAccess timeSheetAccess;
-    
+
     @EJB
     private TimeSheetBusinessLogic timeSheetBusinessLogic;
 
     @Override
-    public List<Person> getContractList() {
-//        List<PersonEntity> l = personAccess.getPersonList();
-//        List<Person> result = new ArrayList<>(l.size());
-//        for (PersonEntity pe : l) {
-//            Person p = new Person(pe.getUuid(), pe.getName());
-//            p.setFirstName(pe.getFirstName());
-//            p.setLastName(pe.getLastName());
-//            p.setDateOfBirth(pe.getDateOfBirth());
-//            result.add(p);
-//        }
-        return null;
+    public List<Contract> getContractList() {
+        List<ContractEntity> lce = contractAccess.getContractList();
+        if (lce == null) {
+            return null;
+        }
+        List<Contract> result = new ArrayList<>();
+        for (ContractEntity ce : lce) {
+            Contract c = new Contract(ce.getUuid(), ce.getName());
+            c.setStartDate(ce.getStartDate());
+            c.setEndDate(ce.getEndDate());
+            c.setFrequency(ce.getFrequency());
+            c.setHoursPerWeek(ce.getHoursPerWeek());
+            c.setWorkingDaysPerWeek(ce.getWorkingDaysPerWeek());
+            c.setVacationDaysPerYear(ce.getVacationDaysPerYear());
+            c.setStatus(ce.getStatus());
+            c.setTerminationDate(ce.getTerminationDate());
+            c.setVacationHours(ce.getVacationHours());
+            c.setHoursDue(ce.getHoursDue());
+            result.add(c);
+        }
+        return result;
+
     }
 
-    // This roleTypeUUID is either supervisor, secretary, assistant, employee uuid
     @Override
-    public Contract createContract(String contractName, Person supervisor, Person assistant, Person secretary, Person employee, Date startDate, Date endDate, TimesheetFrequencyEnum timesheetFrequency , double hoursPerWeek, int workingDaysPerWeek, int vacationDaysPerYear) {
+    public Contract createContract(String contractName, Person supervisor, Person assistant, Person secretary, Person employee, Date startDate, Date endDate, TimesheetFrequencyEnum timesheetFrequency, double hoursPerWeek, int workingDaysPerWeek, int vacationDaysPerYear) {
 
         // When creating contract.
         // 1. First create contract and get contract id Also set start end date along with timesheetFrequency detail.
@@ -91,21 +96,20 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
         // 3. now create supervisor with person associated to it
         // 4. now create secretary as of yet in this createContract.
         // 5. now create assistant as of yet in this createContract.
-        
         //1.
         ContractEntity ce = contractAccess.createEntity(contractName);
         LocalDate lstartdate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate lenddate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();        
+        LocalDate lenddate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         ce.setStartDate(lstartdate);
         ce.setEndDate(lenddate);
-        if (timesheetFrequency != null){
-        ce.setFrequency(timesheetFrequency);
-    }
+        if (timesheetFrequency != null) {
+            ce.setFrequency(timesheetFrequency);
+        }
         ce.setHoursPerWeek(hoursPerWeek);
-        
+
         ce.setVacationDaysPerYear(vacationDaysPerYear);
         ce.setWorkingDaysPerWeek(workingDaysPerWeek);
-        
+
         System.out.println("Contract ko naam k ho ta" + ce.getName() + ce.getId());
 
         try {
@@ -114,11 +118,13 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
             System.out.println("Employee ko naam k ho ta" + ee.getName() + ee.getId());
             ee.setPerson(personAccess.getByUuid(employee.getUuid()));
             ee.setContract(ce);
+            ce.setEmployee(ee);
 
             //3.
             SupervisorEntity sve = supervisorAccess.createEntity(supervisor.getName());
             sve.setPerson(personAccess.getByUuid(supervisor.getUuid()));
             sve.setContract(ce);
+            ce.setSupervisor(sve);
 
             //4. Note not necessary that you will be provided with person secretary. So can be null
             // Usually if when creating contract assistant and secretary trying to create contract for supervisor.
@@ -148,7 +154,7 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
     }
 
     @Override
-    public Contract editContract(String contractUUID, Person supervisorPerson, List<Person> secretaries, boolean secretariesChanged, List<Person> assistants, boolean assistantsChanged, Date startDate, Date endDate) {
+    public Contract editContract(String contractUUID, Person supervisorPerson, List<Person> secretaries, boolean secretariesChanged, List<Person> assistants, boolean assistantsChanged, Date startDate, Date endDate, TimesheetFrequencyEnum timesheetFrequency, int workingDaysPerWeek, int vacationDaysPerYear, double hoursPerWeek) {
         // When updating contract 
         // We will receive 
         // 1. new supervisorFor contract .. check for null if no change. Delete and create if not null and associate this contract id.
@@ -157,7 +163,6 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
         // 3. Similar as 2. This time assistant
         // 4. Set start and end date.
 
-        
         ContractEntity ce = contractAccess.getByUuid(contractUUID);
         if (startDate != null) {
             LocalDate lstartdate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -167,6 +172,11 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
             LocalDate lenddate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             ce.setEndDate(lenddate);
         }
+        ce.setFrequency(timesheetFrequency);
+        ce.setWorkingDaysPerWeek(workingDaysPerWeek);
+        ce.setVacationDaysPerYear(vacationDaysPerYear);
+        ce.setHoursPerWeek(hoursPerWeek);
+
         // 1. 
         SupervisorEntity svePrev = supervisorAccess.getSupervisorByContract(contractAccess.getByUuid(contractUUID));
         // This means the current selected supervisor is different from one before
@@ -223,14 +233,14 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
 
     @Override
     public Contract startContract(String contractUUID) {
-        
+
         ContractEntity ce = contractAccess.getByUuid(contractUUID);
-        ce.setStatus(ContractStatusEnum.STARTED); 
+        ce.setStatus(ContractStatusEnum.STARTED);
         // Create timesheets 
         timeSheetBusinessLogic.createTimeSheet(contractUUID);
-        
+
         // Now updating the total hours due for contract. Subject to change when timesheet entries changes.
-        getUpdateContractStatistics(contractUUID);
+        updateContractStatistics(contractUUID);
         return new Contract(ce.getUuid(), ce.getName());
     }
 
@@ -246,38 +256,112 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
         c.setVacationDaysPerYear(ce.getVacationDaysPerYear());
         c.setStatus(ce.getStatus());
         c.setTerminationDate(ce.getTerminationDate());
+        c.setVacationHours(ce.getVacationHours());
+        c.setHoursDue(ce.getHoursDue());
         return c;
 
     }
-    
-    @Override 
-    public Contract getUpdateContractStatistics(String contractUUID){
+
+    @Override
+    public void updateContractStatistics(String contractUUID) {
         ContractEntity ce = contractAccess.getByUuid(contractUUID);
-        
+
         // Calculating vacation hours.
         LocalDate date1 = ce.getStartDate();
-        LocalDate date2 = ce.getEndDate();               
-        double durationOfContract = (double) ChronoUnit.MONTHS.between(date1, date2);
-        double vacationHours = ce.getVacationDaysPerYear()* (durationOfContract / 12) * (ce.getHoursPerWeek() / ce.getWorkingDaysPerWeek());
+        LocalDate date2 = ce.getEndDate();
+        double durationOfContract = (double) ChronoUnit.MONTHS.between(date1, date2) + 1;
+        double vacationHours = (double) ce.getVacationDaysPerYear() * (durationOfContract / 12) * (ce.getHoursPerWeek() / ce.getWorkingDaysPerWeek());
         ce.setVacationHours(vacationHours);
-        
+
         // Calculating Total hours due.
         // load each timesheet for this contract. and sum each timesheets hoursdue.
         List<TimesheetEntity> lte = timeSheetAccess.getTimeSheetsForContract(contractUUID);
         double totalhoursDue = 0.0;
-        for (TimesheetEntity te : lte){
+        for (TimesheetEntity te : lte) {
             totalhoursDue += te.getHoursDue();
         }
-        ce.setHoursDue(totalhoursDue);          
-        
-        // Fill All Contract details        
-        Contract contract = new Contract(ce.getUuid() , ce.getName());
-        contract.setStatus(ce.getStatus());
-        // Fill allll
-        return contract;
-        
-                
-        
+        ce.setHoursDue(totalhoursDue);
     }
-    
+
+    @RolesAllowed("STAFF")
+    @Override
+    public void deleteContract(String contractUUID) {
+        // Also delete employee for that contract id
+
+        ContractEntity ce = contractAccess.getByUuid(contractUUID);
+        ce.setEmployee(null);
+        ce.setSupervisor(null);
+
+        SupervisorEntity svePrev = supervisorAccess.getSupervisorByContract(ce);
+        supervisorAccess.deleteEntity(svePrev);
+
+        List<SecretaryEntity> toDeleteSecretaries = secretaryAccess.getSecretariesByContract(ce);
+        for (SecretaryEntity delSecretary : toDeleteSecretaries) {
+            secretaryAccess.deleteEntity(delSecretary);
+        }
+
+        EmployeeEntity toDeleteEmployee = employeeAccess.getEmployeeByContract(ce);
+        employeeAccess.deleteEntity(toDeleteEmployee);
+
+        List<AssistantEntity> toDeleteAssistants = assistantAccess.getAssistantsByContract(ce);
+        for (AssistantEntity delEmployee : toDeleteAssistants) {
+            assistantAccess.deleteEntity(delEmployee);
+        }
+
+        contractAccess.deleteEntity(contractAccess.getContractEntity(contractUUID));
+    }
+
+    @Override
+    public List<Contract> getContractsByPerson(String personUUID) {
+            //Because all users logged in doesnot have to be as employee
+            List<ContractEntity> lce = contractAccess.getContractsByPerson(personAccess.getByUuid(personUUID));
+
+            if (lce == null) {
+                return null;
+            }
+            List<Contract> result = new ArrayList<>();
+            for (ContractEntity ce : lce) {
+                Contract c = new Contract(ce.getUuid(), ce.getName());
+                c.setStartDate(ce.getStartDate());
+                c.setEndDate(ce.getEndDate());
+                c.setFrequency(ce.getFrequency());
+                c.setHoursPerWeek(ce.getHoursPerWeek());
+                c.setWorkingDaysPerWeek(ce.getWorkingDaysPerWeek());
+                c.setVacationDaysPerYear(ce.getVacationDaysPerYear());
+                c.setStatus(ce.getStatus());
+                c.setTerminationDate(ce.getTerminationDate());
+                c.setVacationHours(ce.getVacationHours());
+                c.setHoursDue(ce.getHoursDue());
+                
+//                // Set Employee
+//                Employee e = new Employee(ce.getEmployee().getUuid(), ce.getEmployee().getName());
+//                Person pE = new Person(e.getPerson().getUuid(), e.getPerson().getName());
+//                pE.setFirstName(e.getPerson().getFirstName());
+//                pE.setLastName(e.getPerson().getLastName());
+//                pE.setDateOfBirth(e.getPerson().getDateOfBirth());
+//                pE.setEmailAddress(e.getPerson().getEmailAddress());
+//                pE.setUserRoleRealm(e.getPerson().getUserRoleRealm());
+//                pE.setPreferredLanguage(e.getPerson().getPreferredLanguage());
+//                e.setPerson(pE);
+//                c.setEmployee(e);
+
+                // Set Supervisor
+                Supervisor s = new Supervisor(ce.getSupervisor().getUuid(), ce.getSupervisor().getName());
+                
+                PersonEntity person = ce.getSupervisor().getPerson();
+                Person pS = new Person(person.getUuid(), person.getName());
+                pS.setFirstName(person.getFirstName());
+                pS.setLastName(person.getLastName());
+                pS.setDateOfBirth(person.getDateOfBirth());
+                pS.setEmailAddress(person.getEmailAddress());
+                pS.setUserRoleRealm(person.getUserRoleRealm());
+                pS.setPreferredLanguage(person.getPreferredLanguage());                
+                s.setPerson(pS);
+                c.setSupervisor(s);
+                
+                result.add(c);
+            }
+            return result;
+    }
+
 }

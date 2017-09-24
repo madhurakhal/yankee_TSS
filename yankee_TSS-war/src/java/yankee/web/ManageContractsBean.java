@@ -81,12 +81,18 @@ public class ManageContractsBean {
     }
     
     public void onRowDelete(String contract_uuid) {
-        
+        FacesMessage msg = new FacesMessage();
+        msg.setSeverity(FacesMessage.SEVERITY_INFO);
+        msg.setSummary("Contract Deleted");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+  
+        contractBusinessLogic.deleteContract(contract_uuid);      
     }  
     
     public void onRowView(String contract_uuid) throws IOException {
+        contractBusinessLogic.updateContractStatistics(contract_uuid);
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/staff_logged_in/viewcontractdetails.xhtml?id=" + contract_uuid);        
+        ec.redirect(ec.getRequestContextPath() + "/logged_in/contractdetails.xhtml?id=" + contract_uuid);        
     } 
     
      public void onRowPrint(String contract_uuid) throws IOException {

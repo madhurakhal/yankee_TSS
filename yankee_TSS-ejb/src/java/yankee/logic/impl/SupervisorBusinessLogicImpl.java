@@ -69,28 +69,20 @@ public class SupervisorBusinessLogicImpl implements SupervisorBusinessLogic {
 
     @Override
     public List<Supervisor> getSupervisorByPerson(String personUUID) {
-        System.out.println("HERE in beginning of getsupervisorbyperson" + personUUID);
-        System.out.println(personAccess.getByUuid(personUUID).getFirstName());
         List<SupervisorEntity> lse = supervisorAccess.getSupervisorByPerson(personAccess.getByUuid(personUUID));
-        System.out.println("Nothing in supervisor entity" + lse);
         
         // Need to create a SUpervisor list from transfer object
         List<Supervisor> result = new ArrayList<>();
-        //lse.stream().map((se) -> {
         for (SupervisorEntity se : lse){
             Supervisor p = new Supervisor(se.getUuid(), se.getName());
             ContractEntity contract = se.getContract();
             Contract c = new Contract(contract.getUuid(), contract.getName());
             // Fill up all other contract info
             p.setContract(c);            
-        //    return p;
-        //}).forEachOrdered((p) -> {
-            //Should we also update person?
             PersonEntity pe = se.getPerson();
             System.out.println("Am I here" + se.getPerson().getFirstName());
             p.setPerson(new Person(pe.getUuid(),pe.getName()));
             result.add(p);
-        //});
         }
         return result;
     }

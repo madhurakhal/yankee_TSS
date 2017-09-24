@@ -10,12 +10,46 @@
         <ui:param name="pageTitle" value="Create Contract Page"/>
         <ui:define name="breadcrumb">
             <li>
+                <h:link outcome="dashboard">
+                    <i class="fa fa-dashboard"></i>Home
+                </h:link>
+            </li>
+            <li>
                 <h:link disabled="true">
-                    Create Contract
+                    #{msg.createContract}
                 </h:link>
             </li>
         </ui:define>
         <ui:define name="main-content">
+            <f:verbatim>
+                <script type="text/javascript">
+                   //<![CDATA[
+                        var date1 = new Date();
+                        var currentMonth = date1.getMonth();
+                        function enableOnlyFirstDay(date) {
+                            if (date.getTime() - 8640000 >= date1.getTime()) {
+                                if (date.getDate() === 1) return [true];
+                            }
+                            return [false];
+                        }
+                        function enableOnlyLastDay(date) {
+                            var startDate = document.getElementById('createContractForm:startDate_input').value
+                            if (startDate === '') {
+                                return [false];
+                            }
+                            
+                            var d1 = new Date(startDate);
+                            if (date.getTime() > d1.getTime()) {
+                                var lastDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+                                if (date.getDate() === lastDate.getDate()) {
+                                    return [true];
+                                }
+                            }
+                            return [false];
+                        }
+                    //]]> 
+                </script>
+            </f:verbatim>
             <b:row styleClass="text-center">
                 <p:outputPanel styleClass="box box-default">
                     <p:outputPanel styleClass="box-header with-border">
@@ -27,34 +61,42 @@
                                 <b:row>
                                     <p:outputPanel styleClass="col-xs-12">
                                         <b:formGroup>
-                                            <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="personInput">Select Person</h:outputLabel>
-                                            <b:column col-sm="10" col-xs="12">
-                                                <b:selectOneMenu id="contractPersons" value="#{createContractBean.contractTo}" required="true">
-                                                    <f:selectItem itemLabel="Choose person" itemValue="" noSelectionOption="true"/>
+                                            <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="personInput">#{msg.selectPerson}</h:outputLabel>
+                                            <b:column col-sm="6" col-xs="12">
+                                                <b:selectOneMenu id="contractPersons" value="#{createContractBean.contractTo}" immediate="true">
+                                                    <f:selectItem itemLabel="#{msg.selectPerson}" noSelectionOption="true"/>
                                                     <f:selectItems  value="#{createContractBean.persons}" var="entity" itemLabel="#{entity.firstName} #{entity.lastName}" itemValue="#{entity}"/>
-                                                    <f:ajax render="firstNameInput lastNameInput emailAddressInput" />
+                                                    <f:ajax render="firstNameInput lastNameInput emailAddressInput availableSupervisor" listener="#{createContractBean.updateVal}"/>
+                                                </b:selectOneMenu>
+                                            </b:column>
+                                        </b:formGroup>
+                                        <b:formGroup >
+                                            <h:outputLabel  styleClass="col-xs-12 col-sm-3 control-label" for="supervisorInput">On Behalf of Supervisor</h:outputLabel>
+                                            <b:column col-sm="6" col-xs="12" >
+                                                <b:selectOneMenu id= "availableSupervisor" disabled="true" value="#{createContractBean.changedSupervisorPerson}">                                                    
+                                                    <f:selectItems   value="#{createContractBean.availableSupervisorList}" var="supervisorlist" itemLabel="#{supervisorlist.firstName} #{supervisorlist.lastName}" itemValue="#{supervisorlist}"/>                                                                                                      
                                                 </b:selectOneMenu>
                                             </b:column>
                                         </b:formGroup>
 
                                         <b:formGroup>
-                                            <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="firstNameInput">First Name </h:outputLabel>
-                                            <b:column col-sm="10" col-xs="12">
+                                            <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="firstNameInput">#{msg.firstName}</h:outputLabel>
+                                            <b:column col-sm="6" col-xs="12">
                                                 <h:inputText required="false" disabled="true" id="firstNameInput" value="#{createContractBean.contractTo.firstName}" styleClass="form-control"/>
                                             </b:column>
                                         </b:formGroup>
 
                                         <b:formGroup>
-                                            <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="lastNameInput">Last Name</h:outputLabel>
-                                            <b:column  col-sm="10" col-xs="12">
+                                            <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="lastNameInput">#{msg.lastName}</h:outputLabel>
+                                            <b:column  col-sm="6" col-xs="12">
                                                 <h:inputText required="false" disabled="true" id="lastNameInput" value="#{createContractBean.contractTo.lastName}" styleClass="form-control"/>
                                             </b:column>
 
                                         </b:formGroup>
-                                        
+
                                         <b:formGroup>
-                                            <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="emailAddressInput">Email</h:outputLabel>
-                                            <b:column col-sm="10" col-xs="12">
+                                            <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="emailAddressInput">Email</h:outputLabel>
+                                            <b:column col-sm="6" col-xs="12">
                                                 <h:inputText id="emailAddressInput" label="Email"
                                                              value="#{createContractBean.contractTo.emailAddress}"
                                                              required="false" disabled = "true"
@@ -62,58 +104,66 @@
                                                 </h:inputText>
                                             </b:column>
                                         </b:formGroup> 
-                                        
+
                                         <b:formGroup>
-                                            <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="workingDaysPerWeek">Working Days Per Week</h:outputLabel>
-                                            <b:column  col-sm="10" col-xs="12">
+                                            <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="workingDaysPerWeek">#{msg.workingDaysPerWeek}</h:outputLabel>
+                                            <b:column  col-sm="6" col-xs="12">
                                                 <h:inputText immediate="true" readonly="#{facesContext.renderResponse}" id="workingDaysPerWeek" value="#{createContractBean.workingDaysPerWeek}" styleClass="form-control"/>
                                             </b:column>
 
                                         </b:formGroup>
-                                        
+
                                         <b:formGroup>
-                                            <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="vacationDaysPerYear">Vacation Days Per Year</h:outputLabel>
-                                            <b:column  col-sm="10" col-xs="12">
+                                            <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="vacationDaysPerYear">#{msg.vacationPerYear}</h:outputLabel>
+                                            <b:column  col-sm="6" col-xs="12">
                                                 <h:inputText immediate="true" readonly="#{facesContext.renderResponse}" id="vacationDaysPerYear" value="#{createContractBean.vacationDaysPerYear}" styleClass="form-control"/>
                                             </b:column>
 
                                         </b:formGroup>
-                                        
-                                        
+
+
                                         <b:formGroup>
-                                        <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="hoursPerWeek">Hours Per Week</h:outputLabel>
-                                        <b:column col-sm="10" col-xs="12">
-                                            <h:inputText required="true" id="hoursPerWeek" value="#{createContractBean.hoursPerWeek}" styleClass="form-control"/>
+                                            <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="hoursPerWeek">#{msg.hoursPerWeek}</h:outputLabel>
+                                        <b:column col-sm="6" col-xs="12">
+                                            <h:inputText required="true" id="hoursPerWeek" value="#{createContractBean.hoursPerWeek}" styleClass="form-control" onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;"/>
                                         </b:column>
                                     </b:formGroup>
 
                                         <b:formGroup>
-                                            <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="timesheetFrequency">Timesheet Frequency</h:outputLabel>
-                                            <b:column col-sm="10" col-xs="12">
+                                            <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="timesheetFrequency">#{msg.timeSheetFrequency}</h:outputLabel>
+                                            <b:column col-sm="6" col-xs="12">
                                                 <b:selectOneMenu id="timesheetFrequency" value="#{createContractBean.timesheetFrequency}" immediate="true">
-                                                    <f:selectItem itemLabel="Choose Frequency" noSelectionOption="true"/>
+                                                    <f:selectItem itemLabel="#{msg.timeSheetFrequency}" noSelectionOption="true"/>
                                                     <f:selectItems  value="#{timesheetFrequencyBean.timesheetFrequencyEnum}"/>
-
                                                 </b:selectOneMenu>
                                             </b:column>
-                                        </b:formGroup>  
+                                        </b:formGroup>
 
                                         <b:formGroup>
-                                            <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="startDate" >Contract Start Date</h:outputLabel>
-                                            <b:column col-sm="10" col-xs="12">
-                                                <p:calendar  required = "true" id="startDate" value="#{createContractBean.startDate}" pattern="MM/dd/yyyy"/>
+                                            <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="startDate" >#{msg.contractStartDate}</h:outputLabel>
+                                            <b:column col-sm="6" col-xs="12">
+                                                <p:outputPanel styleClass="input-group">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </div>
+                                                    <p:calendar id="startDate" value="#{createContractBean.startDate}" pattern="MM/dd/yyyy" styleClass="form-control" beforeShowDay="enableOnlyFirstDay" readonly="#{facesContext.renderResponse}"/>
+                                                </p:outputPanel>
                                             </b:column>
                                         </b:formGroup>
 
 
 
                                         <b:formGroup>
-                                            <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="endDate" >Contract end Date</h:outputLabel>
-                                            <b:column col-sm="10" col-xs="12">
-                                                <p:calendar  id="endDate" required = "true" value="#{createContractBean.endDate}" pattern="MM/dd/yyyy"/>
+                                            <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="endDate" >#{msg.contractEndDate}</h:outputLabel>
+                                            <b:column col-sm="6" col-xs="12">
+                                                <p:outputPanel styleClass="input-group">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </div>
+                                                    <p:calendar id="endDate" value="#{createContractBean.endDate}" pattern="MM/dd/yyyy" styleClass="form-control" beforeShowDay="enableOnlyLastDay" readonly="#{facesContext.renderResponse}"/>
+                                                </p:outputPanel>
                                             </b:column>
                                         </b:formGroup>
-
                                     </p:outputPanel>
                                 </b:row>
                             </p:outputPanel>
@@ -121,15 +171,15 @@
                         <p:outputPanel styleClass="box-footer">
                             <h:link
                                 styleClass="btn btn-danger pull-left"
-                                value="Cancel"
+                                value="#{msg.cancel}"
                                 outcome="dashboard"
                                 >
                             </h:link>
                             <b:commandButton id="createContractButton"
                                              disabled="#{empty createContractBean.persons}"
                                              look="success"
-                                             value="Create Contract"
-                                             action="index"
+                                             value="#{msg.createContract}"
+                                             action="managecontracts?faces-redirect=true"
                                              actionListener="#{createContractBean.create}"
                                              styleClass="pull-right"
                                              />

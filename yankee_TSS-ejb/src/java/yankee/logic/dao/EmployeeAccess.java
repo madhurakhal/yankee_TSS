@@ -1,5 +1,6 @@
 package yankee.logic.dao;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.security.RolesAllowed;
@@ -67,5 +68,10 @@ public class EmployeeAccess extends AbstractAccess<EmployeeEntity> {
         } catch (NoResultException ex) {
             return null;
         } 
+    }
+    
+     public List<EmployeeEntity> getEmployeeList() {
+        return em.createNamedQuery("getEmployeeList", EmployeeEntity.class
+        ).getResultList();
     }
 }

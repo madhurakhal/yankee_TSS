@@ -15,6 +15,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import yankee.logic.AssistantBusinessLogic;
@@ -29,6 +30,7 @@ import org.primefaces.model.DualListModel;
 import yankee.logic.ContractBusinessLogic;
 import yankee.logic.ENUM.TimesheetFrequencyEnum;
 import yankee.logic.EmployeeBusinessLogic;
+import yankee.logic.to.Contract;
 import yankee.logic.to.Employee;
 import yankee.logic.to.Supervisor;
 
@@ -68,9 +70,49 @@ public class EditContractBean {
 
     private Date startDate;
     private Date endDate;
-    private TimesheetFrequencyEnum timesheetFrequency;
+    private TimesheetFrequencyEnum timesheetFrequency;    
+    private double hoursPerWeek;
+    private Integer workingDaysPerWeek;    
+    private Integer vacationDaysPerYear;    
     private Person currentContractPerson;    
+    private Contract contractInfo;
+
+    public Contract getContractInfo() {
+        contractInfo = contractBusinessLogic.getContractByUUID(contract_id);
+        return contractInfo;
+    }
+
+    public void setContractInfo(Contract contractInfo) {
+        this.contractInfo = contractInfo;
+    }
     private List<Person> persons = new ArrayList<>();
+
+    public double getHoursPerWeek() {
+        hoursPerWeek = contractInfo.getHoursPerWeek();
+        return hoursPerWeek;
+    }
+
+    public void setHoursPerWeek(double hoursPerWeek) {
+        this.hoursPerWeek = hoursPerWeek;
+    }
+    
+    public Integer getWorkingDaysPerWeek() {
+        workingDaysPerWeek = contractInfo.getWorkingDaysPerWeek();
+        return workingDaysPerWeek;
+    }
+
+    public void setWorkingDaysPerWeek(Integer workingDaysPerWeek) {
+        this.workingDaysPerWeek = workingDaysPerWeek;
+    }
+
+    public Integer getVacationDaysPerYear() {
+        vacationDaysPerYear =  contractInfo.getVacationDaysPerYear();
+        return vacationDaysPerYear;
+    }
+
+    public void setVacationDaysPerYear(Integer vacationDaysPerYear) {
+        this.vacationDaysPerYear = vacationDaysPerYear;
+    }
 
     public Person getCurrentContractPerson() {
         if (currentContractPerson == null) {
@@ -84,7 +126,7 @@ public class EditContractBean {
     }
 
     public TimesheetFrequencyEnum getTimesheetFrequency() {
-        timesheetFrequency = contractBusinessLogic.getContractByUUID(contract_id).getFrequency();
+        timesheetFrequency = contractInfo.getFrequency();
         return timesheetFrequency;
     }
 
@@ -134,6 +176,8 @@ public class EditContractBean {
     private Person supervisorForContract;
     private List<Person> secretariesForContract = new ArrayList<>();
     private List<Person> assistantsForContract = new ArrayList<>();
+    private List<Person> _secretariesForContract = new ArrayList<>();
+    private List<Person> _assistantsForContract = new ArrayList<>();
 
     private List<Person> availableSecretaryList = new ArrayList<>();
     private List<Person> availableAssistantList = new ArrayList<>();
@@ -149,12 +193,14 @@ public class EditContractBean {
         System.out.println("called me init only once yes?");
         getContract_id();
         getPersons();
-        getCurrentContractPerson();
+        getCurrentContractPerson();        
+        getContractInfo();
 
         // First we will get all the assistant , supervisor , secretary for the given contract
         getSupervisorForContract();
-        getAssistantsForContract();
-        getSecretariesForContract();
+        getPreviousSelectedSupervisor();
+        _assistantsForContract = new ArrayList<>(getAssistantsForContract());
+        _secretariesForContract = new ArrayList<>(getSecretariesForContract());
 
         // After current assistant, supervisor and secretary are recieved. we set out the available for adding list of 
         // assistant, supervisor and secretary
@@ -185,6 +231,7 @@ public class EditContractBean {
     public Person getSupervisorForContract() {
         if (supervisorForContract == null) {
             supervisorForContract = supervisorBusinessLogic.getSupervisorByContract(contract_id).getPerson();
+ _helperCurrentSupervisor = supervisorForContract;
         }
         return supervisorForContract;
     }
@@ -269,10 +316,10 @@ public class EditContractBean {
 
             // fetch all contracts for pradip and get supervisor.
             // delete these supervisors from all persons.
+            availableSupervisorList.add(supervisorForContract);
             for (Person p : persons) {
                 boolean hashimAsSupervisor = false;
-                if (!supervisorForContract.getUuid().equals(p.getUuid()) && p.getUserRoleRealm() != null && !currentContractPerson.getUuid().equals(p.getUuid())) {
-                    System.out.println("At least here?" + p.getName());
+                if (p.getUserRoleRealm() != null && !currentContractPerson.getUuid().equals(p.getUuid())) {
                     List<Supervisor> ls = supervisorBusinessLogic.getSupervisorByPerson(p.getUuid());
 
                     for (Supervisor s : ls) {
@@ -358,13 +405,43 @@ public class EditContractBean {
         FacesContext.getCurrentInstance().addMessage(null, msg);
 
     }
+    
+    private Person previousSelectedSupervisor;
+    private Person _helperCurrentSupervisor;
+
+    public Person getPreviousSelectedSupervisor() {
+        previousSelectedSupervisor = supervisorForContract;
+        return previousSelectedSupervisor;
+    }
+
+    public void setPreviousSelectedSupervisor(Person previousSelectedSupervisor) {
+        this.previousSelectedSupervisor = previousSelectedSupervisor;
+    }
+    
+    public void onChangeSupervisor(AjaxBehaviorEvent event){
+        System.out.println("PREVIOUSSSSSSSSSSSSSSSSSSSSS" + previousSelectedSupervisor );
+        System.out.println("SELECTTTTTTTTTTTTTTTTTTTTTTTTTTT" + supervisorForContract.getFirstName());
+        secretaryPickupList.getSource().remove(supervisorForContract);
+        assistantPickupList.getSource().remove(supervisorForContract);
+        assistantPickupList.getTarget().remove(supervisorForContract);
+        
+        if (!previousSelectedSupervisor.getUuid().equals(_helperCurrentSupervisor.getUuid())){
+            secretaryPickupList.getSource().add(previousSelectedSupervisor);
+            assistantPickupList.getSource().add(previousSelectedSupervisor);
+        }
+        else {            
+            assistantPickupList.getTarget().add(previousSelectedSupervisor);
+        }
+        previousSelectedSupervisor = supervisorForContract;
+    }
+    
 
     public void edit() {
         System.out.println("Edit in progress");
         // Make changes for all contract details.
         System.out.println("Supervisor" + supervisorForContract);
         System.out.println("New secretaries" + secretaryPickupList.getTarget());
-        System.out.println("New secretaries" + assistantPickupList.getTarget());
+        System.out.println("New assistant" + assistantPickupList.getTarget());
         System.out.println("Start date" + startDate);
         System.out.println("End date" + endDate);
         System.out.println("Contract id" + contract_id);
@@ -375,16 +452,21 @@ public class EditContractBean {
         // 3. create all the assistants i.e. assistantPickupList.getTarget - assistantsForContract
         // 4. depending on start and end date and timesheets should be created. All timesheet should have contract associated to it.
         final Set<Person> newSecretaries = new HashSet<>(secretaryPickupList.getTarget());
-        final Set<Person> prevSecretaries = new HashSet<>(secretariesForContract);
+        final Set<Person> prevSecretaries = new HashSet<>(_secretariesForContract);
         boolean secretariesChanged = !(newSecretaries.equals(prevSecretaries));
         System.out.println("Secretaries Changed " + secretariesChanged);
 
+        
         final Set<Person> newAssistants = new HashSet<>(assistantPickupList.getTarget());
-        final Set<Person> prevAssistants = new HashSet<>(assistantsForContract);
+        final Set<Person> prevAssistants = new HashSet<>(_assistantsForContract);
         boolean assistantsChanged = !(newAssistants.equals(prevAssistants));
+        System.out.println("Previous Assistants " + _assistantsForContract);
         System.out.println("Assistants Changed " + assistantsChanged);
+        
 
-        contractBusinessLogic.editContract(contract_id, supervisorForContract, secretaryPickupList.getTarget(), secretariesChanged, assistantPickupList.getTarget(), assistantsChanged, startDate, endDate);
-
-    }
+        contractBusinessLogic.editContract(contract_id, supervisorForContract, secretaryPickupList.getTarget(), secretariesChanged, assistantPickupList.getTarget(), assistantsChanged, startDate, endDate , timesheetFrequency , workingDaysPerWeek , vacationDaysPerYear , hoursPerWeek);
+        FacesMessage msg = new FacesMessage("Contract Has Been Updated");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }    
+    
 }

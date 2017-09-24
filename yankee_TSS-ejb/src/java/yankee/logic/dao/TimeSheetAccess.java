@@ -5,6 +5,7 @@
  */
 package yankee.logic.dao;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -57,7 +58,14 @@ public class TimeSheetAccess extends AbstractAccess<TimesheetEntity>{
     public List<TimesheetEntity> getTimeSheetsForContract(String contractUUID) {
         return em.createNamedQuery("getTimeSheetsForContract",TimesheetEntity.class).setParameter("contractUUID",contractUUID).getResultList();
     }
+   
+    public List<TimesheetEntity> getAllTimeSheetsByGivenDate(LocalDate givenDate) {
+        return em.createNamedQuery("getAllRunningTimeSheet", TimesheetEntity.class).setParameter("givenDate", givenDate).getResultList();
+    }
     
+    public List<TimesheetEntity> getAllTimeSheetsSignedBySupervisor(LocalDate givenDate) {
+        return em.createNamedQuery("getAllTimeSheetsSignedBySupervisor", TimesheetEntity.class).setParameter("givenDate", givenDate).getResultList();
+    }
     
     public List<TimesheetEntity> getTimeSheetsForContractByID(Long contractId)
     {
@@ -77,8 +85,7 @@ public class TimeSheetAccess extends AbstractAccess<TimesheetEntity>{
         for(TimesheetEntity e:objList)
         {
             em.remove(e);
-        }
-        
+        }        
     }
  
        
