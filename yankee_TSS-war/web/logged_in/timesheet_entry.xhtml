@@ -47,7 +47,7 @@ and open the template in the editor.
         <ui:define name="main-content">
             <p></p>
             <h:form id="timesheetentry">
-                <p:dataGrid var="entry"  value="#{timeSheetEntryBean.entries}" columns="7" rows="5" id="entryGrid" layout="grid">
+                <p:dataGrid var="entry"  value="#{timeSheetEntryBean.entries}" columns="7" rows="35" id="entryGrid" layout="grid">
                     <f:facet name="header">
                         TimeSheet entries for : <h:outputText value="#{timeSheetEntryBean.displayString}"/>
                     </f:facet>
