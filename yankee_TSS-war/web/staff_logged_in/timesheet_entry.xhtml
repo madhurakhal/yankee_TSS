@@ -57,13 +57,7 @@ and open the template in the editor.
                                 <b:inputTextarea id="description" value="#{timeSheetEntryBean.selectedEntry.description}" />
                                 
                                 <h:commandButton id="submitEntry"  value="Save" action="#{timeSheetEntryBean.saveEntry}"/>
-                                
-                                <h:commandButton id="createContractButton"
-                                             value="#{msg.createContract}"
-                                             actionListener="#{timeSheetEntryBean.saveEntry}"
-                                             styleClass="pull-right"
-                                             />
-                                
+                               
                                 <h:commandButton value="Reset" type="reset"/>
                                 
                             </h:form>
