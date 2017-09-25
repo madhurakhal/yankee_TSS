@@ -55,7 +55,7 @@ and open the template in the editor.
                     <p:panel header="#{entry.dateString}" style="text-align: center;">
                         <h:panelGrid columns="1" style="width: 100%">
                             Logged Hours:<h:outputText value="#{entry.hours}"/>
-                            <p:commandButton  icon="fa fa-fw fa-plus" id="addUpdateEntry" update=":timesheetentry:entryDetail" oncomplete="PF('entryPanel').show()">
+                            <p:commandButton disabled="#{entry.isHoliday}" icon="fa fa-fw fa-plus" id="addUpdateEntry" update=":timesheetentry:entryDetail" oncomplete="PF('entryPanel').show()">
                                 <p:tooltip id="addNewIconToolTip" for="addUpdateEntry" position="bottom" value="Add TimeSheet entry" showEffect="clip" hideEffect="explode"/>
                                 <f:setPropertyActionListener target="#{timeSheetEntryBean.selectedEntry}" value="#{entry}"  />
                             </p:commandButton>
@@ -79,7 +79,7 @@ and open the template in the editor.
                             <h:outputLabel for="description" value="Description:"/>
                             <b:inputTextarea id="description" value="#{timeSheetEntryBean.selectedEntry.description}" />
                             <p:commandButton id="submitEntry"  value="Save" actionListener="#{timeSheetEntryBean.saveEntry}" update="timesheetentry"/>  
-                            <p:commandButton value="Reset" type="reset" />
+                            <p:commandButton value="Reset" type="reset" actionListener="#{timeSheetEntryBean.resetEntry}" update="timesheetentry"/>
                         </p:panelGrid>
 
                     </p:outputPanel>

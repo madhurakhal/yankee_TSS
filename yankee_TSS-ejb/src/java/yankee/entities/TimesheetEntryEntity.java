@@ -19,7 +19,7 @@ import javax.persistence.Table;
  * collection.
  */
 @NamedQueries({
-    @NamedQuery(name = "getEntryForTimeSheet", query = "SELECT p FROM TimesheetEntryEntity p WHERE p.timesheet.id = :timesheetId")
+    @NamedQuery(name = "getTimeSheetEntriesForTimeSheet", query = "SELECT p FROM TimesheetEntryEntity p WHERE p.timesheet.uuid = :timeSheetUUID")
 })
 @Entity
 @Table(name = "TIMESHEETENTRY")

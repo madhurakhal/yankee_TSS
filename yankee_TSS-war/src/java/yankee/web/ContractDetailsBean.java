@@ -75,6 +75,12 @@ public class ContractDetailsBean {
     private List<Person> secretariesForContract = new ArrayList<>();
     private List<Person> assistantsForContract = new ArrayList<>();
     private List<Person> persons = new ArrayList<>();
+ 
+    public boolean isSupervisor(String timeSheetUUID){
+       System.out.println("TIMEEEEEEEEEEEEEEEEEEEEEEEEEEEE" + timeSheetUUID);
+       ContractEntity ce = timeSheetBusinessLogic.getContractByTimesheetUUID(timeSheetUUID);
+       return ce.getSupervisor().getPerson().getUuid().equals(loggedinUser.getUuid());
+    }
 
     @PostConstruct
     public void init() {
@@ -213,8 +219,12 @@ public class ContractDetailsBean {
     
     /* Following method called when action performed. Ajax calls */
 
-    public void onSubmitRow(String timeSheet_uuid) {
+    public void onSignByEmployeeRow(String timeSheet_uuid) {        
         timeSheetBusinessLogic.submitTimeSheet(timeSheet_uuid, Boolean.TRUE);
+    }
+    
+    public void onSignBySupervisorRow(String timeSheet_uuid) {        
+        timeSheetBusinessLogic.submitTimeSheet(timeSheet_uuid, Boolean.FALSE);
     }
 
     public void onRowView(String timeSheetUUId, String displayStrings) throws IOException {

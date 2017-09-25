@@ -257,6 +257,8 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
         ContractEntity ce = contractAccess.getByUuid(contractUUID);
         ce.setStatus(ContractStatusEnum.TERMINATED);
         ce.setTerminationDate(LocalDate.now());
+        // Delete Timesheets in progress status        
+        timeSheetBusinessLogic.deleteTimeSheet(contractUUID, Boolean.TRUE);
     }
 
     @Override

@@ -189,4 +189,15 @@ public class TimeSheetEntryBean implements Serializable {
 
     }
 
+    public void resetEntry() {
+        timeSheetService.addUpdateTimeSheetEntry(selectedEntry);
+        StringBuilder builder = new StringBuilder();
+        FacesMessage msgs = new FacesMessage();
+        msgs.setSeverity(FacesMessage.SEVERITY_INFO);
+        msgs.setSummary("Entry Removed");
+        msgs.setDetail(builder.toString());
+        FacesContext.getCurrentInstance().addMessage(null, msgs);
+
+    }
+
 }

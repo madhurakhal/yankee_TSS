@@ -27,7 +27,7 @@ public interface TimeSheetBusinessLogic extends Serializable {
     public String deleteTimeSheet(final String contractUuid,final Boolean isTerminateContract);
     public String submitTimeSheet(final String uudi,final Boolean submittedByEmp);
     public List<TimeSheet> getAllTimeSheetsForContract(final String uuid);
-    public ContractEntity getContractByUUID(final String uuid);
+    public ContractEntity getContractByTimesheetUUID(final String uuid);
     public List<TimeSheetEntry> getEntriesForTimeSheet(final String uuid);
     
     // TO REVIEW

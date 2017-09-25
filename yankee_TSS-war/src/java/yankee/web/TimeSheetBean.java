@@ -103,15 +103,6 @@ public class TimeSheetBean {
         return timesheets;
     }
 
-    @PostConstruct
-    public void init() {
-        if (timeSheetService != null) {
-
-            final ContractEntity centity = timeSheetService.getContractByUUID("8abb2b3b-18ed-4fbb-82af-9d61b922f409");
-            timesheets = timeSheetService.getAllTimeSheetsForContract(centity.getUuid());
-        }
-    }
-
     public void onSubmitRow(String timeSheet_uuid) {
         timeSheetService.submitTimeSheet(timeSheet_uuid, Boolean.TRUE);
 
