@@ -119,36 +119,37 @@
                     <b:dataTableColumn value="#{timesheet.status}" label="TimeSheet Status"/>
 
                     <b:dataTableColumn label="Action " style="width:50px" >
-                        <!--If the timesheet in progress then render submit for employee-->
+                         <!--If the timesheet in progress then render submit for employee-->
                         <p:commandButton rendered = "#{timesheet.status eq 'IN_PROGRESS' and !contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane" id="submitTimeSheetEmployee" action="#{contractDetailsBean.onSignByEmployeeRow(timesheet.uuid)}">
                             <!-- <p:confirm header="Confirmation" message="Comfirm Submit timesheet?" icon="ui-icon-alert" />-->
                             <p:confirm header="Confirmation" message="Confirm Sign?" icon="ui-icon-alert" />
                         </p:commandButton>
                         <p:tooltip id="submitIconToolTipE" for="submitTimeSheetEmployee" position="bottom" value="Sign TimeSheet E" showEffect="clip" hideEffect="explode"></p:tooltip>
-
-                        <!--if the timesheet is in signed by employee then render submit button for supervisor only.-->
-                        <p:commandButton rendered = "#{timesheet.status eq 'SIGNED_BY_EMPLOYEE' and contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane" id="submitTimeSheetSupervisor" action="#{contractDetailsBean.onSignBySupervisorRow(timesheet.uuid)}">
+                         
+                         <!--if the timesheet is in signed by employee then render submit button for supervisor only.-->
+                         <p:commandButton rendered = "#{timesheet.status eq 'SIGNED_BY_EMPLOYEE' and contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane" id="submitTimeSheetSupervisor" action="#{contractDetailsBean.onSignBySupervisorRow(timesheet.uuid)}">
                             <!-- <p:confirm header="Confirmation" message="Comfirm Submit timesheet?" icon="ui-icon-alert" />-->
                             <p:confirm header="Confirmation" message="Confirm Sign?" icon="ui-icon-alert" />
                         </p:commandButton>
                         <p:tooltip id="submitIconToolTipS" for="submitTimeSheetSupervisor" position="bottom" value="Sign TimeSheet S" showEffect="clip" hideEffect="explode"></p:tooltip>
+                        
+                        
+                        <!--PRINT OPTION AVAILABLE IF LOGGED IN USER IS STAFF AND SECRETARY-->
 
-                        <!--if the timesheet is in signed by employee then render submit button for supervisor only.-->
-                        <p:commandButton rendered = "#{timesheet.status eq 'SIGNED_BY_EMPLOYEE' and contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane" id="submitTimeSheetSupervisor" action="#{contractDetailsBean.onSignBySupervisorRow(timesheet.uuid)}">
-                            <!-- <p:confirm header="Confirmation" message="Comfirm Submit timesheet?" icon="ui-icon-alert" />-->
-                            <p:confirm header="Confirmation" message="Confirm Sign?" icon="ui-icon-alert" />
-                        </p:commandButton>
-                        <p:tooltip id="submitIconToolTipS" for="submitTimeSheetSupervisor" position="bottom" value="Sign TimeSheet S" showEffect="clip" hideEffect="explode"></p:tooltip>
+                        <p:commandButton rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid)}" icon="fa fa-fw fa-print"  id="printTimeSheet"  action="#{contractDetailsBean.printTimeSheet(timesheet.uuid)}"/>
+                        <p:tooltip id="printTimeSheetIconToolTip" for="printTimeSheet" position="bottom" value="Print TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
+                        
+                        <!--PRINT OPTION AVAILABLE IF LOGGED IN USER IS STAFF AND SECRETARY-->
 
+                        
+                        
 
-
-                        <!BEGINGS --PRINT OPTION AVAILABLE IF LOGGED IN USER IS STAFF AND SECRETARY-->
 
                         <p:commandButton rendered = "#{timesheet.status eq 'IN_PROGRESS'}" icon="fa fa-fw fa-plus"  id="addNewEntry"  action="#{contractDetailsBean.addNewEntry(timesheet.uuid,timesheet.displayString)}"/>
                         <p:tooltip id="addNewIconToolTip" for="addNewEntry" position="bottom" value="Add TimeSheet entry" showEffect="clip" hideEffect="explode"></p:tooltip>
-                        
-                        <!ENDS --PRINT OPTION AVAILABLE IF LOGGED IN USER IS STAFF AND SECRETARY-->
 
+                        <p:commandButton  icon="fa fa-fw fa-television" id="viewTimeSheet" action="#{contractDetailsBean.onRowView(timesheet.uuid,timesheet.displayString)}"/>
+                        <p:tooltip id="viewIconToolTip" for="viewTimeSheet" position="bottom" value="View TimeSheet Entries" showEffect="clip" hideEffect="explode"></p:tooltip>
                     </b:dataTableColumn>
                 </b:dataTable>
 
