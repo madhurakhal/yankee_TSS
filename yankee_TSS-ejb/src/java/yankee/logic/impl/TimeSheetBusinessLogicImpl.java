@@ -32,6 +32,7 @@ import yankee.logic.dao.TimeSheetEntryAccess;
 import yankee.logic.to.Contract;
 import yankee.logic.to.TimeSheet;
 import yankee.logic.to.TimeSheetEntry;
+import yankee.utilities.UTILNumericSupport;
 
 /**
  * @author Shriharsh Ambhore (ashriharsh@uni-koblenz.de).
@@ -472,7 +473,7 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
                 entryObj.setDateString(e.getEntryDate().toString());
                 entryObj.setDescription(e.getDescription());
                 entryObj.setEndDateTime(e.getEndTime());
-                entryObj.setHours(e.getHours() == null ? 0.0 : e.getHours());
+                entryObj.setHours(e.getHours() == null ? 0.0 : UTILNumericSupport.round(e.getHours() , 2));
                 entryObj.setStartDateTime(e.getStartTime());
                 if (e.getEntryDate().getDayOfWeek().toString().equalsIgnoreCase("sunday") || e.getEntryDate().getDayOfWeek().toString().equalsIgnoreCase("saturday")) {
                     isHoliday = Boolean.TRUE;
