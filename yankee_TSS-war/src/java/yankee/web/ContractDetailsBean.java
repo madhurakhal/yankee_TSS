@@ -12,6 +12,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 import yankee.entities.ContractEntity;
 import yankee.logic.AssistantBusinessLogic;
@@ -52,10 +53,23 @@ public class ContractDetailsBean {
 
     @EJB
     private EmployeeBusinessLogic employeeBusinessLogic;
+    
+    @Inject
+    private LoginBean loginBean;
 
     private String contract_id;
     private Person currentContractPerson;
     private Contract contractinfo;
+    private Person loggedinUser;
+
+    public Person getLoggedinUser() {
+        loggedinUser = loginBean.getUser();
+        return loggedinUser;
+    }
+
+    public void setLoggedinUser(Person loggedinUser) {
+        this.loggedinUser = loggedinUser;
+    }
 
     private Person supervisorForContract;
     private List<Person> secretariesForContract = new ArrayList<>();
@@ -205,12 +219,12 @@ public class ContractDetailsBean {
 
     public void onRowView(String timeSheetUUId, String displayStrings) throws IOException {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/public/view_timesheet_entries.xhtml?id=" + timeSheetUUId);
+        ec.redirect(ec.getRequestContextPath() + "/logged_in/view_timesheet_entries.xhtml?id=" + timeSheetUUId + "&contractID=" + contract_id);
     }
 
     public void addNewEntry(String timeSheetUUId, String displayString) throws IOException {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/public/timesheet_entry.xhtml?id=" + timeSheetUUId + "&timeSheetDateRange=" + displayString);
+        ec.redirect(ec.getRequestContextPath() + "/logged_in/timesheet_entry.xhtml?id=" + timeSheetUUId + "&timeSheetDateRange=" + displayString + "&contractID=" + contract_id);
     }
 
 }
