@@ -6,6 +6,7 @@
 package yankee.web;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import java.util.List;
@@ -26,18 +27,17 @@ import yankee.logic.to.TimeSheetEntry;
 @ManagedBean
 @Named(value = "timeSheetEntryBean")
 @ViewScoped
-public class TimeSheetEntryBean implements Serializable{
+public class TimeSheetEntryBean implements Serializable {
 
     /**
      * Creates a new instance of TimeSheetEntryBean
      */
-    
     @EJB
     private TimeSheetBusinessLogic timeSheetService;
-    
+
     @Inject
     private TimeSheetBean timeSheetBean;
-    
+
     private List<TimeSheetEntry> entries;
     private String description;
     private double hours;
@@ -46,6 +46,24 @@ public class TimeSheetEntryBean implements Serializable{
     private String timeSheet_id;
     private String displayString;
     private TimeSheetEntry selectedEntry;
+    private Date startDate;
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDateTime() {
+        return endDateTime;
+    }
+
+    public void setEndDateTime(Date endDateTime) {
+        this.endDateTime = endDateTime;
+    }
+    private Date endDateTime;
 
     public TimeSheetEntry getSelectedEntry() {
         return selectedEntry;
@@ -54,13 +72,13 @@ public class TimeSheetEntryBean implements Serializable{
     public void setSelectedEntry(TimeSheetEntry selectedEntry) {
         this.selectedEntry = selectedEntry;
     }
-    
+
     public List<TimeSheetEntry> getEntries() {
-        boolean flag=entries==null;
-        if(flag){
-        entries=timeSheetService.getEntriesForTimeSheet(timeSheet_id);
+        boolean flag = entries == null;
+        if (flag) {
+            entries = timeSheetService.getEntriesForTimeSheet(timeSheet_id);
         }
-    return entries;
+        return entries;
     }
 
     public void setEntries(List<TimeSheetEntry> entries) {
@@ -98,42 +116,41 @@ public class TimeSheetEntryBean implements Serializable{
     public void setDateString(String dateString) {
         this.dateString = dateString;
     }
-    
+
     public String getTimeSheet_id() {
-        if (timeSheet_id == null ) {
+        if (timeSheet_id == null) {
             Map<String, String> params = FacesContext.getCurrentInstance()
                     .getExternalContext().getRequestParameterMap();
             timeSheet_id = params.get("id");
         }
         return timeSheet_id;
     }
-    
-    public String getDisplayString()
-    {
-    if ( displayString== null) {
+
+    public String getDisplayString() {
+        if (displayString == null) {
             Map<String, String> params = FacesContext.getCurrentInstance()
                     .getExternalContext().getRequestParameterMap();
-            displayString= params.get("timeSheetDateRange");
+            displayString = params.get("timeSheetDateRange");
         }
         return displayString;
     }
-    
-    
-   @PostConstruct
-   public void init()
-   {
-       getTimeSheet_id();
-       getDisplayString();
-       getEntries();
 
-   }
-    
-   
-   public void saveEntry(String uuid)
-   {
-       if(timeSheetService!=null)
-       timeSheetService.addUpdateTimeSheetEntry(selectedEntry);
-   
-   }
-    
+    @PostConstruct
+    public void init() {
+        getTimeSheet_id();
+        getDisplayString();
+        getEntries();
+
+    }
+
+    public void saveEntry() {
+        System.out.println("Called");
+        System.out.println("selectedEntry valuesssssssssssssssss START TIME" + selectedEntry.getStartDateTime());
+        System.out.println("selectedEntry valuesssssssssssssssss END TIME" + selectedEntry.getEndDateTime());
+        if (timeSheetService != null) {
+            timeSheetService.addUpdateTimeSheetEntry(selectedEntry);
+        }
+
+    }
+
 }
