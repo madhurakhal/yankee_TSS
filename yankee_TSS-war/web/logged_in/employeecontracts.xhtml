@@ -9,6 +9,18 @@
 
     <ui:composition template="/WEB-INF/templates/main-template.xhtml">        
         <ui:param name="pageTitle" value="Admin Page"/>
+        <ui:define name="breadcrumb">
+            <li>
+                <h:link outcome="dashboard">
+                    <i class="fa fa-dashboard"></i>Home
+                </h:link>
+            </li>
+            <li>
+                <h:link disabled="true">
+                    My Contracts
+                </h:link>
+            </li>
+        </ui:define>
         <ui:define name="main-content">
             <b:form id="form"> 
                 <p:growl id="msgs" showDetail="true" />

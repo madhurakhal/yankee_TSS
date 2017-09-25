@@ -78,3 +78,7 @@ span.form-control > input {
         clear: both;
     }
 }
+.myaccount .form-group {
+    overflow: hidden;
+    clear: both;
+}
