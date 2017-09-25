@@ -60,18 +60,20 @@
                                         <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-remove"  id="deletePersonSuper" update="form" action="#{manageContractsBean.onRowDelete(persons.contractUUIDForRole)}">
                                             <p:confirm header="Confirmation" message="Confirm Delete?" icon="ui-icon-alert" />
                                         </p:commandButton>
+
                                         <!--BEGINS TERMINATE-->
                                         <!--IF timesheet in signedby employee or archived WE should not BE ABLE TO TERMINATE-->
                                         <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'STARTED'  and !manageContractsBean.allTimeSheetsInProgressSignedBySuper(persons.contractUUIDForRole)}" icon="fa fa-fw fa-remove"  id="cannotTerminateTimesheet"  onclick = "PF('cannotterminatedialog').show()"/>
                                         <!--IF Started and signed by supervisor or in progress We can terminate contract-->
-                                        <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'STARTED'  and  manageContractsBean.allTimeSheetsInProgressSignedBySuper(persons.contractUUIDForRole)}" icon="fa fa-fw fa-remove"  id="CanTerminateTimesheet" update="form" actionListener="#{manageContractsBean.onRowTerminate(persons.contractUUIDForRole)}">
+                                        <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'STARTED'  and  manageContractsBean.allTimeSheetsInProgressSignedBySuper(persons.contractUUIDForRole) and !manageContractsBean.contractWithTimesheetHasEntries(persons.contractUUIDForRole)}" icon="fa fa-fw fa-remove"  id="CanTerminateTimesheet" update="form" actionListener="#{manageContractsBean.onRowTerminate(persons.contractUUIDForRole)}">
                                             <p:confirm  header="Approved!" message="Confirm Termination of Contract?" icon="ui-icon-alert" />
                                         </p:commandButton>
                                         <!--If Started and signed by supervisor or in progress but some timesheet entries are filled. Warning message to be shown and that some entries are there.-->
-                                        <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'STARTED'  and  manageContractsBean.allTimeSheetsInProgressSignedBySuper(persons.contractUUIDForRole)}" icon="fa fa-fw fa-remove"  id="CanTerminateTimesheetWithWarning" update="form" actionListener="#{manageContractsBean.onRowTerminate(persons.contractUUIDForRole)}">
+                                        <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'STARTED'  and  manageContractsBean.allTimeSheetsInProgressSignedBySuper(persons.contractUUIDForRole) and  manageContractsBean.contractWithTimesheetHasEntries(persons.contractUUIDForRole)}" icon="fa fa-fw fa-remove"  id="CanTerminateTimesheetWithWarning" update="form" actionListener="#{manageContractsBean.onRowTerminate(persons.contractUUIDForRole)}">
                                             <p:confirm  header="Approved!" message="Warning !!! There are some timesheets with entries. Proceed Termination of Contract? " icon="ui-icon-alert" />
                                         </p:commandButton>
                                         <!--ENDS TERMINATE-->
+
                                     </b:dataTableColumn>
                                 </b:dataTable>
                             </p:outputPanel>
@@ -98,8 +100,21 @@
                                         <p:commandButton styleClass="btn-flat flat" rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-edit" id="editPersonAssis" action="#{manageContractsBean.onRowEdit(persons.contractUUIDForRole)}"/>
                                         <p:commandButton styleClass="btn-flat flat" rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-remove"  update="@this" id="deletePersonAssis" action="#{manageContractsBean.onRowDelete(persons.contractUUIDForRole)}">
                                             <p:confirm header="Confirmation" message="Confirm Delete?" icon="ui-icon-alert" /> 
-
                                         </p:commandButton>
+                                        
+                                          <!--BEGINS TERMINATE-->
+                                        <!--IF timesheet in signedby employee or archived WE should not BE ABLE TO TERMINATE-->
+                                        <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'STARTED'  and !manageContractsBean.allTimeSheetsInProgressSignedBySuper(persons.contractUUIDForRole)}" icon="fa fa-fw fa-remove"  id="cannotTerminateTimesheetA"  onclick = "PF('cannotterminatedialog').show()"/>
+                                        <!--IF Started and signed by supervisor or in progress We can terminate contract-->
+                                        <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'STARTED'  and  manageContractsBean.allTimeSheetsInProgressSignedBySuper(persons.contractUUIDForRole) and !manageContractsBean.contractWithTimesheetHasEntries(persons.contractUUIDForRole)}" icon="fa fa-fw fa-remove"  id="CanTerminateTimesheetA" update="form" actionListener="#{manageContractsBean.onRowTerminate(persons.contractUUIDForRole)}">
+                                            <p:confirm  header="Approved!" message="Confirm Termination of Contract?" icon="ui-icon-alert" />
+                                        </p:commandButton>
+                                        <!--If Started and signed by supervisor or in progress but some timesheet entries are filled. Warning message to be shown and that some entries are there.-->
+                                        <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'STARTED'  and  manageContractsBean.allTimeSheetsInProgressSignedBySuper(persons.contractUUIDForRole) and manageContractsBean.contractWithTimesheetHasEntries(persons.contractUUIDForRole)}" icon="fa fa-fw fa-remove"  id="CanTerminateTimesheetWithWarningA" update="form" actionListener="#{manageContractsBean.onRowTerminate(persons.contractUUIDForRole)}">
+                                            <p:confirm  header="Approved!" message="Warning !!! There are some timesheets with entries. Proceed Termination of Contract? " icon="ui-icon-alert" />
+                                        </p:commandButton>
+                                        <!--ENDS TERMINATE-->
+                                        
                                     </b:dataTableColumn>
                                 </b:dataTable>
                             </p:outputPanel>
@@ -153,7 +168,7 @@
                     <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes btn-flat" icon="ui-icon-check" />
                     <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no btn-flat" icon="ui-icon-close" />
                 </p:confirmDialog>
-                
+
                 <!-- ENDS  For Global Confirmation dialog-->
 
                 <p:dialog header="Cannot Terminate!" widgetVar="cannotterminatedialog" minHeight="40">
