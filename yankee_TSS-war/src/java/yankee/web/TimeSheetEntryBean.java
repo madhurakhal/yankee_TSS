@@ -18,6 +18,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import yankee.logic.TimeSheetBusinessLogic;
+import yankee.logic.to.Person;
 import yankee.logic.to.TimeSheetEntry;
 
 /**
@@ -35,9 +36,6 @@ public class TimeSheetEntryBean implements Serializable {
     @EJB
     private TimeSheetBusinessLogic timeSheetService;
 
-    @Inject
-    private TimeSheetBean timeSheetBean;
-
     private List<TimeSheetEntry> entries;
     private String description;
     private double hours;
@@ -47,6 +45,28 @@ public class TimeSheetEntryBean implements Serializable {
     private String displayString;
     private TimeSheetEntry selectedEntry;
     private Date startDate;
+    private String contractUUID;
+
+    private Person loggedinUser;
+    @Inject
+    private LoginBean loginBean;
+
+    public Person getLoggedinUser() {
+        loggedinUser = loginBean.getUser();
+        return loggedinUser;
+    }
+
+    public void setLoggedinUser(Person loggedinUser) {
+        this.loggedinUser = loggedinUser;
+    }
+
+    public String getContractUUID() {
+        return contractUUID;
+    }
+
+    public void setContractUUID(String contractUUID) {
+        this.contractUUID = contractUUID;
+    }
 
     public Date getStartDate() {
         return startDate;
@@ -137,6 +157,9 @@ public class TimeSheetEntryBean implements Serializable {
 
     @PostConstruct
     public void init() {
+        Map<String, String> params = FacesContext.getCurrentInstance()
+                .getExternalContext().getRequestParameterMap();
+        contractUUID = params.get("contractID");
         getTimeSheet_id();
         getDisplayString();
         getEntries();

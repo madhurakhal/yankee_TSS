@@ -10,13 +10,21 @@
         <ui:param name="pageTitle" value="Create Contract Page"/>
         <ui:define name="breadcrumb">
             <li>
-                <h:link outcome="dashboard">
+                <h:link outcome="index">
                     <i class="fa fa-dashboard"></i>Home
                 </h:link>
             </li>
             <li>
-                <h:link outcome="managecontracts">
+                <h:link outcome="dashboard">
+                    Dashboard
+                </h:link>
+            </li>
+            <li>
+                <h:link rendered="#{contractDetailsBean.loggedinUser.userRoleRealm eq 'STAFF'}" outcome="managecontracts">
                     Manage Contracts
+                </h:link>
+                <h:link rendered="#{contractDetailsBean.loggedinUser.userRoleRealm eq null}" outcome="employeecontracts">
+                    Employee Contracts
                 </h:link>
             </li>
             <li>

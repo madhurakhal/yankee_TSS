@@ -14,7 +14,37 @@ and open the template in the editor.
 
 
     <ui:composition template="/WEB-INF/templates/main-template.xhtml">        
-        <ui:param name="pageTitle" value="Admin Page"/>
+        <ui:param name="pageTitle" value="View Timesheet Entries"/>
+        <ui:define name="breadcrumb">
+            <li>
+                <h:link outcome="dashboard">
+                    <i class="fa fa-dashboard"></i>Home
+                </h:link>
+            </li>
+                  <li>
+                <h:link outcome="dashboard">
+                    Dashboard
+                </h:link>
+            </li>
+            <li>
+               <h:link rendered="#{timeSheetEntryBean.loggedinUser.userRoleRealm eq 'STAFF'}" outcome="managecontracts">
+                    Manage Contracts
+                </h:link>
+                <h:link rendered="#{timeSheetEntryBean.loggedinUser.userRoleRealm eq null}" outcome="employeecontracts">
+                    Employee Contracts
+                </h:link>
+            </li>
+            <li>
+                <h:link outcome = "/logged_in/contractdetails.xhtml?id=#{timeSheetEntryBean.contractUUID}">
+                    View Contract Details
+                </h:link>
+            </li>
+            <li>
+                <h:link disabled = "true">
+                    View Entries
+                </h:link>
+            </li>
+        </ui:define>
         <ui:define name="main-content">
             <p></p>
             <h:form id="timeSheetEntryList" >

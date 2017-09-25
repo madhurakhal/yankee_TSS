@@ -12,7 +12,7 @@
         </navigation-case>
         <navigation-case>
             <from-outcome>manageContracts</from-outcome>
-            <to-view-id>/staff_logged_in/managecontracts.xhtml</to-view-id>
+            <to-view-id>/logged_in/managecontracts.xhtml</to-view-id>
         </navigation-case>          
         <navigation-case>
             <from-outcome>yourContracts</from-outcome>
@@ -24,52 +24,50 @@
         </navigation-case>       
     </navigation-rule>
     
-        <navigation-rule>
-        <from-view-id>/logged_in/dashboard.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>createContract</from-outcome>
-            <to-view-id>/staff_logged_in/createcontract.xhtml</to-view-id>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>manageContracts</from-outcome>
-            <to-view-id>/staff_logged_in/managecontracts.xhtml</to-view-id>
-        </navigation-case>          
-        <navigation-case>
-            <from-outcome>yourContracts</from-outcome>
-            <to-view-id>/logged_in/employeecontracts.xhtml</to-view-id>
-        </navigation-case>  
-        <navigation-case>
-            <from-outcome>admin</from-outcome>
-            <to-view-id>/admin/administration.xhtml</to-view-id>
-        </navigation-case>       
-    </navigation-rule>
-    
-    
-    <!--BEGINS NAVIGATION FROM THOSE buttons in index.html Can delete-->
+    <!--BEGINS for createContract Navigation-->      
     <navigation-rule>
-        <from-view-id>/logged_in/contractdetails.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>contractdetails</from-outcome>
-            <to-view-id>/logged_in/logged_in/employeecontracts.xhtml</to-view-id>
-        </navigation-case>      
-    </navigation-rule>
-    
-    <navigation-rule>
-        <from-view-id>/staff_logged_in/managecontracts.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>createContract</from-outcome>
-            <to-view-id>/staff_logged_in/createcontract.xhtml</to-view-id>
-        </navigation-case>      
-    </navigation-rule>
-    <!--ENDSSSSS NAVIGATION FROM THOSE buttons in index.html Can delete-->
-    
-    <navigation-rule>
-        <from-view-id>/staff_logged_in/managecontracts.xhtml</from-view-id>
+        <from-view-id>/staff_logged_in/createcontract.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>index</from-outcome>
-            <to-view-id>/staff_logged_in/createcontract.xhtml</to-view-id>
+            <to-view-id>/index.xhtml</to-view-id>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>myaccount</from-outcome>
+            <to-view-id>/logged_in/myaccount.xhtml?faces-redirect=true</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>dashboard</from-outcome>
+            <to-view-id>/logged_in/dashboard.xhtml?faces-redirect=true</to-view-id>
+        </navigation-case>
+                <navigation-case>
+            <from-outcome>managecontracts</from-outcome>
+            <to-view-id>/logged_in/managecontracts.xhtml?faces-redirect=true</to-view-id>
+        </navigation-case>        
     </navigation-rule>
+    <!--BEGINS for createContract Navigation--> 
+    
+      <!--BEGINS for Edit Contract Navigation-->      
+    <navigation-rule>
+        <from-view-id>/staff_logged_in/editcontract.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>index</from-outcome>
+            <to-view-id>/index.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>myaccount</from-outcome>
+            <to-view-id>/logged_in/myaccount.xhtml?faces-redirect=true</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>dashboard</from-outcome>
+            <to-view-id>/logged_in/dashboard.xhtml?faces-redirect=true</to-view-id>
+        </navigation-case>
+                <navigation-case>
+            <from-outcome>managecontracts</from-outcome>
+            <to-view-id>/logged_in/managecontracts.xhtml?faces-redirect=true</to-view-id>
+        </navigation-case>        
+    </navigation-rule>
+    <!--ENDS for Edit Contract Navigation-->
+    
     
     <navigation-rule>
         <from-view-id>*</from-view-id>
@@ -86,22 +84,23 @@
             <to-view-id>/logged_in/dashboard.xhtml?faces-redirect=true</to-view-id>
         </navigation-case>
     </navigation-rule>
-   <resource-handler>org.omnifaces.resourcehandler.CombinedResourceHandler</resource-handler>
-   <application>
-      <locale-config>
-         <default-locale>en_US</default-locale>
-         <supported-locale>de</supported-locale>
-         <supported-locale>en</supported-locale>
-      </locale-config>
-      <resource-bundle>
-         <!--
-         specifying the resource-bundle in this config file enables
-         code completion in NetBeans xhtml editor,
-         whereas f:loadbundle does not
-         -->
-         <base-name>yankee.i18n.Messages</base-name>
-         <var>msg</var>
-      </resource-bundle>
-   </application>
+    
+    <resource-handler>org.omnifaces.resourcehandler.CombinedResourceHandler</resource-handler>
+    <application>
+        <locale-config>
+            <default-locale>en_US</default-locale>
+            <supported-locale>de</supported-locale>
+            <supported-locale>en</supported-locale>
+        </locale-config>
+        <resource-bundle>
+            <!--
+            specifying the resource-bundle in this config file enables
+            code completion in NetBeans xhtml editor,
+            whereas f:loadbundle does not
+            -->
+            <base-name>yankee.i18n.Messages</base-name>
+            <var>msg</var>
+        </resource-bundle>
+    </application>
 
 </faces-config>
