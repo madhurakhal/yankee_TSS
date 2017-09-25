@@ -246,6 +246,14 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
         updateContractStatistics(contractUUID);
         return new Contract(ce.getUuid(), ce.getName());
     }
+    
+    @Override
+    public void terminateContract(String contractUUID) {
+
+        ContractEntity ce = contractAccess.getByUuid(contractUUID);
+        ce.setStatus(ContractStatusEnum.TERMINATED);
+        ce.setTerminationDate(LocalDate.now());        
+    }
 
     @Override
     public Contract getContractByUUID(String contractUUID) {

@@ -24,6 +24,8 @@ public interface ContractBusinessLogic {
     
     public void deleteContract(String contractUUID);
     
+    public void terminateContract(String contractUUID);
+    
     public List<Contract> getContractsByPerson(String personUUID);
     
 }

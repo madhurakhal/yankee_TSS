@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
@@ -167,11 +168,23 @@ public class TimeSheetEntryBean implements Serializable {
     }
 
     public void saveEntry() {
-        System.out.println("Called");
-        System.out.println("selectedEntry valuesssssssssssssssss START TIME" + selectedEntry.getStartDateTime());
-        System.out.println("selectedEntry valuesssssssssssssssss END TIME" + selectedEntry.getEndDateTime());
-        if (timeSheetService != null) {
-            timeSheetService.addUpdateTimeSheetEntry(selectedEntry);
+        if (selectedEntry.getStartDateTime() == null || selectedEntry.getEndDateTime() == null || selectedEntry.getEndDateTime().getTime() < selectedEntry.getStartDateTime().getTime()) {
+            StringBuilder builder = new StringBuilder();
+            FacesMessage msgs = new FacesMessage();
+            msgs.setSeverity(FacesMessage.SEVERITY_INFO);
+            msgs.setSummary("Invalid!! Entry not valid. ReEnter");
+            msgs.setDetail(builder.toString());
+            FacesContext.getCurrentInstance().addMessage(null, msgs);
+        } else {
+            if (timeSheetService != null) {
+                timeSheetService.addUpdateTimeSheetEntry(selectedEntry);
+                StringBuilder builder = new StringBuilder();
+                FacesMessage msgs = new FacesMessage();
+                msgs.setSeverity(FacesMessage.SEVERITY_INFO);
+                msgs.setSummary("Entry Updated");
+                msgs.setDetail(builder.toString());
+                FacesContext.getCurrentInstance().addMessage(null, msgs);
+            }
         }
 
     }

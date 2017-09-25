@@ -33,6 +33,16 @@ public class TimesheetEntryEntity extends NamedEntity {
 
     private Double hours;
     private LocalDate entryDate;
+    private boolean filled;
+
+    public boolean isFilled() {
+        return filled;
+    }
+
+    public void setFilled(boolean filled) {
+        this.filled = filled;
+    }
+    
 
     public Double getHours() {
         return hours;

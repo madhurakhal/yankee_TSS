@@ -78,21 +78,15 @@ and open the template in the editor.
                             <p:calendar id="endTime" value="#{timeSheetEntryBean.selectedEntry.endDateTime}" pattern="HH:mm" timeOnly="true" />
                             <h:outputLabel for="description" value="Description:"/>
                             <b:inputTextarea id="description" value="#{timeSheetEntryBean.selectedEntry.description}" />
-                            <h:commandButton id="submitEntry"  value="Save" actionListener="#{timeSheetEntryBean.saveEntry}"/>  
-                            <h:commandButton value="Reset" type="reset" />
-                            <b:commandButton immediate = "true" id="createContractButton"
-                                             value="#{msg.createContract}"
-                                             action="#{timeSheetEntryBean.saveEntry}"
-                                             styleClass="pull-right"
-                                             />
-
+                            <p:commandButton id="submitEntry"  value="Save" actionListener="#{timeSheetEntryBean.saveEntry}" update="timesheetentry"/>  
+                            <p:commandButton value="Reset" type="reset" />
                         </p:panelGrid>
 
                     </p:outputPanel>
                 </p:dialog>
 
 
-
+<p:growl  id="msgs" showDetail="true"/> 
             </h:form>
 
         </ui:define>

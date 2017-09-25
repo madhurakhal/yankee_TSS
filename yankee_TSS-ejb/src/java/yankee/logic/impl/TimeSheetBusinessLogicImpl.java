@@ -167,6 +167,7 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
                                 LocalDate tsEntryDate = tsEntity.getStartDate().plusDays(j);
                                 entryEntity.setEntryDate(tsEntryDate);
                                 entryEntity.setTimesheet(tsEntity);
+                                entryEntity.setFilled(false);
 
                                 // BEGINS Hours Due Value update for each date. 
                                 DayOfWeek tsEntryDay = tsEntryDate.getDayOfWeek();
@@ -364,11 +365,13 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
                 tsEntry.setDescription(obj.getDescription());
                 tsEntry.setEndTime(new java.sql.Time(obj.getEndDateTime().getTime()));
                 tsEntry.setStartTime(new java.sql.Time(obj.getStartDateTime().getTime()));
+                
                 long hoursCalc = obj.getEndDateTime().getTime() - obj.getStartDateTime().getTime();
                 long minutes = TimeUnit.MILLISECONDS.toMinutes(hoursCalc);
-                long hours = TimeUnit.MILLISECONDS.toHours(hoursCalc);                
-                tsEntry.setHours((double) (hours + ((minutes - 60*hours) / 60.0)));
-
+                long hours = TimeUnit.MILLISECONDS.toHours(hoursCalc);
+                double hours_fin = (double) (hours + ((minutes - 60*hours) / 60.0));
+                tsEntry.setHours(UTILNumericSupport.round(hours_fin, 2));
+                tsEntry.setFilled(true);
                 messageString = "Saved!!"; // need to do internationalization;
 
             } else {
@@ -475,6 +478,7 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
                 entryObj.setEndDateTime(e.getEndTime());
                 entryObj.setHours(e.getHours() == null ? 0.0 : UTILNumericSupport.round(e.getHours() , 2));
                 entryObj.setStartDateTime(e.getStartTime());
+                entryObj.setIsFilled(e.isFilled());
                 if (e.getEntryDate().getDayOfWeek().toString().equalsIgnoreCase("sunday") || e.getEntryDate().getDayOfWeek().toString().equalsIgnoreCase("saturday")) {
                     isHoliday = Boolean.TRUE;
                 } else {
