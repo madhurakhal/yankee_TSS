@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -22,6 +23,7 @@ import yankee.logic.ContractBusinessLogic;
 import yankee.logic.ENUM.ContractStatusEnum;
 import yankee.logic.ENUM.RoleTypeEnum;
 import yankee.logic.ENUM.TimesheetFrequencyEnum;
+import yankee.logic.ENUM.TimesheetStatusEnum;
 import yankee.logic.TimeSheetBusinessLogic;
 import yankee.logic.dao.AssistantAccess;
 import yankee.logic.dao.ContractAccess;
@@ -182,7 +184,7 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
         // This means the current selected supervisor is different from one before
         if (!supervisorPerson.getUuid().equals(svePrev.getPerson().getUuid())) {
             // delete old supervisor for this contract
-            
+
             contractAccess.getByUuid(contractUUID).setSupervisor(null);
             supervisorAccess.deleteEntity(svePrev);
 
@@ -234,6 +236,7 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
         return new Contract(ce.getUuid(), ce.getName());
     }
 
+    @RolesAllowed("STAFF")
     @Override
     public Contract startContract(String contractUUID) {
 
@@ -246,13 +249,14 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
         updateContractStatistics(contractUUID);
         return new Contract(ce.getUuid(), ce.getName());
     }
-    
+
+    @RolesAllowed("STAFF")
     @Override
     public void terminateContract(String contractUUID) {
 
         ContractEntity ce = contractAccess.getByUuid(contractUUID);
         ce.setStatus(ContractStatusEnum.TERMINATED);
-        ce.setTerminationDate(LocalDate.now());        
+        ce.setTerminationDate(LocalDate.now());
     }
 
     @Override
@@ -270,7 +274,16 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
         c.setVacationHours(ce.getVacationHours());
         c.setHoursDue(ce.getHoursDue());
         return c;
+    }
 
+    @Override
+    public void calledForContractArchive(String contractUUID) {
+        List<TimesheetEntity> lts = timeSheetAccess.getTimeSheetsForContract(contractUUID);
+        if (lts.stream().filter(p -> p.getStatus() != TimesheetStatusEnum.ARCHIVED).collect(Collectors.toList()).isEmpty()) {
+            // This means all timesheet for this contract are set to archived.
+            ContractEntity ce = contractAccess.getByUuid(contractUUID);
+            ce.setStatus(ContractStatusEnum.ARCHIVED);
+        }
     }
 
     @Override
@@ -324,26 +337,26 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
 
     @Override
     public List<Contract> getContractsByPerson(String personUUID) {
-            //Because all users logged in doesnot have to be as employee
-            List<ContractEntity> lce = contractAccess.getContractsByPerson(personAccess.getByUuid(personUUID));
+        //Because all users logged in doesnot have to be as employee
+        List<ContractEntity> lce = contractAccess.getContractsByPerson(personAccess.getByUuid(personUUID));
 
-            if (lce == null) {
-                return null;
-            }
-            List<Contract> result = new ArrayList<>();
-            for (ContractEntity ce : lce) {
-                Contract c = new Contract(ce.getUuid(), ce.getName());
-                c.setStartDate(ce.getStartDate());
-                c.setEndDate(ce.getEndDate());
-                c.setFrequency(ce.getFrequency());
-                c.setHoursPerWeek(ce.getHoursPerWeek());
-                c.setWorkingDaysPerWeek(ce.getWorkingDaysPerWeek());
-                c.setVacationDaysPerYear(ce.getVacationDaysPerYear());
-                c.setStatus(ce.getStatus());
-                c.setTerminationDate(ce.getTerminationDate());
-                c.setVacationHours(ce.getVacationHours());
-                c.setHoursDue(ce.getHoursDue());
-                
+        if (lce == null) {
+            return null;
+        }
+        List<Contract> result = new ArrayList<>();
+        for (ContractEntity ce : lce) {
+            Contract c = new Contract(ce.getUuid(), ce.getName());
+            c.setStartDate(ce.getStartDate());
+            c.setEndDate(ce.getEndDate());
+            c.setFrequency(ce.getFrequency());
+            c.setHoursPerWeek(ce.getHoursPerWeek());
+            c.setWorkingDaysPerWeek(ce.getWorkingDaysPerWeek());
+            c.setVacationDaysPerYear(ce.getVacationDaysPerYear());
+            c.setStatus(ce.getStatus());
+            c.setTerminationDate(ce.getTerminationDate());
+            c.setVacationHours(ce.getVacationHours());
+            c.setHoursDue(ce.getHoursDue());
+
 //                // Set Employee
 //                Employee e = new Employee(ce.getEmployee().getUuid(), ce.getEmployee().getName());
 //                Person pE = new Person(e.getPerson().getUuid(), e.getPerson().getName());
@@ -355,24 +368,23 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
 //                pE.setPreferredLanguage(e.getPerson().getPreferredLanguage());
 //                e.setPerson(pE);
 //                c.setEmployee(e);
+            // Set Supervisor
+            Supervisor s = new Supervisor(ce.getSupervisor().getUuid(), ce.getSupervisor().getName());
 
-                // Set Supervisor
-                Supervisor s = new Supervisor(ce.getSupervisor().getUuid(), ce.getSupervisor().getName());
-                
-                PersonEntity person = ce.getSupervisor().getPerson();
-                Person pS = new Person(person.getUuid(), person.getName());
-                pS.setFirstName(person.getFirstName());
-                pS.setLastName(person.getLastName());
-                pS.setDateOfBirth(person.getDateOfBirth());
-                pS.setEmailAddress(person.getEmailAddress());
-                pS.setUserRoleRealm(person.getUserRoleRealm());
-                pS.setPreferredLanguage(person.getPreferredLanguage());                
-                s.setPerson(pS);
-                c.setSupervisor(s);
-                
-                result.add(c);
-            }
-            return result;
+            PersonEntity person = ce.getSupervisor().getPerson();
+            Person pS = new Person(person.getUuid(), person.getName());
+            pS.setFirstName(person.getFirstName());
+            pS.setLastName(person.getLastName());
+            pS.setDateOfBirth(person.getDateOfBirth());
+            pS.setEmailAddress(person.getEmailAddress());
+            pS.setUserRoleRealm(person.getUserRoleRealm());
+            pS.setPreferredLanguage(person.getPreferredLanguage());
+            s.setPerson(pS);
+            c.setSupervisor(s);
+
+            result.add(c);
+        }
+        return result;
     }
 
 }
