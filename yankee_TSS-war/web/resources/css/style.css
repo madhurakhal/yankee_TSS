@@ -82,3 +82,7 @@ span.form-control > input {
     overflow: hidden;
     clear: both;
 }
+
+.dataTables_wrapper table {
+    width: 100% !important;
+}
