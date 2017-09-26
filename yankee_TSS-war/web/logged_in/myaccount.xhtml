@@ -8,17 +8,65 @@
       xmlns:b="http://bootsfaces.net/ui">
     <ui:composition template="/WEB-INF/templates/main-template.xhtml">        
         <ui:param name="pageTitle" value="#{msg.adminPage}"/>
+        <ui:define name="breadcrumb">
+            <li>
+                <h:link outcome="dashboard">
+                    <i class="fa fa-dashboard"></i>Home
+                </h:link>
+            </li>
+            <li>
+                <h:link disabled="true">
+                    My Info
+                </h:link>
+            </li>
+        </ui:define>
         <ui:define name="main-content">
-            <b:row>
-                <b:column
-                    col-xs="10" offset-xs="1"
-                    col-md="8" offset-md="2"
-                    >
-                    
-                    
-                </b:column>
-            </b:row>
-           
+            <b:form>
+                <b:row>
+                    <b:column styleClass="myaccount">
+                        <p:outputPanel styleClass="box box-primary with-borader">
+                            <p:outputPanel styleClass="box-header">
+                                <h4 class="text-center">
+                                    #{accountBean.person.firstName} #{accountBean.person.lastName}
+                                </h4>
+                            </p:outputPanel>
+
+                            <p:outputPanel styleClass="box-body">
+                                <b:column>
+                                    <b:formGroup>
+                                        <h:outputLabel value="#{msg.firstName}" styleClass="col-xs-12 col-sm-3 control-label"></h:outputLabel>
+                                        <b:column col-xs="12" col-sm="6">
+                                            <b:inputText value="#{accountBean.person.firstName}" styleClass="form-control"/>
+                                        </b:column>
+                                    </b:formGroup>
+
+                                    <b:formGroup>
+                                        <h:outputLabel value="#{msg.lastName}" styleClass="col-xs-12 col-sm-3 control-label"></h:outputLabel>
+                                        <b:column col-xs="12" col-sm="6">
+                                            <b:inputText value="#{accountBean.person.lastName}" styleClass="form-control"/>
+                                        </b:column>
+                                    </b:formGroup>
+                                    
+                                    <b:formGroup>
+                                        <h:outputLabel value="Email" styleClass="col-xs-12 col-sm-3 control-label"></h:outputLabel>
+                                        <b:column col-xs="12" col-sm="6">
+                                            <b:inputText value="#{accountBean.person.emailAddress}" styleClass="form-control"/>
+                                        </b:column>
+                                    </b:formGroup>
+                                </b:column>
+
+                            </p:outputPanel>
+
+                            <p:outputPanel styleClass="box-footer">
+                                <b:commandButton styleClass="btn btn-primary pull-right btn-flat" value="Update" />
+                            </p:outputPanel>
+                        </p:outputPanel>
+                    </b:column>
+
+                </b:row>
+
+            </b:form>
+
         </ui:define>
     </ui:composition>
 </html>

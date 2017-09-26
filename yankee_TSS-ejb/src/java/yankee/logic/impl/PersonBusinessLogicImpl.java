@@ -85,6 +85,7 @@ public class PersonBusinessLogicImpl implements PersonBusinessLogic {
         System.out.println("Ok want to get something for pe" + pe.getFirstName());
         Person p = new Person(pe.getUuid(), pe.getName());
         p.setFirstName(pe.getFirstName());
+        p.setPreferredLanguage(pe.getPreferredLanguage());
         p.setLastName(pe.getLastName());
         p.setDateOfBirth(pe.getDateOfBirth());
         p.setUserRoleRealm(pe.getUserRoleRealm());
