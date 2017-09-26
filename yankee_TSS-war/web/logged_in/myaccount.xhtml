@@ -33,6 +33,11 @@
 
                             <p:outputPanel styleClass="box-body">
                                 <b:column>
+                                    <b:formGroup rendered="#{not empty accountBean.chart}">
+                                        <b:column col-xs="12" col-sm="6">
+                                            <p:graphicImage value="#{accountBean.chart}"/>
+                                        </b:column>
+                                    </b:formGroup>
                                     <b:formGroup>
                                         <h:outputLabel value="#{msg.firstName}" styleClass="col-xs-12 col-sm-3 control-label"></h:outputLabel>
                                         <b:column col-xs="12" col-sm="6">
@@ -85,8 +90,7 @@
                                         <h:outputLabel value="Upload Photo" styleClass="col-xs-12 col-sm-3 control-label"></h:outputLabel>
                                         <b:column col-sm="6" col-xs="12">
                                             <p:fileUpload fileUploadListener="#{accountBean.handleFileUpload}" mode="advanced"
-                                                          update="messages" auto="true" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
-
+                                                          update="@this" auto="true" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
                                         </b:column>
                                     </b:formGroup>
 

@@ -18,7 +18,9 @@ public interface PersonBusinessLogic {
             
     public Person getPersonByName(String name);
     
-    public void updateDetails(Person updatedperson);
+    public void updateDetails(Person updatedperson);    
+  
+    public void updatePhoto(Person photoupdated);
     
         
 }

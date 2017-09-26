@@ -102,7 +102,13 @@ public class PersonBusinessLogicImpl implements PersonBusinessLogic {
         if (updatedperson.getDateOfBirth()!= null){
             p.setDateOfBirth(updatedperson.getDateOfBirth());
         }
-        p.setPreferredLanguage(updatedperson.getPreferredLanguage());
+        p.setPreferredLanguage(updatedperson.getPreferredLanguage());        
+    }
+    
+    @Override
+    public void updatePhoto(Person personphotoupdated){
+       PersonEntity pe = personAccess.getByUuid(personphotoupdated.getUuid());
+       pe.setPhoto(personphotoupdated.getPhoto());
     }
 
     // BEGIN : NOT USED CODE CHeck required.

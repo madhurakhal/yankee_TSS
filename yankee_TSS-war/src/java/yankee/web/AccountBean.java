@@ -1,22 +1,27 @@
 package yankee.web;
 
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Arrays;
 import java.util.Date;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
-import yankee.logic.ENUM.RoleTypeEnum;
 import yankee.logic.PersonBusinessLogic;
 import yankee.logic.to.Person;
 
-@SessionScoped
+@RequestScoped
 @Named
 public class AccountBean implements Serializable {
 
@@ -37,8 +42,29 @@ public class AccountBean implements Serializable {
         this.dateOfBirth = dateOfBirth;
     }
 
+    private StreamedContent chart;
+
+    public StreamedContent getChart() {
+        return chart;
+    }
+
+    public void setChart(StreamedContent chart) {
+        this.chart = chart;
+    }
+
+    @PostConstruct
+    public void init() {
+        getPerson();
+    }
+
     public Person getPerson() {
-        person = personBusinessLogic.getPersonByName(logInBean.getUser().getName());
+        if (person == null) {
+            person = personBusinessLogic.getPersonByName(logInBean.getUser().getName());
+            System.out.println("IMAGESSSSSS" + Arrays.toString(person.getPhoto()));
+            if (person.getPhoto() != null) {
+                chart = new DefaultStreamedContent(new ByteArrayInputStream(person.getPhoto()));
+            }
+        }
         return person;
     }
 
@@ -48,18 +74,20 @@ public class AccountBean implements Serializable {
 
     public void update() {
         System.out.println("Date of Birth is  " + dateOfBirth);
-        
+
         System.out.println("Preferred Language is  " + person.getPreferredLanguage());
         if (dateOfBirth != null) {
-            person.setDateOfBirth(dateOfBirth.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());            
+            person.setDateOfBirth(dateOfBirth.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         }
-        personBusinessLogic.updateDetails(person);
+        System.out.println(Arrays.toString(person.getPhoto()));
+        //personBusinessLogic.updateDetails(person);
     }
-    
+
     public void handleFileUpload(FileUploadEvent event) {
         FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
         FacesContext.getCurrentInstance().addMessage(null, message);
         UploadedFile file = event.getFile();
         person.setPhoto(file.getContents());
+        personBusinessLogic.updatePhoto(person);
     }
 }
