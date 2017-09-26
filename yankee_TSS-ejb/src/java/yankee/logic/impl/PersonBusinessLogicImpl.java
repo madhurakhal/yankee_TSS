@@ -87,6 +87,7 @@ public class PersonBusinessLogicImpl implements PersonBusinessLogic {
         p.setFirstName(pe.getFirstName());
         p.setPreferredLanguage(pe.getPreferredLanguage());
         p.setLastName(pe.getLastName());
+        p.setEmailAddress(pe.getEmailAddress());
         p.setDateOfBirth(pe.getDateOfBirth());
         p.setUserRoleRealm(pe.getUserRoleRealm());
 //        ArrayList<Role> resultRole = new ArrayList<>(pe.getRoles().size());
