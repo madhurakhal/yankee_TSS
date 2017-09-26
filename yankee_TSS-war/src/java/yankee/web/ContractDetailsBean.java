@@ -63,8 +63,7 @@ public class ContractDetailsBean {
     private Contract contractinfo;
     private Person loggedinUser;
 
-    public Person getLoggedinUser() {
-        loggedinUser = loginBean.getUser();
+    public Person getLoggedinUser() {        
         return loggedinUser;
     }
 
@@ -77,10 +76,17 @@ public class ContractDetailsBean {
     private List<Person> assistantsForContract = new ArrayList<>();
     private List<Person> persons = new ArrayList<>();
  
+    // Contract Entity?
     public boolean isSupervisor(String timeSheetUUID){
        System.out.println("TIMEEEEEEEEEEEEEEEEEEEEEEEEEEEE" + timeSheetUUID);
        ContractEntity ce = timeSheetBusinessLogic.getContractByTimesheetUUID(timeSheetUUID);
        return ce.getSupervisor().getPerson().getUuid().equals(loggedinUser.getUuid());
+    }
+    
+    public boolean isEmployee(String timeSheetUUID){
+       System.out.println("TIMEEEEEEEEEEEEEEEEEEEEEEEEEEEE" + timeSheetUUID);
+       ContractEntity ce = timeSheetBusinessLogic.getContractByTimesheetUUID(timeSheetUUID);
+       return ce.getEmployee().getPerson().getUuid().equals(loggedinUser.getUuid());
     }
     
     public boolean isSecretary(String timeSheetUUID){
@@ -98,6 +104,7 @@ public class ContractDetailsBean {
         getContract_id();
         getPersons();
         getCurrentContractPerson();
+        loggedinUser = loginBean.getUser();
 
         // First we will get all the assistant , supervisor , secretary for the given contract
         getSupervisorForContract();

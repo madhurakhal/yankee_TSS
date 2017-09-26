@@ -23,7 +23,7 @@
                 <h:link rendered="#{contractDetailsBean.loggedinUser.userRoleRealm eq 'STAFF'}" outcome="managecontracts">
                     Manage Contracts
                 </h:link>
-                <h:link rendered="#{contractDetailsBean.loggedinUser.userRoleRealm eq null}" outcome="employeecontracts">
+                <h:link rendered="#{empty contractDetailsBean.loggedinUser.userRoleRealm}" outcome="employeecontracts">
                     Employee Contracts
                 </h:link>
             </li>
@@ -120,7 +120,7 @@
 
                     <b:dataTableColumn label="Action " style="width:50px" >
                          <!--If the timesheet in progress then render submit for employee-->
-                        <p:commandButton rendered = "#{timesheet.status eq 'IN_PROGRESS' and !contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane" id="submitTimeSheetEmployee" action="#{contractDetailsBean.onSignByEmployeeRow(timesheet.uuid)}">                           
+                        <p:commandButton rendered = "#{timesheet.status eq 'IN_PROGRESS' and contractDetailsBean.isEmployee(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane" id="submitTimeSheetEmployee" action="#{contractDetailsBean.onSignByEmployeeRow(timesheet.uuid)}">                           
                             <p:confirm header="Confirmation" message="Confirm Sign?" icon="ui-icon-alert" />
                         </p:commandButton>
                         <p:tooltip id="submitIconToolTipE" for="submitTimeSheetEmployee" position="bottom" value="Sign TimeSheet E" showEffect="clip" hideEffect="explode"></p:tooltip>
@@ -138,13 +138,11 @@
                         <p:commandButton rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid)}" icon="fa fa-fw fa-print"  id="printTimeSheet"  action="#{contractDetailsBean.printTimeSheet(timesheet.uuid)}"/>
                         <p:tooltip id="printTimeSheetIconToolTip" for="printTimeSheet" position="bottom" value="Print TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
                         
-                        <!--PRINT OPTION AVAILABLE IF LOGGED IN USER IS STAFF AND SECRETARY-->
-
-                        
+                        <!--PRINT OPTION AVAILABLE IF LOGGED IN USER IS STAFF AND SECRETARY-->                       
                         
 
 
-                        <p:commandButton rendered = "#{timesheet.status eq 'IN_PROGRESS'}" icon="fa fa-fw fa-plus"  id="addNewEntry"  action="#{contractDetailsBean.addNewEntry(timesheet.uuid,timesheet.displayString)}"/>
+                        <p:commandButton rendered = "#{timesheet.status eq 'IN_PROGRESS' and contractDetailsBean.isEmployee(timesheet.uuid)}" icon="fa fa-fw fa-plus"  id="addNewEntry"  action="#{contractDetailsBean.addNewEntry(timesheet.uuid,timesheet.displayString)}"/>
                         <p:tooltip id="addNewIconToolTip" for="addNewEntry" position="bottom" value="Add TimeSheet entry" showEffect="clip" hideEffect="explode"></p:tooltip>
 
                         <p:commandButton  icon="fa fa-fw fa-television" id="viewTimeSheet" action="#{contractDetailsBean.onRowView(timesheet.uuid,timesheet.displayString)}"/>

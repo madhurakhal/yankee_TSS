@@ -116,8 +116,9 @@
                                              responsive = "true">
 
                                     <b:dataTableColumn value="#{persons.firstName} #{persons.lastName} (#{persons.emailAddress})" label="#{msg.employee}"/>
+                                    <b:dataTableColumn value="#{manageContractsBean.supervisorPersonForContractUUID(persons.contractUUIDForRole)}" label="Supervisor" />                       
                                     <b:dataTableColumn value="#{persons.contractStatusForRole}" label="Status" style="width:150px"/>                       
-
+                                    
 
                                     <b:dataTableColumn label="#{msg.action} " style="width:60px">
                                         
@@ -178,8 +179,12 @@
                                 <b:dataTable value="#{manageContractsBean.personsAssociatedToContractSecretary}" 
                                              var="persons" 
                                              responsive = "true">
+                                    
                                     <b:dataTableColumn value="#{persons.firstName} #{persons.lastName} (#{persons.emailAddress})" label="Employee"/>
+                                    <b:dataTableColumn value="#{manageContractsBean.supervisorPersonForContractUUID(persons.contractUUIDForRole)}" label="Supervisor" />                       
                                     <b:dataTableColumn value="#{persons.contractStatusForRole}" label="Status" style="width:150px"/>                         
+                                   
+                                    
                                     <b:dataTableColumn label="Action " style="width:50px" styleClass="manage-btn-controllers">
                                         <p:commandButton styleClass="btn-flat"  icon="fa fa-fw fa-television"  id="viewPersonSecrs" action="#{manageContractsBean.onRowView(persons.contractUUIDForRole)}"/>                            
                                         <p:tooltip for="viewPersonSecrs" position="bottom" value="View" showEffect="clip" hideEffect="explode"/>

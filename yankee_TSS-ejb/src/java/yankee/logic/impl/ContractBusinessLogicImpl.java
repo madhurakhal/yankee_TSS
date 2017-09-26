@@ -271,6 +271,21 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
         c.setTerminationDate(ce.getTerminationDate());
         c.setVacationHours(ce.getVacationHours());
         c.setHoursDue(ce.getHoursDue());
+
+        // Set Supervisor also. Note to also do for employee
+        Supervisor s = new Supervisor(ce.getSupervisor().getUuid(), ce.getSupervisor().getName());
+
+        PersonEntity person = ce.getSupervisor().getPerson();
+        Person pS = new Person(person.getUuid(), person.getName());
+        pS.setFirstName(person.getFirstName());
+        pS.setLastName(person.getLastName());
+        pS.setDateOfBirth(person.getDateOfBirth());
+        pS.setEmailAddress(person.getEmailAddress());
+        pS.setUserRoleRealm(person.getUserRoleRealm());
+        pS.setPreferredLanguage(person.getPreferredLanguage());
+        s.setPerson(pS);
+        c.setSupervisor(s);
+
         return c;
     }
 

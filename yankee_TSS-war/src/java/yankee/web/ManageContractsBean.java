@@ -18,6 +18,7 @@ import yankee.logic.SecretaryBusinessLogic;
 import yankee.logic.SupervisorBusinessLogic;
 import yankee.logic.TimeSheetBusinessLogic;
 import yankee.logic.to.Person;
+import yankee.logic.to.Supervisor;
 import yankee.logic.to.TimeSheet;
 import yankee.logic.to.TimeSheetEntry;
 
@@ -75,7 +76,7 @@ public class ManageContractsBean {
     }
 
     public List<Person> getPersonsAssociatedToContractSecretary() {
-        personsAssociatedToContractSecretary = secretaryBusinessLogic.getPersonsUnderSecretary(loginBean.getUser().getUuid());
+        personsAssociatedToContractSecretary = secretaryBusinessLogic.getPersonsUnderSecretary(loginBean.getUser().getUuid());        
         return personsAssociatedToContractSecretary;
     }
 
@@ -146,8 +147,8 @@ public class ManageContractsBean {
         FacesContext.getCurrentInstance().addMessage(null, msgs);
     }
 
-    // Need to get all persons who the current logged in user is 
-    // 1. supervisor.
-    // 2. Assistant
-    // 3. 
+  // HELPER METHODS
+    public Person supervisorPersonForContractUUID(String contractUUID){
+        return contractBusinessLogic.getContractByUUID(contractUUID).getSupervisor().getPerson();
+    }
 }
