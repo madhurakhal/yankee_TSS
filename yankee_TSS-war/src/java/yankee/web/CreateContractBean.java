@@ -1,5 +1,6 @@
 package yankee.web;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -7,6 +8,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
@@ -185,7 +187,7 @@ public class CreateContractBean {
         return persons;
     }
 
-    public void create() {
+    public void create() throws IOException {
         // When create contract button pressed.
         // First if person clicks on Set supervisor box
         // select your role i.e assistant or secretary appears.
@@ -209,6 +211,9 @@ public class CreateContractBean {
 
         FacesMessage msg = new FacesMessage("Contract Created");
         FacesContext.getCurrentInstance().addMessage(null, msg);
+        
+        ExternalContext extContext = FacesContext.getCurrentInstance().getExternalContext();
+        extContext.redirect(extContext.getRequestContextPath() + "/logged_in/managecontracts.xhtml");
     }
 
     // Test for supervisor 
