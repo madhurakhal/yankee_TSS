@@ -89,8 +89,8 @@
                                     <b:formGroup>
                                         <h:outputLabel value="Upload Photo" styleClass="col-xs-12 col-sm-3 control-label"></h:outputLabel>
                                         <b:column col-sm="6" col-xs="12">
-                                            <p:fileUpload fileUploadListener="#{accountBean.handleFileUpload}" mode="advanced"
-                                                          update="@this" auto="true" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+                                                                                <p:fileUpload fileUploadListener="#{accountBean.handleFileUpload}" mode="advanced" dragDropSupport="true"
+                                                          update="messages" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
                                         </b:column>
                                     </b:formGroup>
 
