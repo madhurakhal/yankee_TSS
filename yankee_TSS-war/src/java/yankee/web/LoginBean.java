@@ -39,7 +39,6 @@ public class LoginBean implements Serializable {
         Principal currentPrincipal = FacesContext.getCurrentInstance()
                 .getExternalContext()
                 .getUserPrincipal();
-        System.out.println(currentPrincipal.getName());
         String currentPrincipalName = currentPrincipal == null
                 ? null
                 : currentPrincipal.getName().trim().toLowerCase();

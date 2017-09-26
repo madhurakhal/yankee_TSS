@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yankee.logic.impl;
 
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -24,10 +20,6 @@ import yankee.logic.dao.AssistantAccess;
 import yankee.logic.to.Person;
 import yankee.logic.to.Role;
 
-/**
- *
- * @author Sabs
- */
 @Stateless
 public class PersonBusinessLogicImpl implements PersonBusinessLogic {
 
@@ -58,10 +50,9 @@ public class PersonBusinessLogicImpl implements PersonBusinessLogic {
             p.setEmailAddress(pe.getEmailAddress());
             p.setUserRoleRealm(pe.getUserRoleRealm());
             p.setPreferredLanguage(pe.getPreferredLanguage());
-            
+
             ArrayList<Role> resultRole = new ArrayList<>(pe.getRoles().size());
             for (RoleEntity re : pe.getRoles()) {
-                //System.out.println("AT LEATST " + re.getRollType());
                 Role r = new Role(re.getUuid(), re.getName());
                 r.setRoleType(re.getRollType());
                 resultRole.add(r);
@@ -81,8 +72,6 @@ public class PersonBusinessLogicImpl implements PersonBusinessLogic {
     @Override
     public Person getPersonByName(String name) {
         PersonEntity pe = personAccess.getPersonByName(name);
-        System.out.println("Ok want to get something for pe");
-        System.out.println("Ok want to get something for pe" + pe.getFirstName());
         Person p = new Person(pe.getUuid(), pe.getName());
         p.setFirstName(pe.getFirstName());
         p.setPreferredLanguage(pe.getPreferredLanguage());
@@ -90,24 +79,34 @@ public class PersonBusinessLogicImpl implements PersonBusinessLogic {
         p.setEmailAddress(pe.getEmailAddress());
         p.setDateOfBirth(pe.getDateOfBirth());
         p.setUserRoleRealm(pe.getUserRoleRealm());
-//        ArrayList<Role> resultRole = new ArrayList<>(pe.getRoles().size());
-//        for (RoleEntity re : pe.getRoles()) {
-//            Role r = new Role(re.getUuid(), re.getName());
-//            r.setRoleType(re.getRollType());
-//            resultRole.add(r);
-//        };
-//        p.setRoles(resultRole);
-        System.out.println("Ok want to get something for pe" + p.getFirstName());
+        //p.set
         return p;
     }
-   
+
     @Override
-    public void updateUserRoleRealm(String uuid , String realmRole){
+    public void updateUserRoleRealm(String uuid, String realmRole) {
         PersonEntity pe = personAccess.getByUuid(uuid);
         pe.setUserRoleRealm(realmRole);
         personAccess.updateEntity(pe);
     }
 
+    @Override
+    public void updateDetails(Person updatedperson) {
+        PersonEntity p = personAccess.getByUuid(updatedperson.getUuid());
+        if (!p.getFirstName().equals(updatedperson.getFirstName())) {
+            p.setFirstName(updatedperson.getFirstName());
+        }
+        if (!p.getLastName().equals(updatedperson.getLastName())) {
+            p.setLastName(updatedperson.getLastName());
+        }
+        if (updatedperson.getDateOfBirth()!= null){
+            p.setDateOfBirth(updatedperson.getDateOfBirth());
+        }
+        p.setPreferredLanguage(updatedperson.getPreferredLanguage());
+    }
+
+    // BEGIN : NOT USED CODE CHeck required.
+    // Code below might not have been used anywhere
     @Override
     public void updatePersonDetails(String uuid, RoleTypeEnum roleType) {
         PersonEntity pe = personAccess.getByUuid(uuid);
@@ -132,5 +131,6 @@ public class PersonBusinessLogicImpl implements PersonBusinessLogic {
             default: ;
         }
     }
+    // END : NOT USED CODE CHeck required.
 
 }

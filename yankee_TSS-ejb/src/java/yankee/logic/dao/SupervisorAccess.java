@@ -76,7 +76,6 @@ public class SupervisorAccess extends AbstractAccess<SupervisorEntity> {
                     .setParameter("person", person)
                     .getResultList();
         } catch (NoResultException ex) {
-            System.out.println("Fataa");
             return null;
         } 
     }

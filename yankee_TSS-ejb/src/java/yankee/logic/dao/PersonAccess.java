@@ -12,6 +12,7 @@ import javax.persistence.NoResultException;
 import yankee.entities.PersonEntity;
 import yankee.logic.to.Person;
 import org.riediger.ldap.DirectoryLookup;
+import yankee.logic.ENUM.PreferredLanguageENUM;
 
 
 @Stateless
@@ -33,6 +34,7 @@ public class PersonAccess extends AbstractAccess<PersonEntity> {
                 pe.setFirstName(p.getFirstName());
                 pe.setLastName(p.getLastName()); 
                 pe.setEmailAddress(name);
+                pe.setPreferredLanguage(PreferredLanguageENUM.EN);
             }
         } catch (NamingException ex) {
             Logger.getLogger(PersonAccess.class.getName()).log(Level.SEVERE, null, ex);

@@ -49,12 +49,10 @@ public class LanguageBean implements Serializable {
     }
 
     public String getLanguage() {
-        System.out.println("ohoooo" + locale.getLanguage());
         return locale.getLanguage();
     }
 
     public void changeLanguage(String language) {
-        System.out.println("New language is " + language);
         this.locale = new Locale(language);
         FacesContext.getCurrentInstance().getViewRoot().setLocale(locale);
     }

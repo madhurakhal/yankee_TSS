@@ -80,7 +80,6 @@ public class SupervisorBusinessLogicImpl implements SupervisorBusinessLogic {
             // Fill up all other contract info
             p.setContract(c);            
             PersonEntity pe = se.getPerson();
-            System.out.println("Am I here" + se.getPerson().getFirstName());
             p.setPerson(new Person(pe.getUuid(),pe.getName()));
             result.add(p);
         }

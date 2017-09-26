@@ -91,7 +91,6 @@ public class CreateContractBean {
     }
 
     public void setVacationDaysPerYear(Integer vacationDaysPerYear) {
-        System.out.println("HERE FOR vacation days");
         this.vacationDaysPerYear = vacationDaysPerYear;
     }
 
@@ -194,7 +193,6 @@ public class CreateContractBean {
         // Make private var as  1. yourRoleType       allowing for Assistant or Secretary enum.
         //                      2. changedSupervisorPerson
         Person supervisor = null;
-        System.out.println("Contract To is " + contractTo.getFirstName());
         Person employee = contractTo;
         Person assistant = null;
         Person secretary = null;
@@ -205,7 +203,6 @@ public class CreateContractBean {
             assistant = loginBean.getUser();
             supervisor = changedSupervisorPerson;
         }
-        System.out.println("Supervisor" + changedSupervisorPerson);
         
         contractBusinessLogic.createContract("contract" + employee.getName(), supervisor, assistant, secretary, employee, startDate, endDate, timesheetFrequency, (double) hoursPerWeek, workingDaysPerWeek, vacationDaysPerYear);
 

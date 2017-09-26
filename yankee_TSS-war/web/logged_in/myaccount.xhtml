@@ -46,19 +46,59 @@
                                             <b:inputText value="#{accountBean.person.lastName}" styleClass="form-control"/>
                                         </b:column>
                                     </b:formGroup>
-                                    
-                                    <b:formGroup>
+
+                                    <b:formGroup >
                                         <h:outputLabel value="Email" styleClass="col-xs-12 col-sm-3 control-label"></h:outputLabel>
                                         <b:column col-xs="12" col-sm="6">
-                                            <b:inputText value="#{accountBean.person.emailAddress}" styleClass="form-control"/>
+                                            <b:inputText disabled = "true" value="#{accountBean.person.emailAddress}" styleClass="form-control"/>
                                         </b:column>
                                     </b:formGroup>
+
+                                    <b:formGroup rendered = "#{!empty accountBean.person.dateOfBirth}">
+                                        <h:outputLabel value="Date Of Birth" styleClass="col-xs-12 col-sm-3 control-label"></h:outputLabel>
+                                        <b:column col-xs="12" col-sm="6">
+                                            <b:inputText disabled = "true" value="#{accountBean.person.dateOfBirth.dayOfMonth} #{accountBean.person.dateOfBirth.month} #{accountBean.person.dateOfBirth.year} (#{accountBean.person.dateOfBirth.dayOfWeek})" styleClass="form-control"/>
+                                        </b:column>                                        
+                                    </b:formGroup>
+
+                                    <b:formGroup rendered = "#{empty accountBean.person.dateOfBirth}">
+                                        <h:outputLabel value="Date Of Birth" styleClass="col-xs-12 col-sm-3 control-label"></h:outputLabel>
+                                        <b:column col-xs="12" col-sm="6">
+                                            <p:outputPanel styleClass="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                                <p:calendar id="startDate" value="#{accountBean.dateOfBirth}" navigator="true" yearRange="c-100:c+100"  pattern="MM/dd/yyyy" styleClass="form-control" maxdate="today"/>
+                                            </p:outputPanel>
+                                        </b:column>
+                                    </b:formGroup>
+
+                                    <b:formGroup>
+                                        <h:outputLabel value="Preferred Language" styleClass="col-xs-12 col-sm-3 control-label"></h:outputLabel>
+                                        <b:column col-sm="6" col-xs="12">
+                                            <b:selectOneMenu id="preferredLanguage" value="#{accountBean.person.preferredLanguage}" immediate="true">
+                                                <f:selectItems  value="#{preferredLanguageENUMBean.preferredLanguageENUM}"/>
+                                            </b:selectOneMenu>
+                                        </b:column>                                       
+                                    </b:formGroup>
+                                    <b:formGroup>
+                                        <h:outputLabel value="Upload Photo" styleClass="col-xs-12 col-sm-3 control-label"></h:outputLabel>
+                                        <b:column col-sm="6" col-xs="12">
+                                            <p:fileUpload fileUploadListener="#{accountBean.handleFileUpload}" mode="advanced"
+                                                          update="messages" auto="true" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+
+                                        </b:column>
+                                    </b:formGroup>
+
+
+                                    <p:growl id="messages" showDetail="true" /> 
+
                                 </b:column>
 
                             </p:outputPanel>
 
                             <p:outputPanel styleClass="box-footer">
-                                <b:commandButton styleClass="btn btn-primary pull-right btn-flat" value="Update" />
+                                <b:commandButton styleClass="btn btn-primary pull-right btn-flat" value="Update" actionListener="#{accountBean.update}"/>
                             </p:outputPanel>
                         </p:outputPanel>
                     </b:column>

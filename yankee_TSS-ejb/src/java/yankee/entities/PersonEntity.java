@@ -8,6 +8,7 @@ package yankee.entities;
 import java.time.LocalDate;
 import java.util.Set;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -36,6 +37,17 @@ public class PersonEntity extends NamedEntity {
     private LocalDate dateOfBirth;
     private PreferredLanguageENUM preferredLanguage;
     private String userRoleRealm;
+    
+    @Lob
+    private byte[] photo;
+
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
+    }
     
     @OneToMany(mappedBy = "person")
     private Set<RoleEntity> roles;   

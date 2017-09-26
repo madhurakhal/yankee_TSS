@@ -112,12 +112,9 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
         ce.setVacationDaysPerYear(vacationDaysPerYear);
         ce.setWorkingDaysPerWeek(workingDaysPerWeek);
 
-        System.out.println("Contract ko naam k ho ta" + ce.getName() + ce.getId());
-
         try {
             //2.
             EmployeeEntity ee = employeeAccess.createEntity(employee.getName());
-            System.out.println("Employee ko naam k ho ta" + ee.getName() + ee.getId());
             ee.setPerson(personAccess.getByUuid(employee.getUuid()));
             ee.setContract(ce);
             ce.setEmployee(ee);
@@ -189,7 +186,6 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
             supervisorAccess.deleteEntity(svePrev);
 
             // create new supervisor with this contract id
-            System.out.println("Should not come here right?");
             SupervisorEntity sve = supervisorAccess.createEntity(supervisorPerson.getName());
             sve.setPerson(personAccess.getByUuid(supervisorPerson.getUuid()));
             sve.setContract(ce);
