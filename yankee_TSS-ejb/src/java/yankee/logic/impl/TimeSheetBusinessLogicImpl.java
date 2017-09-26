@@ -10,7 +10,10 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import yankee.entities.ContractEntity;
@@ -19,6 +22,7 @@ import yankee.entities.TimesheetEntryEntity;
 import yankee.logic.AdministrationBusinessLogic;
 import yankee.logic.ENUM.ContractStatusEnum;
 import yankee.logic.ENUM.GermanyStatesEnum;
+import yankee.logic.ENUM.TimesheetFrequencyEnum;
 import yankee.logic.ENUM.TimesheetStatusEnum;
 import yankee.logic.PublicHolidaysBusinessLogic;
 import yankee.logic.TimeSheetBusinessLogic;
@@ -28,7 +32,7 @@ import yankee.logic.dao.TimeSheetEntryAccess;
 import yankee.logic.to.Contract;
 import yankee.logic.to.TimeSheet;
 import yankee.logic.to.TimeSheetEntry;
-import yankee.logic.to.TimesheetT;
+import yankee.utilities.UTILNumericSupport;
 
 /**
  * @author Shriharsh Ambhore (ashriharsh@uni-koblenz.de).
@@ -52,7 +56,7 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
 
     @EJB
     private PublicHolidaysBusinessLogic publicHolidaysBusinessLogic;
-    
+
     @EJB
     private AdministrationBusinessLogic administrationBusinessLogic;
 
@@ -62,10 +66,9 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
      * @param contractUUID
      * @param uuid specifying the unique identifier for the contract
      */
-    
     // BEGINS .....  TO REVIEW Code For CreateTimeSheet.   
     @Override
-    public List<TimesheetT> createTimeSheet(final String contractUUID) {
+    public List<TimeSheet> createTimeSheet(final String contractUUID) {
         // Steps for creating timesheet
         // 1. Get the contract for the contractUUID.
         // 2. Check if contract started.
@@ -82,9 +85,9 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
                 // Gets the period between these days. Can access months day and year by just period.days()..
                 //Period period = Period.between(ce.getStartDate(), ce.getEndDate());
                 GermanyStatesEnum statesEnum;
-                try{
-                    statesEnum = administrationBusinessLogic.getAdminSetState().getGermanState();} 
-                catch(Exception e){
+                try {
+                    statesEnum = administrationBusinessLogic.getAdminSetState().getGermanState();
+                } catch (Exception e) {
                     statesEnum = GermanyStatesEnum.RHINELANDPALATINATE;
                 }
                 switch (ce.getFrequency()) {
@@ -93,14 +96,14 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
                         for (int i = 0; i <= monthsInPeriod; i++) {
                             TimesheetEntity tsEntity = timeSheetAccess.createEntity("TimeSheet");
                             tsEntity.setStartDate(ce.getStartDate().plusMonths(i));
-                            tsEntity.setEndDate(ce.getStartDate().plusMonths(i + 1).minusDays(1));                           
+                            tsEntity.setEndDate(ce.getStartDate().plusMonths(i + 1).minusDays(1));
                             tsEntity.setContract(ce);
 
                             // BEGIN END Hours Due Calculation variable initialisation                                                        
                             int workingDaysInPeriod = 0;
-                            int publicHolidaysInPeriod = 0; 
+                            int publicHolidaysInPeriod = 0;
                             int workingDaysPerWeek = ce.getWorkingDaysPerWeek();
-                            double hoursPerweek = ce.getHoursPerWeek();                            
+                            double hoursPerweek = ce.getHoursPerWeek();
                             List<DayOfWeek> validWorkingDays = _getWorkingDays(workingDaysPerWeek);
                             // END Hours Due Calculation variable initialisation
 
@@ -109,26 +112,26 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
                             for (int j = 0; j <= tEntryPeriod.getDays(); j++) {
                                 TimesheetEntryEntity entryEntity = timeSheetEntryAccess.createEntity("TimeSheetEntry");
                                 LocalDate tsEntryDate = tsEntity.getStartDate().plusDays(j);
-                                entryEntity.setEntryDate(tsEntryDate);                                                                
+                                entryEntity.setEntryDate(tsEntryDate);
                                 entryEntity.setTimesheet(tsEntity);
 
                                 // BEGINS Hours Due Value update for each date. 
                                 DayOfWeek tsEntryDay = tsEntryDate.getDayOfWeek();
                                 if (validWorkingDays.contains(tsEntryDay)) {
                                     workingDaysInPeriod += 1;
-                                    
+
                                     // Check if that current date is public holiday for the Given state. NOTE state is to obtained from tss setup.
-                                    if(publicHolidaysBusinessLogic.databaseEmpty()){
-                                       throw new IllegalStateException("Public Holidays not loaded in DATABASE. Ask Admin to load public Holidays"); 
-                                    }                                    
+                                    if (publicHolidaysBusinessLogic.databaseEmpty()) {
+                                        throw new IllegalStateException("Public Holidays not loaded in DATABASE. Ask Admin to load public Holidays");
+                                    }
                                     if (publicHolidaysBusinessLogic.isPublicHoliday(tsEntryDate.getDayOfMonth(), tsEntryDate.getMonthValue(), tsEntryDate.getYear(), statesEnum)) {
-                                        System.out.println("IS IT PUBLICCCCCCCCC HOLIDAYyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy" + tsEntryDate);                                        
+                                        System.out.println("IS IT PUBLICCCCCCCCC HOLIDAYyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy" + tsEntryDate);
                                         publicHolidaysInPeriod += 1;
                                     }
                                 }
                                 // Ends Hours Due Value update for each date.
                             }
-                            
+
                             // Now I have "WorkingDaysInPeriod" "publicHoldaysInPeriod" "hoursPerWeek" "WorkingDaysPerWeek"
                             double hoursDue = (workingDaysInPeriod - publicHolidaysInPeriod) * (hoursPerweek / workingDaysPerWeek);
                             TimesheetEntity tse = timeSheetAccess.getByUuid(tsEntity.getUuid());
@@ -146,18 +149,17 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
                                 tsEntity.setEndDate(ce.getEndDate());
                             } else {
                                 tsEntity.setEndDate(ce.getStartDate().plusWeeks(i + 1).minusDays(1));
-                            }                            
+                            }
                             tsEntity.setContract(ce);
 
-
-                             // BEGIN END Hours Due Calculation variable initialisation                                                        
+                            // BEGIN END Hours Due Calculation variable initialisation                                                        
                             int workingDaysInPeriod = 0;
-                            int publicHolidaysInPeriod = 0; 
+                            int publicHolidaysInPeriod = 0;
                             int workingDaysPerWeek = ce.getWorkingDaysPerWeek();
-                            double hoursPerweek = ce.getHoursPerWeek();                            
+                            double hoursPerweek = ce.getHoursPerWeek();
                             List<DayOfWeek> validWorkingDays = _getWorkingDays(workingDaysPerWeek);
                             // END Hours Due Calculation variable initialisation
-                            
+
                             // Now Create Time Sheet Entry at the timesheet period.                            
                             Period tEntryPeriod = Period.between(tsEntity.getStartDate(), tsEntity.getEndDate());
                             for (int j = 0; j <= tEntryPeriod.getDays(); j++) {
@@ -165,24 +167,24 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
                                 LocalDate tsEntryDate = tsEntity.getStartDate().plusDays(j);
                                 entryEntity.setEntryDate(tsEntryDate);
                                 entryEntity.setTimesheet(tsEntity);
-                                
+
                                 // BEGINS Hours Due Value update for each date. 
                                 DayOfWeek tsEntryDay = tsEntryDate.getDayOfWeek();
                                 if (validWorkingDays.contains(tsEntryDay)) {
                                     workingDaysInPeriod += 1;
-                                    
+
                                     // Check if that current date is public holiday for the Given state. NOTE state is to obtained from tss setup.
-                                    if(publicHolidaysBusinessLogic.databaseEmpty()){
-                                       throw new IllegalStateException("Public Holidays not loaded in DATABASE. Ask Admin to load public Holidays"); 
+                                    if (publicHolidaysBusinessLogic.databaseEmpty()) {
+                                        throw new IllegalStateException("Public Holidays not loaded in DATABASE. Ask Admin to load public Holidays");
                                     }
                                     if (publicHolidaysBusinessLogic.isPublicHoliday(tsEntryDate.getDayOfMonth(), tsEntryDate.getMonthValue(), tsEntryDate.getYear(), statesEnum)) {
-                                        System.out.println("IS IT PUBLICCCCCCCCC HOLIDAYyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy" + tsEntryDate);                                        
+                                        System.out.println("IS IT PUBLICCCCCCCCC HOLIDAYyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy" + tsEntryDate);
                                         publicHolidaysInPeriod += 1;
                                     }
                                 }
                                 // Ends Hours Due Value update for each date.
                             }
-                            
+
                             // Now I have "WorkingDaysInPeriod" "publicHoldaysInPeriod" "hoursPerWeek" "WorkingDaysPerWeek"
                             double hoursDue = (workingDaysInPeriod - publicHolidaysInPeriod) * (hoursPerweek / workingDaysPerWeek);
                             TimesheetEntity tse = timeSheetAccess.getByUuid(tsEntity.getUuid());
@@ -198,8 +200,6 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
         return null;
     }
     // ENDS ..... TO REView Code for Create TimeSheet
-    
-    
 
     // Helper method. Takes working days. for example 4. Working days becomes Monday Tuesday Wednesday Thursday
     private List<DayOfWeek> _getWorkingDays(int workingDaysPerWeek) {
@@ -238,7 +238,6 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
         return workingDaysEnum;
     }
 
-    
 //    @Override
 //    public void createTimeSheet(final String uuid) {
 //
@@ -274,7 +273,6 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
 //                        timeSheetStartDate = startDate;
 //
 //                        for (int i = 0; i < diff; i++) {
-//                            //tsEntity = new TimesheetEntity();
 //                            timeSheetEntrylist = new ArrayList<TimesheetEntryEntity>();
 //                            tsEntity = timeSheetAccess.createEntity("TimeSheet");
 //                            tsEntity.setStartDate(timeSheetStartDate);
@@ -293,7 +291,6 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
 //                                timeSheetEntrylist.add(entryEntity);
 //                            }
 //                            tsEntity.setEntries((Set) timeSheetEntrylist);
-//                            //timeSheets.add(tsEntity);
 //                        }
 //
 //                    } else {
@@ -319,7 +316,7 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
 //                            }
 //                            tsEntity.setEndDate(edate);
 //                            tsEntity.setContract(centity);
-//                            tsEntity.setStatus(TimesheetStatusEnum.IN_PROGRESS);                        //System.out.println("End of week::" + edate);                        timeSheets.add(tsEntity);
+//                            tsEntity.setStatus(TimesheetStatusEnum.IN_PROGRESS);                       // System.out.println("End of week::" + edate);                        timeSheets.add(tsEntity);
 //
 //                            tempDate = tsEntity.getStartDate();
 //                            while (!tempDate.isAfter(edate)) {
@@ -342,7 +339,6 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
 //    }
 //
 //     
-    
     /*
      * // check if the timesheet is in in_progress state and contract is
      * started then only allow to perform action
@@ -360,20 +356,18 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
                 throw new IllegalStateException("parameter cannot be null!!");
             }
             TimesheetEntryEntity tsEntry = timeSheetEntryAccess.findByPrimaryKey(timeSheetEntryAccess.getByUuid(uuid).getId());
-            tsEntry.setDescription(obj.getDescription());
-            tsEntry.setEndTime(obj.getEndTime());
-            tsEntry.setStartTime(obj.getStartTime());
-
-            messageString = "Saved!!"; // need to do internationalization;
-
             final String timeSheetStatus = tsEntry.getTimesheet().getStatus().toString();
             final ContractEntity contract = contractAccess.findByPrimaryKey(tsEntry.getTimesheet().getContract().getId());
 
             if (timeSheetStatus.equalsIgnoreCase("IN_PROGRESS") && contract.getStatus().toString().equalsIgnoreCase("STARTED")) {
 
                 tsEntry.setDescription(obj.getDescription());
-                tsEntry.setEndTime(obj.getEndTime());
-                tsEntry.setStartTime(obj.getStartTime());
+                tsEntry.setEndTime(new java.sql.Time(obj.getEndDateTime().getTime()));
+                tsEntry.setStartTime(new java.sql.Time(obj.getStartDateTime().getTime()));
+                long hoursCalc = obj.getEndDateTime().getTime() - obj.getStartDateTime().getTime();
+                long minutes = TimeUnit.MILLISECONDS.toMinutes(hoursCalc);
+                long hours = TimeUnit.MILLISECONDS.toHours(hoursCalc);                
+                tsEntry.setHours((double) (hours + ((minutes - 60*hours) / 60.0)));
 
                 messageString = "Saved!!"; // need to do internationalization;
 
@@ -395,7 +389,7 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
             }
             // get all timesheets for a contract 
 
-            List<TimesheetEntity> timeSheets = timeSheetAccess.getTimeSheetsForContract(contractUuid);
+            List<TimesheetEntity> timeSheets = timeSheetAccess.getTimeSheetsForContractByID(contractAccess.getByUuid(contractUuid).getId());
 
             if (isTerminateContract) {
                 removeList = new ArrayList<TimesheetEntity>();
@@ -407,29 +401,19 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
             }
 
         } catch (IllegalStateException e) {
-                System.err.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
         return "Success";
     }
 
     @Override
-    public TimeSheet printTimeSheet() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<TimeSheet> viewTimeSheet() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public ContractEntity getContractByUUID(String uuid) {
-        return contractAccess.getContractEntity("fa80898f-bd9d-40bd-8203-c7bff5f82d79"); // hardcoding for testing purpose
+        return contractAccess.getContractEntity(uuid); // hardcoding for testing purpose
     }
 
     /**
      *
-     * @param uuid of the contract for which all Timesheets needs to be fetched
+     * @param contractUUID uuid of contract
      * @return List<TimeSheet> objects containing the timesheet details
      */
     @Override
@@ -442,23 +426,15 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
             if (contractUUID == null) {
                 throw new IllegalStateException("****contract cannot be null****");
             }
-            timeSheetList = timeSheetAccess.getTimeSheetsForContract(contractUUID);
+            timeSheetList = timeSheetAccess.getTimeSheetsForContractByID(contractAccess.getByUuid(contractUUID).getId());
 
             tsObjList = new ArrayList<TimeSheet>(timeSheetList.size());
             TimeSheet ts;
-            TimeSheetEntry tsEntry;
-            Boolean isHoliday;
-            LocalDate tempDate;
-            List<TimeSheetEntry> entryList;
             for (final TimesheetEntity entity : timeSheetList) {
-                entryList = new ArrayList<TimeSheetEntry>();
                 ts = new TimeSheet(entity.getUuid(), entity.getName());
                 ts.setEndDate(entity.getEndDate());
-                ts.setId(entity.getId());
                 ts.setStartDate(entity.getStartDate());
                 ts.setStatus(entity.getStatus());
-                ts.setUuid(entity.getUuid());
-
                 ts.setDisplayString(entity.getStartDate().toString() + " - " + entity.getEndDate().toString());
                 tsObjList.add(ts);
             }
@@ -472,24 +448,23 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
 
     /**
      *
-     * @exception illegalStateException if parameter uuid is null.
-     * @param uuid of the timeSheet of contract
+     * @param timeSheetUuid uuid of the timeSheet of contract
      * @return List<TimeSheetEntry> containing the TimeSheet entries for a given
      * timeSheet.
      */
     @Override
-    public List<TimeSheetEntry> getEntriesForTimeSheet(String uuid) {
+    public List<TimeSheetEntry> getEntriesForTimeSheet(final String timeSheetUuid) {
 
         List<TimeSheetEntry> entryList = null;
         Boolean isHoliday;
         try {
-            if (uuid == null) {
+            if (timeSheetUuid == null) {
                 throw new IllegalStateException("Please select a timesheet");
             }
 
             entryList = new ArrayList<TimeSheetEntry>();
-
-            List<TimesheetEntryEntity> objList = timeSheetEntryAccess.getEntriesForTimeSheet(timeSheetEntryAccess.getByUuid(uuid).getId());
+            final Long timeSheetId = timeSheetAccess.getByUuid(timeSheetUuid).getId();
+            final List<TimesheetEntryEntity> objList = timeSheetEntryAccess.getTimeSheetEntriesForTimeSheet(timeSheetId);
             TimeSheetEntry entryObj;
 
             for (TimesheetEntryEntity e : objList) {
@@ -497,8 +472,9 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
                 entryObj.setEntryDate(e.getEntryDate());
                 entryObj.setDateString(e.getEntryDate().toString());
                 entryObj.setDescription(e.getDescription());
-                entryObj.setEndTime(e.getEndTime());
-                entryObj.setStartTime(e.getStartTime());
+                entryObj.setEndDateTime(e.getEndTime());
+                entryObj.setHours(e.getHours() == null ? 0.0 : UTILNumericSupport.round(e.getHours() , 2));
+                entryObj.setStartDateTime(e.getStartTime());
                 if (e.getEntryDate().getDayOfWeek().toString().equalsIgnoreCase("sunday") || e.getEntryDate().getDayOfWeek().toString().equalsIgnoreCase("saturday")) {
                     isHoliday = Boolean.TRUE;
                 } else {
@@ -517,8 +493,9 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
      * // CALL this method when and emp/supervisor wants to sign the timesheet
      *
      * @param uuid of the timesheet
-     * @param submittedByEmp set true if submitted by emp . Set false if submitted by supervisor. Set null if not called by emp or supervisor.
-     * 
+     * @param submittedByEmp set true if submitted by emp . Set false if
+     * submitted by supervisor. Set null if not called by emp or supervisor.
+     *
      * @return String message.
      */
     @Override
@@ -533,17 +510,17 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
             TimesheetEntity tsEntity = timeSheetAccess.findByPrimaryKey(timeSheetAccess.getByUuid(uuid).getId());
 
             // signed by employee should come here
-                if (submittedByEmp) {
+            if (submittedByEmp) {
 
-                    tsEntity.setSignedByEmployee(LocalDate.now());
-                    tsEntity.setStatus(TimesheetStatusEnum.SIGNED_BY_EMPLOYEE);
-                } else {
-                    // signed by supervisor should come here
-                    tsEntity.setSignedBySupervisor(LocalDate.now());
-                    tsEntity.setStatus(TimesheetStatusEnum.SIGNED_BY_SUPERVISOR);
-                }
-                messageString = "TimeSheet Submitted Successfully!";
-                return messageString;
+                tsEntity.setSignedByEmployee(LocalDate.now());
+                tsEntity.setStatus(TimesheetStatusEnum.SIGNED_BY_EMPLOYEE);
+            } else {
+                // signed by supervisor should come here
+                tsEntity.setSignedBySupervisor(LocalDate.now());
+                tsEntity.setStatus(TimesheetStatusEnum.SIGNED_BY_SUPERVISOR);
+            }
+            messageString = "TimeSheet Submitted Successfully!";
+            return messageString;
 
         } catch (IllegalStateException e) {
             System.err.println(e.getMessage());
@@ -570,8 +547,7 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
         }
         return messageString;
     }
-    
-    
+
     // Pradip Code
     @Override
     public List<TimeSheet> getAllTimeSheetsByGivenDate(LocalDate givenDate) {
@@ -579,12 +555,14 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
         List<TimeSheet> tsObjList = null;
         try {
             timeSheetList = timeSheetAccess.getAllTimeSheetsByGivenDate(givenDate);
+            if (timeSheetList == null) {
+                return null;
+            }
             tsObjList = new ArrayList<>();
             TimeSheet ts;
             for (final TimesheetEntity entity : timeSheetList) {
-                ts = new TimeSheet(entity.getUuid() , entity.getName());
+                ts = new TimeSheet(entity.getUuid(), entity.getName());
                 ts.setEndDate(entity.getEndDate());
-                ts.setId(entity.getId());
                 ts.setStartDate(entity.getStartDate());
                 ts.setStatus(entity.getStatus());
                 ts.setDisplayString(entity.getStartDate().toString() + " - " + entity.getEndDate().toString());
@@ -602,7 +580,16 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
         }
         return tsObjList;
     }
-    
+
+    @Override
+    public void deleteOldTimeSheetSignedBySupervisor(LocalDate oldDate) {
+        try {
+            timeSheetAccess.deleteOldTimeSheetSignedBySupervisor(oldDate);
+        } catch (Exception e) {
+
+        }
+    }
+
     @Override
     public List<TimeSheet> getAllTimeSheetsSignedBySupervisor(LocalDate givenDate) {
         List<TimesheetEntity> timeSheetList;
@@ -612,9 +599,9 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
             tsObjList = new ArrayList<>();
             TimeSheet ts;
             for (final TimesheetEntity entity : timeSheetList) {
-                ts = new TimeSheet(entity.getUuid(),entity.getName());
+                ts = new TimeSheet(entity.getUuid(), entity.getName());
                 ts.setEndDate(entity.getEndDate());
-                ts.setId(entity.getId());
+
                 ts.setStartDate(entity.getStartDate());
                 ts.setStatus(entity.getStatus());
                 ts.setDisplayString(entity.getStartDate().toString() + " - " + entity.getEndDate().toString());
@@ -637,9 +624,5 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
     public String submitTimeSheet(TimeSheet obj) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    
-    
+
 }
-
-

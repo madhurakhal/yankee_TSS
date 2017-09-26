@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+
+    <ui:composition template="/WEB-INF/templates/main-template.xhtml">        
+        <ui:param name="pageTitle" value="View Timesheet Entries"/>
+        <ui:define name="breadcrumb">
+            <li>
+                <h:link outcome="dashboard">
+                    <i class="fa fa-dashboard"></i>Home
+                </h:link>
+            </li>
+                  <li>
+                <h:link outcome="dashboard">
+                    Dashboard
+                </h:link>
+            </li>
+            <li>
+               <h:link rendered="#{timeSheetEntryBean.loggedinUser.userRoleRealm eq 'STAFF'}" outcome="managecontracts">
+                    Manage Contracts
+                </h:link>
+                <h:link rendered="#{timeSheetEntryBean.loggedinUser.userRoleRealm eq null}" outcome="employeecontracts">
+                    Employee Contracts
+                </h:link>
+            </li>
+            <li>
+                <h:link outcome = "/logged_in/contractdetails.xhtml?id=#{timeSheetEntryBean.contractUUID}">
+                    View Contract Details
+                </h:link>
+            </li>
+            <li>
+                <h:link disabled = "true">
+                    View Entries
+                </h:link>
+            </li>
+        </ui:define>
+        <ui:define name="main-content">
+            <p></p>
+            <h:form id="timeSheetEntryList" >
+
+                <b:dataTable id="tbl" var="entryObj" value="#{timeSheetEntryBean.entries}" responsive="true">
+
+                    <b:dataTableColumn value="#{entryObj.dateString}" label="Date"/>
+                    <b:dataTableColumn value="#{entryObj.hours}" label="Hours"/>
+                    <b:dataTableColumn value="#{entryObj.description}" label="Description"/>
+                    <b:dataTableColumn value="${entryObj.startDateTime}"/>
+                    <b:dataTableColumn value="${entryObj.endDateTime}"/>
+                </b:dataTable>
+            </h:form>
+
+        </ui:define>
+    </ui:composition>
+
+
+
+</html>

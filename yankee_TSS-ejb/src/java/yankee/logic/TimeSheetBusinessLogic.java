@@ -25,17 +25,17 @@ public interface TimeSheetBusinessLogic extends Serializable {
     public String addUpdateTimeSheetEntry(final TimeSheetEntry obj);
     public String deleteTimeSheetEntry(final String uuid);
     public String deleteTimeSheet(final String contractUuid,final Boolean isTerminateContract);
-    public List<TimeSheet>viewTimeSheet();
-    public TimeSheet printTimeSheet();
     public String submitTimeSheet(final String uudi,final Boolean submittedByEmp);
     public List<TimeSheet> getAllTimeSheetsForContract(final String uuid);
     public ContractEntity getContractByUUID(final String uuid);
     public List<TimeSheetEntry> getEntriesForTimeSheet(final String uuid);
     
     // TO REVIEW
-    public List<TimesheetT> createTimeSheet(final String contractUUID); 
+    public List<TimeSheet> createTimeSheet(final String contractUUID); 
     public String submitTimeSheet(TimeSheet obj);   
     public List<TimeSheet> getAllTimeSheetsByGivenDate (LocalDate givenDate);    
     public List<TimeSheet> getAllTimeSheetsSignedBySupervisor (LocalDate givenDate);
+    
+    public void deleteOldTimeSheetSignedBySupervisor(LocalDate oldDate);
     
 }

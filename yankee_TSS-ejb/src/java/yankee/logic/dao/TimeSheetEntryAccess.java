@@ -32,7 +32,7 @@ public class TimeSheetEntryAccess extends AbstractAccess<TimesheetEntryEntity>{
         return 0;
      }
     
-    public java.util.List<TimesheetEntryEntity> getEntriesForTimeSheet(Long id)
+    public java.util.List<TimesheetEntryEntity> getTimeSheetEntriesForTimeSheet(Long id)
     {
         return em.createNamedQuery("getEntryForTimeSheet",TimesheetEntryEntity.class).setParameter("timesheetId", id).getResultList();
     }

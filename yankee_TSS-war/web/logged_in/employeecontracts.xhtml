@@ -7,7 +7,7 @@
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-    <ui:composition template="/WEB-INF/templates/main-template.xhtml">        
+    <ui:composition template="/WEB-INF/templates/main-template.xhtml">
         <ui:param name="pageTitle" value="Admin Page"/>
         <ui:define name="breadcrumb">
             <li>
@@ -22,7 +22,7 @@
             </li>
         </ui:define>
         <ui:define name="main-content">
-            <b:form id="form"> 
+            <b:form id="form">
                 <p:growl id="msgs" showDetail="true" />
                 <p:outputPanel styleClass="box box-success with-border">
                     <p:outputPanel styleClass="box-header with-border text-center">
@@ -32,13 +32,13 @@
                         <b:tabView contentStyle="border: 1px solid #ddd;padding:10px;"
                                    content-disabled="false"
                                    >
-                            <b:tab title="Prepared">            
+                            <b:tab title="Prepared">
                                 <!-- BEGINS  For Supervisor -->
-                                <p:outputPanel rendered = "#{!empty employeeContractsBean.contractsPreparedAssociatedToEmployee}" styleClass="box">                          
+                                <p:outputPanel rendered = "#{!empty employeeContractsBean.contractsPreparedAssociatedToEmployee}" styleClass="box">
 
-                                    <p:outputPanel styleClass="box-body">                         
-                                        <b:dataTable value="#{employeeContractsBean.contractsPreparedAssociatedToEmployee}" 
-                                                     var="contracts" 
+                                    <p:outputPanel styleClass="box-body">
+                                        <b:dataTable value="#{employeeContractsBean.contractsPreparedAssociatedToEmployee}"
+                                                     var="contracts"
                                                      responsive = "true">
                                             <b:dataTableColumn value="#{contracts.supervisor.person.firstName} #{contracts.supervisor.person.lastName} (#{contracts.supervisor.person.emailAddress})" label="Supervisor"/>
                                             <b:dataTableColumn value="#{contracts.startDate}" label="Start Date"/>
@@ -60,15 +60,15 @@
                                 </p:outputPanel>
                                 <!-- ENDS  For Supervisor-->
                             </b:tab>
-                            
-                            
+
+
                             <b:tab title="Started">
                                 <!-- BEGINS  For Started -->
-                                <p:outputPanel rendered = "#{!empty employeeContractsBean.contractsStartedAssociatedToEmployee}" styleClass="box">                          
+                                <p:outputPanel rendered = "#{!empty employeeContractsBean.contractsStartedAssociatedToEmployee}" styleClass="box">
 
-                                    <p:outputPanel styleClass="box-body">                         
-                                        <b:dataTable value="#{employeeContractsBean.contractsStartedAssociatedToEmployee}" 
-                                                     var="contracts" 
+                                    <p:outputPanel styleClass="box-body">
+                                        <b:dataTable value="#{employeeContractsBean.contractsStartedAssociatedToEmployee}"
+                                                     var="contracts"
                                                      responsive = "true">
                                             <b:dataTableColumn value="#{contracts.supervisor.person.firstName} #{contracts.supervisor.person.lastName} (#{contracts.supervisor.person.emailAddress})" label="Supervisor"/>
                                             <b:dataTableColumn value="#{contracts.startDate}" label="Start Date"/>
@@ -90,21 +90,19 @@
                                 </p:outputPanel>
                                 <!-- ENDS  For Started-->
                             </b:tab>
-                            
+
                             <b:tab title="To Sign Timesheets">
                                 <!-- BEGINS  For TO SIGN -->
-                                <p:outputPanel rendered = "#{!empty employeeContractsBean.contractsToSignAssociatedToEmployee}" styleClass="box">                          
+                                <p:outputPanel rendered = "#{!empty employeeContractsBean.contractsToSignAssociatedToEmployee}" styleClass="box">
 
-                                    <p:outputPanel styleClass="box-body">                         
-                                        <b:dataTable value="#{employeeContractsBean.contractsToSignAssociatedToEmployee}" 
-                                                     var="contracts" 
+                                    <p:outputPanel styleClass="box-body">
+                                        <b:dataTable value="#{employeeContractsBean.contractsToSignAssociatedToEmployee}"
+                                                     var="contracts"
                                                      responsive = "true">
                                             <b:dataTableColumn value="#{contracts.supervisor.person.firstName} #{contracts.supervisor.person.lastName} (#{contracts.supervisor.person.emailAddress})" label="Supervisor"/>
                                             <b:dataTableColumn value="#{contracts.startDate}" label="Start Date"/>
                                             <b:dataTableColumn value="#{contracts.endDate}" label="End Date"/>
-
                                             <b:dataTableColumn value="#{contracts.frequency}" label="Frequency"/>
-
                                             <b:dataTableColumn label="Statistics" style="width:50px">
 
                                                 <p:commandButton  icon="fa fa-fw fa-info-circle"  value = "View" id="viewContractToSignInfo" action="#{employeeContractsBean.onRowView}">
@@ -118,11 +116,11 @@
                                     </p:outputPanel>
                                 </p:outputPanel>
 
-                                <!-- ENDS  For TO SIGN-->        
+                                <!-- ENDS  For TO SIGN-->
                             </b:tab>
-                            
+
                         </b:tabView>
-                     
+
                     </p:outputPanel>
                 </p:outputPanel>
 
@@ -133,7 +131,7 @@
                 </p:confirmDialog>
                 <!-- ENDS  For Global Confirmation dialog-->
 
-                <p:growl  id="msgss" showDetail="true"/>  
+                <p:growl  id="msgss" showDetail="true"/>
             </b:form>
 
         </ui:define>

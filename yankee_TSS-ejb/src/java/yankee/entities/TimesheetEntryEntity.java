@@ -15,11 +15,11 @@ import javax.persistence.Table;
 
 /**
  *
- * TODO: REMOVE relation getter setter as per our requirement. delete set if in collection.
+ * TODO: REMOVE relation getter setter as per our requirement. delete set if in
+ * collection.
  */
-
 @NamedQueries({
-@NamedQuery(name = "getEntryForTimeSheet", query = "SELECT p FROM TimesheetEntryEntity p WHERE p.timesheet.id = :timesheetId")
+    @NamedQuery(name = "getEntryForTimeSheet", query = "SELECT p FROM TimesheetEntryEntity p WHERE p.timesheet.id = :timesheetId")
 })
 @Entity
 @Table(name = "TIMESHEETENTRY")
@@ -31,7 +31,16 @@ public class TimesheetEntryEntity extends NamedEntity {
 
     private Time endTime;
 
+    private Double hours;
     private LocalDate entryDate;
+
+    public Double getHours() {
+        return hours;
+    }
+
+    public void setHours(Double hours) {
+        this.hours = hours;
+    }
 
     @ManyToOne
     private TimesheetEntity timesheet;
@@ -82,7 +91,5 @@ public class TimesheetEntryEntity extends NamedEntity {
     public void setTimesheet(TimesheetEntity timesheet) {
         this.timesheet = timesheet;
     }
-
-
 
 }

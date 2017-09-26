@@ -8,7 +8,17 @@
       xmlns:b="http://bootsfaces.net/ui">
     <ui:composition template="/WEB-INF/templates/main-template.xhtml">
         <ui:param name="pageTitle" value="Create Contract Page"/>
-        <ui:define name="breadcrumb">
+        <ui:define name="breadcrumb">          
+            <li>
+                <h:link outcome="index">
+                    <i class="fa fa-dashboard"></i>Home
+                </h:link>
+            </li>
+            <li>
+                <h:link outcome="dashboard">
+                    Dashboard
+                </h:link>
+            </li>
             <li>
                 <h:link outcome="managecontracts">
                     #{msg.manageContracts}
@@ -18,35 +28,35 @@
                 <h:link disabled="true">
                     #{msg.editContract}
                 </h:link>
-            </li>
+            </li>            
         </ui:define>
         <ui:define name="main-content">
             <f:verbatim>
                 <script type="text/javascript">
-                   //<![CDATA[
-                        var date1 = new Date();
-                        var currentMonth = date1.getMonth();
-                        function enableOnlyFirstDay(date) {
-                            if (date.getTime() - 8640000 >= date1.getTime()) {
-                                if (date.getDate() === 1) return [true];
-                            }
-                            return [false];
-                        }
-                        function enableOnlyLastDay(date) {
-                            var startDate = document.querySelector('input[id$="startDate_input"]').value
+                    //<![CDATA[
+                    var date1 = new Date();
+                    var currentMonth = date1.getMonth();
+                    function enableOnlyFirstDay(date) {
+                    if (date.getTime() - 8640000 >= date1.getTime()) {
+                    if (date.getDate() === 1) return [true];
+                    }
+                    return [false];
+                    }
+                    function enableOnlyLastDay(date) {
+                    var startDate = document.querySelector('input[id$="startDate_input"]').value
                             if (startDate === '') {
-                                return [false];
-                            }
-                            
-                            var d1 = new Date(startDate);
-                            if (date.getTime() > d1.getTime()) {
-                                var lastDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-                                if (date.getDate() === lastDate.getDate()) {
-                                    return [true];
-                                }
-                            }
-                            return [false];
-                        }
+                    return [false];
+                    }
+
+                    var d1 = new Date(startDate);
+                    if (date.getTime() > d1.getTime()) {
+                    var lastDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+                    if (date.getDate() === lastDate.getDate()) {
+                    return [true];
+                    }
+                    }
+                    return [false];
+                    }
                     //]]> 
                 </script>
             </f:verbatim>
@@ -90,30 +100,30 @@
                                         </b:selectOneMenu>
                                     </b:column>
                                 </b:formGroup>
-                                
+
                                 <b:formGroup>
                                     <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="workingDaysPerWeek">#{msg.workingDaysPerWeek}</h:outputLabel>
-                                            <b:column  col-sm="6" col-xs="12">
-                                                <h:inputText required= "true" id="workingDaysPerWeek" value="#{editContractBean.workingDaysPerWeek}" styleClass="form-control" onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;"/>
-                                            </b:column>
+                                    <b:column  col-sm="6" col-xs="12">
+                                        <h:inputText required= "true" id="workingDaysPerWeek" value="#{editContractBean.workingDaysPerWeek}" styleClass="form-control" onkeypress="if (event.which & lt; 48 || event.which & gt; 57) return false;"/>
+                                    </b:column>
 
-                                        </b:formGroup>
+                                </b:formGroup>
 
-                                        <b:formGroup>
-                                            <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="vacationDaysPerYear">#{msg.vacationPerYear}</h:outputLabel>
-                                            <b:column  col-sm="6" col-xs="12">
-                                                <h:inputText required = "true" id="vacationDaysPerYear" value="#{editContractBean.vacationDaysPerYear}" styleClass="form-control" onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;"/>
-                                            </b:column>
+                                <b:formGroup>
+                                    <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="vacationDaysPerYear">#{msg.vacationPerYear}</h:outputLabel>
+                                    <b:column  col-sm="6" col-xs="12">
+                                        <h:inputText required = "true" id="vacationDaysPerYear" value="#{editContractBean.vacationDaysPerYear}" styleClass="form-control" onkeypress="if (event.which & lt; 48 || event.which & gt; 57) return false;"/>
+                                    </b:column>
 
-                                        </b:formGroup>
+                                </b:formGroup>
 
 
-                                        <b:formGroup>
-                                            <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="hoursPerWeek">#{msg.hoursPerWeek}</h:outputLabel>
-                                        <b:column col-sm="6" col-xs="12">
-                                            <h:inputText required="true" id="hoursPerWeek" value="#{editContractBean.hoursPerWeek}" styleClass="form-control" onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;"/>
-                                        </b:column>
-                                    </b:formGroup>
+                                <b:formGroup>
+                                    <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="hoursPerWeek">#{msg.hoursPerWeek}</h:outputLabel>
+                                    <b:column col-sm="6" col-xs="12">
+                                        <h:inputText required="true" id="hoursPerWeek" value="#{editContractBean.hoursPerWeek}" styleClass="form-control" onkeypress="if (event.which & lt; 48 || event.which & gt; 57) return false;"/>
+                                    </b:column>
+                                </b:formGroup>
 
                                 <b:formGroup>
                                     <h:outputLabel for="changeSupervisor" value="Change Supervisor" styleClass="col-xs-12 col-sm-3 control-label"/>

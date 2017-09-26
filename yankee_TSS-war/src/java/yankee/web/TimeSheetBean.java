@@ -18,10 +18,12 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.ValueChangeEvent;
+import javax.inject.Inject;
 import javax.inject.Named;
 import yankee.entities.ContractEntity;
 import yankee.logic.TimeSheetBusinessLogic;
 import yankee.logic.dao.TimeSheetAccess;
+import yankee.logic.to.Person;
 import yankee.logic.to.TimeSheet;
 import yankee.logic.to.TimeSheetEntry;
 
@@ -43,6 +45,19 @@ public class TimeSheetBean {
 
     private TimeSheet timeSheetFor;
 
+    private Person loggedinUser;
+    @Inject
+    private LoginBean loginBean;
+
+    public Person getLoggedinUser() {
+        loggedinUser = loginBean.getUser();
+        return loggedinUser;
+    }
+
+    public void setLoggedinUser(Person loggedinUser) {
+        this.loggedinUser = loggedinUser;
+    }
+
     public String getUuid() {
         return uuid;
     }
@@ -60,7 +75,7 @@ public class TimeSheetBean {
 
     @EJB
     TimeSheetAccess timeSheetAccess;
-   
+
     public TimeSheet getTimeSheetFor() {
         return timeSheetFor;
     }
@@ -68,7 +83,7 @@ public class TimeSheetBean {
     public void setTimeSheetFor(TimeSheet timeSheetFor) {
         this.timeSheetFor = timeSheetFor;
     }
-    
+
     @EJB
     private TimeSheetBusinessLogic timeSheetService;
 
@@ -87,36 +102,31 @@ public class TimeSheetBean {
     public List<TimeSheet> getTimesheets() {
         return timesheets;
     }
-  
-    
-    @PostConstruct
-    public  void init()    {
-        if (timeSheetService != null) { 
 
-          //  final ContractEntity centity = timeSheetService.getContractByUUID("8901039d-bbbe-4e3d-93b9-9bda4a014d1a");
-          //  timesheets=timeSheetService.getAllTimeSheetsForContract(centity.getUuid());
+    @PostConstruct
+    public void init() {
+        if (timeSheetService != null) {
+
+            final ContractEntity centity = timeSheetService.getContractByUUID("8abb2b3b-18ed-4fbb-82af-9d61b922f409");
+            timesheets = timeSheetService.getAllTimeSheetsForContract(centity.getUuid());
         }
     }
-  
-    public void onSubmitRow(String timeSheet_uuid)
-    {   
+
+    public void onSubmitRow(String timeSheet_uuid) {
         timeSheetService.submitTimeSheet(timeSheet_uuid, Boolean.TRUE);
-        
-     } 
-    
-    public void onRowView(String timeSheetUUId,String displayStrings)throws IOException {
-        
+
+    }
+
+    public void onRowView(String timeSheetUUId, String displayStrings) throws IOException {
+
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect(ec.getRequestContextPath() + "/public/view_timesheet_entries.xhtml?id=" + timeSheetUUId);
-        
+
     }
-    
-       
-    public void addNewEntry(String timeSheetUUId,String displayString)throws IOException
-    {
+
+    public void addNewEntry(String timeSheetUUId, String displayString) throws IOException {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/public/timesheet_entry.xhtml?id=" + timeSheetUUId+"&timeSheetDateRange="+displayString);
+        ec.redirect(ec.getRequestContextPath() + "/public/timesheet_entry.xhtml?id=" + timeSheetUUId + "&timeSheetDateRange=" + displayString);
     }
-  
 
 }
