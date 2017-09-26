@@ -8,7 +8,6 @@ import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import yankee.logic.ContractBusinessLogic;
@@ -20,8 +19,8 @@ import yankee.logic.to.Employee;
 import yankee.logic.to.Person;
 import yankee.logic.to.Supervisor;
 import org.primefaces.event.RowEditEvent;
+import yankee.logic.ENUM.ContractStatusEnum;
 import yankee.logic.ENUM.TimesheetFrequencyEnum;
-import yankee.logic.dao.PersonAccess;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -174,9 +173,10 @@ public class CreateContractBean {
                 }
                 for (Supervisor s : ls) {
                     Employee e = employeeBusinessLogic.getEmployeeByContract(s.getContract().getUuid());
-                    if (e != null) {
+                    if (e != null ) {
                         if (all.getUuid() == null ? e.getPerson().getUuid() == null : all.getUuid().equals(e.getPerson().getUuid())) {
-                            iter.remove();
+                            if(s.getContract().getStatus()== ContractStatusEnum.TERMINATED){
+                            iter.remove();}
                         }
                     }
                 }
@@ -226,7 +226,8 @@ public class CreateContractBean {
                         Employee e = employeeBusinessLogic.getEmployeeByContract(s.getContract().getUuid());
                         if (e != null) {
                             if (e.getPerson().getUuid().equals(contractTo.getUuid())) {
-                                hashimAsSupervisor = true;                                
+                                if (s.getContract().getStatus()== ContractStatusEnum.TERMINATED)
+                                {hashimAsSupervisor = true;  }                              
                             }
                         }
                     };

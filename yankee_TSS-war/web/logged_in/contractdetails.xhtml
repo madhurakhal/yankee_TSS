@@ -69,7 +69,7 @@
                                 </b:formGroup>
 
 
-                                <b:formGroup>
+                                <b:formGroup rendered="#{not empty contractDetailsBean.assistantsForContract}">
                                     <h:outputLabel value="#{msg.assistants}" styleClass="col-xs-12 col-sm-3 control-label" />
                                     <b:column col-sm="9" col-xs="12">
                                         <p:dataList value="#{contractDetailsBean.assistantsForContract}" var="assistants" type="definition">                                            
@@ -78,7 +78,7 @@
                                     </b:column>
                                 </b:formGroup>
 
-                                <b:formGroup>
+                                <b:formGroup rendered="#{not empty contractDetailsBean.secretariesForContract}">
                                     <h:outputLabel value="#{msg.secretaries}" styleClass="col-xs-12 col-sm-3 control-label" />
                                     <b:column col-sm="9" col-xs="12">
                                         <p:dataList value="#{contractDetailsBean.secretariesForContract}" var="secretaries" type="definition">                                            
@@ -120,8 +120,7 @@
 
                     <b:dataTableColumn label="Action " style="width:50px" >
                          <!--If the timesheet in progress then render submit for employee-->
-                        <p:commandButton rendered = "#{timesheet.status eq 'IN_PROGRESS' and !contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane" id="submitTimeSheetEmployee" action="#{contractDetailsBean.onSignByEmployeeRow(timesheet.uuid)}">
-                            <!-- <p:confirm header="Confirmation" message="Comfirm Submit timesheet?" icon="ui-icon-alert" />-->
+                        <p:commandButton rendered = "#{timesheet.status eq 'IN_PROGRESS' and !contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane" id="submitTimeSheetEmployee" action="#{contractDetailsBean.onSignByEmployeeRow(timesheet.uuid)}">                           
                             <p:confirm header="Confirmation" message="Confirm Sign?" icon="ui-icon-alert" />
                         </p:commandButton>
                         <p:tooltip id="submitIconToolTipE" for="submitTimeSheetEmployee" position="bottom" value="Sign TimeSheet E" showEffect="clip" hideEffect="explode"></p:tooltip>

@@ -2,9 +2,7 @@ package yankee.web;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -43,28 +41,21 @@ public class ManageContractsBean {
     private TimeSheetBusinessLogic timeSheetBusinessLogic;
 
     public boolean allTimeSheetsInProgressSignedBySuper(String contractUUID) {
-        System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" + contractUUID);
         List<TimeSheet> lt = timeSheetBusinessLogic.getAllTimeSheetsForContract(contractUUID);
         // The following says if no entires obtained for archived or signed by employee
-        //return lt.stream().filter(p -> (p.getStatus() == TimesheetStatusEnum.ARCHIVED || p.getStatus() == TimesheetStatusEnum.SIGNED_BY_EMPLOYEE)).collect(Collectors.toList()).isEmpty();
-        
-        // test
-        return true;
+        return lt.stream().filter(p -> (p.getStatus() == TimesheetStatusEnum.ARCHIVED || p.getStatus() == TimesheetStatusEnum.SIGNED_BY_EMPLOYEE)).collect(Collectors.toList()).isEmpty();
     }
     
     public boolean contractWithTimesheetHasEntries(String contractUUID){
         // In progress timesheets with entries
-//        List<TimeSheet> lt = timeSheetBusinessLogic.getAllTimeSheetsForContract(contractUUID);
-//        for (TimeSheet t : lt.stream().filter(p -> p.getStatus() == TimesheetStatusEnum.IN_PROGRESS).collect(Collectors.toList())){
-//            List<TimeSheetEntry> ltse = timeSheetBusinessLogic.getEntriesForTimeSheet(t.getUuid());
-//            if(!ltse.stream().filter(e->e.isIsFilled()).collect(Collectors.toList()).isEmpty()){
-//                return true;
-//            }
-//        }
-//        return false;
-
-        //test
-        return true;
+        List<TimeSheet> lt = timeSheetBusinessLogic.getAllTimeSheetsForContract(contractUUID);
+        for (TimeSheet t : lt.stream().filter(p -> p.getStatus() == TimesheetStatusEnum.IN_PROGRESS).collect(Collectors.toList())){
+            List<TimeSheetEntry> ltse = timeSheetBusinessLogic.getEntriesForTimeSheet(t.getUuid());
+            if(!ltse.stream().filter(e->e.isIsFilled()).collect(Collectors.toList()).isEmpty()){
+                return true;
+            }
+        }
+        return false;
     }
 
     @Inject
