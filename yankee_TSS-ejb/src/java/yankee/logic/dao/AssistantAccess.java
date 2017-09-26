@@ -72,7 +72,7 @@ public class AssistantAccess extends AbstractAccess<AssistantEntity> {
     }
     
     
-    @RolesAllowed("AUTHENTICATED")
+    //@RolesAllowed("AUTHENTICATED")
     public List<AssistantEntity> getAssistantsByContract(ContractEntity contract) {
        try {
             return em.createNamedQuery("getAssistantsByContract", AssistantEntity.class)

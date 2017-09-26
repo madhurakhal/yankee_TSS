@@ -2,8 +2,6 @@ package yankee.web;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -24,10 +22,8 @@ import yankee.logic.SupervisorBusinessLogic;
 import yankee.logic.to.Assistant;
 import yankee.logic.to.Person;
 import yankee.logic.to.Secretary;
-import yankee.logic.ENUM.TimesheetFrequencyEnum;
 import yankee.logic.EmployeeBusinessLogic;
 import yankee.logic.TimeSheetBusinessLogic;
-import yankee.logic.dao.TimeSheetAccess;
 import yankee.logic.to.Contract;
 import yankee.logic.to.TimeSheet;
 import yankee.logic.to.TimeSheetEntry;
@@ -110,6 +106,9 @@ public class ContractDetailsBean {
         getSupervisorForContract();
         getAssistantsForContract();
         getSecretariesForContract();
+        
+        // For timesheet
+        timesheets = timeSheetBusinessLogic.getAllTimeSheetsForContract(contract_id);
     }
 
     // BEGINS GETTER AND SETTER for contract id then current assistant , supervisor, secretaries for given contract
@@ -187,16 +186,66 @@ public class ContractDetailsBean {
     /**/
      /**/
     /**/
-    
+    // TIME SHEET TIME SHEEET
     /* BEGIN:::  TimeSheettts DISPLAY BEGINSSSS*/
     
     // All For Timesheets BEGINSSSS
+    
     @EJB
     private TimeSheetBusinessLogic timeSheetBusinessLogic;
     
     private List<TimeSheet> timesheets;    
     private List<TimeSheetEntry> timeSheetEntries;
     private TimeSheet timeSheetFor;
+    private String uuid;
+    
+    // Begins For tabs in contract details 
+    TimeSheet currentTimeSheet;
+    List<TimeSheet> signedByEmployeeTimeSheets;    
+    List<TimeSheet> inProgressTimeSheets;
+    List<TimeSheet> inArchivedTimeSheets;
+    List<TimeSheet> allTimeSheets;
+
+    public TimeSheet getCurrentTimeSheet() {
+        return currentTimeSheet;
+    }
+
+    public void setCurrentTimeSheet(TimeSheet currentTimeSheet) {
+        this.currentTimeSheet = currentTimeSheet;
+    }
+
+    public List<TimeSheet> getSignedByEmployeeTimeSheets() {
+        return signedByEmployeeTimeSheets;
+    }
+
+    public void setSignedByEmployeeTimeSheets(List<TimeSheet> signedByEmployeeTimeSheets) {
+        this.signedByEmployeeTimeSheets = signedByEmployeeTimeSheets;
+    }
+
+    public List<TimeSheet> getInProgressTimeSheets() {
+        return inProgressTimeSheets;
+    }
+
+    public void setInProgressTimeSheets(List<TimeSheet> inProgressTimeSheets) {
+        this.inProgressTimeSheets = inProgressTimeSheets;
+    }
+
+    public List<TimeSheet> getInArchivedTimeSheets() {
+        return inArchivedTimeSheets;
+    }
+
+    public void setInArchivedTimeSheets(List<TimeSheet> inArchivedTimeSheets) {
+        this.inArchivedTimeSheets = inArchivedTimeSheets;
+    }
+
+    public List<TimeSheet> getAllTimeSheets() {
+        return allTimeSheets;
+    }
+
+    public void setAllTimeSheets(List<TimeSheet> allTimeSheets) {
+        this.allTimeSheets = allTimeSheets;
+    }
+    // Ends For tabs in contract details
 
     public String getUuid() {
         return uuid;
@@ -205,14 +254,12 @@ public class ContractDetailsBean {
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }
-    private String uuid;
+    
 
 
     public List<TimeSheetEntry> getTimeSheetEntries() {
         return timeSheetEntries;
-    }
-    
-    
+    }   
 
     public TimeSheet getTimeSheetFor() {
         return timeSheetFor;
@@ -227,8 +274,7 @@ public class ContractDetailsBean {
         this.timesheets = timesheets;
     }
 
-    public List<TimeSheet> getTimesheets() {
-        timesheets = timeSheetBusinessLogic.getAllTimeSheetsForContract(contract_id);
+    public List<TimeSheet> getTimesheets() {        
         return timesheets;
     }
     

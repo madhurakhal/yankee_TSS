@@ -96,6 +96,7 @@ public class SupervisorBusinessLogicImpl implements SupervisorBusinessLogic {
         p.setFirstName(person.getFirstName());
         p.setLastName(person.getLastName());
         p.setDateOfBirth(person.getDateOfBirth());
+        p.setEmailAddress(person.getEmailAddress());
         p.setPreferredLanguage(person.getPreferredLanguage());
         p.setUserRoleRealm(person.getUserRoleRealm());
         //p.setRoles(person.getRoles());

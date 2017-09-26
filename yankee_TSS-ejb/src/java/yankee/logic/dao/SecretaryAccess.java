@@ -69,7 +69,7 @@ public class SecretaryAccess extends AbstractAccess<SecretaryEntity> {
         }
     }
     
-    @RolesAllowed("AUTHENTICATED")
+    
     public List<SecretaryEntity> getSecretariesByContract(ContractEntity contract) {
        try {
             em.flush();

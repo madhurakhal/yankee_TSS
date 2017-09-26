@@ -1,6 +1,7 @@
 package yankee.reminder.service;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -63,9 +64,10 @@ public class ReminderBean {
     public List<TimeSheet> getTimeSheetsToSendReminder() {
         //Current Date
         LocalDate today = LocalDate.now();
+        LocalDate todayl = LocalDate.of(2017, 11, 7);
         System.out.println("Current Date=" + today);
         try {
-            timeSheets = timeSheetBusinessLogic.getAllTimeSheetsByGivenDate(today);
+            timeSheets = timeSheetBusinessLogic.getAllTimeSheetsByGivenDate(todayl);
             System.out.println("list of timesheets = " + timeSheets);
         } catch (NumberFormatException ne) {
             System.out.println("Exception Occured from timeSheetBusinessLogic!!");

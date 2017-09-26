@@ -80,7 +80,7 @@ public class SupervisorAccess extends AbstractAccess<SupervisorEntity> {
         } 
     }
     
-    @RolesAllowed("AUTHENTICATED")
+
     public SupervisorEntity getSupervisorByContract(ContractEntity contract) {
        try {
             em.flush();
