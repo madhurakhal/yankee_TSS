@@ -56,10 +56,17 @@
                                     <b:dataTableColumn value="#{persons.contractStatusForRole}" label="Status" style="width:150px"/>
 
                                     <b:dataTableColumn label="#{msg.action} " style="width:60px">
-                                        <p:commandButton styleClass="flat"  rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-caret-right"  id="startPersonSuper" update="form" actionListener="#{manageContractsBean.onRowStart(persons.contractUUIDForRole)}">
+                                        <!--BEGINS Start Contract.-->
+                                        <!--If public holidays loaded.-->
+                                        <p:commandButton styleClass="flat"  rendered = "#{persons.contractStatusForRole eq 'PREPARED' and !publicHolidaysBean.databaseEmpty}" icon="fa fa-fw fa-caret-right"  id="startPersonSuper" update="form" actionListener="#{manageContractsBean.onRowStart(persons.contractUUIDForRole)}">
                                             <p:tooltip for="startPersonSuper" position="bottom" value="Start Contract" showEffect="clip" hideEffect="explode"/>
                                             <p:confirm header="Confirmation" message="Confirm Start?" icon="ui-icon-alert" />
                                         </p:commandButton>
+                                        <!--If public holidays not loaded-->
+                                        <p:commandButton styleClass="flat"  rendered = "#{persons.contractStatusForRole eq 'PREPARED' and publicHolidaysBean.databaseEmpty}" icon="fa fa-fw fa-caret-right"  id="startPersonSuperNL"  onclick = "PF('publicholidaynotloadeddialog').show()">
+                                            <p:tooltip for="startPersonSuperNL" position="bottom" value="Start Contract" showEffect="clip" hideEffect="explode"/>                                            
+                                        </p:commandButton>
+                                        <!--ENDS Start Contract-->
 
                                         <p:commandButton  icon="fa fa-fw fa-television"  id="viewPersonSuper" action="#{manageContractsBean.onRowView(persons.contractUUIDForRole)}"/>
                                         <p:tooltip for="viewPersonSuper" position="bottom" value="View" showEffect="clip" hideEffect="explode"/>
@@ -113,10 +120,19 @@
 
 
                                     <b:dataTableColumn label="#{msg.action} " style="width:60px">
-                                        <p:commandButton styleClass="flat" rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-caret-right"  id="startPersonAssis" update="form" actionListener="#{manageContractsBean.onRowStart(persons.contractUUIDForRole)}">
-                                            <p:confirm header="Confirmation" message="Confirm Start?" icon="ui-icon-alert" />   
+                                        
+                                                                                <!--BEGINS Start Contract.-->
+                                        <!--If public holidays loaded.-->
+                                        <p:commandButton styleClass="flat"  rendered = "#{persons.contractStatusForRole eq 'PREPARED' and !publicHolidaysBean.databaseEmpty}" icon="fa fa-fw fa-caret-right"  id="startPersonAssis" update="form" actionListener="#{manageContractsBean.onRowStart(persons.contractUUIDForRole)}">
                                             <p:tooltip for="startPersonAssis" position="bottom" value="Start Contract" showEffect="clip" hideEffect="explode"/>
+                                            <p:confirm header="Confirmation" message="Confirm Start?" icon="ui-icon-alert" />
                                         </p:commandButton>
+                                        <!--If public holidays not loaded-->
+                                        <p:commandButton styleClass="flat"  rendered = "#{persons.contractStatusForRole eq 'PREPARED' and publicHolidaysBean.databaseEmpty}" icon="fa fa-fw fa-caret-right"  id="startPersonAssisNL"  onclick = "PF('publicholidaynotloadeddialog').show()">
+                                            <p:tooltip for="startPersonAssisNL" position="bottom" value="Start Contract" showEffect="clip" hideEffect="explode"/>                                            
+                                        </p:commandButton>
+                                        <!--ENDS Start Contract-->                                        
+                                
 
                                         <p:commandButton  icon="fa fa-fw fa-television"  id="viewPersonAssis" action="#{manageContractsBean.onRowView(persons.contractUUIDForRole)}"/>
                                         <p:tooltip for="viewPersonAssis" position="bottom" value="View" showEffect="clip" hideEffect="explode"/>
@@ -212,6 +228,9 @@
 
                 <p:dialog header="Cannot Terminate!" widgetVar="cannotterminatedialog" minHeight="40">
                     <h:outputText value="One or more Timesheets are either Signed By Employee or Archived Status " />
+                </p:dialog>
+                <p:dialog header="Waiting for Admin!!" widgetVar="publicholidaynotloadeddialog" minHeight="40">
+                    <h:outputText value="Please wait for Admin to load Public Holidays" />
                 </p:dialog>
 
 

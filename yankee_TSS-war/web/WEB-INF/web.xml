@@ -5,9 +5,9 @@
         <param-value>Development</param-value>
     </context-param>
     <context-param>
-   <param-name>facelets.SKIP_COMMENTS</param-name>
-   <param-value>true</param-value>
-</context-param>
+        <param-name>facelets.SKIP_COMMENTS</param-name>
+        <param-value>true</param-value>
+    </context-param>
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
@@ -92,6 +92,12 @@
             <description/>
             <url-pattern>/faces/staff_logged_in/*</url-pattern>
             <url-pattern>/staff_logged_in/*</url-pattern>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>ManageContract</web-resource-name>
+            <description/>
+            <url-pattern>/logged_in/managecontracts.xhtml</url-pattern>
+            <url-pattern>/faces/logged_in/managecontracts.xhtml</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <description>Staffs only</description>

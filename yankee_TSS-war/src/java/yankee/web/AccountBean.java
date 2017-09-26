@@ -60,7 +60,7 @@ public class AccountBean implements Serializable {
     public Person getPerson() {
         if (person == null) {
             person = personBusinessLogic.getPersonByName(logInBean.getUser().getName());
-            System.out.println("IMAGESSSSSS" + Arrays.toString(person.getPhoto()));
+            //System.out.println("IMAGESSSSSS" + Arrays.toString(person.getPhoto()));
             if (person.getPhoto() != null) {
                 chart = new DefaultStreamedContent(new ByteArrayInputStream(person.getPhoto()));
             }
@@ -73,14 +73,10 @@ public class AccountBean implements Serializable {
     }
 
     public void update() {
-        System.out.println("Date of Birth is  " + dateOfBirth);
-
-        System.out.println("Preferred Language is  " + person.getPreferredLanguage());
         if (dateOfBirth != null) {
             person.setDateOfBirth(dateOfBirth.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         }
-        System.out.println(Arrays.toString(person.getPhoto()));
-        //personBusinessLogic.updateDetails(person);
+        personBusinessLogic.updateDetails(person);
     }
 
     public void handleFileUpload(FileUploadEvent event) {
