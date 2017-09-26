@@ -60,6 +60,6 @@ public class AccountBean implements Serializable {
         FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
         FacesContext.getCurrentInstance().addMessage(null, message);
         UploadedFile file = event.getFile();
-        
+        person.setPhoto(file.getContents());
     }
 }

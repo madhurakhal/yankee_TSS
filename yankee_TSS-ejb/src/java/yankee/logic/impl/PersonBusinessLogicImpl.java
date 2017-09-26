@@ -79,7 +79,7 @@ public class PersonBusinessLogicImpl implements PersonBusinessLogic {
         p.setEmailAddress(pe.getEmailAddress());
         p.setDateOfBirth(pe.getDateOfBirth());
         p.setUserRoleRealm(pe.getUserRoleRealm());
-        //p.set
+        p.setPhoto(pe.getPhoto());
         return p;
     }
 

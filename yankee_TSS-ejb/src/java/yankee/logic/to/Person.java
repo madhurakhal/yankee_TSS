@@ -3,6 +3,7 @@ package yankee.logic.to;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Set;
+import javax.persistence.Lob;
 import yankee.entities.RoleEntity;
 import yankee.logic.ENUM.ContractStatusEnum;
 import yankee.logic.ENUM.PreferredLanguageENUM;
@@ -11,6 +12,15 @@ public class Person extends Named {
 
     private static final long serialVersionUID = 2813983198416172587L;
 
+    private byte[] photo;
+
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
+    }
     private String firstName;    
     private String lastName;
     private String emailAddress;
