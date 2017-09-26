@@ -1,21 +1,13 @@
 package yankee.web;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.inject.Inject;
-import javax.inject.Named;
-import yankee.entities.ContractEntity;
 import yankee.logic.AssistantBusinessLogic;
 import yankee.logic.ContractBusinessLogic;
 import yankee.logic.PersonBusinessLogic;
@@ -24,18 +16,12 @@ import yankee.logic.SupervisorBusinessLogic;
 import yankee.logic.to.Assistant;
 import yankee.logic.to.Person;
 import yankee.logic.to.Secretary;
-import yankee.logic.ENUM.TimesheetFrequencyEnum;
 import yankee.logic.EmployeeBusinessLogic;
-import yankee.logic.TimeSheetBusinessLogic;
-import yankee.logic.dao.TimeSheetAccess;
 import yankee.logic.to.Contract;
-import yankee.logic.to.TimeSheet;
-import yankee.logic.to.TimeSheetEntry;
 
 @ManagedBean
 @ViewScoped
-@Named
-public class ContractDetailsBean {
+public class PrintpreviewtimesheetBean {
 
     @EJB
     private SupervisorBusinessLogic supervisorBusinessLogic;
@@ -48,54 +34,44 @@ public class ContractDetailsBean {
 
     @EJB
     private PersonBusinessLogic personBusinessLogic;
-
+    
     @EJB
     private ContractBusinessLogic contractBusinessLogic;
 
     @EJB
     private EmployeeBusinessLogic employeeBusinessLogic;
-    
-    @Inject
-    private LoginBean loginBean;
 
     private String contract_id;
+    private String timesheetID;
+
+    public String getTimesheetID() {
+        if (timesheetID == null) {
+            Map<String, String> params = FacesContext.getCurrentInstance()
+                    .getExternalContext().getRequestParameterMap();
+            timesheetID = params.get("id");
+        }
+        return timesheetID;
+    }
+
+    public void setTimesheetID(String timesheetID) {
+        this.timesheetID = timesheetID;
+    }
     private Person currentContractPerson;
     private Contract contractinfo;
-    private Person loggedinUser;
-
-    public Person getLoggedinUser() {
-        loggedinUser = loginBean.getUser();
-        return loggedinUser;
-    }
-
-    public void setLoggedinUser(Person loggedinUser) {
-        this.loggedinUser = loggedinUser;
-    }
-
+    
     private Person supervisorForContract;
     private List<Person> secretariesForContract = new ArrayList<>();
     private List<Person> assistantsForContract = new ArrayList<>();
     private List<Person> persons = new ArrayList<>();
- 
-    public boolean isSupervisor(String timeSheetUUID){
-       System.out.println("TIMEEEEEEEEEEEEEEEEEEEEEEEEEEEE" + timeSheetUUID);
-       ContractEntity ce = timeSheetBusinessLogic.getContractByTimesheetUUID(timeSheetUUID);
-       return ce.getSupervisor().getPerson().getUuid().equals(loggedinUser.getUuid());
-    }
-    
-    public boolean isSecretary(String timeSheetUUID){
-        ContractEntity ce = timeSheetBusinessLogic.getContractByTimesheetUUID(timeSheetUUID);
-        List<Secretary> ls = secretaryBusinessLogic.getSecretariesByContract(ce.getUuid());
-        // For each secretary if one of the secretary matches the person logged in
-        return !ls.stream().filter(e->e.getPerson().getUuid().equals(loggedinUser.getUuid())).collect(Collectors.toList()).isEmpty();
-    }
+
 
     @PostConstruct
     public void init() {
         //This contract id will be sent to edit contract as parameter in url from managecontract edit is pressed
         // This will be used in getting current assistant, supervisor, secretary for this contract id below.
-        System.out.println("called me init only once yes?");
+        System.out.println("SHIRHARSH WAS HEREEEE");
         getContract_id();
+        getTimesheetID();
         getPersons();
         getCurrentContractPerson();
 
@@ -106,6 +82,7 @@ public class ContractDetailsBean {
     }
 
     // BEGINS GETTER AND SETTER for contract id then current assistant , supervisor, secretaries for given contract
+    
     public Person getCurrentContractPerson() {
         if (currentContractPerson == null) {
             currentContractPerson = employeeBusinessLogic.getEmployeeByContract(contract_id).getPerson();
@@ -119,15 +96,17 @@ public class ContractDetailsBean {
         }
         return persons;
     }
-
+    
     public String getContract_id() {
         if (contract_id == null) {
             Map<String, String> params = FacesContext.getCurrentInstance()
                     .getExternalContext().getRequestParameterMap();
-            contract_id = params.get("id");
+            contract_id = params.get("contractID");
         }
         return contract_id;
     }
+    
+    
 
     public Contract getContractinfo() {
         contractinfo = contractBusinessLogic.getContractByUUID(contract_id);
@@ -164,7 +143,10 @@ public class ContractDetailsBean {
         }
         return assistantsForContract;
     }
-
+    
+    
+    
+    
 // RELATED TO STATISTICSSSSSSSSss For TimeSheet NEEEEED TO TALK TO HARSHIII
     private List<Integer> HoursDuePerTimeSheet;
 
@@ -175,81 +157,11 @@ public class ContractDetailsBean {
     public void setHoursDuePerTimeSheet(List<Integer> HoursDuePerTimeSheet) {
         this.HoursDuePerTimeSheet = HoursDuePerTimeSheet;
     }
-
-    /**/
-    /**/
-     /**/
-    /**/
-    
-    /* BEGIN:::  TimeSheettts DISPLAY BEGINSSSS*/
-    
-    // All For Timesheets BEGINSSSS
-    @EJB
-    private TimeSheetBusinessLogic timeSheetBusinessLogic;
-    
-    private List<TimeSheet> timesheets;    
-    private List<TimeSheetEntry> timeSheetEntries;
-    private TimeSheet timeSheetFor;
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-    private String uuid;
-
-
-    public List<TimeSheetEntry> getTimeSheetEntries() {
-        return timeSheetEntries;
-    }
     
     
-
-    public TimeSheet getTimeSheetFor() {
-        return timeSheetFor;
-    }
-
-    public void setTimeSheetFor(TimeSheet timeSheetFor) {
-        this.timeSheetFor = timeSheetFor;
-    }
-
-
-    public void setTimesheets(List<TimeSheet> timesheets) {
-        this.timesheets = timesheets;
-    }
-
-    public List<TimeSheet> getTimesheets() {
-        timesheets = timeSheetBusinessLogic.getAllTimeSheetsForContract(contract_id);
-        return timesheets;
-    }
+        
     
-    /* Following method called when action performed. Ajax calls */
-
-    public void onSignByEmployeeRow(String timeSheet_uuid) {        
-        timeSheetBusinessLogic.submitTimeSheet(timeSheet_uuid, Boolean.TRUE);
-    }
     
-    public void onSignBySupervisorRow(String timeSheet_uuid) {        
-        timeSheetBusinessLogic.submitTimeSheet(timeSheet_uuid, Boolean.FALSE);
-    }
-
-    public void onRowView(String timeSheetUUId, String displayStrings) throws IOException {
-        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/logged_in/view_timesheet_entries.xhtml?id=" + timeSheetUUId + "&contractID=" + contract_id);
-    }
-
-    public void addNewEntry(String timeSheetUUId, String displayString) throws IOException {
-        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/logged_in/timesheet_entry.xhtml?id=" + timeSheetUUId + "&timeSheetDateRange=" + displayString + "&contractID=" + contract_id);
-    }
-
-    public void printTimeSheet(String timeSheetUUId) throws IOException{
-        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/staff_logged_in/printpreviewtimesheet.xhtml?id=" + timeSheetUUId + "&contractID=" + contract_id);
-
-    }
     
     
 }

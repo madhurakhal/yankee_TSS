@@ -167,6 +167,7 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
                                 LocalDate tsEntryDate = tsEntity.getStartDate().plusDays(j);
                                 entryEntity.setEntryDate(tsEntryDate);
                                 entryEntity.setTimesheet(tsEntity);
+                                entryEntity.setFilled(false);
 
                                 // BEGINS Hours Due Value update for each date. 
                                 DayOfWeek tsEntryDay = tsEntryDate.getDayOfWeek();
@@ -361,14 +362,23 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
 
             if (timeSheetStatus.equalsIgnoreCase("IN_PROGRESS") && contract.getStatus().toString().equalsIgnoreCase("STARTED")) {
 
-                tsEntry.setDescription(obj.getDescription());
-                tsEntry.setEndTime(new java.sql.Time(obj.getEndDateTime().getTime()));
-                tsEntry.setStartTime(new java.sql.Time(obj.getStartDateTime().getTime()));
-                long hoursCalc = obj.getEndDateTime().getTime() - obj.getStartDateTime().getTime();
-                long minutes = TimeUnit.MILLISECONDS.toMinutes(hoursCalc);
-                long hours = TimeUnit.MILLISECONDS.toHours(hoursCalc);                
-                tsEntry.setHours((double) (hours + ((minutes - 60*hours) / 60.0)));
-
+                if (obj.getEndDateTime() != null && obj.getStartDateTime() != null) {
+                    long hoursCalc = obj.getEndDateTime().getTime() - obj.getStartDateTime().getTime();
+                    long minutes = TimeUnit.MILLISECONDS.toMinutes(hoursCalc);
+                    long hours = TimeUnit.MILLISECONDS.toHours(hoursCalc);
+                    double hours_fin = (double) (hours + ((minutes - 60 * hours) / 60.0));
+                    tsEntry.setHours(UTILNumericSupport.round(hours_fin, 2));
+                    tsEntry.setFilled(true);
+                    tsEntry.setDescription(obj.getDescription());
+                    tsEntry.setEndTime(new java.sql.Time(obj.getEndDateTime().getTime()));
+                    tsEntry.setStartTime(new java.sql.Time(obj.getStartDateTime().getTime()));
+                } else {
+                    tsEntry.setDescription(null);
+                    tsEntry.setEndTime(null);
+                    tsEntry.setStartTime(null);
+                    tsEntry.setHours(0.0);
+                    tsEntry.setFilled(false);
+                }
                 messageString = "Saved!!"; // need to do internationalization;
 
             } else {
@@ -382,7 +392,6 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
 
     @Override
     public String deleteTimeSheet(final String contractUuid, Boolean isTerminateContract) {
-        List<TimesheetEntity> removeList;
         try {
             if (contractUuid == null) {
                 throw new IllegalStateException("Uuid cannot be null");
@@ -392,10 +401,20 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
             List<TimesheetEntity> timeSheets = timeSheetAccess.getTimeSheetsForContractByID(contractAccess.getByUuid(contractUuid).getId());
 
             if (isTerminateContract) {
-                removeList = new ArrayList<TimesheetEntity>();
                 for (final TimesheetEntity e : timeSheets) {
-                    if (TimesheetStatusEnum.IN_PROGRESS.toString().equalsIgnoreCase(e.getStatus().toString())) {
-                        removeList.add(e);
+                    if (TimesheetStatusEnum.IN_PROGRESS.toString().equalsIgnoreCase(e.getStatus().toString())) {                        
+                        // Delete entries for the timesheets.
+                        // Also set the Contract as null
+                        e.setContract(null);           
+                        
+                        System.out.println("TIME SHEEEEEEEEEEET ID" + e.getUuid());
+                        for(TimesheetEntryEntity tee : timeSheetEntryAccess.getTimeSheetEntriesForTimeSheet(e.getUuid())){
+                            tee.setTimesheet(null);
+                            System.out.println("HERE FOR TIE  SHEEEET ENTRY" + tee.getName());
+                            timeSheetEntryAccess.deleteEntity(tee);
+                        }
+                        timeSheetAccess.deleteEntity(e);
+                        //removeList.add(e);
                     }
                 }
             }
@@ -407,8 +426,9 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
     }
 
     @Override
-    public ContractEntity getContractByUUID(String uuid) {
-        return contractAccess.getContractEntity(uuid); // hardcoding for testing purpose
+    public ContractEntity getContractByTimesheetUUID(String uuid) {
+        return timeSheetAccess.getByUuid(uuid).getContract();
+        //return contractAccess.getContractEntity(uuid); // hardcoding for testing purpose
     }
 
     /**
@@ -461,11 +481,9 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
             if (timeSheetUuid == null) {
                 throw new IllegalStateException("Please select a timesheet");
             }
-
             entryList = new ArrayList<TimeSheetEntry>();
-            final Long timeSheetId = timeSheetAccess.getByUuid(timeSheetUuid).getId();
-            final List<TimesheetEntryEntity> objList = timeSheetEntryAccess.getTimeSheetEntriesForTimeSheet(timeSheetId);
-            TimeSheetEntry entryObj;
+            final List<TimesheetEntryEntity> objList = timeSheetEntryAccess.getTimeSheetEntriesForTimeSheet(timeSheetUuid);
+            TimeSheetEntry entryObj;            
 
             for (TimesheetEntryEntity e : objList) {
                 entryObj = new TimeSheetEntry(e.getUuid(), e.getName());
@@ -473,9 +491,12 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
                 entryObj.setDateString(e.getEntryDate().toString());
                 entryObj.setDescription(e.getDescription());
                 entryObj.setEndDateTime(e.getEndTime());
-                entryObj.setHours(e.getHours() == null ? 0.0 : UTILNumericSupport.round(e.getHours() , 2));
+                entryObj.setHours(e.getHours() == null ? 0.0 : UTILNumericSupport.round(e.getHours(), 2));
                 entryObj.setStartDateTime(e.getStartTime());
-                if (e.getEntryDate().getDayOfWeek().toString().equalsIgnoreCase("sunday") || e.getEntryDate().getDayOfWeek().toString().equalsIgnoreCase("saturday")) {
+                entryObj.setIsFilled(e.isFilled());
+                // If public holiday. Have date?
+                boolean flag = publicHolidaysBusinessLogic.isPublicHoliday(e.getEntryDate().getDayOfMonth(), e.getEntryDate().getMonthValue(), e.getEntryDate().getYear(), administrationBusinessLogic.getAdminSetState().getGermanState());
+                if (flag || e.getEntryDate().getDayOfWeek().toString().equalsIgnoreCase("sunday") || e.getEntryDate().getDayOfWeek().toString().equalsIgnoreCase("saturday")) {
                     isHoliday = Boolean.TRUE;
                 } else {
                     isHoliday = Boolean.FALSE;

@@ -139,12 +139,10 @@ public class EmployeeContractsBean {
         contractBusinessLogic.startContract(contract_uuid);
 
         StringBuilder builder = new StringBuilder();
-
         FacesMessage msgs = new FacesMessage();
         msgs.setSeverity(FacesMessage.SEVERITY_INFO);
         msgs.setSummary("Contract Started");
         msgs.setDetail(builder.toString());
-
         FacesContext.getCurrentInstance().addMessage(null, msgs);
     }
 }

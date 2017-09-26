@@ -22,7 +22,11 @@ public interface ContractBusinessLogic {
     
     public void updateContractStatistics(String contractUUID);
     
+    public void calledForContractArchive(String contractUUID);
+    
     public void deleteContract(String contractUUID);
+    
+    public void terminateContract(String contractUUID);
     
     public List<Contract> getContractsByPerson(String personUUID);
     

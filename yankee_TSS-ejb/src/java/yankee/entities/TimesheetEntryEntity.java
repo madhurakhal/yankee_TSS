@@ -19,7 +19,7 @@ import javax.persistence.Table;
  * collection.
  */
 @NamedQueries({
-    @NamedQuery(name = "getEntryForTimeSheet", query = "SELECT p FROM TimesheetEntryEntity p WHERE p.timesheet.id = :timesheetId")
+    @NamedQuery(name = "getTimeSheetEntriesForTimeSheet", query = "SELECT p FROM TimesheetEntryEntity p WHERE p.timesheet.uuid = :timeSheetUUID")
 })
 @Entity
 @Table(name = "TIMESHEETENTRY")
@@ -33,6 +33,16 @@ public class TimesheetEntryEntity extends NamedEntity {
 
     private Double hours;
     private LocalDate entryDate;
+    private boolean filled;
+
+    public boolean isFilled() {
+        return filled;
+    }
+
+    public void setFilled(boolean filled) {
+        this.filled = filled;
+    }
+    
 
     public Double getHours() {
         return hours;

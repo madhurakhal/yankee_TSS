@@ -22,6 +22,17 @@ public class TimeSheetEntry extends Named{
 
     private Double hours;  // To be calculated by ourself. 
     private Date startDateTime;    
+    private Date endDateTime;  
+    
+    private boolean isFilled;
+
+    public boolean isIsFilled() {
+        return isFilled;
+    }
+
+    public void setIsFilled(boolean isFilled) {
+        this.isFilled = isFilled;
+    }
 
     public Date getStartDateTime() {
         return startDateTime;
@@ -38,7 +49,6 @@ public class TimeSheetEntry extends Named{
     public void setEndDateTime(Date endDateTime) {
         this.endDateTime = endDateTime;
     }
-    private Date endDateTime;  
 
     public Double getHours() {
         return hours;
