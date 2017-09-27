@@ -125,7 +125,7 @@ public class EmployeeContractsBean {
     public void onRowView() throws IOException {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         String contract_uuid = params.get("contract_uuid");
-        contractBusinessLogic.updateContractStatistics(contract_uuid);
+        //contractBusinessLogic.updateContractStatistics(contract_uuid);
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect(ec.getRequestContextPath() + "/logged_in/contractdetails.xhtml?id=" + contract_uuid);
     }
