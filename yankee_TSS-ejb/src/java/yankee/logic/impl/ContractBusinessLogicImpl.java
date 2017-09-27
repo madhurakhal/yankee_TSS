@@ -36,6 +36,7 @@ import yankee.logic.to.Contract;
 import yankee.logic.to.Employee;
 import yankee.logic.to.Person;
 import yankee.logic.to.Supervisor;
+import yankee.utilities.UTILNumericSupport;
 
 @Stateless
 public class ContractBusinessLogicImpl implements ContractBusinessLogic {
@@ -308,7 +309,7 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
         LocalDate date2 = ce.getEndDate();
         double durationOfContract = (double) ChronoUnit.MONTHS.between(date1, date2) + 1;
         double vacationHours = (double) ce.getVacationDaysPerYear() * (durationOfContract / 12) * (ce.getHoursPerWeek() / ce.getWorkingDaysPerWeek());
-        ce.setVacationHours(vacationHours);
+        ce.setVacationHours(UTILNumericSupport.round(vacationHours, 2));
 
         // Calculating Total hours due.
         // load each timesheet for this contract. and sum each timesheets hoursdue.

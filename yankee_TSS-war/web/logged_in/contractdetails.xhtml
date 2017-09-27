@@ -4,7 +4,6 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:b="http://bootsfaces.net/ui">
     <ui:composition template="/WEB-INF/templates/main-template.xhtml">
         <ui:param name="pageTitle" value="Create Contract Page"/>
@@ -119,17 +118,16 @@
                     <!-- BEGINS  For Current-->
                     <p:tabView> 
                         <p:tab title="Current">  
-                            <p:outputPanel rendered = "#{not empty contractDetailsBean.currentTimeSheet}" styleClass="box">                    
-                                <p:outputPanel styleClass="box-header">  
-                                    <p:outputLabel styleClass="pull-left">#{loginBean.user.firstName} #{loginBean.user.lastName} (As Supervisor)</p:outputLabel>
-                                    <!--                        <h:button value="Create Contract" outcome="createContract" styleClass="btn btn-primary pull-right btn-flat"/>-->
-                                </p:outputPanel>
-
+                            <p:outputPanel rendered = "#{not empty contractDetailsBean.currentTimeSheet}" styleClass="box">  
                                 <p:outputPanel styleClass="box-body top-border">
                                     <b:dataTable id="currentTimeSheetTab" var="timesheet" value="#{contractDetailsBean.currentTimeSheet}" responsive="true">
-                                        <b:dataTableColumn value="#{timesheet.displayString}" label="TimeSheet"/>
+                                        <b:dataTableColumn label="Start Date" value="#{timesheet.startDate.dayOfMonth} #{timesheet.startDate.month} #{timesheet.startDate.year} (#{timesheet.startDate.dayOfWeek})" />
+                                        <b:dataTableColumn label="End Date" value="#{timesheet.endDate.dayOfMonth} #{timesheet.endDate.month} #{timesheet.endDate.year} (#{timesheet.endDate.dayOfWeek})" />
+                                        
+                                        <b:dataTableColumn value="#{timesheet.hoursDue}" label="Hours Due"/>
+                                        <b:dataTableColumn value="#{contractDetailsBean.calculateHoursEntered(timesheet.uuid)}" label="Hours Entered"/>
                                         <b:dataTableColumn value="#{timesheet.status}" label="TimeSheet Status"/>
-
+                                        
                                         <b:dataTableColumn label="Action " style="width:50px" >
                                             <!--If the timesheet in progress then render submit for employee-->
                                             <p:commandButton rendered = "#{timesheet.status eq 'IN_PROGRESS' and contractDetailsBean.isEmployee(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane" id="submitTimeSheetEmployeeCur" action="#{contractDetailsBean.onSignByEmployeeRow(timesheet.uuid)}">                           

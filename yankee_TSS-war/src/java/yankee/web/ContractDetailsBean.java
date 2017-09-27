@@ -17,6 +17,7 @@ import javax.inject.Named;
 import yankee.entities.ContractEntity;
 import yankee.logic.AssistantBusinessLogic;
 import yankee.logic.ContractBusinessLogic;
+import yankee.logic.ENUM.TimesheetStatusEnum;
 import yankee.logic.PersonBusinessLogic;
 import yankee.logic.SecretaryBusinessLogic;
 import yankee.logic.SupervisorBusinessLogic;
@@ -28,6 +29,7 @@ import yankee.logic.TimeSheetBusinessLogic;
 import yankee.logic.to.Contract;
 import yankee.logic.to.TimeSheet;
 import yankee.logic.to.TimeSheetEntry;
+import yankee.utilities.UTILNumericSupport;
 
 @ManagedBean
 @ViewScoped
@@ -205,7 +207,7 @@ public class ContractDetailsBean {
     public TimeSheet getCurrentTimeSheet() {
         // Get the current date today.
         //LocalDate currentDate = LocalDate.now();
-        LocalDate currentDate = LocalDate.of(2017, 11, 7);
+        LocalDate currentDate = LocalDate.of(2017, 11, 8);
         List<TimeSheet> p = timesheets.stream().filter(e -> ((e.getStartDate().isBefore(currentDate) && e.getEndDate().isAfter(currentDate))
                 || (e.getEndDate().isEqual(currentDate) || e.getStartDate().isEqual(currentDate))))
                 .collect(Collectors.toList());
@@ -223,14 +225,16 @@ public class ContractDetailsBean {
     }
 
     public List<TimeSheet> getSignedByEmployeeTimeSheets() {
+        signedByEmployeeTimeSheets = timesheets.stream().filter(e -> (e.getStatus().equals(TimesheetStatusEnum.SIGNED_BY_EMPLOYEE))).collect(Collectors.toList());
         return signedByEmployeeTimeSheets;
     }
 
-    public void setSignedByEmployeeTimeSheets(List<TimeSheet> signedByEmployeeTimeSheets) {
+    public void setSignedByEmployeeTimeSheets(List<TimeSheet> signedByEmployeeTimeSheets) {        
         this.signedByEmployeeTimeSheets = signedByEmployeeTimeSheets;
     }
 
     public List<TimeSheet> getInProgressTimeSheets() {
+        inProgressTimeSheets = timesheets.stream().filter(e -> (e.getStatus().equals(TimesheetStatusEnum.IN_PROGRESS))).collect(Collectors.toList());
         return inProgressTimeSheets;
     }
 
@@ -239,6 +243,7 @@ public class ContractDetailsBean {
     }
 
     public List<TimeSheet> getInArchivedTimeSheets() {
+        inArchivedTimeSheets = timesheets.stream().filter(e -> (e.getStatus().equals(TimesheetStatusEnum.ARCHIVED))).collect(Collectors.toList());
         return inArchivedTimeSheets;
     }
 
@@ -253,7 +258,15 @@ public class ContractDetailsBean {
     public void setAllTimeSheets(List<TimeSheet> allTimeSheets) {
         this.allTimeSheets = allTimeSheets;
     }
+    
+    public double calculateHoursEntered(String timeSheetUUID){
+        System.out.println("TIME SHEEEEEET ID for hours entere" + timeSheetUUID);
+        List<TimeSheetEntry> lse = timeSheetBusinessLogic.getEntriesForTimeSheet(timeSheetUUID);
+        return UTILNumericSupport.round(lse.stream().mapToDouble(o -> o.getHours()).sum(),2);
+    }
+    ////////////////////////////////////
     // Ends For tabs in contract details
+    ////////////////////////////////////
 
     public String getUuid() {
         return uuid;
@@ -283,7 +296,9 @@ public class ContractDetailsBean {
         return timesheets;
     }
 
+    
     /* Following method called when action performed. Ajax calls */
+    
     public void onSignByEmployeeRow(String timeSheet_uuid) {
         timeSheetBusinessLogic.submitTimeSheet(timeSheet_uuid, Boolean.TRUE);
     }

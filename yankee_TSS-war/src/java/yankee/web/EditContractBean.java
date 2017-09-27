@@ -327,7 +327,7 @@ public class EditContractBean {
                         Employee e = employeeBusinessLogic.getEmployeeByContract(s.getContract().getUuid());
                         if (e != null) {
                             if (e.getPerson().getUuid().equals(currentContractPerson.getUuid())) {
-                                if (s.getContract().getStatus() == ContractStatusEnum.TERMINATED) {
+                                if(!contractBusinessLogic.getContractByUUID(s.getContract().getUuid()).getStatus().equals(ContractStatusEnum.TERMINATED)){
                                     hashimAsSupervisor = true;
                                 }
                                 System.out.println("SUPERVISOR forssssssssss " + currentContractPerson.getFirstName() + e.getPerson().getFirstName());
