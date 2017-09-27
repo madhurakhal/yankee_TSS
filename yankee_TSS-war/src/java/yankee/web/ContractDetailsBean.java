@@ -211,7 +211,7 @@ public class ContractDetailsBean {
     public List<TimeSheet> getPreviousTimeSheet() {
         // Get the current date today.
         //LocalDate currentDate = LocalDate.now();
-        LocalDate currentDate = LocalDate.of(2017, 12, 8);
+        LocalDate currentDate = LocalDate.of(2017, 10, 15);
         previousTimeSheet = timesheets.stream().filter(e -> (e.getStartDate().isBefore(currentDate))).collect(Collectors.toList());   
         return previousTimeSheet;
     }
