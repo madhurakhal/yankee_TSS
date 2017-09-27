@@ -1,6 +1,7 @@
 package yankee.web;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +51,7 @@ public class ContractDetailsBean {
 
     @EJB
     private EmployeeBusinessLogic employeeBusinessLogic;
-    
+
     @Inject
     private LoginBean loginBean;
 
@@ -59,7 +60,7 @@ public class ContractDetailsBean {
     private Contract contractinfo;
     private Person loggedinUser;
 
-    public Person getLoggedinUser() {        
+    public Person getLoggedinUser() {
         return loggedinUser;
     }
 
@@ -71,23 +72,23 @@ public class ContractDetailsBean {
     private List<Person> secretariesForContract = new ArrayList<>();
     private List<Person> assistantsForContract = new ArrayList<>();
     private List<Person> persons = new ArrayList<>();
- 
+
     // Contract Entity?
-    public boolean isSupervisor(String timeSheetUUID){
-       ContractEntity ce = timeSheetBusinessLogic.getContractByTimesheetUUID(timeSheetUUID);
-       return ce.getSupervisor().getPerson().getUuid().equals(loggedinUser.getUuid());
+    public boolean isSupervisor(String timeSheetUUID) {
+        ContractEntity ce = timeSheetBusinessLogic.getContractByTimesheetUUID(timeSheetUUID);
+        return ce.getSupervisor().getPerson().getUuid().equals(loggedinUser.getUuid());
     }
-    
-    public boolean isEmployee(String timeSheetUUID){
-       ContractEntity ce = timeSheetBusinessLogic.getContractByTimesheetUUID(timeSheetUUID);
-       return ce.getEmployee().getPerson().getUuid().equals(loggedinUser.getUuid());
+
+    public boolean isEmployee(String timeSheetUUID) {
+        ContractEntity ce = timeSheetBusinessLogic.getContractByTimesheetUUID(timeSheetUUID);
+        return ce.getEmployee().getPerson().getUuid().equals(loggedinUser.getUuid());
     }
-    
-    public boolean isSecretary(String timeSheetUUID){
+
+    public boolean isSecretary(String timeSheetUUID) {
         ContractEntity ce = timeSheetBusinessLogic.getContractByTimesheetUUID(timeSheetUUID);
         List<Secretary> ls = secretaryBusinessLogic.getSecretariesByContract(ce.getUuid());
         // For each secretary if one of the secretary matches the person logged in
-        return !ls.stream().filter(e->e.getPerson().getUuid().equals(loggedinUser.getUuid())).collect(Collectors.toList()).isEmpty();
+        return !ls.stream().filter(e -> e.getPerson().getUuid().equals(loggedinUser.getUuid())).collect(Collectors.toList()).isEmpty();
     }
 
     @PostConstruct
@@ -103,9 +104,9 @@ public class ContractDetailsBean {
         getSupervisorForContract();
         getAssistantsForContract();
         getSecretariesForContract();
-        
+
         // For timesheet
-        timesheets = timeSheetBusinessLogic.getAllTimeSheetsForContract(contract_id);
+        this.timesheets = timeSheetBusinessLogic.getAllTimeSheetsForContract(contract_id);
     }
 
     // BEGINS GETTER AND SETTER for contract id then current assistant , supervisor, secretaries for given contract
@@ -180,36 +181,45 @@ public class ContractDetailsBean {
     }
 
     /**/
-    /**/
-     /**/
-    /**/
+ /**/
+ /**/
+ /**/
     // TIME SHEET TIME SHEEET
     /* BEGIN:::  TimeSheettts DISPLAY BEGINSSSS*/
-    
     // All For Timesheets BEGINSSSS
-    
     @EJB
     private TimeSheetBusinessLogic timeSheetBusinessLogic;
-    
-    private List<TimeSheet> timesheets;    
+
+    private List<TimeSheet> timesheets;
     private List<TimeSheetEntry> timeSheetEntries;
     private TimeSheet timeSheetFor;
     private String uuid;
-    
+
     // Begins For tabs in contract details 
     TimeSheet currentTimeSheet;
-    List<TimeSheet> signedByEmployeeTimeSheets;    
+    List<TimeSheet> signedByEmployeeTimeSheets;
     List<TimeSheet> inProgressTimeSheets;
     List<TimeSheet> inArchivedTimeSheets;
     List<TimeSheet> allTimeSheets;
 
     public TimeSheet getCurrentTimeSheet() {
-        
+        // Get the current date today.
+        //LocalDate currentDate = LocalDate.now();
+        LocalDate currentDate = LocalDate.of(2017, 11, 7);
+        List<TimeSheet> p = timesheets.stream().filter(e -> ((e.getStartDate().isBefore(currentDate) && e.getEndDate().isAfter(currentDate))
+                || (e.getEndDate().isEqual(currentDate) || e.getStartDate().isEqual(currentDate))))
+                .collect(Collectors.toList());
+        if (p.isEmpty()) {
+            this.currentTimeSheet = null;
+        } else {
+            this.currentTimeSheet = p.get(0);
+        }
         return currentTimeSheet;
     }
 
     public void setCurrentTimeSheet(TimeSheet currentTimeSheet) {
         this.currentTimeSheet = currentTimeSheet;
+
     }
 
     public List<TimeSheet> getSignedByEmployeeTimeSheets() {
@@ -252,12 +262,10 @@ public class ContractDetailsBean {
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }
-    
-
 
     public List<TimeSheetEntry> getTimeSheetEntries() {
         return timeSheetEntries;
-    }   
+    }
 
     public TimeSheet getTimeSheetFor() {
         return timeSheetFor;
@@ -267,22 +275,20 @@ public class ContractDetailsBean {
         this.timeSheetFor = timeSheetFor;
     }
 
-
     public void setTimesheets(List<TimeSheet> timesheets) {
         this.timesheets = timesheets;
     }
 
-    public List<TimeSheet> getTimesheets() {        
+    public List<TimeSheet> getTimesheets() {
         return timesheets;
     }
-    
-    /* Following method called when action performed. Ajax calls */
 
-    public void onSignByEmployeeRow(String timeSheet_uuid) {        
+    /* Following method called when action performed. Ajax calls */
+    public void onSignByEmployeeRow(String timeSheet_uuid) {
         timeSheetBusinessLogic.submitTimeSheet(timeSheet_uuid, Boolean.TRUE);
     }
-    
-    public void onSignBySupervisorRow(String timeSheet_uuid) {        
+
+    public void onSignBySupervisorRow(String timeSheet_uuid) {
         timeSheetBusinessLogic.submitTimeSheet(timeSheet_uuid, Boolean.FALSE);
     }
 
@@ -296,11 +302,10 @@ public class ContractDetailsBean {
         ec.redirect(ec.getRequestContextPath() + "/logged_in/timesheet_entry.xhtml?id=" + timeSheetUUId + "&timeSheetDateRange=" + displayString + "&contractID=" + contract_id);
     }
 
-    public void printTimeSheet(String timeSheetUUId) throws IOException{
+    public void printTimeSheet(String timeSheetUUId) throws IOException {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect(ec.getRequestContextPath() + "/staff_logged_in/printpreviewtimesheet.xhtml?id=" + timeSheetUUId + "&contractID=" + contract_id);
 
     }
-    
-    
+
 }
