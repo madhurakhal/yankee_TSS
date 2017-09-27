@@ -25,17 +25,17 @@
                 <b:row>
                     <b:column styleClass="myaccount">
                         <p:outputPanel styleClass="box box-primary with-borader">
-                            <p:outputPanel styleClass="box-header">
-                                <h4 class="text-center">
-                                    #{accountBean.person.firstName} #{accountBean.person.lastName}
-                                </h4>
-                            </p:outputPanel>
+                            
 
-                            <p:outputPanel styleClass="box-body">
+                            <p:outputPanel styleClass="box-body box-profile">
                                 <b:column>
-                                    <b:formGroup rendered="#{not empty accountBean.chart}">
-                                        <b:column col-xs="12" col-sm="6">
-                                            <p:graphicImage value="#{accountBean.chart}"/>
+                                    <b:formGroup>
+                                        <b:column col-xs="12" styleClass="text-center">
+                                            <ui:fragment rendered="#{empty accountBean.chart}">
+                                                <p class="profile-text bg-light-blue">#{accountBean.nameInitails}</p>
+                                            </ui:fragment>
+                                            <p:graphicImage value="#{accountBean.chart}" styleClass="profile-user-img img-responsive img-circle" rendered="#{not empty accountBean.chart}"/>
+                                            <h3 class="profile-username text-center">#{accountBean.person.firstName} #{accountBean.person.lastName}</h3>
                                         </b:column>
                                     </b:formGroup>
                                     <b:formGroup>
@@ -90,7 +90,7 @@
                                         <h:outputLabel value="Upload Photo" styleClass="col-xs-12 col-sm-3 control-label"></h:outputLabel>
                                         <b:column col-sm="6" col-xs="12">
                                                                                 <p:fileUpload fileUploadListener="#{accountBean.handleFileUpload}" mode="advanced" dragDropSupport="true"
-                                                          update="messages" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+                                                          update="messages" sizeLimit="1000000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
                                         </b:column>
                                     </b:formGroup>
 
