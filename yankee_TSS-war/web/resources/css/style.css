@@ -138,3 +138,7 @@ span.form-control > input {
 .watch {
     max-width: 300px;
 }
+
+.ui-growl {
+    z-index: 9999 !important;
+}

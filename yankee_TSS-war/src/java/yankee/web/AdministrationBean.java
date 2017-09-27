@@ -39,7 +39,7 @@ public class AdministrationBean {
 
     public void setState(){
         administrationBusinessLogic.updateState(selectedState);
-        FacesMessage msg = new FacesMessage("New State Set. Used for public Holidays");
+        FacesMessage msg = new FacesMessage("New State has been set!!" , "");
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 }

@@ -224,7 +224,7 @@ public class ContractDetailsBean {
     public TimeSheet getCurrentTimeSheet() {
         // Get the current date today.
         //LocalDate currentDate = LocalDate.now();
-        LocalDate currentDate = LocalDate.of(2017, 10, 29);
+        LocalDate currentDate = LocalDate.of(2017, 10, 15);
         List<TimeSheet> p = timesheets.stream().filter(e -> ((e.getStartDate().isBefore(currentDate) && e.getEndDate().isAfter(currentDate))
                 || (e.getEndDate().isEqual(currentDate) || e.getStartDate().isEqual(currentDate))))
                 .collect(Collectors.toList());
@@ -324,7 +324,8 @@ public class ContractDetailsBean {
     public void onSignBySupervisorRow(String timeSheet_uuid) {
         timeSheetBusinessLogic.submitTimeSheet(timeSheet_uuid, Boolean.FALSE);
         TimeSheet t = timeSheetBusinessLogic.getByUUID(timeSheet_uuid);
-        contractBusinessLogic.updateTotalHoursDue(t.getContract().getUuid(),t.getHoursDue());
+        double hoursEntered = calculateHoursEntered(timeSheet_uuid);
+        contractBusinessLogic.updateTotalHoursDue(t.getContract().getUuid(),hoursEntered);
     }
 
     public void onRowView(String timeSheetUUId, String displayStrings) throws IOException {

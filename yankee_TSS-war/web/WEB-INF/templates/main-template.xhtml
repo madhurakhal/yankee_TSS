@@ -12,14 +12,16 @@
             <meta http-equiv="X-UA-Compatible" content="IE=edge" />
             <title>#{pageTitle }</title>
             <ui:include src="header-script-css.xhtml" />
+            <p:growl id="msg" showDetail="true" escape="false"/>
         </h:head>
 
         <h:body styleClass="hold-transition skin-blue layout-top-nav">
-            <p:outputPanel styleClass="wrapper">
+            
+            <p:outputPanel styleClass="wrapper">                
                 <ui:include src="header-page.xhtml"/>
                 <p:outputPanel styleClass="content-wrapper">
                     <b:container>
-                        <section class="content-header">
+                        <section class="content-header">                            
                             <h1>#{pageInfo}
                                 <span>#{currentPage}</span>
                             </h1>
@@ -32,7 +34,7 @@
                             </ol>
                         </section>
 
-                        <section class="content">
+                        <section class="content">                            
                             <ui:insert name="main-content">
 
                             </ui:insert>

@@ -34,7 +34,7 @@
         </ui:define>
         <ui:define name="main-content">
             <h:form id="contractDetails">
-                <p:growl id="msg" showDetail="true" escape="false"/>
+                
                 <b:row>
                     <p:outputPanel styleClass="box box-default">
                         <p:outputPanel styleClass="box-header text-center">
@@ -112,9 +112,8 @@
                     </p:outputPanel>
 
 
-                    <h:form>
                     <!--BEGINSSSS TAV VIEWWWWWWWWWWWW FOR TIMESHEEEET BEGINSSSSS-->                   
-                    <p:tabView cache="false"> 
+                    <p:tabView dynamic="true" cache="false"> 
                         
                         <!-- BEGINS  For Current-->
                         <p:tab title="Current">  
@@ -225,8 +224,7 @@
                         <!--ENDS For All-->                        
                         
                     </p:tabView>
-                    <!--ENDSSSSSS TAV VIEWWWWWWWWWWWW FOR TIMESHEEEET ENDSS--> 
-                    </h:form>
+                    <!--ENDSSSSSS TAV VIEWWWWWWWWWWWW FOR TIMESHEEEET ENDSS-->
                     
 
 

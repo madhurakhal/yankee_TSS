@@ -208,7 +208,7 @@ public class CreateContractBean {
         
         contractBusinessLogic.createContract("contract" + employee.getName(), supervisor, assistant, secretary, employee, startDate, endDate, timesheetFrequency, (double) hoursPerWeek, workingDaysPerWeek, vacationDaysPerYear);
 
-        FacesMessage msg = new FacesMessage("Contract Created");
+        FacesMessage msg = new FacesMessage("Contract Created" , "");
         FacesContext.getCurrentInstance().addMessage(null, msg);
         
         ExternalContext extContext = FacesContext.getCurrentInstance().getExternalContext();

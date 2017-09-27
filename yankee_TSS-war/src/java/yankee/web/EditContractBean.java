@@ -465,7 +465,7 @@ public class EditContractBean {
         System.out.println("Assistants Changed " + assistantsChanged);
 
         contractBusinessLogic.editContract(contract_id, supervisorForContract, secretaryPickupList.getTarget(), secretariesChanged, assistantPickupList.getTarget(), assistantsChanged, startDate, endDate, timesheetFrequency, workingDaysPerWeek, vacationDaysPerYear, hoursPerWeek);
-        FacesMessage msg = new FacesMessage("Contract Has Been Updated");
+        FacesMessage msg = new FacesMessage("Contract Has Been Updated" , "");
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 

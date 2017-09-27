@@ -31,7 +31,7 @@
             <ui:fragment rendered="#{not request.isUserInRole('STAFF')}">
                 <ui:include src="./employee-dashboard.xhtml"></ui:include>
             </ui:fragment>           
-<p:growl id="msg" showDetail="true" escape="false"/>
+
         </ui:define>
 
     </ui:composition>

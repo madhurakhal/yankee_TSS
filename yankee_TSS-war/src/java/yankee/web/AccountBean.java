@@ -90,7 +90,7 @@ public class AccountBean implements Serializable {
         }
         personBusinessLogic.updateDetails(person);
         
-        FacesMessage message = new FacesMessage("Your changes for preferred language will reflect on next Login");
+        FacesMessage message = new FacesMessage("Your changes for preferred language will reflect on next Login" , "");
         FacesContext.getCurrentInstance().addMessage(null, message);
         FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
     }
