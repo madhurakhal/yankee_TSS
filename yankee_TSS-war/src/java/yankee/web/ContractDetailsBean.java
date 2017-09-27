@@ -199,15 +199,32 @@ public class ContractDetailsBean {
 
     // Begins For tabs in contract details 
     TimeSheet currentTimeSheet;
+    List<TimeSheet> previousTimeSheet;
     List<TimeSheet> signedByEmployeeTimeSheets;
     List<TimeSheet> inProgressTimeSheets;
     List<TimeSheet> inArchivedTimeSheets;
     List<TimeSheet> allTimeSheets;
+    
+    
+    
+    
+    public List<TimeSheet> getPreviousTimeSheet() {
+        // Get the current date today.
+        //LocalDate currentDate = LocalDate.now();
+        LocalDate currentDate = LocalDate.of(2017, 12, 8);
+        previousTimeSheet = timesheets.stream().filter(e -> (e.getStartDate().isBefore(currentDate))).collect(Collectors.toList());   
+        return previousTimeSheet;
+    }
+
+    public void setPreviousTimeSheet(List<TimeSheet> previousTimeSheet) {
+        this.previousTimeSheet = previousTimeSheet;
+    }  
+    
 
     public TimeSheet getCurrentTimeSheet() {
         // Get the current date today.
         //LocalDate currentDate = LocalDate.now();
-        LocalDate currentDate = LocalDate.of(2017, 11, 8);
+        LocalDate currentDate = LocalDate.of(2017, 10, 29);
         List<TimeSheet> p = timesheets.stream().filter(e -> ((e.getStartDate().isBefore(currentDate) && e.getEndDate().isAfter(currentDate))
                 || (e.getEndDate().isEqual(currentDate) || e.getStartDate().isEqual(currentDate))))
                 .collect(Collectors.toList());
@@ -252,6 +269,7 @@ public class ContractDetailsBean {
     }
 
     public List<TimeSheet> getAllTimeSheets() {
+        allTimeSheets = timesheets;
         return allTimeSheets;
     }
 
@@ -300,11 +318,13 @@ public class ContractDetailsBean {
     /* Following method called when action performed. Ajax calls */
     
     public void onSignByEmployeeRow(String timeSheet_uuid) {
-        timeSheetBusinessLogic.submitTimeSheet(timeSheet_uuid, Boolean.TRUE);
+        timeSheetBusinessLogic.submitTimeSheet(timeSheet_uuid, Boolean.TRUE);        
     }
 
     public void onSignBySupervisorRow(String timeSheet_uuid) {
         timeSheetBusinessLogic.submitTimeSheet(timeSheet_uuid, Boolean.FALSE);
+        TimeSheet t = timeSheetBusinessLogic.getByUUID(timeSheet_uuid);
+        contractBusinessLogic.updateTotalHoursDue(t.getContract().getUuid(),t.getHoursDue());
     }
 
     public void onRowView(String timeSheetUUId, String displayStrings) throws IOException {
@@ -322,5 +342,14 @@ public class ContractDetailsBean {
         ec.redirect(ec.getRequestContextPath() + "/staff_logged_in/printpreviewtimesheet.xhtml?id=" + timeSheetUUId + "&contractID=" + contract_id);
 
     }
+    
+     public void archiveTimeSheet(String timeSheetUUID) throws IOException {
+        timeSheetBusinessLogic.archiveTimeSheet(timeSheetUUID);
+    }
+     
+    public void onRevokeSignatureBySupervisor(String timeSheetUUID){
+        timeSheetBusinessLogic.revokeSignature(timeSheetUUID);
+    }
+    
 
 }

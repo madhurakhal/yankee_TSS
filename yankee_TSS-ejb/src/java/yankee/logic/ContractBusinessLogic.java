@@ -30,4 +30,6 @@ public interface ContractBusinessLogic {
     
     public List<Contract> getContractsByPerson(String personUUID);
     
+    public void updateTotalHoursDue(String contractUUID , double hoursToReduce);
+    
 }

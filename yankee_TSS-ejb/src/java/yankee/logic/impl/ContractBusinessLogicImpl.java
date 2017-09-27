@@ -400,5 +400,16 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
         }
         return result;
     }
+    
+    @Override
+    public void updateTotalHoursDue(String contractUUID , double hoursToReduce){
+        System.out.println("I AM HERE TO UPDATE TOTAL HOURSSSS");
+        ContractEntity ce = contractAccess.getByUuid(contractUUID);
+        double updateHours = ce.getHoursDue() - hoursToReduce;
+        if (updateHours >= 0.0){
+            System.out.println("WILL ACTUALLY  UPDATE TOTAL HOURSSSS");
+            ce.setHoursDue(updateHours);
+        }
+    }
 
 }

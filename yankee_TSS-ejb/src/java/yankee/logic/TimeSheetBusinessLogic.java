@@ -7,13 +7,10 @@ package yankee.logic;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import yankee.entities.ContractEntity;
-import yankee.entities.TimesheetEntity;
 import yankee.logic.to.TimeSheet;
 import yankee.logic.to.TimeSheetEntry;
-import yankee.logic.to.TimesheetT;
 
 /**
  *
@@ -29,10 +26,12 @@ public interface TimeSheetBusinessLogic extends Serializable {
     public List<TimeSheet> getAllTimeSheetsForContract(final String uuid);
     public ContractEntity getContractByTimesheetUUID(final String uuid);
     public List<TimeSheetEntry> getEntriesForTimeSheet(final String uuid);
+    public void archiveTimeSheet(String TimeSheetUUID);
+    public void revokeSignature(String timeSheetUUID);
+    public TimeSheet getByUUID(String timeSheetUUID) ;
     
     // TO REVIEW
     public List<TimeSheet> createTimeSheet(final String contractUUID); 
-    public String submitTimeSheet(TimeSheet obj);   
     public List<TimeSheet> getAllTimeSheetsByGivenDate (LocalDate givenDate);    
     public List<TimeSheet> getAllTimeSheetsSignedBySupervisor (LocalDate givenDate);
     

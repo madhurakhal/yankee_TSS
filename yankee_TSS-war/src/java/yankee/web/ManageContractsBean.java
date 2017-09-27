@@ -124,7 +124,7 @@ public class ManageContractsBean {
     }
 
     public void onRowView(String contract_uuid) throws IOException {
-        contractBusinessLogic.updateContractStatistics(contract_uuid);
+        //contractBusinessLogic.updateContractStatistics(contract_uuid);
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect(ec.getRequestContextPath() + "/logged_in/contractdetails.xhtml?id=" + contract_uuid);
     }
