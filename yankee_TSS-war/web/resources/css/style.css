@@ -86,3 +86,15 @@ span.form-control > input {
 .dataTables_wrapper table {
     width: 100% !important;
 }
+.profile-user-img {
+    width: 150px;
+}
+
+.profile-text {
+    font-size: 40px;
+    width: 125px;
+    height: 125px;
+    border-radius: 50%;
+    line-height: 125px;
+    display: inline-block;
+}

@@ -6,6 +6,9 @@ import java.io.Serializable;
 import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -66,6 +69,15 @@ public class AccountBean implements Serializable {
             }
         }
         return person;
+    }
+    
+    public String getNameInitails() {
+        String[] nameArr = {person.getFirstName(), person.getLastName()};
+        return Arrays.stream(nameArr)
+                .filter(name -> name != null)
+                .filter(name -> !"".equals(name.trim()))
+                .map(name -> Character.toString(name.charAt(0)))
+                .collect(Collectors.joining());
     }
 
     public void setPerson(Person person) {
