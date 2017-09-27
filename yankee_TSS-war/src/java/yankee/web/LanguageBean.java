@@ -14,6 +14,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 
 /**
  *
@@ -24,11 +25,16 @@ import javax.faces.context.FacesContext;
 @SessionScoped
 public class LanguageBean implements Serializable {
 
+    @Inject
+    private LoginBean loginbean;
+    
     private static final long serialVersionUID = 1L;
 
     private Locale locale;
     private final Map<String, String> availableLanguages;
 
+    private boolean flag;
+    
     public Map<String, String> getAvailableLanguages() {
         return availableLanguages;
     }
@@ -40,12 +46,18 @@ public class LanguageBean implements Serializable {
     }
     
     @PostConstruct
-    public void init() {
-        locale = FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();
+    public void init() {  
+        flag = true;
+        locale = FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();        
     }
     
     public Locale getLocale() {
-        return locale;
+        if(loginbean.isLoggedIn() && flag){            
+            String language = loginbean.getUser().getPreferredLanguage().toString().toLowerCase();
+            this.locale = new Locale(language);
+            FacesContext.getCurrentInstance().getViewRoot().setLocale(this.locale);  
+        } 
+        return this.locale;
     }
 
     public String getLanguage() {
@@ -53,6 +65,7 @@ public class LanguageBean implements Serializable {
     }
 
     public void changeLanguage(String language) {
+        flag = false;
         this.locale = new Locale(language);
         FacesContext.getCurrentInstance().getViewRoot().setLocale(locale);
     }

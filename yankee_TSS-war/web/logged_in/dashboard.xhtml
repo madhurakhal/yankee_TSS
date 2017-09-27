@@ -27,10 +27,12 @@
             <ui:fragment rendered="#{request.isUserInRole('STAFF')}">
                 <ui:include src="./staff-dashboard.xhtml"></ui:include>
             </ui:fragment>
-            
+
             <ui:fragment rendered="#{not request.isUserInRole('STAFF')}">
                 <ui:include src="./employee-dashboard.xhtml"></ui:include>
-            </ui:fragment>
+            </ui:fragment>           
+<p:growl id="msg" showDetail="true" escape="false"/>
         </ui:define>
+
     </ui:composition>
 </html>

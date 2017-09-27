@@ -33,7 +33,7 @@ public class ReminderService {
      */
     // Scheduler ejb to do certain task based on param, - 7 means last 7 days of the month
     //@Schedule(hour = "06", minute = "59", second = "59", persistent = false)
-    @Schedule(minute = "*/1", hour = "*", persistent = false)
+    //@Schedule(minute = "*/1", hour = "*", persistent = false)
     public void runTask() {
         System.out.println("This task is executed");
         programmaticTimer.cancelTimer("timerId");

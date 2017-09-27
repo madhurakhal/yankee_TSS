@@ -74,13 +74,11 @@ public class ContractDetailsBean {
  
     // Contract Entity?
     public boolean isSupervisor(String timeSheetUUID){
-       System.out.println("TIMEEEEEEEEEEEEEEEEEEEEEEEEEEEE" + timeSheetUUID);
        ContractEntity ce = timeSheetBusinessLogic.getContractByTimesheetUUID(timeSheetUUID);
        return ce.getSupervisor().getPerson().getUuid().equals(loggedinUser.getUuid());
     }
     
     public boolean isEmployee(String timeSheetUUID){
-       System.out.println("TIMEEEEEEEEEEEEEEEEEEEEEEEEEEEE" + timeSheetUUID);
        ContractEntity ce = timeSheetBusinessLogic.getContractByTimesheetUUID(timeSheetUUID);
        return ce.getEmployee().getPerson().getUuid().equals(loggedinUser.getUuid());
     }
@@ -96,7 +94,6 @@ public class ContractDetailsBean {
     public void init() {
         //This contract id will be sent to edit contract as parameter in url from managecontract edit is pressed
         // This will be used in getting current assistant, supervisor, secretary for this contract id below.
-        System.out.println("called me init only once yes?");
         getContract_id();
         getPersons();
         getCurrentContractPerson();
@@ -207,6 +204,7 @@ public class ContractDetailsBean {
     List<TimeSheet> allTimeSheets;
 
     public TimeSheet getCurrentTimeSheet() {
+        
         return currentTimeSheet;
     }
 
