@@ -98,3 +98,43 @@ span.form-control > input {
     line-height: 125px;
     display: inline-block;
 }
+.intro-header {
+    color: #f8f8f8;
+    background: url("#{resource['images/intro-bg.jpg']}") no-repeat center center;
+    background-color: #464141;
+    background-size: 100% auto;
+}
+
+.intro-divider {
+    width: 400px;
+    border-top: 1px solid #f8f8f8;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+.intro-message {
+    position: relative;
+    padding-top: 20%;
+    padding-bottom: 20%;
+}
+.intro-message>h1 {
+    margin: 0;
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
+    font-size: 5em;
+}
+.intro-message>h3 {
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
+}
+.content-section-a {
+    padding: 50px 0;
+    background-color: #f8f8f8;
+}
+.section-heading-spacer {
+    float: left;
+    width: 200px;
+    border-top: 3px solid #e7e7e7;
+}
+.section-heading {
+    margin-bottom: 30px;
+}
+.watch {
+    max-width: 300px;
+}

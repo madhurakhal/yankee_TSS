@@ -4,15 +4,36 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    <ui:composition template="/WEB-INF/templates/main-template.xhtml">
-        <ui:param name="pageTitle" value="Welcome Man"/>
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:b="http://bootsfaces.net/ui">
+    <ui:composition template="/WEB-INF/templates/landing-template.xhtml">
+        <ui:param name="pageTitle" value="Welcome To Time Tracker"/>
         <ui:define name="main-content">
-            <ui:fragment rendered="#{request.isUserInRole('ADMIN')}">
-                <ui:include src="admin/administration.xhtml"></ui:include>
-            </ui:fragment>
-            
-            <p:growl id="msg" showDetail="true"/>
+            <section class="intro-header">
+                <b:container>
+                    <p:outputPanel styleClass="intro-message text-center">
+                        <h1>Time Sheet System</h1>
+                        <hr class="intro-divider"/>
+                        <h3> By Yankee Team </h3>
+                    </p:outputPanel>
+                </b:container>
+            </section>
+
+            <section class="content-section-a">
+                <b:container>
+                    <div class="row">
+                        <div class="col-lg-5 ml-auto">
+                            <hr class="section-heading-spacer" />
+                            <div class="clearfix"></div>
+                            <h2 class="section-heading">Time Sheet System</h2>
+                            <p class="lead">Use our advance time tracker system. Focus on your work and we will manage your employees time sheet. </p>
+                        </div>
+                        <div class="col-lg-5 mr-auto text-center">
+                            <h:graphicImage styleClass="img-fluid watch" library="images" name="watch.png"></h:graphicImage>
+                        </div>
+                    </div>
+                </b:container>
+            </section>
         </ui:define>
     </ui:composition>
 </html>
