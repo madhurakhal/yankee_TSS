@@ -402,13 +402,13 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
 
             if (isTerminateContract) {
                 for (final TimesheetEntity e : timeSheets) {
-                    if (TimesheetStatusEnum.IN_PROGRESS.toString().equalsIgnoreCase(e.getStatus().toString())) {                        
+                    if (TimesheetStatusEnum.IN_PROGRESS.toString().equalsIgnoreCase(e.getStatus().toString())) {
                         // Delete entries for the timesheets.
                         // Also set the Contract as null
-                        e.setContract(null);           
-                        
+                        e.setContract(null);
+
                         System.out.println("TIME SHEEEEEEEEEEET ID" + e.getUuid());
-                        for(TimesheetEntryEntity tee : timeSheetEntryAccess.getTimeSheetEntriesForTimeSheet(e.getUuid())){
+                        for (TimesheetEntryEntity tee : timeSheetEntryAccess.getTimeSheetEntriesForTimeSheet(e.getUuid())) {
                             tee.setTimesheet(null);
                             System.out.println("HERE FOR TIE  SHEEEET ENTRY" + tee.getName());
                             timeSheetEntryAccess.deleteEntity(tee);
@@ -483,7 +483,7 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
             }
             entryList = new ArrayList<TimeSheetEntry>();
             final List<TimesheetEntryEntity> objList = timeSheetEntryAccess.getTimeSheetEntriesForTimeSheet(timeSheetUuid);
-            TimeSheetEntry entryObj;            
+            TimeSheetEntry entryObj;
 
             for (TimesheetEntryEntity e : objList) {
                 entryObj = new TimeSheetEntry(e.getUuid(), e.getName());
@@ -582,19 +582,21 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
             tsObjList = new ArrayList<>();
             TimeSheet ts;
             for (final TimesheetEntity entity : timeSheetList) {
-                ts = new TimeSheet(entity.getUuid(), entity.getName());
-                ts.setEndDate(entity.getEndDate());
-                ts.setStartDate(entity.getStartDate());
-                ts.setStatus(entity.getStatus());
-                ts.setDisplayString(entity.getStartDate().toString() + " - " + entity.getEndDate().toString());
+                if (!getContractByTimesheetUUID(entity.getUuid()).getStatus().equals(ContractStatusEnum.TERMINATED)) {
+                    ts = new TimeSheet(entity.getUuid(), entity.getName());
+                    ts.setEndDate(entity.getEndDate());
+                    ts.setStartDate(entity.getStartDate());
+                    ts.setStatus(entity.getStatus());
+                    ts.setDisplayString(entity.getStartDate().toString() + " - " + entity.getEndDate().toString());
 
-                ContractEntity contract = entity.getContract();
-                // to get the contract id
-                Contract c = new Contract(contract.getUuid(), contract.getName());
-                // to do fill up contract transfer object
-                ts.setContract(c);
+                    ContractEntity contract = entity.getContract();
+                    // to get the contract id
+                    Contract c = new Contract(contract.getUuid(), contract.getName());
+                    // to do fill up contract transfer object
+                    ts.setContract(c);
 
-                tsObjList.add(ts);
+                    tsObjList.add(ts);
+                }
             }
         } catch (IllegalStateException e) {
             System.err.println(e.getMessage());

@@ -1,4 +1,4 @@
-package yankee.reminder.service;
+package yankee.services;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -10,7 +10,7 @@ import javax.ejb.EJB;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import yankee.logic.to.TimeSheet;
-import yankee.logic.to.TimesheetT;
+import yankee.web.ReminderBean;
 
 /**
  *
@@ -41,7 +41,7 @@ public class ReminderService {
         if (timeSheets!= null && timeSheets.size() > 0) {
             System.out.println("called from reminder service = " + timeSheets);
             reminderBean.sendReminderForTimeSheets(timeSheets);
-            //programmaticTimer.createTimer("timerId", 1);
+            programmaticTimer.createTimer("timerId", 1);
         }
     }
 

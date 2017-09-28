@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package yankee.archive.delete.service;
+package yankee.services;
 
 import java.time.LocalDate;
 import java.util.List;

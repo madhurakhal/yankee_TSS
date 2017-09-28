@@ -1,7 +1,7 @@
-package yankee.reminder.service;
+package yankee.web;
 
+import yankee.services.ProgrammaticTimer;
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -17,7 +17,7 @@ import yankee.logic.to.Employee;
 import yankee.logic.to.Secretary;
 import yankee.logic.to.Supervisor;
 import yankee.logic.to.TimeSheet;
-import yankee.logic.to.TimesheetT;
+import yankee.services.Reminder;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -77,30 +77,31 @@ public class ReminderBean {
 
     public void sendReminderForTimeSheets(List<TimeSheet> timeSheets) {
         for (TimeSheet t : timeSheets) {
-            String contractId = t.getContract().getUuid();
             System.out.println("Status =" + t.getStatus());
+            String contractId = t.getContract().getUuid();
             timesheetstatus = t.getStatus();
+            employee = null;
+            try {
+                employee = employeeBusinessLogic.getEmployeeByContract(contractId);
+            } catch (Exception e) {
+                System.out.println("Exception Occured from employee business logic!!");
+            }
 
             switch (timesheetstatus) {
                 case IN_PROGRESS:
                     // send email to employee
-                    try {
-                        employee = employeeBusinessLogic.getEmployeeByContract(contractId);
-                        if (employee != null) {
-                            sendReminderToEmployee(employee);
-                        }
-                    } catch (Exception e) {
-                        System.out.println("Exception Occured from employee business logic!!");
+                    if (employee != null) {
+                        sendReminderToEmployee(employee, t);
                     }
                     break;
                 case SIGNED_BY_EMPLOYEE:
                     // send email to supervisor and assistant
-                    sendReminderToSupervisorAssistant(contractId);
+                    sendReminderToSupervisorAssistant(employee, t);
                     break;
 
                 case SIGNED_BY_SUPERVISOR:
                     // send eamil to secretaries
-                    sendReminderToSecretaries(contractId);
+                    sendReminderToSecretaries(employee, t);
                     break;
             }
         }
@@ -114,25 +115,34 @@ public class ReminderBean {
         }
     }
 
-    private void sendReminderToEmployee(Employee e) {
-        String message = " Dear " + e.getPerson().getFirstName() + " " + e.getPerson().getLastName()
-                + "\n\n " + "This is the reminder email to sign yourtimesheet."
-                + "You have remaining timesheet to sign Please sign your timesheet."
-                + "\n\n Regards" + "\n\n" + "Your System";
+    private void sendReminderToEmployee(Employee e, TimeSheet t) {
+        String message = "Dear Employee, " + e.getPerson().getFirstName() + " " + e.getPerson().getLastName()+ 
+                ":"
+                + "\n\n " + "This is a reminder that your timesheet is due at " + t.getEndDate()
+                + ". Please log into the TimeSheet System(TSS) to complete, sign and submit your timesheets. "
+                + "Failure to submit your timesheets may result in not being paid. "
+                + "\n\n If you have any question regarding your timesheet in general then "
+                + "please contact your SUPERVISOR."
+                + "\n\n \n\n Regards," + "\n" + "Your System";
 
         String subject = "Reminder to Sign your TimeSheet";
         String email = e.getPerson().getEmailAddress();
         sendReminder(email, subject, message);
     }
 
-    private void sendReminderToSupervisorAssistant(String contractId) {
+    private void sendReminderToSupervisorAssistant(Employee e, TimeSheet t) {
         try {
-            Supervisor s = supervisorBusinessLogic.getSupervisorByContract(contractId);
+            Supervisor s = supervisorBusinessLogic.getSupervisorByContract(t.getContract().getUuid());
             if (s != null) {
-                String message = " Dear " + s.getPerson().getFirstName() + " " + s.getPerson().getLastName()
-                        + "\n\n " + "This is the reminder email to sign the timesheet for your employee."
-                        + "Please sign the timesheet for your employee."
-                        + "\n\n Regards \n\n Your System.";
+                String message = "Dear Supervisor, " + s.getPerson().getFirstName() + " " + s.getPerson().getLastName()
+                        +":"
+                        + "\n\n " + "This is a reminder that you have remaining timesheets to sign for employee "
+                        + e.getPerson().getFirstName() + " " + e.getPerson().getLastName() + " and "
+                        + "end date of the timesheet is " + t.getEndDate()
+                        + ". Please log into Time Sheet System(TSS) to review and process the timesheet."
+                        + "\n\n If you have any question regarding this timesheet, please contact"
+                        + " your employee " + e.getPerson().getFirstName() + " " + e.getPerson().getLastName()
+                        + "\n\n \n\n Regards, \n Your System";
 
                 String subject = "Reminder to sign the timesheet for your employee";
                 String email = s.getPerson().getEmailAddress();
@@ -143,15 +153,19 @@ public class ReminderBean {
         }
 
         try {
-            assistants = assistantBusinessLogic.getAssistantsByContract(contractId);
+            assistants = assistantBusinessLogic.getAssistantsByContract(t.getContract().getUuid());
             if (assistants != null) {
                 for (Assistant a : assistants) {
                     System.out.println(a.getPerson().getFirstName());
-                    String message = " Dear " + a.getPerson().getFirstName() + " " + a.getPerson().getLastName()
-                            + "\n\n " + "This is the reminder email to archive the "
-                            + "timesheet for your employee. Please archieve the time sheet "
-                            + "which is signed by supervisor"
-                            + "\n\n Regards \n\n Your System";
+                    String message = "Dear Assistant, " + a.getPerson().getFirstName() + " " + a.getPerson().getLastName()
+                            +":"
+                            + "\n\n This is a reminder that you have remaining timesheets "
+                            + "to archive for employee " + e.getPerson().getFirstName() + " " + e.getPerson().getLastName()
+                            + " and the end date of the timesheet is " + t.getEndDate()
+                            + " Please log into Time Sheet System(TSS) to review and process the timesheet."
+                            + "\n\n If you have any question regarding this timesheet, please contact"
+                            + " your Employee or Supervisor."
+                            + "\n\n \n\n Regards, \n Your System";
 
                     String subject = "Reminder to archive the timesheet of your employee";
                     String email = a.getPerson().getEmailAddress();
@@ -163,17 +177,21 @@ public class ReminderBean {
 
     }
 
-    private void sendReminderToSecretaries(String contractId) {
+    private void sendReminderToSecretaries(Employee e, TimeSheet t) {
         try {
-            secretaries = secretaryBusinessLogic.getSecretariesByContract(contractId);
+            secretaries = secretaryBusinessLogic.getSecretariesByContract(t.getContract().getUuid());
             if (secretaries != null) {
                 for (Secretary s : secretaries) {
-                    System.out.println(s.getPerson().getFirstName());
-                    String message = " Dear " + s.getPerson().getFirstName() + " " + s.getPerson().getLastName()
-                            + "\n\n " + "This is the reminder email to archive the"
-                            + "timesheet for your employee. Please archieve the time sheet"
-                            + "which is signed by supervisor."
-                            + "\n\n Regards" + "\n\n" + "Your System";
+                    System.out.println(s.getPerson().getEmailAddress());
+                    String message = "Dear Secretary, " + s.getPerson().getFirstName() + " " + s.getPerson().getLastName()
+                            +":"
+                            + "\n\n This is a reminder that you have remaining timesheets "
+                            + "to archive for employee " + e.getPerson().getFirstName() + " " + e.getPerson().getLastName()
+                            + " and the end date of the timesheet is " + t.getEndDate()
+                            + " Please log into Time Sheet System(TSS) to review and process the timesheet."
+                            + "\n\n If you have any question regarding this timesheet, please contact"
+                            + " your Employee or Supervisor."
+                            + "\n\n \n\n Regards, \n Your System";
 
                     String subject = "Reminder to archive the timesheet of your employee";
                     String email = s.getPerson().getEmailAddress();
