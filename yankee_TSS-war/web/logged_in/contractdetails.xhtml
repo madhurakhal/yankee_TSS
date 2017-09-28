@@ -251,7 +251,7 @@
                         
                         <!--BEGINS for SIGNED BY EMPLOYEE-->
                         <!--Note: Only change from current tab is  removed status data table column-->
-                        <b:tab title="Signed By Employee">
+                        <b:tab title="Signed By Employee" rendered="#{contractDetailsBean.isSupervisorContract()}">
                             <p:outputPanel styleClass="box"> 
                                 <p:outputPanel rendered = "#{empty contractDetailsBean.signedByEmployeeTimeSheets}" styleClass="box-body text-center">
                                     <p> Oops!! No timesheets has yet been signed by Employee!!</p>
@@ -317,9 +317,82 @@
                         
                         
                         
+                        
+                        <!--BEGINS for SIGNED BY SUPERVISOR-->
+                        <!--Note: Only change from current tab is  removed status data table column-->
+                        <b:tab title="Signed By Supervisor" rendered="#{contractDetailsBean.isEmployeeContract() or contractDetailsBean.isSecretaryContract()}">
+                            <p:outputPanel styleClass="box"> 
+                                <p:outputPanel rendered = "#{empty contractDetailsBean.signedBySupervisorTimeSheets}" styleClass="box-body text-center">
+                                    <p> Oops!! No timesheets has yet been signed by Employee!!</p>
+                                </p:outputPanel>
+                                <p:outputPanel rendered = "#{not empty contractDetailsBean.signedBySupervisorTimeSheets}" styleClass="box-body">
+                                    <b:dataTable id="ssTimeSheetTab" var="timesheet" value="#{contractDetailsBean.signedBySupervisorTimeSheets}" responsive="true">
+                                        <b:dataTableColumn label="Start Date" value="#{timesheet.startDate.dayOfMonth} #{timesheet.startDate.month} #{timesheet.startDate.year} (#{timesheet.startDate.dayOfWeek})" />
+                                        <b:dataTableColumn label="End Date" value="#{timesheet.endDate.dayOfMonth} #{timesheet.endDate.month} #{timesheet.endDate.year} (#{timesheet.endDate.dayOfWeek})" />
+
+                                        <b:dataTableColumn value="#{timesheet.hoursDue}" label="Hours Due"/>
+                                        <b:dataTableColumn value="#{contractDetailsBean.calculateHoursEntered(timesheet.uuid)}" label="Hours Entered"/>
+                                        
+
+                                        <b:dataTableColumn label="Action " style="width:50px" >
+                                            <!--BEGIN FOR EMPLOYYEEEE-->
+                                            <!--If the timesheet in progress then render submit for employee-->
+                                            <p:commandButton id="submitTimeSheetEmployeeSS" update ="@form" rendered = "#{timesheet.status eq 'IN_PROGRESS' and contractDetailsBean.isEmployee(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane" action="#{contractDetailsBean.onSignByEmployeeRow(timesheet.uuid)}">                           
+                                                <p:confirm header="Confirmation" message="Confirm Sign?" icon="ui-icon-alert" />
+                                            </p:commandButton>
+                                            <p:tooltip for="submitTimeSheetEmployeeSS" position="bottom" value="Sign TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
+                                            <!--END FOR EMPLOYEE-->
+                                            
+                                            
+                                            <!--BEGIN FOR SUPERVISOR-->
+                                            <!--if the timesheet is in signed by employee then render submit button for supervisor only.-->
+                                            <p:commandButton id="submitTimeSheetSupervisorSS" update ="@form" rendered = "#{timesheet.status eq 'SIGNED_BY_EMPLOYEE' and contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane"  action="#{contractDetailsBean.onSignBySupervisorRow(timesheet.uuid)}">                                                
+                                                <p:confirm header="Confirmation" message="Confirm Sign?" icon="ui-icon-alert" />
+                                            </p:commandButton>
+                                            <p:tooltip for="submitTimeSheetSupervisorSS" position="bottom" value="Sign TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
+                                            <!--REVOKE SIGNATURE-->
+                                            <p:commandButton id="revokeTimeSheetSupervisorSS" update ="@form" rendered = "#{timesheet.status eq 'SIGNED_BY_EMPLOYEE' and contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-thumbs-down" action="#{contractDetailsBean.onRevokeSignatureBySupervisor(timesheet.uuid)}">                                               
+                                                <p:confirm header="Revoke" message="Confirm Revoke Signature?" icon="ui-icon-alert" />
+                                            </p:commandButton>
+                                            <p:tooltip for="revokeTimeSheetSupervisorSS" position="bottom" value="Revoke Signature" showEffect="clip" hideEffect="explode"></p:tooltip>                                         
+                                            <!--END FOR SUPERVISOR-->
+                                            
+                                            
+
+                                            <!--PRINT AND ARCHIVE OPTION AVAILABLE IF LOGGED IN USER IS STAFF AND SECRETARY-->
+                                            <p:commandButton id="printTimeSheetSS"  rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid)}" icon="fa fa-fw fa-print"   action="#{contractDetailsBean.printTimeSheet(timesheet.uuid)}"/>
+                                            <p:tooltip for="printTimeSheetSS" position="bottom" value="Print TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
+
+                                            <p:commandButton id="archiveTimeSheetSS" rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid)}" icon="fa fa-fw fa-archive"   action="#{contractDetailsBean.archiveTimeSheet(timesheet.uuid)}"/>
+                                            <p:tooltip  for="archiveTimeSheetSS" position="bottom" value="Archive TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
+                                            <!--PRINT OPTION AVAILABLE IF LOGGED IN USER IS STAFF AND SECRETARY-->                       
+
+
+
+                                            <p:commandButton id="addNewEntrySS" rendered = "#{timesheet.status eq 'IN_PROGRESS' and contractDetailsBean.isEmployee(timesheet.uuid)}" icon="fa fa-fw fa-plus"   action="#{contractDetailsBean.addNewEntry(timesheet.uuid,timesheet.displayString)}"/>
+                                            <p:tooltip for="addNewEntrySS" position="bottom" value="Add TimeSheet entry" showEffect="clip" hideEffect="explode"></p:tooltip>
+
+                                            <p:commandButton id="viewTimeSheetSS"  icon="fa fa-fw fa-television" action="#{contractDetailsBean.onRowView(timesheet.uuid,timesheet.displayString)}"/>
+                                            <p:tooltip for="viewTimeSheetSS" position="bottom" value="View TimeSheet Entries" showEffect="clip" hideEffect="explode"></p:tooltip>
+                                        </b:dataTableColumn>
+                                    </b:dataTable>
+
+                                </p:outputPanel>
+                            </p:outputPanel>                    
+                        </b:tab>                            
+                        <!--ENDS For SIGNED BY SUPERVISOR-->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
                         <!--BEGINS for IN Archived -->                        
                         <!--Note: Only change from current tab is  removed status data table column-->
-                        <b:tab title="Archived">
+                        <b:tab title="Archived" rendered="#{not contractDetailsBean.isEmployeeContract()}">
                             <p:outputPanel styleClass="box"> 
                                 <p:outputPanel rendered = "#{empty contractDetailsBean.inArchivedTimeSheets}" styleClass="box-body text-center">
                                     <p> Oops!! No archived timesheets has yet been recorded. Contact Secretary of contract for details!!</p>
@@ -385,7 +458,7 @@
                         
                         
                         <!--BEGINS for ALL-->
-                        <b:tab title="All">
+                        <b:tab title="All" rendered="#{not contractDetailsBean.isEmployeeContract()}">
                            <p:outputPanel styleClass="box"> 
                                <p:outputPanel rendered = "#{empty contractDetailsBean.timesheets}" styleClass="box-body text-center">
                                     <p> Either Contract has not started yet OR timesheets are not available for today's date!!</p>

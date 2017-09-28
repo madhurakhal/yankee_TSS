@@ -275,7 +275,6 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
 
         // Set Supervisor also. Note to also do for employee
         Supervisor s = new Supervisor(ce.getSupervisor().getUuid(), ce.getSupervisor().getName());
-
         PersonEntity person = ce.getSupervisor().getPerson();
         Person pS = new Person(person.getUuid(), person.getName());
         pS.setFirstName(person.getFirstName());
@@ -286,7 +285,13 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
         pS.setPreferredLanguage(person.getPreferredLanguage());
         s.setPerson(pS);
         c.setSupervisor(s);
-
+        
+        Employee e = new Employee(ce.getEmployee().getUuid(), ce.getEmployee().getName());
+        PersonEntity personforE = ce.getEmployee().getPerson();
+        Person pE = new Person(personforE.getUuid(), personforE.getName());
+        // To fill rest of person
+        e.setPerson(pE);
+        c.setEmployee(e);
         return c;
     }
 

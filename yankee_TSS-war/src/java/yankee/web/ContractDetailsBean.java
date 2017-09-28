@@ -80,18 +80,37 @@ public class ContractDetailsBean {
         ContractEntity ce = timeSheetBusinessLogic.getContractByTimesheetUUID(timeSheetUUID);
         return ce.getSupervisor().getPerson().getUuid().equals(loggedinUser.getUuid());
     }
+    
+     public boolean isSupervisorContract() {
+        Contract ce = contractBusinessLogic.getContractByUUID(contract_id);
+        return ce.getSupervisor().getPerson().getUuid().equals(loggedinUser.getUuid());
+    }
+    
 
     public boolean isEmployee(String timeSheetUUID) {
         ContractEntity ce = timeSheetBusinessLogic.getContractByTimesheetUUID(timeSheetUUID);
         return ce.getEmployee().getPerson().getUuid().equals(loggedinUser.getUuid());
     }
 
+    public boolean isEmployeeContract() {
+        Contract ce = contractBusinessLogic.getContractByUUID(contract_id);
+        return ce.getEmployee().getPerson().getUuid().equals(loggedinUser.getUuid());
+    }
+    
     public boolean isSecretary(String timeSheetUUID) {
         ContractEntity ce = timeSheetBusinessLogic.getContractByTimesheetUUID(timeSheetUUID);
         List<Secretary> ls = secretaryBusinessLogic.getSecretariesByContract(ce.getUuid());
         // For each secretary if one of the secretary matches the person logged in
         return !ls.stream().filter(e -> e.getPerson().getUuid().equals(loggedinUser.getUuid())).collect(Collectors.toList()).isEmpty();
     }
+    
+    public boolean isSecretaryContract() {
+        Contract ce = contractBusinessLogic.getContractByUUID(contract_id);
+        List<Secretary> ls = secretaryBusinessLogic.getSecretariesByContract(ce.getUuid());
+        // For each secretary if one of the secretary matches the person logged in
+        return !ls.stream().filter(e -> e.getPerson().getUuid().equals(loggedinUser.getUuid())).collect(Collectors.toList()).isEmpty();
+    }
+    
 
     @PostConstruct
     public void init() {
@@ -201,12 +220,21 @@ public class ContractDetailsBean {
     TimeSheet currentTimeSheet;
     List<TimeSheet> previousTimeSheet;
     List<TimeSheet> signedByEmployeeTimeSheets;
+    List<TimeSheet> signedBySupervisorTimeSheets;
     List<TimeSheet> inProgressTimeSheets;
     List<TimeSheet> inArchivedTimeSheets;
     List<TimeSheet> allTimeSheets;
     
     
     
+    public List<TimeSheet> getSignedBySupervisorTimeSheets() {
+        signedBySupervisorTimeSheets = timesheets.stream().filter(e -> (e.getStatus().equals(TimesheetStatusEnum.SIGNED_BY_SUPERVISOR))).collect(Collectors.toList());
+        return signedBySupervisorTimeSheets;
+    }
+
+    public void setSignedBySupervisorTimeSheets(List<TimeSheet> signedBySupervisorTimeSheets) {
+        this.signedBySupervisorTimeSheets = signedBySupervisorTimeSheets;
+    }
     
     public List<TimeSheet> getPreviousTimeSheet() {
         // Get the current date today.
