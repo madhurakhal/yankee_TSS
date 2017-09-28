@@ -16,7 +16,6 @@ import yankee.web.ReminderBean;
  *
  * @author pradipgiri
  */
-
 @Singleton
 public class ReminderService {
 
@@ -25,8 +24,6 @@ public class ReminderService {
 
     @EJB
     ReminderBean reminderBean;
-    
-    public boolean startScheduler = false;
 
     /*
         @Schedules ({
@@ -41,54 +38,10 @@ public class ReminderService {
         System.out.println("This task is executed");
         programmaticTimer.cancelTimer("timerId");
         List<TimeSheet> timeSheets = reminderBean.getTimeSheetsToSendReminder();
-        if (timeSheets!= null && timeSheets.size() > 0) {
+        if (timeSheets != null && timeSheets.size() > 0) {
             System.out.println("called from reminder service = " + timeSheets);
             reminderBean.sendReminderForTimeSheets(timeSheets);
             programmaticTimer.createTimer("timerId", 1);
         }
     }
-
-    /*public void getRequiredData() {
-        try {
-            employees = employeeBusinessLogic.getEmployeeList();
-            System.out.println("list of employees  " + employees);
-        } catch (Exception e) {
-            System.out.println("Exception Occured from employee business logic!!");
-        }
-
-        if (employees != null) {
-            for (Employee e : employees) {
-                String contractId = e.getContract().getUuid();
-                TimesheetFrequencyEnum contractFrequency = e.getContract().getFrequency();
-                try {
-                    timeSheets = timeSheetBusinessLogic.getAllTimeSheetsForContract(contractId);
-                    System.out.println("list of timesheets  " + timeSheets);
-                } catch (NumberFormatException ne) {
-                    System.out.println("Exception Occured from timeSheetBusinessLogic!!");
-                }
-                if (timeSheets != null) {
-                    for (TimeSheet t : timeSheets) {
-                        System.out.println("Status =" + t.getStatus());
-                        timesheetstatus = t.getStatus();
-
-                        switch (timesheetstatus) {
-                            case IN_PROGRESS:
-                                // send email to employee
-                                sendReminderToEmployee(e);
-                                break;
-                            case SIGNED_BY_EMPLOYEE:
-                                // send email to supervisor and assistant
-                                sendReminderToSupervisorAssistant(contractId);
-                                break;
-
-                            case SIGNED_BY_SUPERVISOR:
-                                // send eamil to secretaries
-                                sendReminderToSecretaries(contractId);
-                                break;
-                        }
-                    }
-                }
-            }
-        }
-    } */
 }

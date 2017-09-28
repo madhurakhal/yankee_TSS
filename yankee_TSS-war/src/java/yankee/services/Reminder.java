@@ -41,7 +41,7 @@ public class Reminder implements Serializable{
         Transport.send(msg);
     }
     
-//    public void sendMail(String recipient, String subject, String message) throws MessagingException {
+    public void sendMailFromGmail(String recipient, String subject, String message) throws MessagingException {
 //        Properties props=System.getProperties();
 //        props.put("mail.smtp.host", "smtp.gmail.com");
 //        props.put("mail.smtp.auth", "true");
@@ -61,8 +61,8 @@ public class Reminder implements Serializable{
 //        mailMessage.setSubject(subject);
 //
 //        Transport transport=mailSession.getTransport("smtp");
-//        transport.connect("smtp.gmail.com", "itsmepradipgiri@gmail.com", "merosansarbehalxani");
+//        transport.connect("smtp.gmail.com", "itsmepradipgiri@gmail.com", "password");
 //        transport.sendMessage(mailMessage, mailMessage.getAllRecipients());   
-//    }
+    }
     
 }
