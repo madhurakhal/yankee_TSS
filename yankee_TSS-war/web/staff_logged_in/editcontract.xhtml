@@ -11,12 +11,12 @@
         <ui:define name="breadcrumb">          
             <li>
                 <h:link outcome="index">
-                    <i class="fa fa-dashboard"></i>Home
+                    <i class="fa fa-dashboard"></i>#{msg.home}
                 </h:link>
             </li>
             <li>
                 <h:link outcome="dashboard">
-                    Dashboard
+                    #{msg.dashBoard}
                 </h:link>
             </li>
             <li>
@@ -65,7 +65,7 @@
                 <b:row>
                     <p:outputPanel styleClass="box box-default">
                         <p:outputPanel styleClass="box-header text-center">
-                            <h:outputLabel id="currentContract" value=" Contract For : #{editContractBean.currentContractPerson.firstName} #{editContractBean.currentContractPerson.lastName} (#{editContractBean.currentContractPerson.emailAddress})"/>
+                            <h:outputLabel id="currentContract" value="#{msg.contractFor} :"  #{editContractBean.currentContractPerson.firstName} #{editContractBean.currentContractPerson.lastName} (#{editContractBean.currentContractPerson.emailAddress})"/>
                         </p:outputPanel>
                         <p:outputPanel styleClass="box-body top-border edit-contract">
                             <b:column>
@@ -126,7 +126,7 @@
                                 </b:formGroup>
 
                                 <b:formGroup>
-                                    <h:outputLabel for="changeSupervisor" value="Change Supervisor" styleClass="col-xs-12 col-sm-3 control-label"/>
+                                    <h:outputLabel for="changeSupervisor" value="#{msg.changeSupervisor}" styleClass="col-xs-12 col-sm-3 control-label"/>
                                     <b:column col-sm="6" col-xs="12">
                                         <b:selectOneMenu id="changeSupervisor" value="#{editContractBean.supervisorForContract}" required="true">                                        
                                             <f:selectItems  value="#{editContractBean.availableSupervisorList}" var="supervisorlist" itemLabel="#{supervisorlist.firstName} #{supervisorlist.lastName}" itemValue="#{supervisorlist}"/>

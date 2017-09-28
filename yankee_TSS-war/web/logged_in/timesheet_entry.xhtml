@@ -17,30 +17,30 @@ and open the template in the editor.
         <ui:define name="breadcrumb">
             <li>
                 <h:link outcome="dashboard">
-                    <i class="fa fa-dashboard"></i>Home
+                    <i class="fa fa-dashboard"></i>#{msg.home}
                 </h:link>
             </li>
                   <li>
                 <h:link outcome="dashboard">
-                    Dashboard
+                    #{msg.dashBoard}
                 </h:link>
             </li>
             <li>
               <h:link rendered="#{timeSheetEntryBean.loggedinUser.userRoleRealm eq 'STAFF'}" outcome="managecontracts">
-                    Manage Contracts
+                  #{msg.manageContracts}
                 </h:link>
                 <h:link rendered="#{timeSheetEntryBean.loggedinUser.userRoleRealm eq null}" outcome="employeecontracts">
-                    Employee Contracts
+                    #{msg.employeeContracts}
                 </h:link>
             </li>
             <li>
                 <h:link outcome = "/logged_in/contractdetails.xhtml?id=#{timeSheetEntryBean.contractUUID}">
-                    View Contract Details
+                    #{msg.viewContractDetails}
                 </h:link>
             </li>
             <li>
                 <h:link disabled = "true">
-                    Edit Entries
+                    #{msg.editEntries}
                 </h:link>
             </li>
         </ui:define>
@@ -49,14 +49,14 @@ and open the template in the editor.
             <h:form id="timesheetentry">
                 <p:dataGrid var="entry"  value="#{timeSheetEntryBean.entries}" columns="7" rows="35" id="entryGrid" layout="grid">
                     <f:facet name="header">
-                        TimeSheet entries for : <h:outputText value="#{timeSheetEntryBean.displayString}"/>
+                        #{msg.timeSheetEntryFor} : <h:outputText value="#{timeSheetEntryBean.displayString}"/>
                     </f:facet>
 
                     <p:panel header="#{entry.dateString}" style="text-align: center;">
                         <h:panelGrid columns="1" style="width: 100%">
-                            Logged Hours:<h:outputText value="#{entry.hours}"/>
+                            #{msg.loggedHours}:<h:outputText value="#{entry.hours}"/>
                             <p:commandButton disabled="#{entry.isHoliday}" icon="fa fa-fw fa-plus" id="addUpdateEntry" update=":timesheetentry:entryDetail" oncomplete="PF('entryPanel').show()">
-                                <p:tooltip id="addNewIconToolTip" for="addUpdateEntry" position="bottom" value="Add TimeSheet entry" showEffect="clip" hideEffect="explode"/>
+                                <p:tooltip id="addNewIconToolTip" for="addUpdateEntry" position="bottom" value="#{msg.addTimeSheetEntry}" showEffect="clip" hideEffect="explode"/>
                                 <f:setPropertyActionListener target="#{timeSheetEntryBean.selectedEntry}" value="#{entry}"  />
                             </p:commandButton>
                         </h:panelGrid>
@@ -72,15 +72,15 @@ and open the template in the editor.
                             <f:facet name="header">
                                 <h:outputText value="#{entry.dateString}"/>
                             </f:facet>
-                            <h:outputLabel for="startTime" value="Start time:"/>
+                            <h:outputLabel for="startTime" value="#{msg.startTime}:"/>
                             <p:calendar  id="startTime" value="#{timeSheetEntryBean.selectedEntry.startDateTime}" pattern="HH:mm" timeOnly="true"  />
 
-                            <h:outputLabel for="endTime"  value="End time:"/>
+                            <h:outputLabel for="endTime"  value="#{msg.endTime}:"/>
                             <p:calendar id="endTime" value="#{timeSheetEntryBean.selectedEntry.endDateTime}" pattern="HH:mm" timeOnly="true" />
-                            <h:outputLabel for="description" value="Description:"/>
+                            <h:outputLabel for="description" value="#{msg.description}:"/>
                             <b:inputTextarea id="description" value="#{timeSheetEntryBean.selectedEntry.description}" />
-                            <p:commandButton id="submitEntry"  value="Save" actionListener="#{timeSheetEntryBean.saveEntry}"  update="timesheetentry msg"/>  
-                            <p:commandButton value="Reset" update="timesheetentry msg" actionListener="#{timeSheetEntryBean.resetEntry}"/>
+                            <p:commandButton id="submitEntry"  value="#{msg.save}" actionListener="#{timeSheetEntryBean.saveEntry}"  update="timesheetentry msg"/>  
+                            <p:commandButton value="#{msg.reset}" update="timesheetentry msg" actionListener="#{timeSheetEntryBean.resetEntry}"/>
                         </p:panelGrid>
 
                     </p:outputPanel>

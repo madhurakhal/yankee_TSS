@@ -18,7 +18,7 @@ and open the template in the editor.
         <ui:define name="main-content">
             <p></p>
             <h:form id="timesheetscheduleDisplay">
-                   <h:outputLabel value="Select the timesheet for:" for="timeSheetForContract"/>
+                <h:outputLabel value="#{msg.selectTimeSheetFor}" for="timeSheetForContract"/>
                    <h:selectOneMenu  id="timeSheetForContract" value="#{timeSheetBean.timeSheetFor}" onchange="sub">
                         <f:selectItems value="#{timeSheetBean.timesheets}" var="timesheet" itemValue="#{timesheet.uuid}" itemLabel="#{timesheet.displayString}"/>
                     </h:selectOneMenu> 

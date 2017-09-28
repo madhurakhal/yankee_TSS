@@ -18,30 +18,30 @@ and open the template in the editor.
         <ui:define name="breadcrumb">
             <li>
                 <h:link outcome="dashboard">
-                    <i class="fa fa-dashboard"></i>Home
+                    <i class="fa fa-dashboard"></i>#{msg.home}
                 </h:link>
             </li>
                   <li>
                 <h:link outcome="dashboard">
-                    Dashboard
+                    #{msg.dashBoard}
                 </h:link>
             </li>
             <li>
                <h:link rendered="#{timeSheetEntryBean.loggedinUser.userRoleRealm eq 'STAFF'}" outcome="managecontracts">
-                    Manage Contracts
+                   #{msg.manageContracts}
                 </h:link>
                 <h:link rendered="#{timeSheetEntryBean.loggedinUser.userRoleRealm eq null}" outcome="employeecontracts">
-                    Employee Contracts
+                    #{msg.employeeContracts}
                 </h:link>
             </li>
             <li>
                 <h:link outcome = "/logged_in/contractdetails.xhtml?id=#{timeSheetEntryBean.contractUUID}">
-                    View Contract Details
+                    #{msg.viewContractDetails}
                 </h:link>
             </li>
             <li>
                 <h:link disabled = "true">
-                    View Entries
+                    #{msg.viewEntries}
                 </h:link>
             </li>
         </ui:define>
@@ -51,9 +51,9 @@ and open the template in the editor.
 
                 <b:dataTable id="tbl" var="entryObj" value="#{timeSheetEntryBean.entries}" responsive="true">
 
-                    <b:dataTableColumn value="#{entryObj.dateString}" label="Date"/>
-                    <b:dataTableColumn value="#{entryObj.hours}" label="Hours"/>
-                    <b:dataTableColumn value="#{entryObj.description}" label="Description"/>
+                    <b:dataTableColumn value="#{entryObj.dateString}" label="#{msg.date}"/>
+                    <b:dataTableColumn value="#{entryObj.hours}" label="#{msg.hours}"/>
+                    <b:dataTableColumn value="#{entryObj.description}" label="#{msg.description}"/>
                     <b:dataTableColumn value="${entryObj.startDateTime}"/>
                     <b:dataTableColumn value="${entryObj.endDateTime}"/>
                 </b:dataTable>

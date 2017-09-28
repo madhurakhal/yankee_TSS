@@ -11,12 +11,12 @@
         <ui:define name="breadcrumb">            
             <li>
                 <h:link outcome="index">
-                    <i class="fa fa-dashboard"></i>Home
+                    <i class="fa fa-dashboard"></i>#{msg.home}
                 </h:link>
             </li>
             <li>
                 <h:link outcome="dashboard">
-                    Dashboard
+                    #{msg.dashBoard}
                 </h:link>
             </li>
             <li>
@@ -58,7 +58,7 @@
             <b:row styleClass="text-center">
                 <p:outputPanel styleClass="box box-default">
                     <p:outputPanel styleClass="box-header with-border">
-                        <h:outputLabel for="contractPersons" value="Create Contract For" />
+                        <h:outputLabel for="contractPersons" value="#{msg.createContractFor}" />
                     </p:outputPanel>
                     <b:form id="createContractForm">
                         <p:outputPanel styleClass="box-body">

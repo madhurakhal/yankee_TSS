@@ -11,12 +11,12 @@
         <ui:define name="breadcrumb">
             <li>
                 <h:link outcome="managecontracts">
-                    Manage Contracts
+                    #{msg.manageContracts}
                 </h:link>
             </li>
             <li>
                 <h:link disabled="true">
-                    Print Contract
+                    #{msg.printContract}
                 </h:link>
             </li>
         </ui:define>
@@ -26,7 +26,7 @@
                     <p:outputPanel id = "printContract" styleClass="box box-default">
                         <p:outputPanel styleClass="box-header text-center"> 
                             <!--image of koblenz landau-->
-                            <h:outputLabel value="Employment Contract"/>
+                            <h:outputLabel value="#{msg.employmentContract}"/>
                         </p:outputPanel>  
 
                         <p:outputPanel styleClass="box-body top-border text-center">
@@ -107,7 +107,7 @@
                         </p:outputPanel>
                     </p:outputPanel>
                     <p:commandButton id="print"
-                                     value="Print"
+                                     value="#{msg.print}"
                                      action ="index"
                                      styleClass="pull-right">
                         <p:printer target="printContract" />
