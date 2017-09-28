@@ -34,7 +34,7 @@
         </ui:define>
         <ui:define name="main-content">
             <h:form id="contractDetails">
-                
+
                 <b:row>
                     <p:outputPanel styleClass="box box-default">
                         <p:outputPanel styleClass="box-header text-center">
@@ -114,8 +114,8 @@
 
                     <!--BEGINSSSS TAV VIEWWWWWWWWWWWW FOR TIMESHEEEET BEGINSSSSS-->                   
                     <b:tabView contentStyle="border: 1px solid #ddd;padding:10px;"
-                                   content-disabled="false"> 
-                        
+                               content-disabled="false"> 
+
                         <!-- BEGINS  For Current-->
                         <!--Pre and cur exchange bhayecha id ma-->
                         <b:tab title="Current">  
@@ -140,8 +140,8 @@
                                             </p:commandButton>
                                             <p:tooltip for="submitTimeSheetEmployeePre" position="bottom" value="Sign TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
                                             <!--END FOR EMPLOYEE-->
-                                            
-                                            
+
+
                                             <!--BEGIN FOR SUPERVISOR-->
                                             <!--if the timesheet is in signed by employee then render submit button for supervisor only.-->
                                             <p:commandButton update ="contractDetails" rendered = "#{timesheet.status eq 'SIGNED_BY_EMPLOYEE' and contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane" id="submitTimeSheetSupervisorPre" action="#{contractDetailsBean.onSignBySupervisorRow(timesheet.uuid)}">                                                
@@ -154,14 +154,16 @@
                                             </p:commandButton>
                                             <p:tooltip for="revokeTimeSheetSupervisorPre" position="bottom" value="Revoke Signature" showEffect="clip" hideEffect="explode"></p:tooltip>                                         
                                             <!--END FOR SUPERVISOR-->
-                                            
-                                            
+
+
 
                                             <!--PRINT AND ARCHIVE OPTION AVAILABLE IF LOGGED IN USER IS STAFF AND SECRETARY-->
                                             <p:commandButton rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid)}" icon="fa fa-fw fa-print"  id="printTimeSheetPre"  action="#{contractDetailsBean.printTimeSheet(timesheet.uuid)}"/>
                                             <p:tooltip for="printTimeSheetPre" position="bottom" value="Print TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
 
-                                            <p:commandButton rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid)}" icon="fa fa-fw fa-archive"  id="archiveTimeSheetPre"  action="#{contractDetailsBean.archiveTimeSheet(timesheet.uuid)}"/>
+                                            <p:commandButton id="archiveTimeSheetPre" rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid) and not (timesheet.status eq 'ARCHIVED')}" icon="fa fa-fw fa-archive"   action="#{contractDetailsBean.archiveTimeSheet(timesheet.uuid)}">
+                                                <p:confirm header="Confirmation" message="Confirm Archive?" icon="ui-icon-alert" />
+                                            </p:commandButton>
                                             <p:tooltip  for="archiveTimeSheetPre" position="bottom" value="Archive TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
                                             <!--PRINT OPTION AVAILABLE IF LOGGED IN USER IS STAFF AND SECRETARY-->                       
 
@@ -180,9 +182,9 @@
                         </b:tab>
                         <!-- ENDS  For Current-->
 
-                        
-                        
-                        
+
+
+
                         <!--BEGINS for Previous to current days-->
                         <b:tab title="Previous">                              
                             <p:outputPanel styleClass="box"> 
@@ -206,8 +208,8 @@
                                             </p:commandButton>
                                             <p:tooltip id="submitIconToolTipECur" for="submitTimeSheetEmployeeCur" position="bottom" value="Sign TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
                                             <!--END FOR EMPLOYEE-->
-                                            
-                                            
+
+
                                             <!--BEGIN FOR SUPERVISOR-->
                                             <!--if the timesheet is in signed by employee then render submit button for supervisor only.-->
                                             <p:commandButton id="submitTimeSheetSupervisorCur" update ="@form" rendered = "#{timesheet.status eq 'SIGNED_BY_EMPLOYEE' and contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane"  action="#{contractDetailsBean.onSignBySupervisorRow(timesheet.uuid)}">                                                
@@ -220,14 +222,16 @@
                                             </p:commandButton>
                                             <p:tooltip for="revokeTimeSheetSupervisorCur" position="bottom" value="Revoke Signature" showEffect="clip" hideEffect="explode"></p:tooltip>                                         
                                             <!--END FOR SUPERVISOR-->
-                                            
-                                            
+
+
 
                                             <!--PRINT AND ARCHIVE OPTION AVAILABLE IF LOGGED IN USER IS STAFF AND SECRETARY-->
                                             <p:commandButton id="printTimeSheetCur"  rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid)}" icon="fa fa-fw fa-print"   action="#{contractDetailsBean.printTimeSheet(timesheet.uuid)}"/>
                                             <p:tooltip for="printTimeSheetCur" position="bottom" value="Print TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
 
-                                            <p:commandButton id="archiveTimeSheetCur" rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid)}" icon="fa fa-fw fa-archive"   action="#{contractDetailsBean.archiveTimeSheet(timesheet.uuid)}"/>
+                                            <p:commandButton id="archiveTimeSheetCur" rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid) and not (timesheet.status eq 'ARCHIVED')}" icon="fa fa-fw fa-archive"   action="#{contractDetailsBean.archiveTimeSheet(timesheet.uuid)}">
+                                                <p:confirm header="Confirmation" message="Confirm Archive?" icon="ui-icon-alert" />
+                                            </p:commandButton>
                                             <p:tooltip  for="archiveTimeSheetCur" position="bottom" value="Archive TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
                                             <!--PRINT OPTION AVAILABLE IF LOGGED IN USER IS STAFF AND SECRETARY-->                       
 
@@ -245,10 +249,10 @@
                             </p:outputPanel>
                         </b:tab>                            
                         <!--ENDS For Previous to current days-->
-                        
-                        
-                        
-                        
+
+
+
+
                         <!--BEGINS for SIGNED BY EMPLOYEE-->
                         <!--Note: Only change from current tab is  removed status data table column-->
                         <b:tab title="Signed By Employee" rendered="#{contractDetailsBean.isSupervisorContract()}">
@@ -263,7 +267,7 @@
 
                                         <b:dataTableColumn value="#{timesheet.hoursDue}" label="Hours Due"/>
                                         <b:dataTableColumn value="#{contractDetailsBean.calculateHoursEntered(timesheet.uuid)}" label="Hours Entered"/>
-                                        
+
 
                                         <b:dataTableColumn label="Action " style="width:50px" >
                                             <!--BEGIN FOR EMPLOYYEEEE-->
@@ -273,8 +277,8 @@
                                             </p:commandButton>
                                             <p:tooltip for="submitTimeSheetEmployeeSE" position="bottom" value="Sign TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
                                             <!--END FOR EMPLOYEE-->
-                                            
-                                            
+
+
                                             <!--BEGIN FOR SUPERVISOR-->
                                             <!--if the timesheet is in signed by employee then render submit button for supervisor only.-->
                                             <p:commandButton id="submitTimeSheetSupervisorSE" update ="@form" rendered = "#{timesheet.status eq 'SIGNED_BY_EMPLOYEE' and contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane"  action="#{contractDetailsBean.onSignBySupervisorRow(timesheet.uuid)}">                                                
@@ -287,14 +291,16 @@
                                             </p:commandButton>
                                             <p:tooltip for="revokeTimeSheetSupervisorSE" position="bottom" value="Revoke Signature" showEffect="clip" hideEffect="explode"></p:tooltip>                                         
                                             <!--END FOR SUPERVISOR-->
-                                            
-                                            
+
+
 
                                             <!--PRINT AND ARCHIVE OPTION AVAILABLE IF LOGGED IN USER IS STAFF AND SECRETARY-->
                                             <p:commandButton id="printTimeSheetSE"  rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid)}" icon="fa fa-fw fa-print"   action="#{contractDetailsBean.printTimeSheet(timesheet.uuid)}"/>
                                             <p:tooltip for="printTimeSheetSE" position="bottom" value="Print TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
 
-                                            <p:commandButton id="archiveTimeSheetSE" rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid)}" icon="fa fa-fw fa-archive"   action="#{contractDetailsBean.archiveTimeSheet(timesheet.uuid)}"/>
+                                            <p:commandButton id="archiveTimeSheetSE" rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid) and not (timesheet.status eq 'ARCHIVED')}" icon="fa fa-fw fa-archive"   action="#{contractDetailsBean.archiveTimeSheet(timesheet.uuid)}">
+                                                <p:confirm header="Confirmation" message="Confirm Archive?" icon="ui-icon-alert" />
+                                            </p:commandButton>
                                             <p:tooltip  for="archiveTimeSheetSE" position="bottom" value="Archive TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
                                             <!--PRINT OPTION AVAILABLE IF LOGGED IN USER IS STAFF AND SECRETARY-->                       
 
@@ -312,12 +318,12 @@
                             </p:outputPanel>                    
                         </b:tab>                            
                         <!--ENDS For SIGNED BY EMPLOYEE-->
-                        
-                        
-                        
-                        
-                        
-                        
+
+
+
+
+
+
                         <!--BEGINS for SIGNED BY SUPERVISOR-->
                         <!--Note: Only change from current tab is  removed status data table column-->
                         <b:tab title="Signed By Supervisor" rendered="#{contractDetailsBean.isEmployeeContract() or contractDetailsBean.isSecretaryContract()}">
@@ -332,7 +338,7 @@
 
                                         <b:dataTableColumn value="#{timesheet.hoursDue}" label="Hours Due"/>
                                         <b:dataTableColumn value="#{contractDetailsBean.calculateHoursEntered(timesheet.uuid)}" label="Hours Entered"/>
-                                        
+
 
                                         <b:dataTableColumn label="Action " style="width:50px" >
                                             <!--BEGIN FOR EMPLOYYEEEE-->
@@ -342,8 +348,8 @@
                                             </p:commandButton>
                                             <p:tooltip for="submitTimeSheetEmployeeSS" position="bottom" value="Sign TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
                                             <!--END FOR EMPLOYEE-->
-                                            
-                                            
+
+
                                             <!--BEGIN FOR SUPERVISOR-->
                                             <!--if the timesheet is in signed by employee then render submit button for supervisor only.-->
                                             <p:commandButton id="submitTimeSheetSupervisorSS" update ="@form" rendered = "#{timesheet.status eq 'SIGNED_BY_EMPLOYEE' and contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane"  action="#{contractDetailsBean.onSignBySupervisorRow(timesheet.uuid)}">                                                
@@ -356,14 +362,16 @@
                                             </p:commandButton>
                                             <p:tooltip for="revokeTimeSheetSupervisorSS" position="bottom" value="Revoke Signature" showEffect="clip" hideEffect="explode"></p:tooltip>                                         
                                             <!--END FOR SUPERVISOR-->
-                                            
-                                            
+
+
 
                                             <!--PRINT AND ARCHIVE OPTION AVAILABLE IF LOGGED IN USER IS STAFF AND SECRETARY-->
                                             <p:commandButton id="printTimeSheetSS"  rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid)}" icon="fa fa-fw fa-print"   action="#{contractDetailsBean.printTimeSheet(timesheet.uuid)}"/>
                                             <p:tooltip for="printTimeSheetSS" position="bottom" value="Print TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
 
-                                            <p:commandButton id="archiveTimeSheetSS" rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid)}" icon="fa fa-fw fa-archive"   action="#{contractDetailsBean.archiveTimeSheet(timesheet.uuid)}"/>
+                                            <p:commandButton id="archiveTimeSheetSS" rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid) and not (timesheet.status eq 'ARCHIVED')}" icon="fa fa-fw fa-archive"   action="#{contractDetailsBean.archiveTimeSheet(timesheet.uuid)}">
+                                                <p:confirm header="Confirmation" message="Confirm Archive?" icon="ui-icon-alert" />
+                                            </p:commandButton>
                                             <p:tooltip  for="archiveTimeSheetSS" position="bottom" value="Archive TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
                                             <!--PRINT OPTION AVAILABLE IF LOGGED IN USER IS STAFF AND SECRETARY-->                       
 
@@ -381,15 +389,15 @@
                             </p:outputPanel>                    
                         </b:tab>                            
                         <!--ENDS For SIGNED BY SUPERVISOR-->
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
+
+
+
+
+
+
+
+
+
                         <!--BEGINS for IN Archived -->                        
                         <!--Note: Only change from current tab is  removed status data table column-->
                         <b:tab title="Archived" rendered="#{not contractDetailsBean.isEmployeeContract()}">
@@ -404,7 +412,7 @@
 
                                         <b:dataTableColumn value="#{timesheet.hoursDue}" label="Hours Due"/>
                                         <b:dataTableColumn value="#{contractDetailsBean.calculateHoursEntered(timesheet.uuid)}" label="Hours Entered"/>
-                                        
+
 
                                         <b:dataTableColumn label="Action " style="width:50px" >
                                             <!--BEGIN FOR EMPLOYYEEEE-->
@@ -414,8 +422,8 @@
                                             </p:commandButton>
                                             <p:tooltip for="submitTimeSheetEmployeeA" position="bottom" value="Sign TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
                                             <!--END FOR EMPLOYEE-->
-                                            
-                                            
+
+
                                             <!--BEGIN FOR SUPERVISOR-->
                                             <!--if the timesheet is in signed by employee then render submit button for supervisor only.-->
                                             <p:commandButton id="submitTimeSheetSupervisorA" update ="@form" rendered = "#{timesheet.status eq 'SIGNED_BY_EMPLOYEE' and contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane"  action="#{contractDetailsBean.onSignBySupervisorRow(timesheet.uuid)}">                                                
@@ -428,14 +436,16 @@
                                             </p:commandButton>
                                             <p:tooltip for="revokeTimeSheetSupervisorA" position="bottom" value="Revoke Signature" showEffect="clip" hideEffect="explode"></p:tooltip>                                         
                                             <!--END FOR SUPERVISOR-->
-                                            
-                                            
+
+
 
                                             <!--PRINT AND ARCHIVE OPTION AVAILABLE IF LOGGED IN USER IS STAFF AND SECRETARY-->
                                             <p:commandButton id="printTimeSheetA"  rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid)}" icon="fa fa-fw fa-print"   action="#{contractDetailsBean.printTimeSheet(timesheet.uuid)}"/>
                                             <p:tooltip for="printTimeSheetA" position="bottom" value="Print TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
 
-                                            <p:commandButton id="archiveTimeSheetA" rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid)}" icon="fa fa-fw fa-archive"   action="#{contractDetailsBean.archiveTimeSheet(timesheet.uuid)}"/>
+                                            <p:commandButton id="archiveTimeSheetA" rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid) and not (timesheet.status eq 'ARCHIVED')}" icon="fa fa-fw fa-archive"   action="#{contractDetailsBean.archiveTimeSheet(timesheet.uuid)}">
+                                                <p:confirm header="Confirmation" message="Confirm Archive?" icon="ui-icon-alert" />
+                                            </p:commandButton>
                                             <p:tooltip  for="archiveTimeSheetA" position="bottom" value="Archive TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
                                             <!--PRINT OPTION AVAILABLE IF LOGGED IN USER IS STAFF AND SECRETARY-->                       
 
@@ -453,14 +463,14 @@
                             </p:outputPanel>                                   
                         </b:tab>                            
                         <!--ENDS For IN Archived-->
-                        
-                        
-                        
-                        
+
+
+
+
                         <!--BEGINS for ALL-->
                         <b:tab title="All" rendered="#{not contractDetailsBean.isEmployeeContract()}">
-                           <p:outputPanel styleClass="box"> 
-                               <p:outputPanel rendered = "#{empty contractDetailsBean.timesheets}" styleClass="box-body text-center">
+                            <p:outputPanel styleClass="box"> 
+                                <p:outputPanel rendered = "#{empty contractDetailsBean.timesheets}" styleClass="box-body text-center">
                                     <p> Either Contract has not started yet OR timesheets are not available for today's date!!</p>
                                 </p:outputPanel>
                                 <p:outputPanel rendered = "#{not empty contractDetailsBean.timesheets}" styleClass="box-body">
@@ -480,8 +490,8 @@
                                             </p:commandButton>
                                             <p:tooltip for="submitTimeSheetEmployeeAll" position="bottom" value="Sign TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
                                             <!--END FOR EMPLOYEE-->
-                                            
-                                            
+
+
                                             <!--BEGIN FOR SUPERVISOR-->
                                             <!--if the timesheet is in signed by employee then render submit button for supervisor only.-->
                                             <p:commandButton id="submitTimeSheetSupervisorAll" update ="@form" rendered = "#{timesheet.status eq 'SIGNED_BY_EMPLOYEE' and contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane"  action="#{contractDetailsBean.onSignBySupervisorRow(timesheet.uuid)}">                                                
@@ -494,14 +504,16 @@
                                             </p:commandButton>
                                             <p:tooltip for="revokeTimeSheetSupervisorAll" position="bottom" value="Revoke Signature" showEffect="clip" hideEffect="explode"></p:tooltip>                                         
                                             <!--END FOR SUPERVISOR-->
-                                            
-                                            
+
+
 
                                             <!--PRINT AND ARCHIVE OPTION AVAILABLE IF LOGGED IN USER IS STAFF AND SECRETARY-->
                                             <p:commandButton id="printTimeSheetAll"  rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid)}" icon="fa fa-fw fa-print"   action="#{contractDetailsBean.printTimeSheet(timesheet.uuid)}"/>
                                             <p:tooltip for="printTimeSheetAll" position="bottom" value="Print TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
 
-                                            <p:commandButton id="archiveTimeSheetAll" rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid)}" icon="fa fa-fw fa-archive"   action="#{contractDetailsBean.archiveTimeSheet(timesheet.uuid)}"/>
+                                             <p:commandButton id="archiveTimeSheetAll" rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid) and not (timesheet.status eq 'ARCHIVED')}" icon="fa fa-fw fa-archive"   action="#{contractDetailsBean.archiveTimeSheet(timesheet.uuid)}">
+                                                <p:confirm header="Confirmation" message="Confirm Archive?" icon="ui-icon-alert" />
+                                            </p:commandButton>
                                             <p:tooltip  for="archiveTimeSheetAll" position="bottom" value="Archive TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
                                             <!--PRINT OPTION AVAILABLE IF LOGGED IN USER IS STAFF AND SECRETARY-->                       
 
@@ -519,10 +531,10 @@
                             </p:outputPanel>                          
                         </b:tab>                            
                         <!--ENDS For All-->                        
-                        
+
                     </b:tabView>
                     <!--ENDSSSSSS TAV VIEWWWWWWWWWWWW FOR TIMESHEEEET ENDSS-->
-                    
+
 
 
 

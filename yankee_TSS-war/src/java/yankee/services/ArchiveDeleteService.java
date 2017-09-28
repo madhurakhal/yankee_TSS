@@ -19,7 +19,7 @@ import yankee.logic.to.TimeSheet;
  *
  * @author pradipgiri
  */
-//@Singleton
+@Singleton
 public class ArchiveDeleteService {
 
     @EJB
