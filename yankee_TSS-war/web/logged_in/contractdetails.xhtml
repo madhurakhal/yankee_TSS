@@ -433,10 +433,10 @@
 
                                             <!--PRINT AND ARCHIVE OPTION AVAILABLE IF LOGGED IN USER IS STAFF AND SECRETARY-->
                                             <p:commandButton id="printTimeSheetA"  rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid)}" icon="fa fa-fw fa-print"   action="#{contractDetailsBean.printTimeSheet(timesheet.uuid)}"/>
-                                            <p:tooltip for="printTimeSheetSE" position="bottom" value="Print TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
+                                            <p:tooltip for="printTimeSheetA" position="bottom" value="Print TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
 
                                             <p:commandButton id="archiveTimeSheetA" rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid)}" icon="fa fa-fw fa-archive"   action="#{contractDetailsBean.archiveTimeSheet(timesheet.uuid)}"/>
-                                            <p:tooltip  for="archiveTimeSheetSE" position="bottom" value="Archive TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
+                                            <p:tooltip  for="archiveTimeSheetA" position="bottom" value="Archive TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
                                             <!--PRINT OPTION AVAILABLE IF LOGGED IN USER IS STAFF AND SECRETARY-->                       
 
 
