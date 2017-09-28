@@ -5,7 +5,9 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -13,6 +15,7 @@ import yankee.entities.ContractEntity;
 import yankee.entities.TimesheetEntity;
 import yankee.entities.TimesheetEntryEntity;
 import yankee.logic.AdministrationBusinessLogic;
+import yankee.logic.ContractBusinessLogic;
 import yankee.logic.ENUM.ContractStatusEnum;
 import yankee.logic.ENUM.GermanyStatesEnum;
 import yankee.logic.ENUM.TimesheetStatusEnum;
@@ -51,6 +54,9 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
 
     @EJB
     private AdministrationBusinessLogic administrationBusinessLogic;
+    
+    @EJB
+    private ContractBusinessLogic contractBusinessLogic;
 
     @Override
     public List<TimeSheet> createTimeSheet(final String contractUUID) {
@@ -515,13 +521,28 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
         return tsObjList;
     }
 
+    
+    // Called only by Delete Archive service in 2 years interval
     @Override
-    public void deleteOldTimeSheetSignedBySupervisor(LocalDate oldDate) {
-        try {
-            timeSheetAccess.deleteOldTimeSheetSignedBySupervisor(oldDate);
-        } catch (Exception e) {
-
-        }
+    public void deleteOldTimeSheetSignedBySupervisor(LocalDate givenDate) {
+        Set<String> setContractUUIDTimeSheetDeleted = new HashSet<>();
+        List<TimesheetEntity> listTE = timeSheetAccess.getOldTimeSheetSignedBySupervisor(givenDate);
+        // Get all time sheets with less then given date
+        for (TimesheetEntity timesheetEntity : listTE){
+            // delete timesheet entry entity
+            List<TimesheetEntryEntity> ltee = timeSheetEntryAccess.getTimeSheetEntriesForTimeSheet(timesheetEntity.getUuid());            
+            ltee.forEach(tee->{tee.setTimesheet(null); timeSheetEntryAccess.deleteEntity(tee);}); 
+            // Now delete timesheet
+            timesheetEntity.setContract(null);
+            setContractUUIDTimeSheetDeleted.add(timesheetEntity.getContract().getUuid());
+            timeSheetAccess.deleteEntity(timesheetEntity);            
+        }        
+        for(String contractUUID:setContractUUIDTimeSheetDeleted) {
+            if(timeSheetAccess.getTimeSheetsForContract(contractUUID).isEmpty()){
+                contractBusinessLogic.deleteContract(contractUUID);
+            }
+        }    
+        
     }
 
     @Override

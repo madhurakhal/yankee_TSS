@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
@@ -373,6 +374,8 @@ public class ContractDetailsBean {
     }
     
      public void archiveTimeSheet(String timeSheetUUID) throws IOException {
+        FacesMessage msg = new FacesMessage("TimeSheet has now been Archived" , "");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
         timeSheetBusinessLogic.archiveTimeSheet(timeSheetUUID);
     }
      
