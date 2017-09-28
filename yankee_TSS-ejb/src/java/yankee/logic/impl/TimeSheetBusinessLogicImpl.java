@@ -598,6 +598,10 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
     public void archiveTimeSheet(String timeSheetUUID) {
         TimesheetEntity te = timeSheetAccess.getByUuid(timeSheetUUID);
         te.setStatus(TimesheetStatusEnum.ARCHIVED);
+        // Also check if the contract is to be archived.
+        // Condition is when all timesheets are archived.
+        contractBusinessLogic.calledForContractArchive(timeSheetAccess.getByUuid(timeSheetUUID).getContract().getUuid());
+        
     }
 
     @Override

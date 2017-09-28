@@ -376,7 +376,7 @@ public class ContractDetailsBean {
      public void archiveTimeSheet(String timeSheetUUID) throws IOException {
         FacesMessage msg = new FacesMessage("TimeSheet has now been Archived" , "");
         FacesContext.getCurrentInstance().addMessage(null, msg);
-        timeSheetBusinessLogic.archiveTimeSheet(timeSheetUUID);
+        timeSheetBusinessLogic.archiveTimeSheet(timeSheetUUID);        
     }
      
     public void onRevokeSignatureBySupervisor(String timeSheetUUID){
