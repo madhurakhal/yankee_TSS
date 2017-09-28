@@ -11,6 +11,7 @@ import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
+import yankee.logic.AdministrationBusinessLogic;
 import yankee.logic.TimeSheetBusinessLogic;
 import yankee.logic.to.TimeSheet;
 
@@ -18,30 +19,33 @@ import yankee.logic.to.TimeSheet;
  *
  * @author pradipgiri
  */
-
 //@Singleton
 public class ArchiveDeleteService {
-    
+
     @EJB
     private TimeSheetBusinessLogic timeSheetBusinessLogic;
-    
-    private List<TimeSheet> timeSheets;
 
+    @EJB
+    private AdministrationBusinessLogic administrationBusinessLogic;
+
+    private List<TimeSheet> timeSheets;
 
     //@Schedule(minute = "*/1", hour = "*", persistent = false)
     public void runDeleteTask() {
-        System.out.println("This task is executed from run delete task");
-        getDetailsToDeleteTimeSheetsAndContracts(2);
+        if (administrationBusinessLogic.getAdminSettingsInfo().isReminderServiceOn()) {
+            System.out.println("This task is executed from run delete task");
+            getDetailsToDeleteTimeSheetsAndContracts(2);
+        }
     }
-    
+
     private void getDetailsToDeleteTimeSheetsAndContracts(int yearToSubtract) {
-        
+
         LocalDate today = LocalDate.now();
         LocalDate x = today.minusYears(yearToSubtract);
         System.out.println("The date before two year is = " + x);
-        
+
         try {
-              timeSheetBusinessLogic.deleteOldTimeSheetSignedBySupervisor(x);
+            timeSheetBusinessLogic.deleteOldTimeSheetSignedBySupervisor(x);
         } catch (NumberFormatException ne) {
             System.out.println("Exception Occured from timeSheetBusinessLogic!!");
         }
