@@ -116,9 +116,9 @@ public class ReminderBean {
     }
 
     private void sendReminderToEmployee(Employee e, TimeSheet t) {
-        String message = "Dear Employee, " + e.getPerson().getFirstName() + " " + e.getPerson().getLastName()+ 
-                ":"
-                + "\n\n " + "This is a reminder that your timesheet is due at " + t.getEndDate()
+        String message = "Dear Employee, " + e.getPerson().getFirstName() + " " + e.getPerson().getLastName()
+                + ":"
+                + "\n\n \n\n " + "This is a reminder that your timesheet is due at " + t.getEndDate()
                 + ". Please log into the TimeSheet System(TSS) to complete, sign and submit your timesheets. "
                 + "Failure to submit your timesheets may result in not being paid. "
                 + "\n\n If you have any question regarding your timesheet in general then "
@@ -135,8 +135,8 @@ public class ReminderBean {
             Supervisor s = supervisorBusinessLogic.getSupervisorByContract(t.getContract().getUuid());
             if (s != null) {
                 String message = "Dear Supervisor, " + s.getPerson().getFirstName() + " " + s.getPerson().getLastName()
-                        +":"
-                        + "\n\n " + "This is a reminder that you have remaining timesheets to sign for employee "
+                        + ":"
+                        + "\n\n \n\n" + "This is a reminder that you have remaining timesheets to sign for employee "
                         + e.getPerson().getFirstName() + " " + e.getPerson().getLastName() + " and "
                         + "end date of the timesheet is " + t.getEndDate()
                         + ". Please log into Time Sheet System(TSS) to review and process the timesheet."
@@ -156,15 +156,14 @@ public class ReminderBean {
             assistants = assistantBusinessLogic.getAssistantsByContract(t.getContract().getUuid());
             if (assistants != null) {
                 for (Assistant a : assistants) {
-                    System.out.println(a.getPerson().getFirstName());
                     String message = "Dear Assistant, " + a.getPerson().getFirstName() + " " + a.getPerson().getLastName()
-                            +":"
-                            + "\n\n This is a reminder that you have remaining timesheets "
-                            + "to archive for employee " + e.getPerson().getFirstName() + " " + e.getPerson().getLastName()
-                            + " and the end date of the timesheet is " + t.getEndDate()
-                            + " Please log into Time Sheet System(TSS) to review and process the timesheet."
+                            + ":"
+                            + "\n\n \n\n " + "This is a reminder that you have remaining timesheets to sign for employee "
+                            + e.getPerson().getFirstName() + " " + e.getPerson().getLastName() + " and "
+                            + "end date of the timesheet is " + t.getEndDate()
+                            + ". Please log into Time Sheet System(TSS) to review and process the timesheet."
                             + "\n\n If you have any question regarding this timesheet, please contact"
-                            + " your Employee or Supervisor."
+                            + " your employee " + e.getPerson().getFirstName() + " " + e.getPerson().getLastName()
                             + "\n\n \n\n Regards, \n Your System";
 
                     String subject = "Reminder to archive the timesheet of your employee";
@@ -184,8 +183,8 @@ public class ReminderBean {
                 for (Secretary s : secretaries) {
                     System.out.println(s.getPerson().getEmailAddress());
                     String message = "Dear Secretary, " + s.getPerson().getFirstName() + " " + s.getPerson().getLastName()
-                            +":"
-                            + "\n\n This is a reminder that you have remaining timesheets "
+                            + ":"
+                            + "\n\n \n\n This is a reminder that you have remaining timesheets "
                             + "to archive for employee " + e.getPerson().getFirstName() + " " + e.getPerson().getLastName()
                             + " and the end date of the timesheet is " + t.getEndDate()
                             + " Please log into Time Sheet System(TSS) to review and process the timesheet."

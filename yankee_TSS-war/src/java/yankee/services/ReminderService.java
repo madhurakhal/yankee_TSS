@@ -16,6 +16,7 @@ import yankee.web.ReminderBean;
  *
  * @author pradipgiri
  */
+
 @Singleton
 public class ReminderService {
 
@@ -24,6 +25,8 @@ public class ReminderService {
 
     @EJB
     ReminderBean reminderBean;
+    
+    public boolean startScheduler = false;
 
     /*
         @Schedules ({
