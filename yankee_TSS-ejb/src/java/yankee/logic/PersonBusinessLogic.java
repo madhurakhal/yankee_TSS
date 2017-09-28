@@ -21,6 +21,8 @@ public interface PersonBusinessLogic {
     public void updateDetails(Person updatedperson);    
   
     public void updatePhoto(Person photoupdated);
+
+    public long getPersonCount();
     
         
 }

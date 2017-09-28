@@ -137,6 +137,11 @@ public class PersonBusinessLogicImpl implements PersonBusinessLogic {
             default: ;
         }
     }
+    
+    @Override
+    public long getPersonCount(){
+        return personAccess.getEntityCount();
+    }
     // END : NOT USED CODE CHeck required.
 
 }
