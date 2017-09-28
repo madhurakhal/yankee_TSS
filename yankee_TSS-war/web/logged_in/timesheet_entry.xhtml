@@ -66,8 +66,9 @@ and open the template in the editor.
 
                 <p:dialog id = "entryDetail" header="Timesheet Entry for: #{timeSheetEntryBean.selectedEntry.dateString}" widgetVar="entryPanel" modal="true" showEffect="fade" fitViewport="true" hideEffect="fade" resizable="false">
                     <p:outputPanel id="entryDetails" style="text-align: center;">
+                        
                         <p:panelGrid rendered="#{not empty timeSheetEntryBean.selectedEntry}"  columns="2">
-
+                            
                             <f:facet name="header">
                                 <h:outputText value="#{entry.dateString}"/>
                             </f:facet>
@@ -78,17 +79,13 @@ and open the template in the editor.
                             <p:calendar id="endTime" value="#{timeSheetEntryBean.selectedEntry.endDateTime}" pattern="HH:mm" timeOnly="true" />
                             <h:outputLabel for="description" value="Description:"/>
                             <b:inputTextarea id="description" value="#{timeSheetEntryBean.selectedEntry.description}" />
-                            <p:commandButton id="submitEntry"  value="Save" actionListener="#{timeSheetEntryBean.saveEntry}" update="timesheetentry"/>  
-                            <p:commandButton value="Reset" type="reset" actionListener="#{timeSheetEntryBean.resetEntry}" update="timesheetentry"/>
+                            <p:commandButton id="submitEntry"  value="Save" actionListener="#{timeSheetEntryBean.saveEntry}"  update="timesheetentry msg"/>  
+                            <p:commandButton value="Reset" update="timesheetentry msg" actionListener="#{timeSheetEntryBean.resetEntry}"/>
                         </p:panelGrid>
 
                     </p:outputPanel>
                 </p:dialog>
-
-
-<p:growl  id="msgs" showDetail="true"/> 
             </h:form>
-
         </ui:define>
     </ui:composition>
 

@@ -13,10 +13,34 @@ import yankee.logic.ENUM.TimesheetStatusEnum;
  *
  * @author Shriharsh Ambhore (ashriharsh@uni-koblenz.de)
  */
-public class TimeSheet extends Named{
+public class TimeSheet extends Named {
+
+    private TimesheetStatusEnum status;
+
+    private LocalDate startDate;
+
+    private LocalDate endDate;
+
+    private LocalDate signedByEmployee;
+
+    private LocalDate signedBySupervisor;
+
+    private String displayString;
+
+    private double hoursDue;   
+
+    private Contract contract;
 
     public TimeSheet(String uuid, String name) {
         super(uuid, name);
+    }
+
+    public double getHoursDue() {
+        return hoursDue;
+    }
+
+    public void setHoursDue(double hoursDue) {
+        this.hoursDue = hoursDue;
     }
 
     public TimesheetStatusEnum getStatus() {
@@ -58,23 +82,6 @@ public class TimeSheet extends Named{
     public void setSignedBySupervisor(LocalDate signedBySupervisor) {
         this.signedBySupervisor = signedBySupervisor;
     }
-    
-    
-    private TimesheetStatusEnum status;
-    
-    private LocalDate startDate;
-
-    private LocalDate endDate;
-
-    private LocalDate signedByEmployee;
-
-    private LocalDate signedBySupervisor;
-    
-    private String displayString;
-    
-  
-    
-    private Contract contract;
 
     public Contract getContract() {
         return contract;
@@ -83,7 +90,7 @@ public class TimeSheet extends Named{
     public void setContract(Contract contract) {
         this.contract = contract;
     }
-    
+
     private List<TimeSheetEntry> timeSheetEntries;
 
     public List<TimeSheetEntry> getTimeSheetEntries() {
@@ -93,7 +100,6 @@ public class TimeSheet extends Named{
     public void setTimeSheetEntries(List<TimeSheetEntry> timeSheetEntries) {
         this.timeSheetEntries = timeSheetEntries;
     }
-    
 
     public String getDisplayString() {
         return displayString;
@@ -102,6 +108,5 @@ public class TimeSheet extends Named{
     public void setDisplayString(String displayString) {
         this.displayString = displayString;
     }
-    
-    
+
 }

@@ -27,10 +27,12 @@
             <ui:fragment rendered="#{request.isUserInRole('STAFF')}">
                 <ui:include src="./staff-dashboard.xhtml"></ui:include>
             </ui:fragment>
-            
+
             <ui:fragment rendered="#{not request.isUserInRole('STAFF')}">
                 <ui:include src="./employee-dashboard.xhtml"></ui:include>
-            </ui:fragment>
+            </ui:fragment>           
+
         </ui:define>
+
     </ui:composition>
 </html>

@@ -36,6 +36,7 @@ import yankee.logic.to.Contract;
 import yankee.logic.to.Employee;
 import yankee.logic.to.Person;
 import yankee.logic.to.Supervisor;
+import yankee.utilities.UTILNumericSupport;
 
 @Stateless
 public class ContractBusinessLogicImpl implements ContractBusinessLogic {
@@ -274,7 +275,6 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
 
         // Set Supervisor also. Note to also do for employee
         Supervisor s = new Supervisor(ce.getSupervisor().getUuid(), ce.getSupervisor().getName());
-
         PersonEntity person = ce.getSupervisor().getPerson();
         Person pS = new Person(person.getUuid(), person.getName());
         pS.setFirstName(person.getFirstName());
@@ -285,7 +285,13 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
         pS.setPreferredLanguage(person.getPreferredLanguage());
         s.setPerson(pS);
         c.setSupervisor(s);
-
+        
+        Employee e = new Employee(ce.getEmployee().getUuid(), ce.getEmployee().getName());
+        PersonEntity personforE = ce.getEmployee().getPerson();
+        Person pE = new Person(personforE.getUuid(), personforE.getName());
+        // To fill rest of person
+        e.setPerson(pE);
+        c.setEmployee(e);
         return c;
     }
 
@@ -308,7 +314,7 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
         LocalDate date2 = ce.getEndDate();
         double durationOfContract = (double) ChronoUnit.MONTHS.between(date1, date2) + 1;
         double vacationHours = (double) ce.getVacationDaysPerYear() * (durationOfContract / 12) * (ce.getHoursPerWeek() / ce.getWorkingDaysPerWeek());
-        ce.setVacationHours(vacationHours);
+        ce.setVacationHours(UTILNumericSupport.round(vacationHours, 2));
 
         // Calculating Total hours due.
         // load each timesheet for this contract. and sum each timesheets hoursdue.
@@ -398,6 +404,17 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
             result.add(c);
         }
         return result;
+    }
+    
+    @Override
+    public void updateTotalHoursDue(String contractUUID , double hoursToReduce){
+        System.out.println("I AM HERE TO UPDATE TOTAL HOURSSSS");
+        ContractEntity ce = contractAccess.getByUuid(contractUUID);
+        double updateHours = ce.getHoursDue() - hoursToReduce;
+        if (updateHours >= 0.0){
+            System.out.println("WILL ACTUALLY  UPDATE TOTAL HOURSSSS");
+            ce.setHoursDue(updateHours);
+        }
     }
 
 }

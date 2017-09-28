@@ -160,9 +160,9 @@ public class CreateContractBean {
     }
 
     public List<Person> getPersons() {
-        if (persons == null) {
+        //if (persons == null) {
             persons = personBusinessLogic.getPersonList();
-
+            
             for (Iterator<Person> iter = persons.listIterator(); iter.hasNext();) {
                 Person all = iter.next();
 
@@ -176,13 +176,15 @@ public class CreateContractBean {
                     Employee e = employeeBusinessLogic.getEmployeeByContract(s.getContract().getUuid());
                     if (e != null ) {
                         if (all.getUuid() == null ? e.getPerson().getUuid() == null : all.getUuid().equals(e.getPerson().getUuid())) {
-                            if(s.getContract().getStatus()== ContractStatusEnum.TERMINATED){
-                            iter.remove();}
+                            if(!contractBusinessLogic.getContractByUUID(s.getContract().getUuid()).getStatus().equals(ContractStatusEnum.TERMINATED)){
+                                //System.out.println("IS IT TERMINATEDDDD" + e);
+                                iter.remove();
+                            }
                         }
                     }
                 }
             }
-        }
+        //}
         return persons;
     }
 
@@ -206,7 +208,7 @@ public class CreateContractBean {
         
         contractBusinessLogic.createContract("contract" + employee.getName(), supervisor, assistant, secretary, employee, startDate, endDate, timesheetFrequency, (double) hoursPerWeek, workingDaysPerWeek, vacationDaysPerYear);
 
-        FacesMessage msg = new FacesMessage("Contract Created");
+        FacesMessage msg = new FacesMessage("Contract Created" , "");
         FacesContext.getCurrentInstance().addMessage(null, msg);
         
         ExternalContext extContext = FacesContext.getCurrentInstance().getExternalContext();

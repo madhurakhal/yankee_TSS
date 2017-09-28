@@ -1,6 +1,7 @@
 package yankee.web;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import javax.inject.Named;
 import yankee.entities.ContractEntity;
 import yankee.logic.AssistantBusinessLogic;
 import yankee.logic.ContractBusinessLogic;
+import yankee.logic.ENUM.TimesheetStatusEnum;
 import yankee.logic.PersonBusinessLogic;
 import yankee.logic.SecretaryBusinessLogic;
 import yankee.logic.SupervisorBusinessLogic;
@@ -27,6 +29,7 @@ import yankee.logic.TimeSheetBusinessLogic;
 import yankee.logic.to.Contract;
 import yankee.logic.to.TimeSheet;
 import yankee.logic.to.TimeSheetEntry;
+import yankee.utilities.UTILNumericSupport;
 
 @ManagedBean
 @ViewScoped
@@ -50,7 +53,7 @@ public class ContractDetailsBean {
 
     @EJB
     private EmployeeBusinessLogic employeeBusinessLogic;
-    
+
     @Inject
     private LoginBean loginBean;
 
@@ -59,7 +62,7 @@ public class ContractDetailsBean {
     private Contract contractinfo;
     private Person loggedinUser;
 
-    public Person getLoggedinUser() {        
+    public Person getLoggedinUser() {
         return loggedinUser;
     }
 
@@ -71,32 +74,48 @@ public class ContractDetailsBean {
     private List<Person> secretariesForContract = new ArrayList<>();
     private List<Person> assistantsForContract = new ArrayList<>();
     private List<Person> persons = new ArrayList<>();
- 
+
     // Contract Entity?
-    public boolean isSupervisor(String timeSheetUUID){
-       System.out.println("TIMEEEEEEEEEEEEEEEEEEEEEEEEEEEE" + timeSheetUUID);
-       ContractEntity ce = timeSheetBusinessLogic.getContractByTimesheetUUID(timeSheetUUID);
-       return ce.getSupervisor().getPerson().getUuid().equals(loggedinUser.getUuid());
+    public boolean isSupervisor(String timeSheetUUID) {
+        ContractEntity ce = timeSheetBusinessLogic.getContractByTimesheetUUID(timeSheetUUID);
+        return ce.getSupervisor().getPerson().getUuid().equals(loggedinUser.getUuid());
     }
     
-    public boolean isEmployee(String timeSheetUUID){
-       System.out.println("TIMEEEEEEEEEEEEEEEEEEEEEEEEEEEE" + timeSheetUUID);
-       ContractEntity ce = timeSheetBusinessLogic.getContractByTimesheetUUID(timeSheetUUID);
-       return ce.getEmployee().getPerson().getUuid().equals(loggedinUser.getUuid());
+     public boolean isSupervisorContract() {
+        Contract ce = contractBusinessLogic.getContractByUUID(contract_id);
+        return ce.getSupervisor().getPerson().getUuid().equals(loggedinUser.getUuid());
     }
     
-    public boolean isSecretary(String timeSheetUUID){
+
+    public boolean isEmployee(String timeSheetUUID) {
+        ContractEntity ce = timeSheetBusinessLogic.getContractByTimesheetUUID(timeSheetUUID);
+        return ce.getEmployee().getPerson().getUuid().equals(loggedinUser.getUuid());
+    }
+
+    public boolean isEmployeeContract() {
+        Contract ce = contractBusinessLogic.getContractByUUID(contract_id);
+        return ce.getEmployee().getPerson().getUuid().equals(loggedinUser.getUuid());
+    }
+    
+    public boolean isSecretary(String timeSheetUUID) {
         ContractEntity ce = timeSheetBusinessLogic.getContractByTimesheetUUID(timeSheetUUID);
         List<Secretary> ls = secretaryBusinessLogic.getSecretariesByContract(ce.getUuid());
         // For each secretary if one of the secretary matches the person logged in
-        return !ls.stream().filter(e->e.getPerson().getUuid().equals(loggedinUser.getUuid())).collect(Collectors.toList()).isEmpty();
+        return !ls.stream().filter(e -> e.getPerson().getUuid().equals(loggedinUser.getUuid())).collect(Collectors.toList()).isEmpty();
     }
+    
+    public boolean isSecretaryContract() {
+        Contract ce = contractBusinessLogic.getContractByUUID(contract_id);
+        List<Secretary> ls = secretaryBusinessLogic.getSecretariesByContract(ce.getUuid());
+        // For each secretary if one of the secretary matches the person logged in
+        return !ls.stream().filter(e -> e.getPerson().getUuid().equals(loggedinUser.getUuid())).collect(Collectors.toList()).isEmpty();
+    }
+    
 
     @PostConstruct
     public void init() {
         //This contract id will be sent to edit contract as parameter in url from managecontract edit is pressed
         // This will be used in getting current assistant, supervisor, secretary for this contract id below.
-        System.out.println("called me init only once yes?");
         getContract_id();
         getPersons();
         getCurrentContractPerson();
@@ -106,9 +125,9 @@ public class ContractDetailsBean {
         getSupervisorForContract();
         getAssistantsForContract();
         getSecretariesForContract();
-        
+
         // For timesheet
-        timesheets = timeSheetBusinessLogic.getAllTimeSheetsForContract(contract_id);
+        this.timesheets = timeSheetBusinessLogic.getAllTimeSheetsForContract(contract_id);
     }
 
     // BEGINS GETTER AND SETTER for contract id then current assistant , supervisor, secretaries for given contract
@@ -183,46 +202,84 @@ public class ContractDetailsBean {
     }
 
     /**/
-    /**/
-     /**/
-    /**/
+ /**/
+ /**/
+ /**/
     // TIME SHEET TIME SHEEET
     /* BEGIN:::  TimeSheettts DISPLAY BEGINSSSS*/
-    
     // All For Timesheets BEGINSSSS
-    
     @EJB
     private TimeSheetBusinessLogic timeSheetBusinessLogic;
-    
-    private List<TimeSheet> timesheets;    
+
+    private List<TimeSheet> timesheets;
     private List<TimeSheetEntry> timeSheetEntries;
     private TimeSheet timeSheetFor;
     private String uuid;
-    
+
     // Begins For tabs in contract details 
     TimeSheet currentTimeSheet;
-    List<TimeSheet> signedByEmployeeTimeSheets;    
+    List<TimeSheet> previousTimeSheet;
+    List<TimeSheet> signedByEmployeeTimeSheets;
+    List<TimeSheet> signedBySupervisorTimeSheets;
     List<TimeSheet> inProgressTimeSheets;
     List<TimeSheet> inArchivedTimeSheets;
     List<TimeSheet> allTimeSheets;
+    
+    
+    
+    public List<TimeSheet> getSignedBySupervisorTimeSheets() {
+        signedBySupervisorTimeSheets = timesheets.stream().filter(e -> (e.getStatus().equals(TimesheetStatusEnum.SIGNED_BY_SUPERVISOR))).collect(Collectors.toList());
+        return signedBySupervisorTimeSheets;
+    }
+
+    public void setSignedBySupervisorTimeSheets(List<TimeSheet> signedBySupervisorTimeSheets) {
+        this.signedBySupervisorTimeSheets = signedBySupervisorTimeSheets;
+    }
+    
+    public List<TimeSheet> getPreviousTimeSheet() {
+        // Get the current date today.
+        //LocalDate currentDate = LocalDate.now();
+        LocalDate currentDate = LocalDate.of(2017, 10, 15);
+        previousTimeSheet = timesheets.stream().filter(e -> (e.getStartDate().isBefore(currentDate))).collect(Collectors.toList());   
+        return previousTimeSheet;
+    }
+
+    public void setPreviousTimeSheet(List<TimeSheet> previousTimeSheet) {
+        this.previousTimeSheet = previousTimeSheet;
+    }  
+    
 
     public TimeSheet getCurrentTimeSheet() {
+        // Get the current date today.
+        //LocalDate currentDate = LocalDate.now();
+        LocalDate currentDate = LocalDate.of(2017, 10, 15);
+        List<TimeSheet> p = timesheets.stream().filter(e -> ((e.getStartDate().isBefore(currentDate) && e.getEndDate().isAfter(currentDate))
+                || (e.getEndDate().isEqual(currentDate) || e.getStartDate().isEqual(currentDate))))
+                .collect(Collectors.toList());
+        if (p.isEmpty()) {
+            this.currentTimeSheet = null;
+        } else {
+            this.currentTimeSheet = p.get(0);
+        }
         return currentTimeSheet;
     }
 
     public void setCurrentTimeSheet(TimeSheet currentTimeSheet) {
         this.currentTimeSheet = currentTimeSheet;
+
     }
 
     public List<TimeSheet> getSignedByEmployeeTimeSheets() {
+        signedByEmployeeTimeSheets = timesheets.stream().filter(e -> (e.getStatus().equals(TimesheetStatusEnum.SIGNED_BY_EMPLOYEE))).collect(Collectors.toList());
         return signedByEmployeeTimeSheets;
     }
 
-    public void setSignedByEmployeeTimeSheets(List<TimeSheet> signedByEmployeeTimeSheets) {
+    public void setSignedByEmployeeTimeSheets(List<TimeSheet> signedByEmployeeTimeSheets) {        
         this.signedByEmployeeTimeSheets = signedByEmployeeTimeSheets;
     }
 
     public List<TimeSheet> getInProgressTimeSheets() {
+        inProgressTimeSheets = timesheets.stream().filter(e -> (e.getStatus().equals(TimesheetStatusEnum.IN_PROGRESS))).collect(Collectors.toList());
         return inProgressTimeSheets;
     }
 
@@ -231,6 +288,7 @@ public class ContractDetailsBean {
     }
 
     public List<TimeSheet> getInArchivedTimeSheets() {
+        inArchivedTimeSheets = timesheets.stream().filter(e -> (e.getStatus().equals(TimesheetStatusEnum.ARCHIVED))).collect(Collectors.toList());
         return inArchivedTimeSheets;
     }
 
@@ -239,13 +297,22 @@ public class ContractDetailsBean {
     }
 
     public List<TimeSheet> getAllTimeSheets() {
+        allTimeSheets = timesheets;
         return allTimeSheets;
     }
 
     public void setAllTimeSheets(List<TimeSheet> allTimeSheets) {
         this.allTimeSheets = allTimeSheets;
     }
+    
+    public double calculateHoursEntered(String timeSheetUUID){
+        System.out.println("TIME SHEEEEEET ID for hours entere" + timeSheetUUID);
+        List<TimeSheetEntry> lse = timeSheetBusinessLogic.getEntriesForTimeSheet(timeSheetUUID);
+        return UTILNumericSupport.round(lse.stream().mapToDouble(o -> o.getHours()).sum(),2);
+    }
+    ////////////////////////////////////
     // Ends For tabs in contract details
+    ////////////////////////////////////
 
     public String getUuid() {
         return uuid;
@@ -254,12 +321,10 @@ public class ContractDetailsBean {
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }
-    
-
 
     public List<TimeSheetEntry> getTimeSheetEntries() {
         return timeSheetEntries;
-    }   
+    }
 
     public TimeSheet getTimeSheetFor() {
         return timeSheetFor;
@@ -269,23 +334,26 @@ public class ContractDetailsBean {
         this.timeSheetFor = timeSheetFor;
     }
 
-
     public void setTimesheets(List<TimeSheet> timesheets) {
         this.timesheets = timesheets;
     }
 
-    public List<TimeSheet> getTimesheets() {        
+    public List<TimeSheet> getTimesheets() {
         return timesheets;
     }
+
     
     /* Following method called when action performed. Ajax calls */
-
-    public void onSignByEmployeeRow(String timeSheet_uuid) {        
-        timeSheetBusinessLogic.submitTimeSheet(timeSheet_uuid, Boolean.TRUE);
-    }
     
-    public void onSignBySupervisorRow(String timeSheet_uuid) {        
+    public void onSignByEmployeeRow(String timeSheet_uuid) {
+        timeSheetBusinessLogic.submitTimeSheet(timeSheet_uuid, Boolean.TRUE);        
+    }
+
+    public void onSignBySupervisorRow(String timeSheet_uuid) {
         timeSheetBusinessLogic.submitTimeSheet(timeSheet_uuid, Boolean.FALSE);
+        TimeSheet t = timeSheetBusinessLogic.getByUUID(timeSheet_uuid);
+        double hoursEntered = calculateHoursEntered(timeSheet_uuid);
+        contractBusinessLogic.updateTotalHoursDue(t.getContract().getUuid(),hoursEntered);
     }
 
     public void onRowView(String timeSheetUUId, String displayStrings) throws IOException {
@@ -298,11 +366,19 @@ public class ContractDetailsBean {
         ec.redirect(ec.getRequestContextPath() + "/logged_in/timesheet_entry.xhtml?id=" + timeSheetUUId + "&timeSheetDateRange=" + displayString + "&contractID=" + contract_id);
     }
 
-    public void printTimeSheet(String timeSheetUUId) throws IOException{
+    public void printTimeSheet(String timeSheetUUId) throws IOException {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect(ec.getRequestContextPath() + "/staff_logged_in/printpreviewtimesheet.xhtml?id=" + timeSheetUUId + "&contractID=" + contract_id);
 
     }
     
+     public void archiveTimeSheet(String timeSheetUUID) throws IOException {
+        timeSheetBusinessLogic.archiveTimeSheet(timeSheetUUID);
+    }
+     
+    public void onRevokeSignatureBySupervisor(String timeSheetUUID){
+        timeSheetBusinessLogic.revokeSignature(timeSheetUUID);
+    }
     
+
 }

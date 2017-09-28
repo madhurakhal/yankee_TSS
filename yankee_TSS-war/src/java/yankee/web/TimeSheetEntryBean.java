@@ -18,6 +18,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import org.primefaces.context.RequestContext;
 import yankee.logic.TimeSheetBusinessLogic;
 import yankee.logic.to.Person;
 import yankee.logic.to.TimeSheetEntry;
@@ -190,11 +191,13 @@ public class TimeSheetEntryBean implements Serializable {
     }
 
     public void resetEntry() {
+        selectedEntry.setEndDateTime(null);
+        selectedEntry.setStartDateTime(null);        
         timeSheetService.addUpdateTimeSheetEntry(selectedEntry);
         StringBuilder builder = new StringBuilder();
         FacesMessage msgs = new FacesMessage();
         msgs.setSeverity(FacesMessage.SEVERITY_INFO);
-        msgs.setSummary("Entry Removed");
+        msgs.setSummary("Entry Reset done!!");
         msgs.setDetail(builder.toString());
         FacesContext.getCurrentInstance().addMessage(null, msgs);
 
