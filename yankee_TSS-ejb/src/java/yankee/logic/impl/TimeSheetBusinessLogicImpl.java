@@ -126,14 +126,23 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
 
                     case WEEKLY:
                         int daysInPeriod = (int) ChronoUnit.DAYS.between(ce.getStartDate(), ce.getEndDate());
+                        LocalDate tempStartDate = ce.getStartDate();
                         for (int i = 0; i <= daysInPeriod / 7; i++) {
                             TimesheetEntity tsEntity = timeSheetAccess.createEntity("TimeSheet");
-                            tsEntity.setStartDate(ce.getStartDate().plusWeeks(i));
-                            // The last days end date might just be few days and not week. End date = contract end date.
-                            if (i == ((daysInPeriod / 7))) {
-                                tsEntity.setEndDate(ce.getEndDate());
+                            if (i == 0) {
+                                tsEntity.setStartDate(tempStartDate.plusWeeks(i));
+                                int daysToAddToGetFriday = _getDaysToFriday(tempStartDate.getDayOfWeek());
+                                tsEntity.setEndDate(ce.getStartDate().plusDays(daysToAddToGetFriday));
+                                tempStartDate = ce.getStartDate().plusDays(daysToAddToGetFriday + 1).minusWeeks(i+1);
                             } else {
-                                tsEntity.setEndDate(ce.getStartDate().plusWeeks(i + 1).minusDays(1));
+                                tsEntity.setStartDate(tempStartDate.plusWeeks(i));
+
+                                // The last days end date might just be few days and not week. End date = contract end date.
+                                if (i == ((daysInPeriod / 7))) {
+                                    tsEntity.setEndDate(ce.getEndDate());
+                                } else {
+                                    tsEntity.setEndDate(tempStartDate.plusWeeks(i + 1).minusDays(1));
+                                }
                             }
                             tsEntity.setContract(ce);
 
@@ -187,6 +196,28 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
     }
     // ENDS ..... TO REView Code for Create TimeSheet
 
+    // Helper method to evaluate days required to get to Friday
+    private int _getDaysToFriday(DayOfWeek weekday){
+        switch (weekday) {
+                    case FRIDAY:
+                        return 0;
+                    case SATURDAY:
+                        return 6;
+                    case SUNDAY:
+                        return 5;
+                    case MONDAY:
+                        return 4;
+                    case TUESDAY:
+                        return 3;
+                    case WEDNESDAY:
+                        return 2;
+                    case THURSDAY:
+                        return 1;
+                    default:
+                        return 0;
+
+                }
+    }
     // Helper method. Takes working days. for example 4. Working days becomes Monday Tuesday Wednesday Thursday
     private List<DayOfWeek> _getWorkingDays(int workingDaysPerWeek) {
         List<DayOfWeek> workingDaysEnum = new ArrayList<>();
