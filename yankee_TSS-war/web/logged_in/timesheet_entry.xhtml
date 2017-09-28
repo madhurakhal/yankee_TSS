@@ -79,13 +79,14 @@ and open the template in the editor.
                             <p:calendar id="endTime" value="#{timeSheetEntryBean.selectedEntry.endDateTime}" pattern="HH:mm" timeOnly="true" />
                             <h:outputLabel for="description" value="Description:"/>
                             <b:inputTextarea id="description" value="#{timeSheetEntryBean.selectedEntry.description}" />
-                            <p:commandButton id="submitEntry"  value="Save" actionListener="#{timeSheetEntryBean.saveEntry}"  update="timesheetentry msg"/>  
+                            <p:commandButton id="submitEntry"  value="Save" actionListener="#{timeSheetEntryBean.saveEntry}"  update="timesheetentry msg" oncomplete="reloadWindow()" />
                             <p:commandButton value="Reset" update="timesheetentry msg" actionListener="#{timeSheetEntryBean.resetEntry}"/>
                         </p:panelGrid>
 
                     </p:outputPanel>
                 </p:dialog>
             </h:form>
+           
         </ui:define>
     </ui:composition>
 

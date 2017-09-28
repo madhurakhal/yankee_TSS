@@ -12,6 +12,14 @@
         <h:outputStylesheet library="adminlte" name="AdminLTE.min.css"/>
         <h:outputStylesheet library="adminlte" name="skin-blue.min.css"/>
         <h:outputStylesheet library="css" name="style.css"/>
+        <script>
+            // Don't better way to handle this 
+            // reload seems workign now.
+            // if you are going to deploy in real production please search for better solution
+            function reloadWindow() {
+                window.location = window.location.href;
+            }
+        </script>
     </ui:composition>
 </html>
 
