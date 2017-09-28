@@ -1,4 +1,4 @@
-package yankee.reminder.service;
+package yankee.services;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -10,7 +10,7 @@ import javax.ejb.EJB;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import yankee.logic.to.TimeSheet;
-import yankee.logic.to.TimesheetT;
+import yankee.web.ReminderBean;
 
 /**
  *
@@ -33,7 +33,7 @@ public class ReminderService {
      */
     // Scheduler ejb to do certain task based on param, - 7 means last 7 days of the month
     //@Schedule(hour = "06", minute = "59", second = "59", persistent = false)
-    //@Schedule(minute = "*/1", hour = "*", persistent = false)
+    @Schedule(minute = "*/1", hour = "*", persistent = false)
     public void runTask() {
         System.out.println("This task is executed");
         programmaticTimer.cancelTimer("timerId");
@@ -41,7 +41,7 @@ public class ReminderService {
         if (timeSheets!= null && timeSheets.size() > 0) {
             System.out.println("called from reminder service = " + timeSheets);
             reminderBean.sendReminderForTimeSheets(timeSheets);
-            //programmaticTimer.createTimer("timerId", 1);
+            programmaticTimer.createTimer("timerId", 1);
         }
     }
 

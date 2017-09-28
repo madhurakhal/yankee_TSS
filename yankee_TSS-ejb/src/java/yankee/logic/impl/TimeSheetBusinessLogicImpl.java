@@ -493,20 +493,21 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
             tsObjList = new ArrayList<>();
             TimeSheet ts;
             for (final TimesheetEntity entity : timeSheetList) {
-                ts = new TimeSheet(entity.getUuid(), entity.getName());
-                ts.setEndDate(entity.getEndDate());
-                ts.setStartDate(entity.getStartDate());
-                ts.setStatus(entity.getStatus());
-                ts.setHoursDue(entity.getHoursDue());
-                ts.setDisplayString(entity.getStartDate().toString() + " - " + entity.getEndDate().toString());
+                if (!getContractByTimesheetUUID(entity.getUuid()).getStatus().equals(ContractStatusEnum.TERMINATED)) {
+                    ts = new TimeSheet(entity.getUuid(), entity.getName());
+                    ts.setEndDate(entity.getEndDate());
+                    ts.setStartDate(entity.getStartDate());
+                    ts.setStatus(entity.getStatus());
+                    ts.setDisplayString(entity.getStartDate().toString() + " - " + entity.getEndDate().toString());
 
-                ContractEntity contract = entity.getContract();
-                // to get the contract id
-                Contract c = new Contract(contract.getUuid(), contract.getName());
-                // to do fill up contract transfer object
-                ts.setContract(c);
+                    ContractEntity contract = entity.getContract();
+                    // to get the contract id
+                    Contract c = new Contract(contract.getUuid(), contract.getName());
+                    // to do fill up contract transfer object
+                    ts.setContract(c);
 
-                tsObjList.add(ts);
+                    tsObjList.add(ts);
+                }
             }
         } catch (IllegalStateException e) {
             System.err.println(e.getMessage());

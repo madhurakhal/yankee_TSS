@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package yankee.reminder.service;
+package yankee.services;
 
 import java.util.List;
 import javax.annotation.Resource;
@@ -15,7 +15,7 @@ import javax.ejb.Timer;
 import javax.ejb.TimerConfig;
 import javax.ejb.TimerService;
 import yankee.logic.to.TimeSheet;
-import yankee.logic.to.TimesheetT;
+import yankee.web.ReminderBean;
 
 /**
  *
