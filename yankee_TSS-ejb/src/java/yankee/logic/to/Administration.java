@@ -1,21 +1,32 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yankee.logic.to;
 
-import yankee.entities.*;
 import yankee.logic.ENUM.GermanyStatesEnum;
-
 
 public class Administration extends Named {
     private static final long serialVersionUID = 1L;
     
-    private GermanyStatesEnum germanState; 
-
+    private GermanyStatesEnum germanState;
+    private boolean reminderServiceOn;
+    private boolean guestLoggedIn;
+    
     public Administration(String uuid, String name) {
         super(uuid, name);
+    }
+
+    public boolean isReminderServiceOn() {
+        return reminderServiceOn;
+    }
+
+    public void setReminderServiceOn(boolean reminderServiceOn) {
+        this.reminderServiceOn = reminderServiceOn;
+    }
+
+    public boolean isGuestLoggedIn() {
+        return guestLoggedIn;
+    }
+
+    public void setGuestLoggedIn(boolean guestLoggedIn) {
+        this.guestLoggedIn = guestLoggedIn;
     }
     
     public GermanyStatesEnum getGermanState() {

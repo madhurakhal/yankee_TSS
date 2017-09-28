@@ -21,6 +21,8 @@ public class AdministrationtAccess extends AbstractAccess<AdministrationEntity> 
         name = name.trim().toLowerCase();        
         AdministrationEntity se = super.createEntity(name);
         se.setGermanState(GermanyStatesEnum.RHINELANDPALATINATE);
+        se.setGuestLoggedIn(false);
+        se.setReminderServiceOn(false);
         return se;
     }
 
@@ -34,7 +36,7 @@ public class AdministrationtAccess extends AbstractAccess<AdministrationEntity> 
         return new AdministrationEntity(true);
     }
 
-    public AdministrationEntity getAdminSetState() {
+    public AdministrationEntity getAdminEntity() {
         String name = "state";       
         try {
             return em.createNamedQuery("getAdminSetStateByName", AdministrationEntity.class)
