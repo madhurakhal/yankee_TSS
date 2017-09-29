@@ -145,3 +145,33 @@ span.form-control > input {
 #contractDetails .form-group .control-label {
     font-weight: normal;
 }
+.ui-datagrid-column {
+    border: 1px solid #ededed;
+}
+.ui-widget-content {
+    border: none;
+    padding-top:4px;
+}
+.ui-datagrid .ui-datagrid-header {
+    background: none;
+    border-radius: 0px;
+    padding: 7px 10px;
+}
+.ui-datagrid-content {
+    border-top: 1px solid #00a65a; 
+}
+.ui-corner-top {
+    border: 1px solid #00a65a;
+}
+.ui-panel .ui-panel-titlebar {
+    border-radius: 0px;
+    background: none;
+}
+#timesheetentry .ui-state-default, #timesheetentry .ui-widget-content .ui-state-default, #timesheetentry .ui-widget-header .ui-state-default  {
+    border-radius: 0px;
+    background: none;
+    border: 1px solid #ededed;
+}
+.ui-grid-row .ui-datagrid-column {
+    margin: 0px 0.4%;
+}
