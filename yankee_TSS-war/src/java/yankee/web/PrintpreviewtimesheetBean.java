@@ -76,7 +76,6 @@ public class PrintpreviewtimesheetBean implements Serializable {
     }
 
     public double getHoursEntered() {
-        System.out.println("TIME SHEEEEEET ID for hours entere" + timeSheetUuid);
         List<TimeSheetEntry> lse = getEntries();
         hoursEntered = UTILNumericSupport.round(lse.stream().mapToDouble(o -> o.getHours()).sum(),2);    
         return hoursEntered;

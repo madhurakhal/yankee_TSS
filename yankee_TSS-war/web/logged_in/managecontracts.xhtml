@@ -205,6 +205,39 @@
                                 </p:outputPanel>
                                 <!-- Ends  For Secretary-->
                             </b:tab>
+                            
+                            
+                            <!--BEGINS for TERMINATED Contract-->
+                            <b:tab title="Terminated">                        
+                                <p:outputPanel rendered = "#{empty manageContractsBean.personsAssociatedToContractSecretary}" styleClass="box-body text-center">
+                                    <p> You do not have any Contracts Terminated as of yet!</p>                            
+                                </p:outputPanel>
+
+                                <p:outputPanel rendered = "#{!empty manageContractsBean.personsAssociatedToContractSecretary}" styleClass="box">                    
+                                    <p:outputPanel styleClass="box-body"> 
+                                        <b:dataTable value="#{manageContractsBean.personsAssociatedToContractSecretary}" 
+                                                     var="persons" 
+                                                     responsive = "true">
+
+                                            <b:dataTableColumn value="#{persons.firstName} #{persons.lastName} (#{persons.emailAddress})" label="Employee"/>
+                                            <b:dataTableColumn value="#{manageContractsBean.supervisorPersonForContractUUID(persons.contractUUIDForRole)}" label="Supervisor" />                       
+                                            <b:dataTableColumn value="#{persons.contractStatusForRole}" label="Status" style="width:150px"/>                         
+
+
+                                            <b:dataTableColumn label="Action " style="width:50px" styleClass="manage-btn-controllers">
+                                                <p:commandButton styleClass="btn-flat"  icon="fa fa-fw fa-television"  id="viewPersonTerm" action="#{manageContractsBean.onRowView(persons.contractUUIDForRole)}"/>                            
+                                                <p:tooltip for="viewPersonTerm" position="bottom" value="View" showEffect="clip" hideEffect="explode"/>
+                               
+                                                <p:commandButton styleClass="btn-flat" icon="fa fa-fw fa-print"  id="printPersonTerm"  action="#{manageContractsBean.onRowPrint(persons.contractUUIDForRole)}"/>
+                                                <p:tooltip for="printPersonTerm" position="bottom" value="Print Contract" showEffect="clip" hideEffect="explode"></p:tooltip>
+                                           
+                                            </b:dataTableColumn>
+                                        </b:dataTable>
+                                    </p:outputPanel>
+                                </p:outputPanel>
+                            </b:tab>
+                            <!--ENDS for TERMINATED Contract-->
+                            
                         </b:tabView>
 
 
