@@ -84,14 +84,16 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
             c.setTerminationDate(ce.getTerminationDate());
             c.setVacationHours(ce.getVacationHours());
             c.setHoursDue(ce.getHoursDue());
+            c.setArchiveDuration(ce.getArchiveDuration());
             result.add(c);
         }
         return result;
 
     }
 
+    @RolesAllowed("STAFF")
     @Override
-    public Contract createContract(String contractName, Person supervisor, Person assistant, Person secretary, Person employee, Date startDate, Date endDate, TimesheetFrequencyEnum timesheetFrequency, double hoursPerWeek, int workingDaysPerWeek, int vacationDaysPerYear) {
+    public void createContract(String contractName, Person supervisor, Person assistant, Person secretary, Person employee, Date startDate, Date endDate, TimesheetFrequencyEnum timesheetFrequency, double hoursPerWeek, int workingDaysPerWeek, int vacationDaysPerYear, int archiveDuration) {
 
         // When creating contract.
         // 1. First create contract and get contract id Also set start end date along with timesheetFrequency detail.
@@ -109,9 +111,9 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
             ce.setFrequency(timesheetFrequency);
         }
         ce.setHoursPerWeek(hoursPerWeek);
-
         ce.setVacationDaysPerYear(vacationDaysPerYear);
         ce.setWorkingDaysPerWeek(workingDaysPerWeek);
+        ce.setArchiveDuration(archiveDuration);
 
         try {
             //2.
@@ -142,19 +144,14 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
                 ae.setContract(ce);
                 ae.setRollType(RoleTypeEnum.ASSISTANT);
             }
-
         } catch (Exception ex) {
             Logger.getLogger(ContractAccess.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        // TODOOOOOOOOOOOOOO have to think what to return
-        // Note that all contract values like timesheets and start end date and so on gets added when updating contract.
-        // initially the above is correct. 
-        return new Contract(ce.getUuid(), ce.getName());
     }
 
+    @RolesAllowed("STAFF")
     @Override
-    public Contract editContract(String contractUUID, Person supervisorPerson, List<Person> secretaries, boolean secretariesChanged, List<Person> assistants, boolean assistantsChanged, Date startDate, Date endDate, TimesheetFrequencyEnum timesheetFrequency, int workingDaysPerWeek, int vacationDaysPerYear, double hoursPerWeek) {
+    public void editContract(String contractUUID, Person supervisorPerson, List<Person> secretaries, boolean secretariesChanged, List<Person> assistants, boolean assistantsChanged, Date startDate, Date endDate, TimesheetFrequencyEnum timesheetFrequency, int workingDaysPerWeek, int vacationDaysPerYear, double hoursPerWeek, int archiveDuration) {
         // When updating contract 
         // We will receive 
         // 1. new supervisorFor contract .. check for null if no change. Delete and create if not null and associate this contract id.
@@ -176,6 +173,7 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
         ce.setWorkingDaysPerWeek(workingDaysPerWeek);
         ce.setVacationDaysPerYear(vacationDaysPerYear);
         ce.setHoursPerWeek(hoursPerWeek);
+        ce.setArchiveDuration(archiveDuration);
 
         // 1. 
         SupervisorEntity svePrev = supervisorAccess.getSupervisorByContract(contractAccess.getByUuid(contractUUID));
@@ -229,8 +227,6 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
                 }
             }
         }
-        //4. Change start and end date  IMPLEMENTED AT BEGINNING OF this function
-        return new Contract(ce.getUuid(), ce.getName());
     }
 
     @RolesAllowed("STAFF")
@@ -243,7 +239,7 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
         timeSheetBusinessLogic.createTimeSheet(contractUUID);
 
         // Now updating the total hours due for contract. Subject to change when timesheet entries changes.
-        updateContractStatistics(contractUUID);
+        _updateContractStatistics(contractUUID);
         return new Contract(ce.getUuid(), ce.getName());
     }
 
@@ -272,6 +268,7 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
         c.setTerminationDate(ce.getTerminationDate());
         c.setVacationHours(ce.getVacationHours());
         c.setHoursDue(ce.getHoursDue());
+        c.setArchiveDuration(ce.getArchiveDuration());
 
         // Set Supervisor also. Note to also do for employee
         Supervisor s = new Supervisor(ce.getSupervisor().getUuid(), ce.getSupervisor().getName());
@@ -285,7 +282,7 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
         pS.setPreferredLanguage(person.getPreferredLanguage());
         s.setPerson(pS);
         c.setSupervisor(s);
-        
+
         Employee e = new Employee(ce.getEmployee().getUuid(), ce.getEmployee().getName());
         PersonEntity personforE = ce.getEmployee().getPerson();
         Person pE = new Person(personforE.getUuid(), personforE.getName());
@@ -306,7 +303,7 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
     }
 
     @Override
-    public void updateContractStatistics(String contractUUID) {
+    public void _updateContractStatistics(String contractUUID) {
         ContractEntity ce = contractAccess.getByUuid(contractUUID);
 
         // Calculating vacation hours.
@@ -329,8 +326,6 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
     @RolesAllowed("STAFF")
     @Override
     public void deleteContract(String contractUUID) {
-        // Also delete employee for that contract id
-
         ContractEntity ce = contractAccess.getByUuid(contractUUID);
         ce.setEmployee(null);
         ce.setSupervisor(null);
@@ -375,21 +370,10 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
             c.setTerminationDate(ce.getTerminationDate());
             c.setVacationHours(ce.getVacationHours());
             c.setHoursDue(ce.getHoursDue());
+            c.setArchiveDuration(ce.getArchiveDuration());
 
-//                // Set Employee
-//                Employee e = new Employee(ce.getEmployee().getUuid(), ce.getEmployee().getName());
-//                Person pE = new Person(e.getPerson().getUuid(), e.getPerson().getName());
-//                pE.setFirstName(e.getPerson().getFirstName());
-//                pE.setLastName(e.getPerson().getLastName());
-//                pE.setDateOfBirth(e.getPerson().getDateOfBirth());
-//                pE.setEmailAddress(e.getPerson().getEmailAddress());
-//                pE.setUserRoleRealm(e.getPerson().getUserRoleRealm());
-//                pE.setPreferredLanguage(e.getPerson().getPreferredLanguage());
-//                e.setPerson(pE);
-//                c.setEmployee(e);
             // Set Supervisor
             Supervisor s = new Supervisor(ce.getSupervisor().getUuid(), ce.getSupervisor().getName());
-
             PersonEntity person = ce.getSupervisor().getPerson();
             Person pS = new Person(person.getUuid(), person.getName());
             pS.setFirstName(person.getFirstName());
@@ -401,18 +385,24 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
             s.setPerson(pS);
             c.setSupervisor(s);
 
+            // Set Employee
+            Employee e = new Employee(ce.getEmployee().getUuid(), ce.getEmployee().getName());
+            PersonEntity personforE = ce.getEmployee().getPerson();
+            Person pE = new Person(personforE.getUuid(), personforE.getName());
+            // To fill rest of person
+            e.setPerson(pE);
+            c.setEmployee(e);
+
             result.add(c);
         }
         return result;
     }
-    
+
     @Override
-    public void updateTotalHoursDue(String contractUUID , double hoursToReduce){
-        System.out.println("I AM HERE TO UPDATE TOTAL HOURSSSS");
+    public void updateTotalHoursDue(String contractUUID, double hoursToReduce) {
         ContractEntity ce = contractAccess.getByUuid(contractUUID);
         double updateHours = ce.getHoursDue() - hoursToReduce;
-        if (updateHours >= 0.0){
-            System.out.println("WILL ACTUALLY  UPDATE TOTAL HOURSSSS");
+        if (updateHours >= 0.0) {
             ce.setHoursDue(updateHours);
         }
     }

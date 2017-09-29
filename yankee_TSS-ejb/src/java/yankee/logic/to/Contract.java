@@ -1,19 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yankee.logic.to;
 
 import java.time.LocalDate;
 import yankee.logic.ENUM.ContractStatusEnum;
 import yankee.logic.ENUM.TimesheetFrequencyEnum;
-import yankee.logic.to.Named;
 
-/**
- *
- * @author Shriharsh
- */
 public class Contract extends Named{
     
     private ContractStatusEnum status;
@@ -26,9 +16,14 @@ public class Contract extends Named{
     private int vacationDaysPerYear;
     private double vacationHours;
     private double hoursDue;
+    private int archiveDuration;
     private Employee employee;    
     private Supervisor supervisor;
-
+    
+    public Contract(String uuid, String name) {
+        super(uuid, name);
+    }
+    
     public Supervisor getSupervisor() {
         return supervisor;
     }
@@ -43,12 +38,15 @@ public class Contract extends Named{
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
+    }    
+    
+    public int getArchiveDuration() {
+        return archiveDuration;
     }
 
-    public Contract(String uuid, String name) {
-        super(uuid, name);
+    public void setArchiveDuration(int archiveDuration) {
+        this.archiveDuration = archiveDuration;
     }
-    
     
     public double getVacationHours() {
         return vacationHours;
