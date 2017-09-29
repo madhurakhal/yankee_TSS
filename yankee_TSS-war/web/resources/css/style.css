@@ -157,11 +157,9 @@ span.form-control > input {
     border-radius: 0px;
     padding: 7px 10px;
 }
-#timesheetentry  .ui-datagrid-content {
-    border-top: 1px solid #00a65a; 
-}
+
 #timesheetentry .ui-corner-top {
-    border: 1px solid #00a65a;
+    border: none;
 }
 #timesheetentry .ui-panel .ui-panel-titlebar {
     border-radius: 0px;
