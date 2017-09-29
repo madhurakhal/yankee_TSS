@@ -47,24 +47,78 @@ and open the template in the editor.
         </ui:define>
         <ui:define name="main-content">
             <h:form id="timeSheetEntryList" >
-                <p:outputPanel id="printTimesheet" styleClass="box box-success">
-                    <p:outputPanel styleClass="box-body">
-                        <b:dataTable id="tbl" var="entryObj" value="#{timeSheetEntryBean.entries}" responsive="true">
+                <p:outputPanel>
+                    <p:outputPanel id="printTimesheet" styleClass="box box-success">
 
-                            <b:dataTableColumn value="#{entryObj.dateString}" label="Date"/>
-                            <b:dataTableColumn value="#{entryObj.hours}" label="Hours"/>
-                            <b:dataTableColumn value="#{entryObj.description}" label="Description"/>
-                            <b:dataTableColumn value="${entryObj.startDateTime}"/>
-                            <b:dataTableColumn value="${entryObj.endDateTime}"/>
-                        </b:dataTable>
+                        <p:outputPanel styleClass="box-header text-center">
+                            <h:outputLabel value="TimeSheet For : #{printpreviewtimesheetBean.employeeForContract.firstName} #{printpreviewtimesheetBean.employeeForContract.lastName} (#{printpreviewtimesheetBean.employeeForContract.emailAddress})"/>
+                        </p:outputPanel>                        
+                        <p:outputPanel styleClass="box-body top-border edit-contract">
+                            <b:column>
+                                <p:outputPanel styleClass="col-xs-12 col-sm-7">
+                                    <b:formGroup>
+                                        <h:outputLabel value="Supervisor" styleClass="col-xs-12 col-sm-5 control-label"/>
+                                        <b:column col-sm="6" col-xs="12">
+                                            <h:outputLabel value="#{printpreviewtimesheetBean.supervisorForContract.firstName} #{printpreviewtimesheetBean.supervisorForContract.lastName}"/>
+                                        </b:column>
+                                    </b:formGroup> 
+                                    <b:formGroup>
+                                        <h:outputLabel for="timesheetFrequency" value="#{msg.timeSheetFrequency}" styleClass="col-xs-12 col-sm-5 control-label" />
+                                        <b:column col-sm="7" col-xs="12">
+                                            <h:outputLabel value="#{printpreviewtimesheetBean.contractinfo.frequency}"/>
+                                        </b:column>
+                                    </b:formGroup>
+
+                                </p:outputPanel>
+
+                                <p:outputPanel styleClass="col-xs-12 col-sm-5">
+                                    <b:formGroup>
+                                        <h:outputLabel value="#{msg.hoursPerWeek}" styleClass="col-xs-12 col-sm-5 control-label" />
+                                        <b:column col-sm="7" col-xs="12">
+                                            <h:outputLabel value="#{printpreviewtimesheetBean.contractinfo.hoursPerWeek}"/>
+                                        </b:column>
+                                    </b:formGroup>
+
+                                    <b:formGroup>
+                                        <h:outputLabel value="Total Hours Due" styleClass="col-xs-12 col-sm-5 control-label" />
+                                        <b:column col-sm="7" col-xs="12">
+                                            <h:outputLabel value="#{printpreviewtimesheetBean.hoursDue}"/>
+                                        </b:column>
+                                    </b:formGroup>
+
+                                    <b:formGroup>
+                                        <h:outputLabel value="Total Hours Entered" styleClass="col-xs-12 col-sm-5 control-label" />
+                                        <b:column col-sm="7" col-xs="12">
+                                            <h:outputLabel value="#{printpreviewtimesheetBean.hoursEntered}"/>
+                                        </b:column>
+                                    </b:formGroup>
+
+                                </p:outputPanel>
+                            </b:column>
+                        </p:outputPanel>
+
+
+
+
+                        <p:outputPanel styleClass="box-body top-border">
+                            <b:dataTable id="tbl" var="entryObj" value="#{printpreviewtimesheetBean.entries}" responsive="true">
+
+                                <b:dataTableColumn value="#{entryObj.dateString}" label="Date"/>
+                                <b:dataTableColumn value="#{entryObj.hours}" label="Hours"/>
+                                <b:dataTableColumn value="#{entryObj.description}" label="Description"/>
+                                <b:dataTableColumn value="${entryObj.startDateTime}"/>
+                                <b:dataTableColumn value="${entryObj.endDateTime}"/>
+                            </b:dataTable>
+                        </p:outputPanel>
                     </p:outputPanel>
-                </p:outputPanel>
-                <p:commandButton id="print"
+                    <p:commandButton id="print"
                                      value="Print"
                                      action ="index"
                                      styleClass="pull-right">
                         <p:printer target="printTimesheet" />
-                </p:commandButton> 
+                    </p:commandButton> 
+
+                </p:outputPanel>
             </h:form>
         </ui:define>
     </ui:composition>

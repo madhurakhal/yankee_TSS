@@ -19,9 +19,17 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import org.primefaces.context.RequestContext;
+import yankee.logic.AssistantBusinessLogic;
+import yankee.logic.ContractBusinessLogic;
+import yankee.logic.EmployeeBusinessLogic;
+import yankee.logic.PersonBusinessLogic;
+import yankee.logic.SecretaryBusinessLogic;
+import yankee.logic.SupervisorBusinessLogic;
 import yankee.logic.TimeSheetBusinessLogic;
+import yankee.logic.to.Contract;
 import yankee.logic.to.Person;
 import yankee.logic.to.TimeSheetEntry;
+import yankee.utilities.UTILNumericSupport;
 
 /**
  *
@@ -36,6 +44,15 @@ public class PrintpreviewtimesheetBean implements Serializable {
      */
     @EJB
     private TimeSheetBusinessLogic timeSheetService;
+    
+    @EJB
+    private SupervisorBusinessLogic supervisorBusinessLogic;    
+    
+    @EJB
+    private EmployeeBusinessLogic employeeBusinessLogic;
+
+    @EJB
+    private ContractBusinessLogic contractBusinessLogic;
 
     private List<TimeSheetEntry> entries;
     private String description;
@@ -47,6 +64,43 @@ public class PrintpreviewtimesheetBean implements Serializable {
     private TimeSheetEntry selectedEntry;
     private Date startDate;
     private String contractUUID;
+    private Contract contractinfo;
+    private Person supervisorForContract;
+    private Person employeeForContract;
+    private double hoursEntered;
+    private double hoursDue;
+
+    public double getHoursDue() {
+        hoursDue = timeSheetService.getByUUID(timeSheet_id).getHoursDue();
+        return hoursDue;
+    }
+
+    public double getHoursEntered() {
+        System.out.println("TIME SHEEEEEET ID for hours entere" + timeSheetUuid);
+        List<TimeSheetEntry> lse = getEntries();
+        hoursEntered = UTILNumericSupport.round(lse.stream().mapToDouble(o -> o.getHours()).sum(),2);    
+        return hoursEntered;
+    }
+
+    public Person getEmployeeForContract() {
+        if (supervisorForContract == null) {
+            employeeForContract = employeeBusinessLogic.getEmployeeByContract(contractUUID).getPerson();
+        }
+        return employeeForContract;
+    }
+    
+
+    public Contract getContractinfo() {
+        contractinfo = contractBusinessLogic.getContractByUUID(contractUUID);
+        return contractinfo;
+    }
+
+    public Person getSupervisorForContract() {
+        if (supervisorForContract == null) {
+            supervisorForContract = supervisorBusinessLogic.getSupervisorByContract(contractUUID).getPerson();
+        }
+        return supervisorForContract;
+    }
 
     private Person loggedinUser;
     @Inject
