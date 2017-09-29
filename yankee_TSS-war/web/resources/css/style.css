@@ -142,3 +142,6 @@ span.form-control > input {
 .ui-growl {
     z-index: 9999 !important;
 }
+#contractDetails .form-group .control-label {
+    font-weight: normal;
+}
