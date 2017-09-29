@@ -17,7 +17,9 @@
             // reload seems workign now.
             // if you are going to deploy in real production please search for better solution
             function reloadWindow() {
-                window.location = window.location.href;
+                setTimeout(function() {
+                    window.location = window.location.href;
+                }, 1000);
             }
         </script>
     </ui:composition>
