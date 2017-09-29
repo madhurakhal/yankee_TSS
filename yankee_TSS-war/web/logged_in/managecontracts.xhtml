@@ -209,13 +209,13 @@
                             
                             <!--BEGINS for TERMINATED Contract-->
                             <b:tab title="Terminated">                        
-                                <p:outputPanel rendered = "#{empty manageContractsBean.personsAssociatedToContractSecretary}" styleClass="box-body text-center">
-                                    <p> You do not have any Contracts Terminated as of yet!</p>                            
+                                <p:outputPanel rendered = "#{empty manageContractsBean.terminatedContracts}" styleClass="box-body text-center">
+                                    <p> You do not have any Terminated Contracts as of yet!</p>                            
                                 </p:outputPanel>
 
-                                <p:outputPanel rendered = "#{!empty manageContractsBean.personsAssociatedToContractSecretary}" styleClass="box">                    
+                                <p:outputPanel rendered = "#{!empty manageContractsBean.terminatedContracts}" styleClass="box">                    
                                     <p:outputPanel styleClass="box-body"> 
-                                        <b:dataTable value="#{manageContractsBean.personsAssociatedToContractSecretary}" 
+                                        <b:dataTable value="#{manageContractsBean.terminatedContracts}" 
                                                      var="persons" 
                                                      responsive = "true">
 
