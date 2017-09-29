@@ -53,7 +53,7 @@ public class CreateContractBean {
 
     private List<Person> persons;
     private List<Person> availableSupervisorList = new ArrayList<>();
-    private Person supervisorForContract;
+    private Person supervisorForContract;    
     private boolean personSelected  = true;
 
     public boolean isPersonSelected() {
@@ -74,6 +74,16 @@ public class CreateContractBean {
     private Integer hoursPerWeek;
     private Integer workingDaysPerWeek;
     private Integer vacationDaysPerYear;
+    private Integer archiveDuration;
+
+    public Integer getArchiveDuration() {
+        archiveDuration = 2;
+        return archiveDuration;
+    }
+
+    public void setArchiveDuration(Integer archiveDuration) {
+        this.archiveDuration = archiveDuration;
+    }
 
     public Integer getWorkingDaysPerWeek() {
         workingDaysPerWeek = 5;
@@ -206,7 +216,7 @@ public class CreateContractBean {
             supervisor = changedSupervisorPerson;
         }
         
-        contractBusinessLogic.createContract("contract" + employee.getName(), supervisor, assistant, secretary, employee, startDate, endDate, timesheetFrequency, (double) hoursPerWeek, workingDaysPerWeek, vacationDaysPerYear);
+        contractBusinessLogic.createContract("contract" + employee.getName(), supervisor, assistant, secretary, employee, startDate, endDate, timesheetFrequency, (double) hoursPerWeek, workingDaysPerWeek, vacationDaysPerYear, archiveDuration);
 
         FacesMessage msg = new FacesMessage("Contract Created" , "");
         FacesContext.getCurrentInstance().addMessage(null, msg);

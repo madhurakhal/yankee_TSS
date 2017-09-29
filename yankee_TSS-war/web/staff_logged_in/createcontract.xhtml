@@ -28,30 +28,31 @@
         <ui:define name="main-content">
             <f:verbatim>
                 <script type="text/javascript">
-                   //<![CDATA[
-                        var date1 = new Date();
-                        var currentMonth = date1.getMonth();
-                        function enableOnlyFirstDay(date) {
-                            if (date.getTime() - 8640000 >= date1.getTime()) {
-                                if (date.getDate() === 1) return [true];
-                            }
+                    //<![CDATA[
+                    var date1 = new Date();
+                    var currentMonth = date1.getMonth();
+                    function enableOnlyFirstDay(date) {
+                        if (date.getTime() - 8640000 >= date1.getTime()) {
+                            if (date.getDate() === 1)
+                                return [true];
+                        }
+                        return [false];
+                    }
+                    function enableOnlyLastDay(date) {
+                        var startDate = document.getElementById('createContractForm:startDate_input').value
+                        if (startDate === '') {
                             return [false];
                         }
-                        function enableOnlyLastDay(date) {
-                            var startDate = document.getElementById('createContractForm:startDate_input').value
-                            if (startDate === '') {
-                                return [false];
+
+                        var d1 = new Date(startDate);
+                        if (date.getTime() > d1.getTime()) {
+                            var lastDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+                            if (date.getDate() === lastDate.getDate()) {
+                                return [true];
                             }
-                            
-                            var d1 = new Date(startDate);
-                            if (date.getTime() > d1.getTime()) {
-                                var lastDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-                                if (date.getDate() === lastDate.getDate()) {
-                                    return [true];
-                                }
-                            }
-                            return [false];
                         }
+                        return [false];
+                    }
                     //]]> 
                 </script>
             </f:verbatim>
@@ -129,10 +130,17 @@
 
                                         <b:formGroup>
                                             <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="hoursPerWeek">#{msg.hoursPerWeek}</h:outputLabel>
-                                        <b:column col-sm="6" col-xs="12">
-                                            <h:inputText required="true" id="hoursPerWeek" value="#{createContractBean.hoursPerWeek}" styleClass="form-control" onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;"/>
-                                        </b:column>
-                                    </b:formGroup>
+                                            <b:column col-sm="6" col-xs="12">
+                                                <h:inputText required="true" id="hoursPerWeek" value="#{createContractBean.hoursPerWeek}" styleClass="form-control" onkeypress="if (event.which &amp; lt; 48 || event.which &amp; gt; 57) return false;"/>
+                                            </b:column>
+                                        </b:formGroup>
+                                        
+                                        <b:formGroup>
+                                            <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="archiveDuration">#{msg.archiveDuration}</h:outputLabel>
+                                            <b:column col-sm="6" col-xs="12">
+                                                <h:inputText required="true" id="archiveDuration" value="#{createContractBean.archiveDuration}" styleClass="form-control" onkeypress="if (event.which &amp; lt; 48 || event.which &amp; gt; 57) return false;"/>
+                                            </b:column>
+                                        </b:formGroup>
 
                                         <b:formGroup>
                                             <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="timesheetFrequency">#{msg.timeSheetFrequency}</h:outputLabel>
@@ -184,7 +192,6 @@
                                              disabled="#{empty createContractBean.persons}"
                                              look="success"
                                              value="#{msg.createContract}"
-                                             action="managecontracts?faces-redirect=true"
                                              actionListener="#{createContractBean.create}"
                                              styleClass="pull-right"
                                              />

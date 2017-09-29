@@ -77,6 +77,16 @@ public class EditContractBean {
     private Integer vacationDaysPerYear;
     private Person currentContractPerson;
     private Contract contractInfo;
+    private Integer archiveDuration;
+
+    public Integer getArchiveDuration() {
+        archiveDuration = contractInfo.getArchiveDuration();
+        return archiveDuration;
+    }
+
+    public void setArchiveDuration(Integer archiveDuration) {
+        this.archiveDuration = archiveDuration;
+    }
 
     public Contract getContractInfo() {
         contractInfo = contractBusinessLogic.getContractByUUID(contract_id);
@@ -464,7 +474,11 @@ public class EditContractBean {
         System.out.println("Previous Assistants " + _assistantsForContract);
         System.out.println("Assistants Changed " + assistantsChanged);
 
-        contractBusinessLogic.editContract(contract_id, supervisorForContract, secretaryPickupList.getTarget(), secretariesChanged, assistantPickupList.getTarget(), assistantsChanged, startDate, endDate, timesheetFrequency, workingDaysPerWeek, vacationDaysPerYear, hoursPerWeek);
+        contractBusinessLogic.editContract(contract_id, supervisorForContract, 
+                    secretaryPickupList.getTarget(), secretariesChanged, 
+                        assistantPickupList.getTarget(), assistantsChanged, 
+                            startDate, endDate, timesheetFrequency, workingDaysPerWeek, 
+                                vacationDaysPerYear, hoursPerWeek , archiveDuration);
         FacesMessage msg = new FacesMessage("Contract Has Been Updated" , "");
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
