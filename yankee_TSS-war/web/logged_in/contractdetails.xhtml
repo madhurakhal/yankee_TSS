@@ -133,7 +133,7 @@
                                         <b:dataTableColumn label="Action " style="width:50px" >
                                             <!--BEGIN FOR EMPLOYYEEEE-->
                                             <!--If the timesheet in progress then render submit for employee-->
-                                            <p:commandButton update ="contractDetails" rendered = "#{timesheet.status eq 'IN_PROGRESS' and contractDetailsBean.isEmployee(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane" id="submitTimeSheetEmployeePre" actionListener="#{contractDetailsBean.onSignByEmployeeRow(timesheet.uuid)}">                           
+                                            <p:commandButton update ="contractDetails" rendered = "#{timesheet.status eq 'IN_PROGRESS' and contractDetailsBean.isEmployee(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane" id="submitTimeSheetEmployeePre" actionListener="#{contractDetailsBean.onSignByEmployeeRow(timesheet.uuid)}" oncomplete="reloadWindow()">                           
                                                 <p:confirm header="Confirmation" message="Confirm Sign?" icon="ui-icon-alert" />
                                             </p:commandButton>
                                             <p:tooltip for="submitTimeSheetEmployeePre" position="bottom" value="Sign TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
