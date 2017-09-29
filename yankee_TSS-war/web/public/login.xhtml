@@ -37,11 +37,7 @@
                                                    autocomplete="off"/>
                                         </b:column>
                                     </b:formGroup>
-                                    <!--                                    <b:formGroup>
-                                                                            <b:column col-sm="10" offset-sm="2">
-                                                                                <b:selectBooleanCheckbox value="checked" caption="#{msg.rememberMe}"/>
-                                                                            </b:column>
-                                                                        </b:formGroup>-->
+                                    
 
                                     <b:formGroup>
                                         <b:column col-sm="10" offset-sm="2">
@@ -50,11 +46,14 @@
                                     </b:formGroup>
 
                                 </p:outputPanel>
-                                <b:column col-xs="12" class="box-footer">
-                                    <b:commandButton value="#{msg.logInAsGuest}" styleClass="btn btn-info pull-left" pt:type="submit" action="dashboard?faces-redirect=true" pt:id="guestLogin"/>
+                                <b:column col-xs="12" class="box-footer">                                    
                                     <b:commandButton value="#{msg.logIn}" styleClass="btn btn-info pull-right" pt:type="submit" action="dashboard?faces-redirect=true" pt:id="logIn"/>
                                 </b:column>
                             </b:form>
+                            <b:form>
+                                <b:commandButton value="#{msg.logInAsGuest}" styleClass="btn btn-info pull-left" actionListener="#{administrationBean.enableGuestLogin()}" pt:id="guestLogin"/>
+                            </b:form>
+                            
                             <b:alert severity="danger" rendered="${request.parameterMap.containsKey('j_username')}">
                                 #{msg.userNamePasswordIncorrect}
                             </b:alert>

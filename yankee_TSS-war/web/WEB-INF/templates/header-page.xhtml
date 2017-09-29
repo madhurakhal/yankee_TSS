@@ -23,7 +23,7 @@
                             <b:navbarLinks styleClass="nav navbar-nav">
                                 <b:navLink outcome="dashboard" value="#{msg.dashBoard}" rendered="#{not empty request.remoteUser}"></b:navLink>
                                 <b:navLink outcome="index" value="Home" rendered="#{empty request.remoteUser}"></b:navLink>
-                                <b:navLink outcome="documentation" value="Documentation"></b:navLink>
+                                <b:navLink outcome="documentation" value="Documentation" rendered="#{not empty request.remoteUser || administrationBean.adminSettingsInfo.guestLoggedIn}"></b:navLink>
                             </b:navbarLinks>
                             <b:navbarLinks styleClass="nav navbar-nav navbar-right">
                                 <li class="dropdown margin-right-25">
@@ -56,14 +56,14 @@
                                     </ul>
                                 </li>
                             </b:navbarLinks>
-                            <ui:fragment rendered="#{not empty request.remoteUser}">
+                            <ui:fragment rendered="#{not empty request.remoteUser || administrationBean.adminSettingsInfo.guestLoggedIn}">
                                 <b:navbarLinks styleClass="nav navbar-nav navbar-right">
                                     <b:navLink outcome="myaccount" value="#{loginBean.user.firstName} " icon="cog"/>
                                     <b:navCommandLink  value="#{msg.logOut}" icon="log-out" action="#{loginBean.logout}"/>
                                 </b:navbarLinks>
                             </ui:fragment>
 
-                            <ui:fragment rendered="#{empty request.remoteUser}">
+                            <ui:fragment rendered="#{empty request.remoteUser and (not administrationBean.adminSettingsInfo.guestLoggedIn)}">
                                 <b:navbarLinks styleClass="nav navbar-nav navbar-right">
                                     <b:navLink value="#{msg.logIn}" href="public/login.xhtml"/>
                                 </b:navbarLinks>

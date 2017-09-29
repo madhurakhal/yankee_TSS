@@ -16,6 +16,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import yankee.logic.AdministrationBusinessLogic;
 import yankee.logic.PersonBusinessLogic;
 import yankee.logic.to.Person;
 
@@ -30,6 +31,9 @@ public class LoginBean implements Serializable {
 
     @EJB
     private PersonBusinessLogic personBusinessLogic;
+
+    @EJB
+    private AdministrationBusinessLogic administrationBusinessLogic;
 
     private String principalName;
 
@@ -52,8 +56,8 @@ public class LoginBean implements Serializable {
             principalName = currentPrincipalName;
             user = personBusinessLogic.getPersonByName(principalName);
             // Also update user group
-            if(FacesContext.getCurrentInstance().getExternalContext().isUserInRole("STAFF")){
-                personBusinessLogic.updateUserRoleRealm(user.getUuid() , "STAFF");
+            if (FacesContext.getCurrentInstance().getExternalContext().isUserInRole("STAFF")) {
+                personBusinessLogic.updateUserRoleRealm(user.getUuid(), "STAFF");
             }
         }
         return user;
@@ -64,6 +68,8 @@ public class LoginBean implements Serializable {
     }
 
     public void logout() {
+        administrationBusinessLogic.disableGuestLogin();
+
         FacesContext fc = FacesContext.getCurrentInstance();
         ExternalContext ec = fc.getExternalContext();
         ec.invalidateSession();
@@ -75,5 +81,6 @@ public class LoginBean implements Serializable {
             Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         FacesContext.getCurrentInstance().responseComplete();
+
     }
 }
