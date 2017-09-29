@@ -22,8 +22,15 @@
         </ui:define>
         <ui:define name="main-content">
             <b:container>
-                <object type="application/pdf" data="resources/pdf/guide.pdf" height="600px" width="100%" internalinstanceid="5"></object>
+                <object type="application/pdf" data="resources/pdf/guide.pdf" height="600px" width="100%" internalinstanceid="5" id="document-pdf"></object>
             </b:container>
+            
+            
+            <script>
+                window.addEventListener('DOMContentLoaded', function() {
+                    document.getElementById('document-pdf').height = (window.innerHeight - 150) + 'px';
+                });
+            </script>
         </ui:define>
     </ui:composition>
 </html>
