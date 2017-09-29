@@ -157,13 +157,13 @@ span.form-control > input {
     border-radius: 0px;
     padding: 7px 10px;
 }
-.ui-datagrid-content {
+#timesheetentry  .ui-datagrid-content {
     border-top: 1px solid #00a65a; 
 }
-.ui-corner-top {
+#timesheetentry .ui-corner-top {
     border: 1px solid #00a65a;
 }
-.ui-panel .ui-panel-titlebar {
+#timesheetentry .ui-panel .ui-panel-titlebar {
     border-radius: 0px;
     background: none;
 }
@@ -174,4 +174,9 @@ span.form-control > input {
 }
 .ui-grid-row .ui-datagrid-column {
     margin: 0px 0.4%;
+}
+
+#myAccount .ui-corner-top, #myAccount .ui-button{
+    background: none;
+    border-radius: 0px;
 }
