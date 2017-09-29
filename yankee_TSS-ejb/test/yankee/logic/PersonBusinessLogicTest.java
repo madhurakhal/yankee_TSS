@@ -17,6 +17,7 @@ import org.junit.Test;
 import org.junit.Assert;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import yankee.logic.ENUM.PreferredLanguageENUM;
 import yankee.logic.ENUM.RoleTypeEnum;
 import yankee.logic.to.Person;
 
@@ -54,16 +55,13 @@ public class PersonBusinessLogicTest {
     /**
      * Test of getPersonList method, of class PersonBusinessLogic.
      */
-//    @Test
-//    public void testGetPersonList() {
-//        System.out.println("getPersonList");
-//        PersonBusinessLogic instance = new PersonBusinessLogicImpl();
-//        List<Person> expResult = null;
-//        List<Person> result = instance.getPersonList();
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
+    @Test
+    public void testGetPersonList() {
+        Person person1 = personLogic.createPerson("Test1");
+        Person person2 = personLogic.createPerson("test2");
+        List<Person> persons = personLogic.getPersonList();
+        assertEquals(2, persons.size());
+    }
 
     /**
      * Test of createPerson method, of class PersonBusinessLogic.
@@ -82,71 +80,44 @@ public class PersonBusinessLogicTest {
     /**
      * Test of updatePersonDetails method, of class PersonBusinessLogic.
      */
-//    @Test
-//    public void testUpdatePersonDetails() {
-//        System.out.println("updatePersonDetails");
-//        String uuid = "";
-//        RoleTypeEnum roleType = null;
-//        PersonBusinessLogic instance = new PersonBusinessLogicImpl();
-//        instance.updatePersonDetails(uuid, roleType);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
+    @Test
+    public void testUpdatePersonDetails() {
+        Person testPerson = personLogic.createPerson("Biplov");
+        assertEquals("TestUser", testPerson.getName());
+        testPerson.setEmailAddress("biplov@uni-koblenz.de");
+        testPerson.setFirstName("Biplov");
+        testPerson.setLastName("KC");
+        testPerson.setPreferredLanguage(PreferredLanguageENUM.EN);
+        personLogic.updateDetails(testPerson);
+        assertEquals("Biplov", testPerson.getFirstName());
+        assertEquals("KC", testPerson.getLastName());
+        assertEquals("biplov@uni-koblenz.de", testPerson.getEmailAddress());
+        assertEquals(PreferredLanguageENUM.EN, testPerson.getPreferredLanguage());
+    }
 
     /**
      * Test of updateUserRoleRealm method, of class PersonBusinessLogic.
      */
-//    @Test
-//    public void testUpdateUserRoleRealm() {
-//        System.out.println("updateUserRoleRealm");
-//        String uuid = "";
-//        String realmRole = "";
-//        PersonBusinessLogic instance = new PersonBusinessLogicImpl();
-//        instance.updateUserRoleRealm(uuid, realmRole);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
+    @Test
+    public void testUpdateUserRoleRealm() {
+        Person testPerson = personLogic.createPerson("Biplov");
+        testPerson.setUserRoleRealm("abc");
+        personLogic.updateUserRoleRealm(testPerson.getUuid(), "def");
+        assertEquals("def", testPerson.getUserRoleRealm());
+
+    }
 
     /**
      * Test of getPersonByName method, of class PersonBusinessLogic.
      */
-//    @Test
-//    public void testGetPersonByName() {
-//        System.out.println("getPersonByName");
-//        String name = "";
-//        PersonBusinessLogic instance = new PersonBusinessLogicImpl();
-//        Person expResult = null;
-//        Person result = instance.getPersonByName(name);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
+    @Test
+    public void testGetPersonByName() {
+        Person testPerson = personLogic.createPerson("Biplov");
+        Person person = personLogic.getPersonByName("Biplov");
+        assertEquals(testPerson.getName(), person.getName());
+    }
 
-    /**
-     * Test of updateDetails method, of class PersonBusinessLogic.
-     */
-//    @Test
-//    public void testUpdateDetails() {
-//        System.out.println("updateDetails");
-//        Person updatedperson = null;
-//        PersonBusinessLogic instance = new PersonBusinessLogicImpl();
-//        instance.updateDetails(updatedperson);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-
-    /**
-     * Test of updatePhoto method, of class PersonBusinessLogic.
-     */
-//    @Test
-//    public void testUpdatePhoto() {
-//        System.out.println("updatePhoto");
-//        Person photoupdated = null;
-//        PersonBusinessLogic instance = new PersonBusinessLogicImpl();
-//        instance.updatePhoto(photoupdated);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
+  
 
 //    public class PersonBusinessLogicImpl implements PersonBusinessLogic {
 //
