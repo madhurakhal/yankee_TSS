@@ -34,7 +34,7 @@
                 </p:outputPanel>
             </p:outputPanel>
             <b:form id="form" rendered="#{not empty manageContractsBean.personsAssociatedToContractSupervisor or not empty manageContractsBean.personsAssociatedToContractAssistant or not empty manageContractsBean.personsAssociatedToContractSecretary}">                              
-                <b:tabView> 
+                <b:tabView update="form"> 
                     <b:tab title="As Supervisor">  
                         <!-- BEGINS  For Supervisor -->
                         <p:outputPanel rendered = "#{empty manageContractsBean.personsAssociatedToContractSupervisor}" styleClass="box-body text-center">
@@ -58,7 +58,7 @@
                                     <b:dataTableColumn label="#{msg.action} " style="width:60px">
                                         <!--BEGINS Start Contract.-->
                                         <!--If public holidays loaded.-->
-                                        <p:commandButton styleClass="flat"  rendered = "#{persons.contractStatusForRole eq 'PREPARED' and !publicHolidaysBean.databaseEmpty}" icon="fa fa-fw fa-caret-right"  id="startPersonSuper" update="form" actionListener="#{manageContractsBean.onRowStart(persons.contractUUIDForRole)}">
+                                        <p:commandButton styleClass="flat"  rendered = "#{persons.contractStatusForRole eq 'PREPARED' and !publicHolidaysBean.databaseEmpty}" icon="fa fa-fw fa-caret-right"  id="startPersonSuper" update="form msg" actionListener="#{manageContractsBean.onRowStart(persons.contractUUIDForRole)}">
                                             <p:tooltip for="startPersonSuper" position="bottom" value="Start Contract" showEffect="clip" hideEffect="explode"/>
                                             <p:confirm header="Confirmation" message="Confirm Start?" icon="ui-icon-alert" />
                                         </p:commandButton>
@@ -71,10 +71,10 @@
                                         <p:commandButton  icon="fa fa-fw fa-television"  id="viewPersonSuper" action="#{manageContractsBean.onRowView(persons.contractUUIDForRole)}"/>
                                         <p:tooltip for="viewPersonSuper" position="bottom" value="View" showEffect="clip" hideEffect="explode"/>
 
-                                        <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-edit" id="editPersonSuper" action="#{manageContractsBean.onRowEdit(persons.contractUUIDForRole)}"/>
+                                        <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-edit" id="editPersonSuper" actionListener="#{manageContractsBean.onRowEdit(persons.contractUUIDForRole)}"/>
                                         <p:tooltip for="editPersonSuper" position="bottom" value="Edit Contract" showEffect="clip" hideEffect="explode"/>
 
-                                        <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-trash"  id="deletePersonSuper" update="form" action="#{manageContractsBean.onRowDelete(persons.contractUUIDForRole)}">
+                                        <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-trash"  id="deletePersonSuper" update="form msg" actionListener="#{manageContractsBean.onRowDelete(persons.contractUUIDForRole)}">
                                             <p:tooltip for="deletePersonSuper" position="bottom" value="Delete Contract" showEffect="clip" hideEffect="explode"></p:tooltip>
                                             <p:confirm header="Confirmation" message="Confirm Delete?" icon="ui-icon-alert" />
                                         </p:commandButton>
@@ -84,12 +84,12 @@
                                         <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'STARTED'  and !manageContractsBean.allTimeSheetsInProgressSignedBySuper(persons.contractUUIDForRole)}" icon="fa fa-fw fa-remove"  id="cannotTerminateTimesheet"  onclick = "PF('cannotterminatedialog').show()"/>
                                         <p:tooltip for="cannotTerminateTimesheet" position="bottom" value="Terminate Contract" showEffect="clip" hideEffect="explode"></p:tooltip>
                                         <!--IF Started and signed by supervisor or in progress We can terminate contract-->
-                                        <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'STARTED'  and  manageContractsBean.allTimeSheetsInProgressSignedBySuper(persons.contractUUIDForRole) and !manageContractsBean.contractWithTimesheetHasEntries(persons.contractUUIDForRole)}" icon="fa fa-fw fa-remove"  id="CanTerminateTimesheet" update="form" actionListener="#{manageContractsBean.onRowTerminate(persons.contractUUIDForRole)}">
+                                        <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'STARTED'  and  manageContractsBean.allTimeSheetsInProgressSignedBySuper(persons.contractUUIDForRole) and !manageContractsBean.contractWithTimesheetHasEntries(persons.contractUUIDForRole)}" icon="fa fa-fw fa-remove"  id="CanTerminateTimesheet" update="form msg" actionListener="#{manageContractsBean.onRowTerminate(persons.contractUUIDForRole)}">
                                             <p:confirm  header="Approved!" message="Confirm Termination of Contract?" icon="ui-icon-alert" />
                                             <p:tooltip for="CanTerminateTimesheet" position="bottom" value="Terminate Contract" showEffect="clip" hideEffect="explode"></p:tooltip>
                                         </p:commandButton>
                                         <!--If Started and signed by supervisor or in progress but some timesheet entries are filled. Warning message to be shown and that some entries are there.-->
-                                        <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'STARTED'  and  manageContractsBean.allTimeSheetsInProgressSignedBySuper(persons.contractUUIDForRole) and  manageContractsBean.contractWithTimesheetHasEntries(persons.contractUUIDForRole)}" icon="fa fa-fw fa-remove"  id="CanTerminateTimesheetWithWarning" update="form" actionListener="#{manageContractsBean.onRowTerminate(persons.contractUUIDForRole)}">
+                                        <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'STARTED'  and  manageContractsBean.allTimeSheetsInProgressSignedBySuper(persons.contractUUIDForRole) and  manageContractsBean.contractWithTimesheetHasEntries(persons.contractUUIDForRole)}" icon="fa fa-fw fa-remove"  id="CanTerminateTimesheetWithWarning" update="form msg" actionListener="#{manageContractsBean.onRowTerminate(persons.contractUUIDForRole)}">
                                             <p:confirm  header="Approved!" message="Warning !!! There are some timesheets with entries. Proceed Termination of Contract? " icon="ui-icon-alert" />
                                             <p:tooltip for="CanTerminateTimesheetWithWarning" position="bottom" value="Terminate Contract" showEffect="clip" hideEffect="explode"></p:tooltip>
                                         </p:commandButton>

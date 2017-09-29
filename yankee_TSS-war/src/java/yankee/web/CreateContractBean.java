@@ -219,8 +219,8 @@ public class CreateContractBean {
         contractBusinessLogic.createContract("contract" + employee.getName(), supervisor, assistant, secretary, employee, startDate, endDate, timesheetFrequency, (double) hoursPerWeek, workingDaysPerWeek, vacationDaysPerYear, archiveDuration);
 
         FacesMessage msg = new FacesMessage("Contract Created" , "");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-        
+        FacesContext.getCurrentInstance().addMessage(null, msg);        
+        FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
         ExternalContext extContext = FacesContext.getCurrentInstance().getExternalContext();
         extContext.redirect(extContext.getRequestContextPath() + "/logged_in/managecontracts.xhtml");
     }

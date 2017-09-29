@@ -135,7 +135,7 @@
                                         <b:dataTableColumn label="Action " style="width:50px" >
                                             <!--BEGIN FOR EMPLOYYEEEE-->
                                             <!--If the timesheet in progress then render submit for employee-->
-                                            <p:commandButton update ="@form" rendered = "#{timesheet.status eq 'IN_PROGRESS' and contractDetailsBean.isEmployee(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane" id="submitTimeSheetEmployeePre" action="#{contractDetailsBean.onSignByEmployeeRow(timesheet.uuid)}" oncomplete="reloadWindow()">                           
+                                            <p:commandButton update ="@form" rendered = "#{timesheet.status eq 'IN_PROGRESS' and contractDetailsBean.isEmployee(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane" id="submitTimeSheetEmployeePre" actionListener="#{contractDetailsBean.onSignByEmployeeRow(timesheet.uuid)}" oncomplete="reloadWindow()">                           
                                                 <p:confirm header="Confirmation" message="Confirm Sign?" icon="ui-icon-alert" />
                                             </p:commandButton>
                                             <p:tooltip for="submitTimeSheetEmployeePre" position="bottom" value="Sign TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
@@ -144,12 +144,12 @@
 
                                             <!--BEGIN FOR SUPERVISOR-->
                                             <!--if the timesheet is in signed by employee then render submit button for supervisor only.-->
-                                            <p:commandButton update ="contractDetails" rendered = "#{timesheet.status eq 'SIGNED_BY_EMPLOYEE' and contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane" id="submitTimeSheetSupervisorPre" action="#{contractDetailsBean.onSignBySupervisorRow(timesheet.uuid)}" oncomplete="reloadWindow()">                                                
+                                            <p:commandButton update ="contractDetails" rendered = "#{timesheet.status eq 'SIGNED_BY_EMPLOYEE' and contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane" id="submitTimeSheetSupervisorPre" actionListener="#{contractDetailsBean.onSignBySupervisorRow(timesheet.uuid)}" oncomplete="reloadWindow()">                                                
                                                 <p:confirm header="Confirmation" message="Confirm Sign?" icon="ui-icon-alert" />
                                             </p:commandButton>
                                             <p:tooltip for="submitTimeSheetSupervisorPre" position="bottom" value="Sign TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
                                             <!--REVOKE SIGNATURE-->
-                                            <p:commandButton update ="contractDetails" rendered = "#{timesheet.status eq 'SIGNED_BY_EMPLOYEE' and contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-thumbs-down" id="revokeTimeSheetSupervisorPre" action="#{contractDetailsBean.onRevokeSignatureBySupervisor(timesheet.uuid)}" oncomplete="reloadWindow()">                                               
+                                            <p:commandButton update ="contractDetails" rendered = "#{timesheet.status eq 'SIGNED_BY_EMPLOYEE' and contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-thumbs-down" id="revokeTimeSheetSupervisorPre" actionListener="#{contractDetailsBean.onRevokeSignatureBySupervisor(timesheet.uuid)}" oncomplete="reloadWindow()">                                               
                                                 <p:confirm header="Revoke" message="Confirm Revoke Signature?" icon="ui-icon-alert" />
                                             </p:commandButton>
                                             <p:tooltip for="revokeTimeSheetSupervisorPre" position="bottom" value="Revoke Signature" showEffect="clip" hideEffect="explode"></p:tooltip>                                         
@@ -158,10 +158,10 @@
 
 
                                             <!--PRINT AND ARCHIVE OPTION AVAILABLE IF LOGGED IN USER IS STAFF AND SECRETARY-->
-                                            <p:commandButton rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid)}" icon="fa fa-fw fa-print"  id="printTimeSheetPre"  action="#{contractDetailsBean.printTimeSheet(timesheet.uuid)}"/>
+                                            <p:commandButton rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid)}" icon="fa fa-fw fa-print"  id="printTimeSheetPre"  actionListener="#{contractDetailsBean.printTimeSheet(timesheet.uuid)}"/>
                                             <p:tooltip for="printTimeSheetPre" position="bottom" value="Print TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
 
-                                            <p:commandButton id="archiveTimeSheetPre" rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid) and not (timesheet.status eq 'ARCHIVED')}" icon="fa fa-fw fa-archive"   action="#{contractDetailsBean.archiveTimeSheet(timesheet.uuid)}" oncomplete="reloadWindow()">
+                                            <p:commandButton id="archiveTimeSheetPre" rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid) and not (timesheet.status eq 'ARCHIVED')}" icon="fa fa-fw fa-archive"   actionListener="#{contractDetailsBean.archiveTimeSheet(timesheet.uuid)}" oncomplete="reloadWindow()">
                                                 <p:confirm header="Confirmation" message="Confirm Archive?" icon="ui-icon-alert" />
                                             </p:commandButton>
                                             <p:tooltip  for="archiveTimeSheetPre" position="bottom" value="Archive TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
@@ -169,10 +169,10 @@
 
 
 
-                                            <p:commandButton rendered = "#{timesheet.status eq 'IN_PROGRESS' and contractDetailsBean.isEmployee(timesheet.uuid)}" icon="fa fa-fw fa-plus"  id="addNewEntryPre"  action="#{contractDetailsBean.addNewEntry(timesheet.uuid,timesheet.displayString)}"/>
+                                            <p:commandButton rendered = "#{timesheet.status eq 'IN_PROGRESS' and contractDetailsBean.isEmployee(timesheet.uuid)}" icon="fa fa-fw fa-plus"  id="addNewEntryPre"  actionListener="#{contractDetailsBean.addNewEntry(timesheet.uuid,timesheet.displayString)}"/>
                                             <p:tooltip for="addNewEntryPre" position="bottom" value="Add TimeSheet entry" showEffect="clip" hideEffect="explode"></p:tooltip>
 
-                                            <p:commandButton  icon="fa fa-fw fa-television" id="viewTimeSheetPre" action="#{contractDetailsBean.onRowView(timesheet.uuid,timesheet.displayString)}"/>
+                                            <p:commandButton  icon="fa fa-fw fa-television" id="viewTimeSheetPre" actionListener="#{contractDetailsBean.onRowView(timesheet.uuid,timesheet.displayString)}"/>
                                             <p:tooltip for="viewTimeSheetPre" position="bottom" value="View TimeSheet Entries" showEffect="clip" hideEffect="explode"></p:tooltip>
                                         </b:dataTableColumn>
                                     </b:dataTable>
@@ -203,7 +203,7 @@
                                         <b:dataTableColumn label="Action " style="width:50px" >
                                             <!--BEGIN FOR EMPLOYYEEEE-->
                                             <!--If the timesheet in progress then render submit for employee-->
-                                            <p:commandButton id="submitTimeSheetEmployeeCur" update ="@form" rendered = "#{timesheet.status eq 'IN_PROGRESS' and contractDetailsBean.isEmployee(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane" action="#{contractDetailsBean.onSignByEmployeeRow(timesheet.uuid)}" oncomplete="reloadWindow()">                           
+                                            <p:commandButton id="submitTimeSheetEmployeeCur" update ="@form" rendered = "#{timesheet.status eq 'IN_PROGRESS' and contractDetailsBean.isEmployee(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane" actionListener="#{contractDetailsBean.onSignByEmployeeRow(timesheet.uuid)}" oncomplete="reloadWindow()">                           
                                                 <p:confirm header="Confirmation" message="Confirm Sign?" icon="ui-icon-alert" />
                                             </p:commandButton>
                                             <p:tooltip id="submitIconToolTipECur" for="submitTimeSheetEmployeeCur" position="bottom" value="Sign TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
@@ -212,12 +212,12 @@
 
                                             <!--BEGIN FOR SUPERVISOR-->
                                             <!--if the timesheet is in signed by employee then render submit button for supervisor only.-->
-                                            <p:commandButton id="submitTimeSheetSupervisorCur" update ="@form" rendered = "#{timesheet.status eq 'SIGNED_BY_EMPLOYEE' and contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane"  action="#{contractDetailsBean.onSignBySupervisorRow(timesheet.uuid)}" oncomplete="reloadWindow()">                                                
+                                            <p:commandButton id="submitTimeSheetSupervisorCur" update ="@form" rendered = "#{timesheet.status eq 'SIGNED_BY_EMPLOYEE' and contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane"  actionListener="#{contractDetailsBean.onSignBySupervisorRow(timesheet.uuid)}" oncomplete="reloadWindow()">                                                
                                                 <p:confirm header="Confirmation" message="Confirm Sign?" icon="ui-icon-alert" />
                                             </p:commandButton>
                                             <p:tooltip for="submitTimeSheetSupervisorCur" position="bottom" value="Sign TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
                                             <!--REVOKE SIGNATURE-->
-                                            <p:commandButton id="revokeTimeSheetSupervisorCur" update ="@form" rendered = "#{timesheet.status eq 'SIGNED_BY_EMPLOYEE' and contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-thumbs-down" action="#{contractDetailsBean.onRevokeSignatureBySupervisor(timesheet.uuid)}" oncomplete="reloadWindow()">                                               
+                                            <p:commandButton id="revokeTimeSheetSupervisorCur" update ="@form" rendered = "#{timesheet.status eq 'SIGNED_BY_EMPLOYEE' and contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-thumbs-down" actionListener="#{contractDetailsBean.onRevokeSignatureBySupervisor(timesheet.uuid)}" oncomplete="reloadWindow()">                                               
                                                 <p:confirm header="Revoke" message="Confirm Revoke Signature?" icon="ui-icon-alert" />
                                             </p:commandButton>
                                             <p:tooltip for="revokeTimeSheetSupervisorCur" position="bottom" value="Revoke Signature" showEffect="clip" hideEffect="explode"></p:tooltip>                                         
@@ -226,10 +226,10 @@
 
 
                                             <!--PRINT AND ARCHIVE OPTION AVAILABLE IF LOGGED IN USER IS STAFF AND SECRETARY-->
-                                            <p:commandButton id="printTimeSheetCur"  rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid)}" icon="fa fa-fw fa-print"   action="#{contractDetailsBean.printTimeSheet(timesheet.uuid)}"/>
+                                            <p:commandButton id="printTimeSheetCur"  rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid)}" icon="fa fa-fw fa-print"   actionListener="#{contractDetailsBean.printTimeSheet(timesheet.uuid)}"/>
                                             <p:tooltip for="printTimeSheetCur" position="bottom" value="Print TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
 
-                                            <p:commandButton id="archiveTimeSheetCur" rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid) and not (timesheet.status eq 'ARCHIVED')}" icon="fa fa-fw fa-archive"   action="#{contractDetailsBean.archiveTimeSheet(timesheet.uuid)}" oncomplete="reloadWindow()">
+                                            <p:commandButton id="archiveTimeSheetCur" rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid) and not (timesheet.status eq 'ARCHIVED')}" icon="fa fa-fw fa-archive"   actionListener="#{contractDetailsBean.archiveTimeSheet(timesheet.uuid)}" oncomplete="reloadWindow()">
                                                 <p:confirm header="Confirmation" message="Confirm Archive?" icon="ui-icon-alert" />
                                             </p:commandButton>
                                             <p:tooltip  for="archiveTimeSheetCur" position="bottom" value="Archive TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
@@ -237,10 +237,10 @@
 
 
 
-                                            <p:commandButton id="addNewEntryCur" rendered = "#{timesheet.status eq 'IN_PROGRESS' and contractDetailsBean.isEmployee(timesheet.uuid)}" icon="fa fa-fw fa-plus"   action="#{contractDetailsBean.addNewEntry(timesheet.uuid,timesheet.displayString)}"/>
+                                            <p:commandButton id="addNewEntryCur" rendered = "#{timesheet.status eq 'IN_PROGRESS' and contractDetailsBean.isEmployee(timesheet.uuid)}" icon="fa fa-fw fa-plus"   actionListener="#{contractDetailsBean.addNewEntry(timesheet.uuid,timesheet.displayString)}"/>
                                             <p:tooltip for="addNewEntryCur" position="bottom" value="Add TimeSheet entry" showEffect="clip" hideEffect="explode"></p:tooltip>
 
-                                            <p:commandButton id="viewTimeSheetCur"  icon="fa fa-fw fa-television" action="#{contractDetailsBean.onRowView(timesheet.uuid,timesheet.displayString)}"/>
+                                            <p:commandButton id="viewTimeSheetCur"  icon="fa fa-fw fa-television" actionListener="#{contractDetailsBean.onRowView(timesheet.uuid,timesheet.displayString)}"/>
                                             <p:tooltip for="viewTimeSheetCur" position="bottom" value="View TimeSheet Entries" showEffect="clip" hideEffect="explode"></p:tooltip>
                                         </b:dataTableColumn>
                                     </b:dataTable>
@@ -272,7 +272,7 @@
                                         <b:dataTableColumn label="Action " style="width:50px" >
                                             <!--BEGIN FOR EMPLOYYEEEE-->
                                             <!--If the timesheet in progress then render submit for employee-->
-                                            <p:commandButton id="submitTimeSheetEmployeeSE" update ="@form" rendered = "#{timesheet.status eq 'IN_PROGRESS' and contractDetailsBean.isEmployee(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane" action="#{contractDetailsBean.onSignByEmployeeRow(timesheet.uuid)}" oncomplete="reloadWindow()">                           
+                                            <p:commandButton id="submitTimeSheetEmployeeSE" update ="@form" rendered = "#{timesheet.status eq 'IN_PROGRESS' and contractDetailsBean.isEmployee(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane" actionListener="#{contractDetailsBean.onSignByEmployeeRow(timesheet.uuid)}" oncomplete="reloadWindow()">                           
                                                 <p:confirm header="Confirmation" message="Confirm Sign?" icon="ui-icon-alert" />
                                             </p:commandButton>
                                             <p:tooltip for="submitTimeSheetEmployeeSE" position="bottom" value="Sign TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
@@ -281,12 +281,12 @@
 
                                             <!--BEGIN FOR SUPERVISOR-->
                                             <!--if the timesheet is in signed by employee then render submit button for supervisor only.-->
-                                            <p:commandButton id="submitTimeSheetSupervisorSE" update ="@form" rendered = "#{timesheet.status eq 'SIGNED_BY_EMPLOYEE' and contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane"  action="#{contractDetailsBean.onSignBySupervisorRow(timesheet.uuid)}" oncomplete="reloadWindow()">                                                
+                                            <p:commandButton id="submitTimeSheetSupervisorSE" update ="@form" rendered = "#{timesheet.status eq 'SIGNED_BY_EMPLOYEE' and contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane"  actionListener="#{contractDetailsBean.onSignBySupervisorRow(timesheet.uuid)}" oncomplete="reloadWindow()">                                                
                                                 <p:confirm header="Confirmation" message="Confirm Sign?" icon="ui-icon-alert" />
                                             </p:commandButton>
                                             <p:tooltip for="submitTimeSheetSupervisorSE" position="bottom" value="Sign TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
                                             <!--REVOKE SIGNATURE-->
-                                            <p:commandButton id="revokeTimeSheetSupervisorSE" update ="@form" rendered = "#{timesheet.status eq 'SIGNED_BY_EMPLOYEE' and contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-thumbs-down" action="#{contractDetailsBean.onRevokeSignatureBySupervisor(timesheet.uuid)}" oncomplete="reloadWindow()">                                               
+                                            <p:commandButton id="revokeTimeSheetSupervisorSE" update ="@form" rendered = "#{timesheet.status eq 'SIGNED_BY_EMPLOYEE' and contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-thumbs-down" actionListener="#{contractDetailsBean.onRevokeSignatureBySupervisor(timesheet.uuid)}" oncomplete="reloadWindow()">                                               
                                                 <p:confirm header="Revoke" message="Confirm Revoke Signature?" icon="ui-icon-alert" />
                                             </p:commandButton>
                                             <p:tooltip for="revokeTimeSheetSupervisorSE" position="bottom" value="Revoke Signature" showEffect="clip" hideEffect="explode"></p:tooltip>                                         
@@ -295,10 +295,10 @@
 
 
                                             <!--PRINT AND ARCHIVE OPTION AVAILABLE IF LOGGED IN USER IS STAFF AND SECRETARY-->
-                                            <p:commandButton id="printTimeSheetSE"  rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid)}" icon="fa fa-fw fa-print"   action="#{contractDetailsBean.printTimeSheet(timesheet.uuid)}"/>
+                                            <p:commandButton id="printTimeSheetSE"  rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid)}" icon="fa fa-fw fa-print"   actionListener="#{contractDetailsBean.printTimeSheet(timesheet.uuid)}"/>
                                             <p:tooltip for="printTimeSheetSE" position="bottom" value="Print TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
 
-                                            <p:commandButton id="archiveTimeSheetSE" rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid) and not (timesheet.status eq 'ARCHIVED')}" icon="fa fa-fw fa-archive"   action="#{contractDetailsBean.archiveTimeSheet(timesheet.uuid)}" oncomplete="reloadWindow()">
+                                            <p:commandButton id="archiveTimeSheetSE" rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid) and not (timesheet.status eq 'ARCHIVED')}" icon="fa fa-fw fa-archive"   actionListener="#{contractDetailsBean.archiveTimeSheet(timesheet.uuid)}" oncomplete="reloadWindow()">
                                                 <p:confirm header="Confirmation" message="Confirm Archive?" icon="ui-icon-alert" />
                                             </p:commandButton>
                                             <p:tooltip  for="archiveTimeSheetSE" position="bottom" value="Archive TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
@@ -306,10 +306,10 @@
 
 
 
-                                            <p:commandButton id="addNewEntrySE" rendered = "#{timesheet.status eq 'IN_PROGRESS' and contractDetailsBean.isEmployee(timesheet.uuid)}" icon="fa fa-fw fa-plus"   action="#{contractDetailsBean.addNewEntry(timesheet.uuid,timesheet.displayString)}"/>
+                                            <p:commandButton id="addNewEntrySE" rendered = "#{timesheet.status eq 'IN_PROGRESS' and contractDetailsBean.isEmployee(timesheet.uuid)}" icon="fa fa-fw fa-plus"   actionListener="#{contractDetailsBean.addNewEntry(timesheet.uuid,timesheet.displayString)}"/>
                                             <p:tooltip for="addNewEntrySE" position="bottom" value="Add TimeSheet entry" showEffect="clip" hideEffect="explode"></p:tooltip>
 
-                                            <p:commandButton id="viewTimeSheetSE"  icon="fa fa-fw fa-television" action="#{contractDetailsBean.onRowView(timesheet.uuid,timesheet.displayString)}"/>
+                                            <p:commandButton id="viewTimeSheetSE"  icon="fa fa-fw fa-television" actionListener="#{contractDetailsBean.onRowView(timesheet.uuid,timesheet.displayString)}"/>
                                             <p:tooltip for="viewTimeSheetSE" position="bottom" value="View TimeSheet Entries" showEffect="clip" hideEffect="explode"></p:tooltip>
                                         </b:dataTableColumn>
                                     </b:dataTable>
@@ -343,7 +343,7 @@
                                         <b:dataTableColumn label="Action " style="width:50px" >
                                             <!--BEGIN FOR EMPLOYYEEEE-->
                                             <!--If the timesheet in progress then render submit for employee-->
-                                            <p:commandButton id="submitTimeSheetEmployeeSS" update ="@form" rendered = "#{timesheet.status eq 'IN_PROGRESS' and contractDetailsBean.isEmployee(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane" action="#{contractDetailsBean.onSignByEmployeeRow(timesheet.uuid)}" oncomplete="reloadWindow()">                           
+                                            <p:commandButton id="submitTimeSheetEmployeeSS" update ="@form" rendered = "#{timesheet.status eq 'IN_PROGRESS' and contractDetailsBean.isEmployee(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane" actionListener="#{contractDetailsBean.onSignByEmployeeRow(timesheet.uuid)}" oncomplete="reloadWindow()">                           
                                                 <p:confirm header="Confirmation" message="Confirm Sign?" icon="ui-icon-alert" />
                                             </p:commandButton>
                                             <p:tooltip for="submitTimeSheetEmployeeSS" position="bottom" value="Sign TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
@@ -352,12 +352,12 @@
 
                                             <!--BEGIN FOR SUPERVISOR-->
                                             <!--if the timesheet is in signed by employee then render submit button for supervisor only.-->
-                                            <p:commandButton id="submitTimeSheetSupervisorSS" update ="@form" rendered = "#{timesheet.status eq 'SIGNED_BY_EMPLOYEE' and contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane"  action="#{contractDetailsBean.onSignBySupervisorRow(timesheet.uuid)}" oncomplete="reloadWindow()">                                                
+                                            <p:commandButton id="submitTimeSheetSupervisorSS" update ="@form" rendered = "#{timesheet.status eq 'SIGNED_BY_EMPLOYEE' and contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane"  actionListener="#{contractDetailsBean.onSignBySupervisorRow(timesheet.uuid)}" oncomplete="reloadWindow()">                                                
                                                 <p:confirm header="Confirmation" message="Confirm Sign?" icon="ui-icon-alert" />
                                             </p:commandButton>
                                             <p:tooltip for="submitTimeSheetSupervisorSS" position="bottom" value="Sign TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
                                             <!--REVOKE SIGNATURE-->
-                                            <p:commandButton id="revokeTimeSheetSupervisorSS" update ="@form" rendered = "#{timesheet.status eq 'SIGNED_BY_EMPLOYEE' and contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-thumbs-down" action="#{contractDetailsBean.onRevokeSignatureBySupervisor(timesheet.uuid)}" oncomplete="reloadWindow()">                                               
+                                            <p:commandButton id="revokeTimeSheetSupervisorSS" update ="@form" rendered = "#{timesheet.status eq 'SIGNED_BY_EMPLOYEE' and contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-thumbs-down" actionListener="#{contractDetailsBean.onRevokeSignatureBySupervisor(timesheet.uuid)}" oncomplete="reloadWindow()">                                               
                                                 <p:confirm header="Revoke" message="Confirm Revoke Signature?" icon="ui-icon-alert" />
                                             </p:commandButton>
                                             <p:tooltip for="revokeTimeSheetSupervisorSS" position="bottom" value="Revoke Signature" showEffect="clip" hideEffect="explode"></p:tooltip>                                         
@@ -366,7 +366,7 @@
 
 
                                             <!--PRINT AND ARCHIVE OPTION AVAILABLE IF LOGGED IN USER IS STAFF AND SECRETARY-->
-                                            <p:commandButton id="printTimeSheetSS"  rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid)}" icon="fa fa-fw fa-print"   action="#{contractDetailsBean.printTimeSheet(timesheet.uuid)}"/>
+                                            <p:commandButton id="printTimeSheetSS"  rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid)}" icon="fa fa-fw fa-print"   actionListener="#{contractDetailsBean.printTimeSheet(timesheet.uuid)}"/>
                                             <p:tooltip for="printTimeSheetSS" position="bottom" value="Print TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
 
                                             <p:commandButton id="archiveTimeSheetSS" rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid) and not (timesheet.status eq 'ARCHIVED')}" icon="fa fa-fw fa-archive"   action="#{contractDetailsBean.archiveTimeSheet(timesheet.uuid)}" oncomplete="reloadWindow()">
@@ -377,10 +377,10 @@
 
 
 
-                                            <p:commandButton id="addNewEntrySS" rendered = "#{timesheet.status eq 'IN_PROGRESS' and contractDetailsBean.isEmployee(timesheet.uuid)}" icon="fa fa-fw fa-plus"   action="#{contractDetailsBean.addNewEntry(timesheet.uuid,timesheet.displayString)}"/>
+                                            <p:commandButton id="addNewEntrySS" rendered = "#{timesheet.status eq 'IN_PROGRESS' and contractDetailsBean.isEmployee(timesheet.uuid)}" icon="fa fa-fw fa-plus"   actionListener="#{contractDetailsBean.addNewEntry(timesheet.uuid,timesheet.displayString)}"/>
                                             <p:tooltip for="addNewEntrySS" position="bottom" value="Add TimeSheet entry" showEffect="clip" hideEffect="explode"></p:tooltip>
 
-                                            <p:commandButton id="viewTimeSheetSS"  icon="fa fa-fw fa-television" action="#{contractDetailsBean.onRowView(timesheet.uuid,timesheet.displayString)}"/>
+                                            <p:commandButton id="viewTimeSheetSS"  icon="fa fa-fw fa-television" actionListener="#{contractDetailsBean.onRowView(timesheet.uuid,timesheet.displayString)}"/>
                                             <p:tooltip for="viewTimeSheetSS" position="bottom" value="View TimeSheet Entries" showEffect="clip" hideEffect="explode"></p:tooltip>
                                         </b:dataTableColumn>
                                     </b:dataTable>
@@ -417,7 +417,7 @@
                                         <b:dataTableColumn label="Action " style="width:50px" >
                                             <!--BEGIN FOR EMPLOYYEEEE-->
                                             <!--If the timesheet in progress then render submit for employee-->
-                                            <p:commandButton id="submitTimeSheetEmployeeA" update ="@form" rendered = "#{timesheet.status eq 'IN_PROGRESS' and contractDetailsBean.isEmployee(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane" action="#{contractDetailsBean.onSignByEmployeeRow(timesheet.uuid)}" oncomplete="reloadWindow()">                           
+                                            <p:commandButton id="submitTimeSheetEmployeeA" update ="@form" rendered = "#{timesheet.status eq 'IN_PROGRESS' and contractDetailsBean.isEmployee(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane" actionListener="#{contractDetailsBean.onSignByEmployeeRow(timesheet.uuid)}" oncomplete="reloadWindow()">                           
                                                 <p:confirm header="Confirmation" message="Confirm Sign?" icon="ui-icon-alert" />
                                             </p:commandButton>
                                             <p:tooltip for="submitTimeSheetEmployeeA" position="bottom" value="Sign TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
@@ -426,12 +426,12 @@
 
                                             <!--BEGIN FOR SUPERVISOR-->
                                             <!--if the timesheet is in signed by employee then render submit button for supervisor only.-->
-                                            <p:commandButton id="submitTimeSheetSupervisorA" update ="@form" rendered = "#{timesheet.status eq 'SIGNED_BY_EMPLOYEE' and contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane"  action="#{contractDetailsBean.onSignBySupervisorRow(timesheet.uuid)}" oncomplete="reloadWindow()">                                                
+                                            <p:commandButton id="submitTimeSheetSupervisorA" update ="@form" rendered = "#{timesheet.status eq 'SIGNED_BY_EMPLOYEE' and contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane"  actionListener="#{contractDetailsBean.onSignBySupervisorRow(timesheet.uuid)}" oncomplete="reloadWindow()">                                                
                                                 <p:confirm header="Confirmation" message="Confirm Sign?" icon="ui-icon-alert" />
                                             </p:commandButton>
                                             <p:tooltip for="submitTimeSheetSupervisorA" position="bottom" value="Sign TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
                                             <!--REVOKE SIGNATURE-->
-                                            <p:commandButton id="revokeTimeSheetSupervisorA" update ="@form" rendered = "#{timesheet.status eq 'SIGNED_BY_EMPLOYEE' and contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-thumbs-down" action="#{contractDetailsBean.onRevokeSignatureBySupervisor(timesheet.uuid)}" oncomplete="reloadWindow()">                                               
+                                            <p:commandButton id="revokeTimeSheetSupervisorA" update ="@form" rendered = "#{timesheet.status eq 'SIGNED_BY_EMPLOYEE' and contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-thumbs-down" actionListener="#{contractDetailsBean.onRevokeSignatureBySupervisor(timesheet.uuid)}" oncomplete="reloadWindow()">                                  action             
                                                 <p:confirm header="Revoke" message="Confirm Revoke Signature?" icon="ui-icon-alert" />
                                             </p:commandButton>
                                             <p:tooltip for="revokeTimeSheetSupervisorA" position="bottom" value="Revoke Signature" showEffect="clip" hideEffect="explode"></p:tooltip>                                         
@@ -440,10 +440,10 @@
 
 
                                             <!--PRINT AND ARCHIVE OPTION AVAILABLE IF LOGGED IN USER IS STAFF AND SECRETARY-->
-                                            <p:commandButton id="printTimeSheetA"  rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid)}" icon="fa fa-fw fa-print"   action="#{contractDetailsBean.printTimeSheet(timesheet.uuid)}"/>
+                                            <p:commandButton id="printTimeSheetA"  rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid)}" icon="fa fa-fw fa-print"   actionListener="#{contractDetailsBean.printTimeSheet(timesheet.uuid)}"/>
                                             <p:tooltip for="printTimeSheetA" position="bottom" value="Print TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
 
-                                            <p:commandButton id="archiveTimeSheetA" rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid) and not (timesheet.status eq 'ARCHIVED')}" icon="fa fa-fw fa-archive"   action="#{contractDetailsBean.archiveTimeSheet(timesheet.uuid)}" oncomplete="reloadWindow()">
+                                            <p:commandButton id="archiveTimeSheetA" rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid) and not (timesheet.status eq 'ARCHIVED')}" icon="fa fa-fw fa-archive"   actionListener="#{contractDetailsBean.archiveTimeSheet(timesheet.uuid)}" oncomplete="reloadWindow()">
                                                 <p:confirm header="Confirmation" message="Confirm Archive?" icon="ui-icon-alert" />
                                             </p:commandButton>
                                             <p:tooltip  for="archiveTimeSheetA" position="bottom" value="Archive TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
@@ -451,10 +451,10 @@
 
 
 
-                                            <p:commandButton id="addNewEntryA" rendered = "#{timesheet.status eq 'IN_PROGRESS' and contractDetailsBean.isEmployee(timesheet.uuid)}" icon="fa fa-fw fa-plus"   action="#{contractDetailsBean.addNewEntry(timesheet.uuid,timesheet.displayString)}"/>
+                                            <p:commandButton id="addNewEntryA" rendered = "#{timesheet.status eq 'IN_PROGRESS' and contractDetailsBean.isEmployee(timesheet.uuid)}" icon="fa fa-fw fa-plus"   actionListener="#{contractDetailsBean.addNewEntry(timesheet.uuid,timesheet.displayString)}"/>
                                             <p:tooltip for="addNewEntryA" position="bottom" value="Add TimeSheet entry" showEffect="clip" hideEffect="explode"></p:tooltip>
 
-                                            <p:commandButton id="viewTimeSheetA"  icon="fa fa-fw fa-television" action="#{contractDetailsBean.onRowView(timesheet.uuid,timesheet.displayString)}"/>
+                                            <p:commandButton id="viewTimeSheetA"  icon="fa fa-fw fa-television" actionListener="#{contractDetailsBean.onRowView(timesheet.uuid,timesheet.displayString)}"/>
                                             <p:tooltip for="viewTimeSheetA" position="bottom" value="View TimeSheet Entries" showEffect="clip" hideEffect="explode"></p:tooltip>
                                         </b:dataTableColumn>
                                     </b:dataTable>
@@ -485,7 +485,7 @@
                                         <b:dataTableColumn label="Action " style="width:50px" >
                                             <!--BEGIN FOR EMPLOYYEEEE-->
                                             <!--If the timesheet in progress then render submit for employee-->
-                                            <p:commandButton id="submitTimeSheetEmployeeAll" update ="@form" rendered = "#{timesheet.status eq 'IN_PROGRESS' and contractDetailsBean.isEmployee(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane" action="#{contractDetailsBean.onSignByEmployeeRow(timesheet.uuid)}" oncomplete="reloadWindow()">                           
+                                            <p:commandButton id="submitTimeSheetEmployeeAll" update ="@form" rendered = "#{timesheet.status eq 'IN_PROGRESS' and contractDetailsBean.isEmployee(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane" actionListener="#{contractDetailsBean.onSignByEmployeeRow(timesheet.uuid)}" oncomplete="reloadWindow()">                           
                                                 <p:confirm header="Confirmation" message="Confirm Sign?" icon="ui-icon-alert" />
                                             </p:commandButton>
                                             <p:tooltip for="submitTimeSheetEmployeeAll" position="bottom" value="Sign TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
@@ -494,12 +494,12 @@
 
                                             <!--BEGIN FOR SUPERVISOR-->
                                             <!--if the timesheet is in signed by employee then render submit button for supervisor only.-->
-                                            <p:commandButton id="submitTimeSheetSupervisorAll" update ="@form" rendered = "#{timesheet.status eq 'SIGNED_BY_EMPLOYEE' and contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane"  action="#{contractDetailsBean.onSignBySupervisorRow(timesheet.uuid)}" oncomplete="reloadWindow()">                                                
+                                            <p:commandButton id="submitTimeSheetSupervisorAll" update ="@form" rendered = "#{timesheet.status eq 'SIGNED_BY_EMPLOYEE' and contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane"  actionListener="#{contractDetailsBean.onSignBySupervisorRow(timesheet.uuid)}" oncomplete="reloadWindow()">                                                
                                                 <p:confirm header="Confirmation" message="Confirm Sign?" icon="ui-icon-alert" />
                                             </p:commandButton>
                                             <p:tooltip for="submitTimeSheetSupervisorAll" position="bottom" value="Sign TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
                                             <!--REVOKE SIGNATURE-->
-                                            <p:commandButton id="revokeTimeSheetSupervisorAll" update ="@form" rendered = "#{timesheet.status eq 'SIGNED_BY_EMPLOYEE' and contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-thumbs-down" action="#{contractDetailsBean.onRevokeSignatureBySupervisor(timesheet.uuid)}" oncomplete="reloadWindow()">                                               
+                                            <p:commandButton id="revokeTimeSheetSupervisorAll" update ="@form" rendered = "#{timesheet.status eq 'SIGNED_BY_EMPLOYEE' and contractDetailsBean.isSupervisor(timesheet.uuid)}" icon="fa fa-fw fa-thumbs-down" actionListener="#{contractDetailsBean.onRevokeSignatureBySupervisor(timesheet.uuid)}" oncomplete="reloadWindow()">                                               
                                                 <p:confirm header="Revoke" message="Confirm Revoke Signature?" icon="ui-icon-alert" />
                                             </p:commandButton>
                                             <p:tooltip for="revokeTimeSheetSupervisorAll" position="bottom" value="Revoke Signature" showEffect="clip" hideEffect="explode"></p:tooltip>                                         
@@ -508,10 +508,10 @@
 
 
                                             <!--PRINT AND ARCHIVE OPTION AVAILABLE IF LOGGED IN USER IS STAFF AND SECRETARY-->
-                                            <p:commandButton id="printTimeSheetAll"  rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid)}" icon="fa fa-fw fa-print"   action="#{contractDetailsBean.printTimeSheet(timesheet.uuid)}"/>
+                                            <p:commandButton id="printTimeSheetAll"  rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid)}" icon="fa fa-fw fa-print"   actionListener="#{contractDetailsBean.printTimeSheet(timesheet.uuid)}"/>
                                             <p:tooltip for="printTimeSheetAll" position="bottom" value="Print TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
 
-                                             <p:commandButton id="archiveTimeSheetAll" rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid) and not (timesheet.status eq 'ARCHIVED')}" icon="fa fa-fw fa-archive"   action="#{contractDetailsBean.archiveTimeSheet(timesheet.uuid)}" oncomplete="reloadWindow()">
+                                             <p:commandButton id="archiveTimeSheetAll" rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid) and not (timesheet.status eq 'ARCHIVED')}" icon="fa fa-fw fa-archive"   actionListener="#{contractDetailsBean.archiveTimeSheet(timesheet.uuid)}" oncomplete="reloadWindow()">
                                                 <p:confirm header="Confirmation" message="Confirm Archive?" icon="ui-icon-alert" />
                                             </p:commandButton>
                                             <p:tooltip  for="archiveTimeSheetAll" position="bottom" value="Archive TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
@@ -519,10 +519,10 @@
 
 
 
-                                            <p:commandButton id="addNewEntryAll" rendered = "#{timesheet.status eq 'IN_PROGRESS' and contractDetailsBean.isEmployee(timesheet.uuid)}" icon="fa fa-fw fa-plus"   action="#{contractDetailsBean.addNewEntry(timesheet.uuid,timesheet.displayString)}"/>
+                                            <p:commandButton id="addNewEntryAll" rendered = "#{timesheet.status eq 'IN_PROGRESS' and contractDetailsBean.isEmployee(timesheet.uuid)}" icon="fa fa-fw fa-plus"   actionListener="#{contractDetailsBean.addNewEntry(timesheet.uuid,timesheet.displayString)}"/>
                                             <p:tooltip for="addNewEntryAll" position="bottom" value="Add TimeSheet entry" showEffect="clip" hideEffect="explode"></p:tooltip>
 
-                                            <p:commandButton id="viewTimeSheetAll"  icon="fa fa-fw fa-television" action="#{contractDetailsBean.onRowView(timesheet.uuid,timesheet.displayString)}"/>
+                                            <p:commandButton id="viewTimeSheetAll"  icon="fa fa-fw fa-television" actionListener="#{contractDetailsBean.onRowView(timesheet.uuid,timesheet.displayString)}"/>
                                             <p:tooltip for="viewTimeSheetAll" position="bottom" value="View TimeSheet Entries" showEffect="clip" hideEffect="explode"></p:tooltip>
                                         </b:dataTableColumn>
                                     </b:dataTable>
