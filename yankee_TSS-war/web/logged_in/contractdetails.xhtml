@@ -34,8 +34,6 @@
         </ui:define>
         <ui:define name="main-content">
             <h:form id="contractDetails">
-
-                <b:row>
                     <p:outputPanel styleClass="box box-default">
                         <p:outputPanel styleClass="box-header text-center">
                             <h:outputLabel id="currentContract" value="#{msg.contractFor} : #{contractDetailsBean.currentContractPerson.firstName} #{editContractBean.currentContractPerson.lastName} (#{editContractBean.currentContractPerson.emailAddress})"/>
@@ -109,7 +107,7 @@
                             </b:column>
                         </p:outputPanel>
 
-                    </p:outputPanel>
+                    
 
 
                     <!--BEGINSSSS TAV VIEWWWWWWWWWWWW FOR TIMESHEEEET BEGINSSSSS-->                   
@@ -118,7 +116,7 @@
 
                         <!-- BEGINS  For Current-->
                         <!--Pre and cur exchange bhayecha id ma-->
-                        <b:tab title="Current">  
+                        <b:tab title="Current" id="current">  
                             <p:outputPanel styleClass="box"> 
                                 <p:outputPanel rendered = "#{empty contractDetailsBean.currentTimeSheet}" styleClass="box-body text-center">
                                     <p> Either Contract has not started yet OR timesheets are not available for today's date!!</p>
@@ -135,7 +133,7 @@
                                         <b:dataTableColumn label="Action " style="width:50px" >
                                             <!--BEGIN FOR EMPLOYYEEEE-->
                                             <!--If the timesheet in progress then render submit for employee-->
-                                            <p:commandButton update ="@form" rendered = "#{timesheet.status eq 'IN_PROGRESS' and contractDetailsBean.isEmployee(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane" id="submitTimeSheetEmployeePre" actionListener="#{contractDetailsBean.onSignByEmployeeRow(timesheet.uuid)}" oncomplete="reloadWindow()">                           
+                                            <p:commandButton update ="contractDetails" rendered = "#{timesheet.status eq 'IN_PROGRESS' and contractDetailsBean.isEmployee(timesheet.uuid)}" icon="fa fa-fw fa-paper-plane" id="submitTimeSheetEmployeePre" actionListener="#{contractDetailsBean.onSignByEmployeeRow(timesheet.uuid)}">                           
                                                 <p:confirm header="Confirmation" message="Confirm Sign?" icon="ui-icon-alert" />
                                             </p:commandButton>
                                             <p:tooltip for="submitTimeSheetEmployeePre" position="bottom" value="Sign TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
@@ -369,7 +367,7 @@
                                             <p:commandButton id="printTimeSheetSS"  rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid)}" icon="fa fa-fw fa-print"   actionListener="#{contractDetailsBean.printTimeSheet(timesheet.uuid)}"/>
                                             <p:tooltip for="printTimeSheetSS" position="bottom" value="Print TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
 
-                                            <p:commandButton id="archiveTimeSheetSS" rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid) and not (timesheet.status eq 'ARCHIVED')}" icon="fa fa-fw fa-archive"   action="#{contractDetailsBean.archiveTimeSheet(timesheet.uuid)}" oncomplete="reloadWindow()">
+                                            <p:commandButton id="archiveTimeSheetSS" rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid) and not (timesheet.status eq 'ARCHIVED')}" icon="fa fa-fw fa-archive"   actionListener="#{contractDetailsBean.archiveTimeSheet(timesheet.uuid)}" oncomplete="reloadWindow()">
                                                 <p:confirm header="Confirmation" message="Confirm Archive?" icon="ui-icon-alert" />
                                             </p:commandButton>
                                             <p:tooltip  for="archiveTimeSheetSS" position="bottom" value="Archive TimeSheet" showEffect="clip" hideEffect="explode"></p:tooltip>
@@ -547,8 +545,7 @@
                     <!-- ENDS  For Global Confirmation dialog-->
 
                     <!-- ENDS  TimeSheets Details for this contract.--> 
-
-                </b:row>
+</p:outputPanel>
             </h:form>
 
         </ui:define>
