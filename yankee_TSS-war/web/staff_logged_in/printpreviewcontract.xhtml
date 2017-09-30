@@ -11,12 +11,12 @@
         <ui:define name="breadcrumb">
             <li>
                 <h:link outcome="managecontracts">
-                    Manage Contracts
+                    #{msg.manageContracts}
                 </h:link>
             </li>
             <li>
                 <h:link disabled="true">
-                    Print Contract
+                    #{msg.printContract}
                 </h:link>
             </li>
         </ui:define>
@@ -94,14 +94,14 @@
                             <br/>                         
                             ____________________________ ______________
                             <br/>
-                            Supervisor SIGN/DATE
+                            #{msg.supervisor} SIGN/DATE
                             <br/>
                             <br/>
                             <br/>
                             <br/> 
                             ____________________________ ______________
                             <br/>
-                            Employee SIGN/DATE
+                            #{msg.employee} SIGN/DATE
                         </p:outputPanel>
 
                         <p:outputPanel styleClass="box-footer">

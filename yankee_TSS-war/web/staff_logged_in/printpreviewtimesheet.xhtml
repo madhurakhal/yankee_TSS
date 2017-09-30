@@ -28,20 +28,20 @@ and open the template in the editor.
             </li>
             <li>
                 <h:link rendered="#{timeSheetEntryBean.loggedinUser.userRoleRealm eq 'STAFF'}" outcome="managecontracts">
-                    Manage Contracts
+                    #{msg.manageContracts}
                 </h:link>
                 <h:link rendered="#{timeSheetEntryBean.loggedinUser.userRoleRealm eq null}" outcome="employeecontracts">
-                    Employee Contracts
+                    #{msg.employeeContracts}
                 </h:link>
             </li>
             <li>
                 <h:link outcome = "/logged_in/contractdetails.xhtml?id=#{timeSheetEntryBean.contractUUID}">
-                    View Contract Details
+                    #{msg.viewContractDetails}
                 </h:link>
             </li>
             <li>
                 <h:link disabled = "true">
-                    View Entries
+                    #{msg.viewEntries}
                 </h:link>
             </li>
         </ui:define>
@@ -57,7 +57,7 @@ and open the template in the editor.
                             <b:column>
                                 <p:outputPanel styleClass="col-xs-12 col-sm-7">
                                     <b:formGroup>
-                                        <h:outputLabel value="Supervisor" styleClass="col-xs-12 col-sm-5 control-label"/>
+                                        <h:outputLabel value="#{msg.supervisor}" styleClass="col-xs-12 col-sm-5 control-label"/>
                                         <b:column col-sm="6" col-xs="12">
                                             <h:outputLabel value="#{printpreviewtimesheetBean.supervisorForContract.firstName} #{printpreviewtimesheetBean.supervisorForContract.lastName}"/>
                                         </b:column>
