@@ -82,7 +82,7 @@ public class PrintpreviewtimesheetBean implements Serializable {
     }
 
     public Person getEmployeeForContract() {
-        if (supervisorForContract == null) {
+        if (employeeForContract == null) {
             employeeForContract = employeeBusinessLogic.getEmployeeByContract(contractUUID).getPerson();
         }
         return employeeForContract;
