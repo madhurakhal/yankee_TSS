@@ -47,47 +47,71 @@
                     </p:outputPanel> 
 
                     <p:outputPanel styleClass="box-body top-border edit-contract">
-                        <p:outputPanel styleClass="col-xs-12 col-sm-7">
-                            <b:formGroup>
-                                <h:outputLabel value="Total Number of Contracts" styleClass="col-xs-12 col-sm-5 control-label"/>
-                                <b:column col-sm="6" col-xs="12">
-                                    <h:outputLabel value="#{employeestatisticsBean.totalNumberOfContracts}"/>
-                                </b:column>
-                            </b:formGroup> 
-                            <b:formGroup>
-                                <h:outputLabel value="Total Hours Due Over All Contracts" styleClass="col-xs-12 col-sm-5 control-label" />
-                                <b:column col-sm="6" col-xs="12">
-                                    <h:outputLabel value="#{employeestatisticsBean.totalHoursDueOverAllContracts}"/>
-                                </b:column>
-                            </b:formGroup>
-                            <b:formGroup>
-                                <h:outputLabel value="Total Unsigned Timesheets As of Today" styleClass="col-xs-12 col-sm-5 control-label" />
-                                <b:column col-sm="6" col-xs="12">
-                                    <h:outputLabel value="#{employeestatisticsBean.totalUnsignedTimesheetsAsOfToday}"/>
-                                </b:column>
-                            </b:formGroup>
-                            <b:formGroup>
-                                <h:outputLabel value="Total Number of Timesheets Over All Contracts" styleClass="col-xs-12 col-sm-5 control-label" />
-                                <b:column col-sm="6" col-xs="12">
-                                    <h:outputLabel value="#{employeestatisticsBean.totalTimesheets}"/>
-                                </b:column>
-                            </b:formGroup>
-                            <b:formGroup>
-                                <h:outputLabel value="Total Hours Logged for all timesheets over All Contracts" styleClass="col-xs-12 col-sm-5 control-label" />
-                                <b:column col-sm="6" col-xs="12">
-                                    <h:outputLabel value="#{employeestatisticsBean.totalHoursWorkedOverall}"/>
-                                </b:column>
-                            </b:formGroup>
-                            <b:formGroup>
-                                 <b:column col-sm="8" col-xs="15">
-                                     <p:chart type="pie" model="#{employeestatisticsBean.contractsPie}" style="width:400px;height:300px" />
-                                </b:column>
-                            </b:formGroup>
-                            <b:formGroup>
-                                <b:column col-sm="8" col-xs="15">
-                                    <p:chart type="pie" model="#{employeestatisticsBean.timesheetsPie}" style="width:400px;height:300px" />
-                                </b:column>
-                            </b:formGroup>
+                        <p:outputPanel styleClass="col-xs-12">
+                            <b:row>
+                                <p:outputPanel styleClass="col-xs-11">
+                                    <p:outputPanel styleClass="col-xs-12 col-sm-6">
+                                        <b:formGroup>
+                                            <h:outputLabel value="Total Number of Contracts" styleClass="col-xs-10 control-label"/>
+                                            <b:column col-xs="2">
+                                                <h:outputLabel value="#{employeestatisticsBean.totalNumberOfContracts}"/>
+                                            </b:column>
+                                        </b:formGroup> 
+                                        <b:formGroup>
+                                            <h:outputLabel value="Total Hours Due Over All Contracts" styleClass="col-xs-10 control-label" />
+                                            <b:column col-xs="2">
+                                                <h:outputLabel value="#{employeestatisticsBean.totalHoursDueOverAllContracts}"/>
+                                            </b:column>
+                                        </b:formGroup>
+                                        <b:formGroup>
+                                            <h:outputLabel value="Total Unsigned Timesheets As of Today" styleClass="col-xs-10 control-label" />
+                                            <b:column col-xs="2">
+                                                <h:outputLabel value="#{employeestatisticsBean.totalUnsignedTimesheetsAsOfToday}"/>
+                                            </b:column>
+                                        </b:formGroup>
+                                    </p:outputPanel>
+
+                                    <p:outputPanel styleClass="col-xs-12 col-sm-6">
+                                        <b:formGroup>
+                                            <h:outputLabel value="Total Number of Timesheets Over All Contracts" styleClass="col-xs-10 control-label" />
+                                            <b:column col-xs="2">
+                                                <h:outputLabel value="#{employeestatisticsBean.totalTimesheets}"/>
+                                            </b:column>
+                                        </b:formGroup>
+                                        <b:formGroup>
+                                            <h:outputLabel value="Total Hours Logged for all timesheets over All Contracts" styleClass="col-xs-10 control-label" />
+                                            <b:column col-xs="2">
+                                                <h:outputLabel value="#{employeestatisticsBean.totalHoursWorkedOverall}"/>
+                                            </b:column>
+                                        </b:formGroup>
+                                    </p:outputPanel>
+                                </p:outputPanel>
+
+                            </b:row>
+
+                            <hr/>
+
+                            <b:row>
+                                <p:outputPanel styleClass="col-xs-12 col-sm-6">
+                                    <b:formGroup>
+                                        <b:column col-sm="8" col-xs="15">
+                                            <p:chart type="pie" model="#{employeestatisticsBean.contractsPie}" style="width:400px;height:300px" />
+                                        </b:column>
+                                    </b:formGroup>
+                                </p:outputPanel>
+
+                                <p:outputPanel styleClass="col-xs-12 col-sm-6">
+                                    <b:formGroup>
+                                        <b:column col-sm="8" col-xs="15">
+                                            <p:chart type="pie" model="#{employeestatisticsBean.timesheetsPie}" style="width:400px;height:300px" />
+                                        </b:column>
+                                    </b:formGroup>
+                                </p:outputPanel>
+                            </b:row>
+
+
+
+
                         </p:outputPanel>
                     </p:outputPanel>
                 </p:outputPanel>
