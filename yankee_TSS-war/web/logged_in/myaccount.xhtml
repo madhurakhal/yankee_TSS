@@ -11,12 +11,12 @@
         <ui:define name="breadcrumb">
             <li>
                 <h:link outcome="dashboard">
-                    <i class="fa fa-dashboard"></i>Home
+                    <i class="fa fa-dashboard"></i>#{msg.home}
                 </h:link>
             </li>
             <li>
                 <h:link disabled="true">
-                    My Info
+                    #{msg.myInfo}
                 </h:link>
             </li>
         </ui:define>
@@ -60,14 +60,14 @@
                                     </b:formGroup>
 
                                     <b:formGroup rendered = "#{!empty accountBean.person.dateOfBirth}">
-                                        <h:outputLabel value="Date Of Birth" styleClass="col-xs-12 col-sm-3 control-label"></h:outputLabel>
+                                        <h:outputLabel value="#{msg.dateOfBirth}" styleClass="col-xs-12 col-sm-3 control-label"></h:outputLabel>
                                         <b:column col-xs="12" col-sm="6">
                                             <b:inputText disabled = "true" value="#{accountBean.person.dateOfBirth.dayOfMonth} #{accountBean.person.dateOfBirth.month} #{accountBean.person.dateOfBirth.year} (#{accountBean.person.dateOfBirth.dayOfWeek})" styleClass="form-control"/>
                                         </b:column>                                        
                                     </b:formGroup>
 
                                     <b:formGroup rendered = "#{empty accountBean.person.dateOfBirth}">
-                                        <h:outputLabel value="Date Of Birth" styleClass="col-xs-12 col-sm-3 control-label"></h:outputLabel>
+                                        <h:outputLabel value="#{msg.dateOfBirth}" styleClass="col-xs-12 col-sm-3 control-label"></h:outputLabel>
                                         <b:column col-xs="12" col-sm="6">
                                             <p:outputPanel styleClass="input-group">
                                                 <div class="input-group-addon">
@@ -79,7 +79,7 @@
                                     </b:formGroup>
 
                                     <b:formGroup>
-                                        <h:outputLabel value="Preferred Language" styleClass="col-xs-12 col-sm-3 control-label"></h:outputLabel>
+                                        <h:outputLabel value="#{msg.preferredLanguage}" styleClass="col-xs-12 col-sm-3 control-label"></h:outputLabel>
                                         <b:column col-sm="6" col-xs="12">
                                             <b:selectOneMenu id="preferredLanguage" value="#{accountBean.person.preferredLanguage}" immediate="true">
                                                 <f:selectItems  value="#{preferredLanguageENUMBean.preferredLanguageENUM}"/>
@@ -87,7 +87,7 @@
                                         </b:column>                                       
                                     </b:formGroup>
                                     <b:formGroup>
-                                        <h:outputLabel value="Upload Photo" styleClass="col-xs-12 col-sm-3 control-label"></h:outputLabel>
+                                        <h:outputLabel value="#{msg.uploadPhoto}" styleClass="col-xs-12 col-sm-3 control-label"></h:outputLabel>
                                         <b:column col-sm="6" col-xs="12">
                                                                                 <p:fileUpload fileUploadListener="#{accountBean.handleFileUpload}" mode="advanced" dragDropSupport="true"
                                                           update="msg" sizeLimit="1000000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
@@ -102,7 +102,7 @@
                             </p:outputPanel>
 
                             <p:outputPanel styleClass="box-footer">
-                                <b:commandButton styleClass="btn btn-primary pull-right btn-flat" value="Update" action="dashboard?faces-redirect=true" actionListener="#{accountBean.update}"/>
+                                <b:commandButton styleClass="btn btn-primary pull-right btn-flat" value="#{msg.update}" action="dashboard?faces-redirect=true" actionListener="#{accountBean.update}"/>
                             </p:outputPanel>
                         </p:outputPanel>
                     </b:column>
