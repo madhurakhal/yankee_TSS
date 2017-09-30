@@ -17,8 +17,8 @@ and open the template in the editor.
         <ui:param name="pageTitle" value="View Timesheet Entries"/>
         <ui:define name="breadcrumb">
 
-            <li>
-                <h:link outcome="index">
+                        <li>
+                <h:link outcome="dashboard">
                     <i class="fa fa-dashboard"></i>#{msg.home}
                 </h:link>
             </li>
@@ -26,17 +26,23 @@ and open the template in the editor.
                 <h:link outcome="dashboard">
                     #{msg.dashBoard}
                 </h:link>
-            </li>
-            <li>
+            </li>  
+             <li>
                 <h:link outcome="managecontracts">
                     #{msg.manageContracts}
                 </h:link>
             </li>
             <li>
-                <h:link disabled="true">
-                    #{msg.printTimeSheet}
+                <h:link outcome = "/logged_in/contractdetails.xhtml?id=#{printpreviewtimesheetBean.contractUUID}">
+                    #{msg.viewContractDetails}
                 </h:link>
             </li>
+            <li>
+                <h:link disabled = "true">
+                    #{msg.printTimeSheet}
+                </h:link>
+            </li>            
+            
         </ui:define>
         <ui:define name="main-content">
             <h:form id="timeSheetEntryList" >

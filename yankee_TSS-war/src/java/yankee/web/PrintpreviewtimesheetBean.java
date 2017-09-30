@@ -1,14 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yankee.web;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Named;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -18,12 +11,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import org.primefaces.context.RequestContext;
-import yankee.logic.AssistantBusinessLogic;
 import yankee.logic.ContractBusinessLogic;
 import yankee.logic.EmployeeBusinessLogic;
-import yankee.logic.PersonBusinessLogic;
-import yankee.logic.SecretaryBusinessLogic;
 import yankee.logic.SupervisorBusinessLogic;
 import yankee.logic.TimeSheetBusinessLogic;
 import yankee.logic.to.Contract;
@@ -39,9 +28,6 @@ import yankee.utilities.UTILNumericSupport;
 @ViewScoped
 public class PrintpreviewtimesheetBean implements Serializable {
 
-    /**
-     * Creates a new instance of TimeSheetEntryBean
-     */
     @EJB
     private TimeSheetBusinessLogic timeSheetService;
     
