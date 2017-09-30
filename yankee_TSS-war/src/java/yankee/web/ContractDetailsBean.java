@@ -76,7 +76,7 @@ public class ContractDetailsBean {
     private List<Person> assistantsForContract = new ArrayList<>();
     private List<Person> persons = new ArrayList<>();
 
-    // Contract Entity?
+    
     public boolean isSupervisor(String timeSheetUUID) {
         ContractEntity ce = timeSheetBusinessLogic.getContractByTimesheetUUID(timeSheetUUID);
         return ce.getSupervisor().getPerson().getUuid().equals(loggedinUser.getUuid());
@@ -311,10 +311,7 @@ public class ContractDetailsBean {
         List<TimeSheetEntry> lse = timeSheetBusinessLogic.getEntriesForTimeSheet(timeSheetUUID);
         return UTILNumericSupport.round(lse.stream().mapToDouble(o -> o.getHours()).sum(),2);
     }
-    ////////////////////////////////////
-    // Ends For tabs in contract details
-    ////////////////////////////////////
-
+    
     public String getUuid() {
         return uuid;
     }
@@ -343,8 +340,6 @@ public class ContractDetailsBean {
         return timesheets;
     }
 
-    
-    /* Following method called when action performed. Ajax calls */
     
     public void onSignByEmployeeRow(String timeSheet_uuid) {
         timeSheetBusinessLogic.submitTimeSheet(timeSheet_uuid, Boolean.TRUE);        

@@ -1,18 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yankee.logic.to;
 
 
 import java.time.LocalDate;
 import java.util.Date;
 
-/**
- *
- * @author Shriharsh Ambhore (ashriharsh@uni-koblenz.de)
- */
+
 public class TimeSheetEntry extends Named{
     
     private String description;
@@ -20,7 +12,7 @@ public class TimeSheetEntry extends Named{
     private Long timeSheetId;
     private String dateString;
 
-    private Double hours;  // To be calculated by ourself. 
+    private Double hours; 
     private Date startDateTime;    
     private Date endDateTime;  
     
@@ -104,8 +96,4 @@ public class TimeSheetEntry extends Named{
     public void setTimeSheetId(Long timeSheetId) {
         this.timeSheetId = timeSheetId;
     }
-    
-    
-    
-    
 }

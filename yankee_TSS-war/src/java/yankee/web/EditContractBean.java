@@ -37,14 +37,7 @@ import yankee.logic.to.Contract;
 import yankee.logic.to.Employee;
 import yankee.logic.to.Supervisor;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-/**
- * @author Dr. Volker Riediger <riediger@uni-koblenz.de>
- */
+
 @ManagedBean
 @ViewScoped
 @Named
@@ -174,8 +167,6 @@ public class EditContractBean {
     public List<Person> getPersons() {
         if (persons.isEmpty()) {
             persons = personBusinessLogic.getPersonList();
-            // removes the person who is logged in
-            //persons.remove(personBusinessLogic.getPersonByName(loginBean.getUser().getName()));
         }
         return persons;
     }
@@ -308,14 +299,12 @@ public class EditContractBean {
 
     public List<Person> getAvailableAssistantList() {
         if (availableAssistantList.isEmpty()) {
-            for (Person p : persons) {
-                if (p.getUserRoleRealm() != null && !supervisorForContract.getUuid().equals(p.getUuid()) && !currentContractPerson.getUuid().equals(p.getUuid())) {
-                    if (assistantsForContract.contains(p) || secretariesForContract.contains(p)) {
-                    } else {
-                        availableAssistantList.add(p);
-                    }
+            persons.stream().filter((p) -> (p.getUserRoleRealm() != null && !supervisorForContract.getUuid().equals(p.getUuid()) && !currentContractPerson.getUuid().equals(p.getUuid()))).forEachOrdered((p) -> {
+                if (assistantsForContract.contains(p) || secretariesForContract.contains(p)) {
+                } else {
+                    availableAssistantList.add(p);
                 }
-            }
+            });
         }
         return availableAssistantList;
     }
@@ -330,11 +319,10 @@ public class EditContractBean {
             // fetch all contracts for pradip and get supervisor.
             // delete these supervisors from all persons.
             availableSupervisorList.add(supervisorForContract);
-            for (Person p : persons) {
+            persons.forEach((p) -> {
                 boolean hashimAsSupervisor = false;
                 if (p.getUserRoleRealm() != null && !currentContractPerson.getUuid().equals(p.getUuid())) {
                     List<Supervisor> ls = supervisorBusinessLogic.getSupervisorByPerson(p.getUuid());
-
                     for (Supervisor s : ls) {
                         Employee e = employeeBusinessLogic.getEmployeeByContract(s.getContract().getUuid());
                         if (e != null) {
@@ -345,17 +333,15 @@ public class EditContractBean {
                                 System.out.println("SUPERVISOR forssssssssss " + currentContractPerson.getFirstName() + e.getPerson().getFirstName());
                             }
                         }
-                    };
-                    // TODO Also need to check if this person is a supervisor of this current contract person
-                    // CHECKKKK with professor
-
+                    }
+                    ;
                     if (!hashimAsSupervisor) {
                         if (!p.getUuid().equals(loginBean.getUser().getUuid())) {
                             availableSupervisorList.add(p);
                         }
                     }
                 }
-            }
+            });
         }
         return availableSupervisorList;
     }
@@ -364,7 +350,7 @@ public class EditContractBean {
         this.availableSupervisorList = availableSupervisorList;
     }
 
-    // BEGINS DUAL LIST GETTER AND SETTER
+
     public DualListModel<Person> getSecretaryPickupList() {
         return secretaryPickupList;
     }
@@ -384,15 +370,17 @@ public class EditContractBean {
     public void onTransferSecretary(TransferEvent event) {
         System.out.println("Called ontransfer");
         StringBuilder builder = new StringBuilder();
-        for (Object item : event.getItems()) {
+        event.getItems().stream().map((item) -> {
             builder.append(((Person) item).getFirstName()).append("<br />");
+            return item;
+        }).map((item) -> {
             if (event.isAdd()) {
                 assistantPickupList.getSource().remove((Person) item);
             }
-            if (event.isRemove()) {
-                assistantPickupList.getSource().add((Person) item);
-            }
-        }
+            return item;
+        }).filter((item) -> (event.isRemove())).forEachOrdered((item) -> {
+            assistantPickupList.getSource().add((Person) item);
+        });
         FacesMessage msg = new FacesMessage();
         msg.setSeverity(FacesMessage.SEVERITY_INFO);
         msg.setSummary("Items Transferred");
@@ -405,15 +393,17 @@ public class EditContractBean {
     public void onTransferAssistant(TransferEvent event) {
         System.out.println("Called ontransfer");
         StringBuilder builder = new StringBuilder();
-        for (Object item : event.getItems()) {
+        event.getItems().stream().map((item) -> {
             builder.append(((Person) item).getFirstName()).append("<br />");
+            return item;
+        }).map((item) -> {
             if (event.isAdd()) {
                 secretaryPickupList.getSource().remove((Person) item);
             }
-            if (event.isRemove()) {
-                secretaryPickupList.getSource().add((Person) item);
-            }
-        }
+            return item;
+        }).filter((item) -> (event.isRemove())).forEachOrdered((item) -> {
+            secretaryPickupList.getSource().add((Person) item);
+        });
         FacesMessage msg = new FacesMessage();
         msg.setSeverity(FacesMessage.SEVERITY_INFO);
         msg.setSummary("Items Transferred");

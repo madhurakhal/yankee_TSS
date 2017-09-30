@@ -126,10 +126,5 @@ public class Contract extends Named{
 
     public void setVacationDaysPerYear(int vacationDaysPerYear) {
         this.vacationDaysPerYear = vacationDaysPerYear;
-    }
-
-   
-    
-    
-    
+    }  
 }

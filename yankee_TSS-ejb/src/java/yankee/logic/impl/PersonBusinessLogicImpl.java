@@ -1,6 +1,5 @@
 package yankee.logic.impl;
 
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -42,7 +41,7 @@ public class PersonBusinessLogicImpl implements PersonBusinessLogic {
     public List<Person> getPersonList() {
         List<PersonEntity> l = personAccess.getPersonList();
         List<Person> result = new ArrayList<>(l.size());
-        for (PersonEntity pe : l) {
+        l.stream().map((pe) -> {
             Person p = new Person(pe.getUuid(), pe.getName());
             p.setFirstName(pe.getFirstName());
             p.setLastName(pe.getLastName());
@@ -50,16 +49,20 @@ public class PersonBusinessLogicImpl implements PersonBusinessLogic {
             p.setEmailAddress(pe.getEmailAddress());
             p.setUserRoleRealm(pe.getUserRoleRealm());
             p.setPreferredLanguage(pe.getPreferredLanguage());
-
             ArrayList<Role> resultRole = new ArrayList<>(pe.getRoles().size());
-            for (RoleEntity re : pe.getRoles()) {
+            pe.getRoles().stream().map((re) -> {
                 Role r = new Role(re.getUuid(), re.getName());
                 r.setRoleType(re.getRollType());
+                return r;
+            }).forEachOrdered((r) -> {
                 resultRole.add(r);
-            };
+            });
+            ;
             p.setRoles(resultRole);
+            return p;
+        }).forEachOrdered((p) -> {
             result.add(p);
-        }
+        });
         return result;
     }
 
@@ -111,8 +114,6 @@ public class PersonBusinessLogicImpl implements PersonBusinessLogic {
        pe.setPhoto(personphotoupdated.getPhoto());
     }
 
-    // BEGIN : NOT USED CODE CHeck required.
-    // Code below might not have been used anywhere
     @Override
     public void updatePersonDetails(String uuid, RoleTypeEnum roleType) {
         PersonEntity pe = personAccess.getByUuid(uuid);
@@ -120,12 +121,10 @@ public class PersonBusinessLogicImpl implements PersonBusinessLogic {
             case ASSISTANT:
                 AssistantEntity ae = assistantAccess.createEntity("secretary");
                 ae.setPerson(pe);
-                //ae.setRollType(roleType);
                 break;
             case EMPLOYEE:
                 EmployeeEntity se = employeeAccess.createEntity("secretary");
                 se.setPerson(pe);
-                //se.setRollType(roleType);
                 break;
             case SECRETARY:
                 SecretaryEntity se1 = secretaryAccess.createEntity("secretary");
@@ -137,6 +136,4 @@ public class PersonBusinessLogicImpl implements PersonBusinessLogic {
             default: ;
         }
     }
-    // END : NOT USED CODE CHeck required.
-
 }

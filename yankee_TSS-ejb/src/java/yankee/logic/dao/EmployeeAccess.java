@@ -59,8 +59,6 @@ public class EmployeeAccess extends AbstractAccess<EmployeeEntity> {
         }
     }
     
-    // TO DO: roles allowed annotation commented for pradip, change if you need.
-    //@RolesAllowed("AUTHENTICATED")
     public EmployeeEntity getEmployeeByContract(ContractEntity contract) {
        try {
             return em.createNamedQuery("getEmployeeByContract", EmployeeEntity.class)

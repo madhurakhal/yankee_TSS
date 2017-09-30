@@ -1,11 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yankee.logic.dao;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,12 +8,6 @@ import java.time.LocalDate;
 import javax.ejb.Stateless;
 import yankee.entities.TimesheetEntity;
 import yankee.logic.ENUM.TimesheetStatusEnum;
-
-/**
- *
- * @author Shriharsh Ambhore (ashriharsh@uni-koblenz.de)
- */
-
 
 @Stateless
 @LocalBean
@@ -35,7 +23,7 @@ public class TimeSheetAccess extends AbstractAccess<TimesheetEntity>{
         return new TimesheetEntity(true);
     }
     
-    // ADDED For Review Sabin
+ 
     @Override
     public TimesheetEntity createEntity(String name) {
         name = name.trim().toLowerCase();
@@ -47,7 +35,6 @@ public class TimeSheetAccess extends AbstractAccess<TimesheetEntity>{
         }
         return tse;
     }
-    //
 
     @Override
     public long getEntityCount() {
@@ -85,10 +72,9 @@ public class TimeSheetAccess extends AbstractAccess<TimesheetEntity>{
     
     public void deleteTimeSheet(final List<TimesheetEntity>objList)
     {
-        for(TimesheetEntity e:objList)
-        {
+        objList.forEach((e) -> {
             em.remove(e);
-        }        
+        });        
     }
  
        

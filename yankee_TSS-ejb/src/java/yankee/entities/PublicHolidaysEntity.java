@@ -16,7 +16,6 @@ import yankee.logic.ENUM.GermanyStatesEnum;
     @NamedQuery(name = "getPublicHolidaysByStateAndDate", query = "SELECT p FROM PublicHolidaysEntity p WHERE p.stateGermany = :state AND p.holidayDate = :date")        
 })
 
-// TODO: REMOVE relation getter setter as per our requirement. delete set if in collection.
 @Entity
 @Table(name = "PUBLICHOLIDAYS")
 public class PublicHolidaysEntity extends NamedEntity {

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yankee.logic.dao;
 
 import javax.persistence.EntityManager;
@@ -10,10 +5,6 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import yankee.entities.NamedEntity;
 
-/**
- * @author Dr. Volker Riediger <riediger@uni-koblenz.de>
- * @param <E>
- */
 public abstract class AbstractAccess<E extends NamedEntity> {
 
     @PersistenceContext(name = "yankee_TSS-ejbPU")

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yankee.entities;
 
 import java.time.LocalDate;
@@ -24,8 +19,6 @@ import yankee.logic.ENUM.PreferredLanguageENUM;
     @NamedQuery(name = "getPersonList", query = "SELECT p FROM PersonEntity p ORDER BY p.name, p.uuid"),
     @NamedQuery(name = "getPersonByName", query = "SELECT p FROM PersonEntity p WHERE p.name = :name")
 })
-
-// TODO: REMOVE relation getter setter as per our requirement. delete set if in collection.
 @Entity
 @Table(name = "PERSON")
 public class PersonEntity extends NamedEntity {

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yankee.logic.impl;
 
 import java.util.ArrayList;
@@ -22,10 +17,7 @@ import yankee.logic.to.Contract;
 import yankee.logic.to.Person;
 import yankee.logic.to.Supervisor;
 
-/**
- *
- * @author Sabs
- */
+
 @Stateless
 public class SupervisorBusinessLogicImpl implements SupervisorBusinessLogic {
 
@@ -43,27 +35,15 @@ public class SupervisorBusinessLogicImpl implements SupervisorBusinessLogic {
 
     @Override
     public List<Person> getSupervisorList() {
-//        List<PersonEntity> l = personAccess.getPersonList();
-//        List<Person> result = new ArrayList<>();
-//        for (PersonEntity pe : l) {
-//            Person p = new Person(pe.getUuid(), pe.getName());
-//            p.setFirstName(pe.getFirstName());
-//            p.setLastName(pe.getLastName());
-//            p.setDateOfBirth(pe.getDateOfBirth());
-//            result.add(p);
-//        }
         return null;
     }
 
     @Override
     public Supervisor createSupervisor(String name, String personUUID) {
-        // To Think Will I create a lot of Supervisors with different contract ID
-        //SupervisorEntity se = supervisorAccess.getCreateSupervisorByName(name);
         SupervisorEntity se = supervisorAccess.createEntity(name);
         PersonEntity pe = personAccess.getByUuid(personUUID);
         se.setPerson(pe);
-        supervisorAccess.updateEntity(se); // not sure if we have to update
-        // TODOOOOOOOOOOOOOO have to think what to return
+        supervisorAccess.updateEntity(se);
         return new Supervisor(se.getUuid(), se.getName());
     }
 
@@ -71,9 +51,9 @@ public class SupervisorBusinessLogicImpl implements SupervisorBusinessLogic {
     public List<Supervisor> getSupervisorByPerson(String personUUID) {
         List<SupervisorEntity> lse = supervisorAccess.getSupervisorByPerson(personAccess.getByUuid(personUUID));
         
-        // Need to create a SUpervisor list from transfer object
+       
         List<Supervisor> result = new ArrayList<>();
-        for (SupervisorEntity se : lse){
+        lse.stream().map((se) -> {
             Supervisor p = new Supervisor(se.getUuid(), se.getName());
             ContractEntity contract = se.getContract();
             Contract c = new Contract(contract.getUuid(), contract.getName());
@@ -81,8 +61,10 @@ public class SupervisorBusinessLogicImpl implements SupervisorBusinessLogic {
             p.setContract(c);            
             PersonEntity pe = se.getPerson();
             p.setPerson(new Person(pe.getUuid(),pe.getName()));
+            return p;
+        }).forEachOrdered((p) -> {
             result.add(p);
-        }
+        });
         return result;
     }
 
@@ -99,8 +81,6 @@ public class SupervisorBusinessLogicImpl implements SupervisorBusinessLogic {
         p.setEmailAddress(person.getEmailAddress());
         p.setPreferredLanguage(person.getPreferredLanguage());
         p.setUserRoleRealm(person.getUserRoleRealm());
-        //p.setRoles(person.getRoles());
-        // Fill up all other contract info
         s.setPerson(p);
 
         return s;
@@ -108,7 +88,7 @@ public class SupervisorBusinessLogicImpl implements SupervisorBusinessLogic {
 
     @Override
     public List<Contract> getContracts(String personUUID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
     
     

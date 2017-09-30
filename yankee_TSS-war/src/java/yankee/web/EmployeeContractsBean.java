@@ -3,7 +3,6 @@ package yankee.web;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -15,17 +14,11 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import yankee.logic.AssistantBusinessLogic;
 import yankee.logic.ContractBusinessLogic;
 import yankee.logic.ENUM.ContractStatusEnum;
 import yankee.logic.ENUM.TimesheetStatusEnum;
-import yankee.logic.EmployeeBusinessLogic;
-import yankee.logic.SecretaryBusinessLogic;
-import yankee.logic.SupervisorBusinessLogic;
 import yankee.logic.TimeSheetBusinessLogic;
 import yankee.logic.to.Contract;
-import yankee.logic.to.Person;
-import yankee.logic.to.Supervisor;
 import yankee.logic.to.TimeSheet;
 
 @RequestScoped
@@ -125,7 +118,6 @@ public class EmployeeContractsBean {
     public void onRowView() throws IOException {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         String contract_uuid = params.get("contract_uuid");
-        //contractBusinessLogic.updateContractStatistics(contract_uuid);
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect(ec.getRequestContextPath() + "/logged_in/contractdetails.xhtml?id=" + contract_uuid);
     }

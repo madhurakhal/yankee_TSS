@@ -53,9 +53,6 @@ public class PrintpreviewcontractBean {
 
     @PostConstruct
     public void init() {
-        //This contract id will be sent to edit contract as parameter in url from managecontract edit is pressed
-        // This will be used in getting current assistant, supervisor, secretary for this contract id below.
-        System.out.println("called me init only once yes?");
         getContract_id();
         getPersons();
         getCurrentContractPerson();
@@ -98,7 +95,6 @@ public class PrintpreviewcontractBean {
 
     public Person getSupervisorForContract() {
         if (supervisorForContract == null) {
-            System.out.println("Contract IDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD" + contract_id);
             supervisorForContract = supervisorBusinessLogic.getSupervisorByContract(contract_id).getPerson();
         }
         return supervisorForContract;
@@ -129,9 +125,6 @@ public class PrintpreviewcontractBean {
     }
     
     
-    
-    
-// RELATED TO STATISTICSSSSSSSSss For TimeSheet NEEEEED TO TALK TO HARSHIII
     private List<Integer> HoursDuePerTimeSheet;
 
     public List<Integer> getHoursDuePerTimeSheet() {
@@ -141,11 +134,4 @@ public class PrintpreviewcontractBean {
     public void setHoursDuePerTimeSheet(List<Integer> HoursDuePerTimeSheet) {
         this.HoursDuePerTimeSheet = HoursDuePerTimeSheet;
     }
-    
-    
-        
-    
-    
-    
-    
 }

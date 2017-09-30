@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yankee.entities;
 
 import java.time.LocalDate;
@@ -38,8 +33,6 @@ public class TimesheetEntity extends NamedEntity {
     @Enumerated(EnumType.STRING)
     private TimesheetStatusEnum status;
     
-    //@Column
-   // @Convert(converter=LocalDateConverter.class)
     private LocalDate startDate;
     
     private LocalDate endDate;

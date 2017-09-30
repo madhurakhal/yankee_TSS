@@ -19,7 +19,6 @@ import yankee.logic.ENUM.PreferredLanguageENUM;
 @LocalBean
 public class PersonAccess extends AbstractAccess<PersonEntity> {
 
-    // NOTE WE have to deploy DirectoryLookupp ear given by professor in glassfish. Refer dropbox.
     @EJB
     private DirectoryLookup directoryLookup;
 
@@ -76,15 +75,12 @@ public class PersonAccess extends AbstractAccess<PersonEntity> {
         }
     }
 
-    // NEEED TO REVIEW...
+    
     @RolesAllowed("AUTHENTICATED")
     public void storePersonDetails(Person person) {
         System.err.println("storePersonDetails " + person.getUuid());
         PersonEntity pe = getByUuid(person.getUuid());
         pe.setFirstName(person.getFirstName());
         pe.setLastName(person.getLastName());
-        // Again have to find a way to get email and dateofbirth as diretory lookup only gives first and last name
-        //pe.setDateOfBirth(person.getDateOfBirth());
-        //pe.setEmailAddress(null);
     }
 }

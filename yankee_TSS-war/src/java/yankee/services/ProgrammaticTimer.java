@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yankee.services;
 
 import java.util.List;
@@ -17,10 +12,7 @@ import javax.ejb.TimerService;
 import yankee.logic.to.TimeSheet;
 import yankee.web.ReminderBean;
 
-/**
- *
- * @author pradipgiri
- */
+
 @Singleton
 public class ProgrammaticTimer {
 
@@ -50,11 +42,9 @@ public class ProgrammaticTimer {
 
     public void cancelTimer(String timerId) {
         if (timerService.getTimers() != null) {
-            for (Timer timer : timerService.getTimers()) {
-                if (timer.getInfo().equals(timerId)) {
-                    timer.cancel();
-                }
-            }
+            timerService.getTimers().stream().filter((timer) -> (timer.getInfo().equals(timerId))).forEachOrdered((timer) -> {
+                timer.cancel();
+            });
         }
     }
 

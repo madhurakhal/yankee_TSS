@@ -19,15 +19,7 @@ import yankee.logic.to.Supervisor;
 import yankee.logic.to.TimeSheet;
 import yankee.services.Reminder;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-/**
- *
- * @author pradipgiri
- */
+
 @Stateless
 public class ReminderBean {
 
@@ -76,7 +68,6 @@ public class ReminderBean {
 
     public void sendReminderForTimeSheets(List<TimeSheet> timeSheets) {
         for (TimeSheet t : timeSheets) {
-            System.out.println("Status =" + t.getStatus());
             String contractId = t.getContract().getUuid();
             timesheetstatus = t.getStatus();
             employee = null;
@@ -88,18 +79,15 @@ public class ReminderBean {
 
             switch (timesheetstatus) {
                 case IN_PROGRESS:
-                    // send email to employee
                     if (employee != null) {
                         sendReminderToEmployee(employee, t);
                     }
                     break;
                 case SIGNED_BY_EMPLOYEE:
-                    // send email to supervisor and assistant
                     sendReminderToSupervisorAssistant(employee, t);
                     break;
 
                 case SIGNED_BY_SUPERVISOR:
-                    // send eamil to secretaries
                     sendReminderToSecretaries(employee, t);
                     break;
             }

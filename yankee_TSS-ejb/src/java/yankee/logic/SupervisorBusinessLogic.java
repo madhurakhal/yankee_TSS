@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package yankee.logic;
 
 import java.util.List;
@@ -11,23 +7,14 @@ import yankee.logic.to.Contract;
 import yankee.logic.to.Person;
 import yankee.logic.to.Supervisor;
 
-/**
- *
- * @author Sabs
- */
+
 @Remote 
 public interface SupervisorBusinessLogic {
-    /**
-     * Returns a list of all {@link Person}s.
-     *
-     * @return the person list, sorted by name
-     */
+    
     public List<Person> getSupervisorList();
     
     public Supervisor createSupervisor(String name , String personUUID);
     
-    // This will get all supervisor detail.. ie contract id and so on when the Person field in it given
-    // i.e. Supervisor detail where person is personUUID.
     public List<Supervisor> getSupervisorByPerson(String personUUID);
     
     public Supervisor getSupervisorByContract(String contractUUID);

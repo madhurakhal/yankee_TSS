@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yankee.entities;
 
 import java.sql.Time;
@@ -13,11 +8,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-/**
- *
- * TODO: REMOVE relation getter setter as per our requirement. delete set if in
- * collection.
- */
+
 @NamedQueries({
     @NamedQuery(name = "getTimeSheetEntriesForTimeSheet", query = "SELECT p FROM TimesheetEntryEntity p WHERE p.timesheet.uuid = :timeSheetUUID")
 })

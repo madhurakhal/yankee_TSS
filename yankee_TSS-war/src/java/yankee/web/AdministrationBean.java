@@ -47,7 +47,7 @@ public class AdministrationBean {
     }
     
     public GermanyStatesEnum[] getGermanyState() {
-        return germanyState.values();
+        return GermanyStatesEnum.values();
     }
 
     public void setGermanyState(GermanyStatesEnum germanyState) {

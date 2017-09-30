@@ -77,7 +77,6 @@ public class EmployeeBusinessLogicImpl implements EmployeeBusinessLogic {
         p.setFirstName(person.getFirstName());
         p.setLastName(person.getLastName());
         p.setEmailAddress(person.getEmailAddress());
-        // Fill up all other contract info
         e.setPerson(p);
         return e;
     }

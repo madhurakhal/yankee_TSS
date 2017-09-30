@@ -217,16 +217,18 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
         if (secretariesChanged) {
             List<SecretaryEntity> toDeleteSecretaries = secretaryAccess.getSecretariesByContract(ce);
             // For loop to delete
-            for (SecretaryEntity delSecretary : toDeleteSecretaries) {
+            toDeleteSecretaries.forEach((delSecretary) -> {
                 secretaryAccess.deleteEntity(delSecretary);
-            }
+            });
             // Now we create the secretaries given in the list
             if (!secretaries.isEmpty()) {
-                for (Person p : secretaries) {
+                secretaries.stream().map((p) -> {
                     SecretaryEntity se = secretaryAccess.createEntity(p.getName());
                     se.setPerson(personAccess.getByUuid(p.getUuid()));
+                    return se;
+                }).forEachOrdered((se) -> {
                     se.setContract(ce);
-                }
+                });
             }
         }
 
@@ -235,17 +237,19 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
         if (assistantsChanged) {
             // Deleting previous assistants
             List<AssistantEntity> toDeleteAssistants = assistantAccess.getAssistantsByContract(ce);
-            for (AssistantEntity delAssistant : toDeleteAssistants) {
+            toDeleteAssistants.forEach((delAssistant) -> {
                 assistantAccess.deleteEntity(delAssistant);
-            }
+            });
 
             // Now we create the secretaries given in the list
             if (!assistants.isEmpty()) {
-                for (Person p : assistants) {
+                assistants.stream().map((p) -> {
                     AssistantEntity ae = assistantAccess.createEntity(p.getName());
                     ae.setPerson(personAccess.getByUuid(p.getUuid()));
+                    return ae;
+                }).forEachOrdered((ae) -> {
                     ae.setContract(ce);
-                }
+                });
             }
         }
     }
@@ -355,17 +359,17 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
         supervisorAccess.deleteEntity(svePrev);
 
         List<SecretaryEntity> toDeleteSecretaries = secretaryAccess.getSecretariesByContract(ce);
-        for (SecretaryEntity delSecretary : toDeleteSecretaries) {
+        toDeleteSecretaries.forEach((delSecretary) -> {
             secretaryAccess.deleteEntity(delSecretary);
-        }
+        });
 
         EmployeeEntity toDeleteEmployee = employeeAccess.getEmployeeByContract(ce);
         employeeAccess.deleteEntity(toDeleteEmployee);
 
         List<AssistantEntity> toDeleteAssistants = assistantAccess.getAssistantsByContract(ce);
-        for (AssistantEntity delEmployee : toDeleteAssistants) {
+        toDeleteAssistants.forEach((delEmployee) -> {
             assistantAccess.deleteEntity(delEmployee);
-        }
+        });
 
         contractAccess.deleteEntity(contractAccess.getContractEntity(contractUUID));
     }
@@ -379,7 +383,7 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
             return null;
         }
         List<Contract> result = new ArrayList<>();
-        for (ContractEntity ce : lce) {
+        lce.stream().map((ce) -> {
             Contract c = new Contract(ce.getUuid(), ce.getName());
             c.setStartDate(ce.getStartDate());
             c.setEndDate(ce.getEndDate());
@@ -392,7 +396,6 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
             c.setVacationHours(ce.getVacationHours());
             c.setHoursDue(ce.getHoursDue());
             c.setArchiveDuration(ce.getArchiveDuration());
-
             // Set Supervisor
             Supervisor s = new Supervisor(ce.getSupervisor().getUuid(), ce.getSupervisor().getName());
             PersonEntity person = ce.getSupervisor().getPerson();
@@ -405,7 +408,6 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
             pS.setPreferredLanguage(person.getPreferredLanguage());
             s.setPerson(pS);
             c.setSupervisor(s);
-
             // Set Employee
             Employee e = new Employee(ce.getEmployee().getUuid(), ce.getEmployee().getName());
             PersonEntity personforE = ce.getEmployee().getPerson();
@@ -413,9 +415,10 @@ public class ContractBusinessLogicImpl implements ContractBusinessLogic {
             // To fill rest of person
             e.setPerson(pE);
             c.setEmployee(e);
-
+            return c;
+        }).forEachOrdered((c) -> {
             result.add(c);
-        }
+        });
         return result;
     }
 

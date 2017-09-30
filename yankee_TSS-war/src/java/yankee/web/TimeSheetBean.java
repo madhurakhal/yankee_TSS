@@ -1,43 +1,25 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yankee.web;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.bean.ViewScoped;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
-import yankee.entities.ContractEntity;
 import yankee.logic.TimeSheetBusinessLogic;
 import yankee.logic.dao.TimeSheetAccess;
 import yankee.logic.to.Person;
 import yankee.logic.to.TimeSheet;
 import yankee.logic.to.TimeSheetEntry;
 
-/**
- *
- * @author Shriharsh Ambhore (ashriharsh@uni-koblenz.de)
- */
+
 @Named(value = "timeSheetBean")
 @RequestScoped
 public class TimeSheetBean {
 
-    /**
-     * Creates a new instance of TimeSheetBean
-     */
+    
     public TimeSheetBean() {
     }
 

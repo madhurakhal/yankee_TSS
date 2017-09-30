@@ -39,13 +39,10 @@ public class PublicHolidaysBusinessLogicImpl implements PublicHolidaysBusinessLo
         }
         return result;
     }
-// TODO Do i return PublicHolidays????
 
     @Override
     public void createPublicHolidays(String name, GermanyStatesEnum stateName, int day, int month, int year, int dayOfWeek, String localName, String englishName) {
 
-        //Long countDatabaseEntries = publicHolidaysAccess.getEntityCount();
-        ///if (countDatabaseEntries.intValue() != 0) {
         PublicHolidaysEntity phe = publicHolidaysAccess.createEntity(name);
 
         phe.setStateGermany(stateName);
@@ -87,7 +84,6 @@ public class PublicHolidaysBusinessLogicImpl implements PublicHolidaysBusinessLo
         phe.setLocalName(localName);
         phe.setEnglishName(englishName);
     }
-    //}
 
     @Override
     public boolean databaseEmpty() {

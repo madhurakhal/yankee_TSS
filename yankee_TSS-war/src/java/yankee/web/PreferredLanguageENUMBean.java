@@ -11,7 +11,7 @@ public class PreferredLanguageENUMBean {
     private PreferredLanguageENUM preferredLanguageENUM;
 
     public PreferredLanguageENUM[] getPreferredLanguageENUM() {
-        return preferredLanguageENUM.values();
+        return PreferredLanguageENUM.values();
     }
 
     public void setPreferredLanguageENUM(PreferredLanguageENUM preferredLanguageENUM) {

@@ -29,14 +29,7 @@ import yankee.logic.to.TimeSheet;
 import yankee.logic.to.TimeSheetEntry;
 import yankee.utilities.UTILNumericSupport;
 
-/**
- * @author Shriharsh Ambhore (ashriharsh@uni-koblenz.de).
- * @version 1.0
- *
- * Service class containing methods for all TS1 - TS8 requirements of the
- * TimeSheetSystem.
- *
- */
+
 @Stateless
 public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
 
@@ -73,8 +66,6 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
         //2.
         if (ce.getStatus().equals(ContractStatusEnum.STARTED)) {
             if (ce.getFrequency() != null) {
-                // Gets the period between these days. Can access months day and year by just period.days()..
-                //Period period = Period.between(ce.getStartDate(), ce.getEndDate());
                 GermanyStatesEnum statesEnum;
                 try {
                     statesEnum = administrationBusinessLogic.getAdminSetState().getGermanState();
@@ -200,8 +191,6 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
         }
         return null;
     }
-    // ENDS ..... TO REView Code for Create TimeSheet
-
     // Helper method to evaluate days required to get to Friday
     private int _getDaysToFriday(DayOfWeek weekday) {
         switch (weekday) {
@@ -528,24 +517,25 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
         Set<String> setContractUUIDTimeSheetDeleted = new HashSet<>();
         List<TimesheetEntity> listTE = timeSheetAccess.getOldTimeSheetSignedBySupervisor(givenDate);
         // Get all time sheets with less then given date
-        for (TimesheetEntity timesheetEntity : listTE) {
+        listTE.stream().map((timesheetEntity) -> {
             setContractUUIDTimeSheetDeleted.add(timesheetEntity.getContract().getUuid());
+            return timesheetEntity;
+        }).map((timesheetEntity) -> {
             // delete timesheet entry entity
             List<TimesheetEntryEntity> ltee = timeSheetEntryAccess.getTimeSheetEntriesForTimeSheet(timesheetEntity.getUuid());
             ltee.forEach(tee -> {
                 tee.setTimesheet(null);
                 timeSheetEntryAccess.deleteEntity(tee);
             });
-
             // Now delete timesheet
             timesheetEntity.setContract(null);
+            return timesheetEntity;
+        }).forEachOrdered((timesheetEntity) -> {
             timeSheetAccess.deleteEntity(timesheetEntity);
-        }
-        for (String contractUUID : setContractUUIDTimeSheetDeleted) {
-            if (timeSheetAccess.getTimeSheetsForContract(contractUUID).isEmpty()) {
-                contractBusinessLogic.deleteContract(contractUUID);
-            }
-        }
+        });
+        setContractUUIDTimeSheetDeleted.stream().filter((contractUUID) -> (timeSheetAccess.getTimeSheetsForContract(contractUUID).isEmpty())).forEachOrdered((contractUUID) -> {
+            contractBusinessLogic.deleteContract(contractUUID);
+        });
 
     }
 
@@ -602,8 +592,6 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
     public void archiveTimeSheet(String timeSheetUUID) {
         TimesheetEntity te = timeSheetAccess.getByUuid(timeSheetUUID);
         te.setStatus(TimesheetStatusEnum.ARCHIVED);
-        // Also check if the contract is to be archived.
-        // Condition is when all timesheets are archived.
         contractBusinessLogic.calledForContractArchive(timeSheetAccess.getByUuid(timeSheetUUID).getContract().getUuid());
 
     }

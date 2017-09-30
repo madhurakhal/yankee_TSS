@@ -10,7 +10,6 @@ import javax.persistence.NoResultException;
 import yankee.entities.ContractEntity;
 import yankee.entities.EmployeeEntity;
 import yankee.entities.PersonEntity;
-import yankee.entities.SupervisorEntity;
 import yankee.logic.ENUM.ContractStatusEnum;
 
 @Stateless
@@ -61,7 +60,6 @@ public class ContractAccess extends AbstractAccess<ContractEntity> {
     }
     
     @RolesAllowed("AUTHENTICATED")
-    // Person being himself
     public List<ContractEntity> getContractsByPerson(PersonEntity person) {
        try {
             return em.createNamedQuery("getContractByPerson", ContractEntity.class)
@@ -71,15 +69,11 @@ public class ContractAccess extends AbstractAccess<ContractEntity> {
             return null;
         } 
     }
-
-
-    ///////////////////////////////////////////////////////////////////////////
-    // Should be able to DELETE 
+    
     public ContractEntity getContractEntity(String uuid) {
         return em.createNamedQuery("getContractEntityByUuid", ContractEntity.class).setParameter("uuid", uuid).getSingleResult();
     }
 
-    // TO REVIEW???? 
     public ContractEntity findByPrimaryKey(final Long id) {
         return em.find(ContractEntity.class, id);
     }

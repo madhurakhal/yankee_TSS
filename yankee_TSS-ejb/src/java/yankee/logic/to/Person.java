@@ -2,9 +2,6 @@ package yankee.logic.to;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Set;
-import javax.persistence.Lob;
-import yankee.entities.RoleEntity;
 import yankee.logic.ENUM.ContractStatusEnum;
 import yankee.logic.ENUM.PreferredLanguageENUM;
 

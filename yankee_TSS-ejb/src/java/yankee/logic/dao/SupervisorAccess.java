@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yankee.logic.dao;
 
 import java.util.List;
@@ -17,9 +12,7 @@ import yankee.entities.PersonEntity;
 import yankee.entities.SupervisorEntity;
 import yankee.logic.ENUM.RoleTypeEnum;
 
-/**
- * @author Dr. Volker Riediger <riediger@uni-koblenz.de>
- */
+
 @Stateless
 @LocalBean
 public class SupervisorAccess extends AbstractAccess<SupervisorEntity> {
@@ -69,7 +62,6 @@ public class SupervisorAccess extends AbstractAccess<SupervisorEntity> {
     }
     
     @RolesAllowed("AUTHENTICATED")
-    // Person being himself
     public List<SupervisorEntity> getSupervisorByPerson(PersonEntity person) {
        try {
             return em.createNamedQuery("getSupervisorByPerson", SupervisorEntity.class)

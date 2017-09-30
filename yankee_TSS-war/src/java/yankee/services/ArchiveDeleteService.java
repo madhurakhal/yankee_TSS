@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yankee.services;
 
 import java.time.LocalDate;
@@ -12,10 +7,7 @@ import javax.ejb.Singleton;
 import yankee.logic.AdministrationBusinessLogic;
 import yankee.logic.TimeSheetBusinessLogic;
 
-/**
- *
- * @author pradipgiri
- */
+
 @Singleton
 public class ArchiveDeleteService {
 
@@ -26,7 +18,6 @@ public class ArchiveDeleteService {
     private AdministrationBusinessLogic administrationBusinessLogic;
 
     //@Schedule(minute = "*/1", hour = "*", persistent = false)
-    
     @Schedule(dayOfMonth="Last", hour="23", persistent = false)
     public void runDeleteTask() {
         if (administrationBusinessLogic.getAdminSettingsInfo().isReminderServiceOn()) {

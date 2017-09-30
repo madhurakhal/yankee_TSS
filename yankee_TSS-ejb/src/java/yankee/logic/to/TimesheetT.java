@@ -1,21 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yankee.logic.to;
 
 import java.time.LocalDate;
 import java.util.List;
-import yankee.logic.ENUM.ContractStatusEnum;
-import yankee.logic.ENUM.TimesheetFrequencyEnum;
 import yankee.logic.ENUM.TimesheetStatusEnum;
-import yankee.logic.to.Named;
 
-/**
- *
- * @author Shriharsh
- */
 public class TimesheetT extends Named{
     
     private TimesheetStatusEnum status;

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yankee.entities;
 
 import javax.persistence.Entity;
@@ -19,7 +14,6 @@ import javax.persistence.Table;
     @NamedQuery(name = "getAssistantsByPerson", query = "SELECT p FROM AssistantEntity p WHERE p.person = :person")    
 })
 
-// TODO: REMOVE relation getter setter as per our requirement. delete set if in collection.
 @Entity
 @Table(name = "ASSISTANT")
 public class AssistantEntity extends RoleEntity {

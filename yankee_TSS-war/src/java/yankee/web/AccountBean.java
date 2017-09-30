@@ -1,18 +1,14 @@
 package yankee.web;
 
 import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
 import java.io.Serializable;
 import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -63,7 +59,6 @@ public class AccountBean implements Serializable {
     public Person getPerson() {
         if (person == null) {
             person = personBusinessLogic.getPersonByName(logInBean.getUser().getName());
-            //System.out.println("IMAGESSSSSS" + Arrays.toString(person.getPhoto()));
             if (person.getPhoto() != null) {
                 chart = new DefaultStreamedContent(new ByteArrayInputStream(person.getPhoto()));
             }

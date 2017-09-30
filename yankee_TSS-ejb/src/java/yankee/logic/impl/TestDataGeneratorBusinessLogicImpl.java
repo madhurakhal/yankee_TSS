@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yankee.logic.impl;
 
 import java.time.LocalDate;
@@ -25,10 +20,7 @@ import yankee.logic.dao.EmployeeAccess;
 import yankee.logic.dao.PersonAccess;
 import yankee.logic.dao.SupervisorAccess;
 
-/**
- *
- * @author Shriharsh Ambhore (ashriharsh@uni-koblenz.de)
- */
+
 @Stateless
 public class TestDataGeneratorBusinessLogicImpl implements TestDataGeneratorBusinessLogic{
 
@@ -108,9 +100,6 @@ public class TestDataGeneratorBusinessLogicImpl implements TestDataGeneratorBusi
         employee2.setRollType(RoleTypeEnum.EMPLOYEE);
         
         
-        
-        //final EntityManager em=Persistence.createEntityManagerFactory("yankee_TSS-ejbPU").createEntityManager();
-        
         ContractEntity contract=contractAccess.createEntity("JAVA EE Grading support");
         contract.setFrequency(TimesheetFrequencyEnum.WEEKLY);
         final LocalDate startDate=LocalDate.of(2017, Month.JANUARY, 1);
@@ -125,16 +114,7 @@ public class TestDataGeneratorBusinessLogicImpl implements TestDataGeneratorBusi
         
         contract.setSupervisor(se);
         contract.setEmployee(employee);
-       // contract.setEmployee(employeAccess.getByUuid("30b58842-574e-41e6-8418-eda699c5d00d"));
-        
-        //em.persist(contract);
-        //employee.setContract(contract);
-       // se.setContract(contract);
-        
-        
-       // contract.setTimesheets(new HashSet(timesheetService.createTimeSheet(startDate, endDate, TimesheetFrequencyEnum.MONTHLY.toString(), ContractStatusEnum.STARTED.toString())));
-        
-        
+       
         
         ContractEntity contract2=contractAccess.createEntity("Intro to web EE Grading support");
         contract2.setFrequency(TimesheetFrequencyEnum.MONTHLY);
@@ -151,10 +131,5 @@ public class TestDataGeneratorBusinessLogicImpl implements TestDataGeneratorBusi
         
         contract2.setSupervisor(se2);
         contract2.setEmployee(employee2);
-               
-        
     }
-
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
 }

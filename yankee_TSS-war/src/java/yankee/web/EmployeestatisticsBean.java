@@ -2,16 +2,12 @@ package yankee.web;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import org.primefaces.model.chart.PieChartModel;
 import yankee.logic.ContractBusinessLogic;
@@ -23,8 +19,6 @@ import yankee.logic.TimeSheetBusinessLogic;
 import yankee.logic.to.Contract;
 import yankee.logic.to.Person;
 import yankee.logic.to.TimeSheet;
-import yankee.logic.to.TimeSheetEntry;
-import yankee.utilities.UTILNumericSupport;
 
 @ManagedBean
 @ViewScoped
@@ -65,10 +59,9 @@ public class EmployeestatisticsBean implements Serializable {
         //LocalDate currentDate = LocalDate.now();
         LocalDate currentDate = LocalDate.of(2017, 10, 29); // TRIAL TRIAL TRIAL
         totalUnsignedTimesheetsAsOfToday = 0;
-        for(Contract c : contractsAssociatedToEmployee){
-            List<TimeSheet> timesheets = timeSheetBusinessLogic.getAllTimeSheetsForContract(c.getUuid());
-            totalUnsignedTimesheetsAsOfToday = totalUnsignedTimesheetsAsOfToday + timesheets.stream().filter(e -> (e.getStartDate().isBefore(currentDate) && e.getStatus().equals(TimesheetStatusEnum.IN_PROGRESS))).collect(Collectors.toList()).size();              
-        }
+        contractsAssociatedToEmployee.stream().map((c) -> timeSheetBusinessLogic.getAllTimeSheetsForContract(c.getUuid())).forEachOrdered((timesheets) -> {
+            totalUnsignedTimesheetsAsOfToday = totalUnsignedTimesheetsAsOfToday + timesheets.stream().filter(e -> (e.getStartDate().isBefore(currentDate) && e.getStatus().equals(TimesheetStatusEnum.IN_PROGRESS))).collect(Collectors.toList()).size();
+        });
         return totalUnsignedTimesheetsAsOfToday;
     }
     

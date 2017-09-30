@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yankee.web;
 
 import java.io.File;
@@ -29,7 +24,7 @@ public class PublicHolidaysBean {
 
     @EJB
     private PublicHolidaysBusinessLogic publicHolidaysBusinessLogic;
-    
+
     private UploadedFile jsonFile;
     private boolean databaseEmpty;
 
@@ -42,8 +37,6 @@ public class PublicHolidaysBean {
         this.databaseEmpty = databaseEmpty;
     }
 
-   
-
     public UploadedFile getJsonFile() {
         return jsonFile;
     }
@@ -52,7 +45,6 @@ public class PublicHolidaysBean {
         this.jsonFile = jsonFile;
     }
 
-    //The file will be store in your domain1 .. for me payaradomain folder, in your glassfish folder
     public void upload() {
         FacesMessage msg = new FacesMessage("Succesful", jsonFile.getFileName() + " is uploaded.");
         FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -76,11 +68,6 @@ public class PublicHolidaysBean {
             is.close();
         } catch (IOException e) {
         }
-
-//        if(file != null) {
-//            FacesMessage message = new FacesMessage("Succesful", file.getFileName() + " is uploaded.");
-//            FacesContext.getCurrentInstance().addMessage(null, message);
-//        }
     }
 
     public void test() {
@@ -99,7 +86,7 @@ public class PublicHolidaysBean {
                     Long day = (Long) date.get("day");
                     Long month = (Long) date.get("month");
                     Long year = (Long) date.get("year");
-                    Long dayOfWeek = (Long) date.get("dayOfWeek");                    
+                    Long dayOfWeek = (Long) date.get("dayOfWeek");
                     String localName = (String) updated.get("localName");
                     String englishName = (String) updated.get("englishName");
                     publicHolidaysBusinessLogic.createPublicHolidays(state.name(), state, day.intValue(), month.intValue(), year.intValue(), dayOfWeek.intValue(), localName, englishName);

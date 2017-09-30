@@ -20,10 +20,7 @@ import yankee.logic.to.Person;
 import yankee.logic.to.TimeSheetEntry;
 import yankee.utilities.UTILNumericSupport;
 
-/**
- *
- * @author Shriharsh Ambhore (ashriharsh@uni-koblenz.de)
- */
+
 @ManagedBean
 @ViewScoped
 public class PrintpreviewtimesheetBean implements Serializable {
