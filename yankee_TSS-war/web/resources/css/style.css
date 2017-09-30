@@ -201,3 +201,16 @@ button.ui-button, .pagination > li:first-child > a, .pagination > li:first-child
     font-size: 85%;
     box-shadow: inset 0 0 10px rgba(0, 0, 0, .06);
 }
+
+button.ui-confirmdialog-yes {
+    background: none !important;
+    border: none !important;
+    background-color: #00a65a !important;
+    color: white !important;
+}
+button.ui-confirmdialog-no {
+    background: none !important;
+    border: none !important;
+    background-color: #dd4b39 !important ;
+    color: white !important;
+}
