@@ -66,20 +66,17 @@
              <script>
                 var btn = document.querySelector('[id$="acceptTerm"]');
                 var logIn = document.querySelector('[id$="logIn"]');
-                var guestLogIn = document.querySelector('[id$="guestLogin"]');
                 var termsAndCondtion = document.getElementById('terms-and-conditions');
                 
                 function disableButton() {
-                     termsAndCondtion.style.display = "none";
-                     logIn.disabled = true;
-                     guestLogIn.disabled = true;
+                    termsAndCondtion.style.display = "none";
+                    logIn.disabled = true;
                 }
                 btn.addEventListener('change', function(evt) {
                    if(!evt.target.checked) {
                       disableButton();
                    } else {
                        logIn.disabled = false;
-                       guestLogIn.disabled = false;
                        termsAndCondtion.style.display = "block";
                    }
                 });
