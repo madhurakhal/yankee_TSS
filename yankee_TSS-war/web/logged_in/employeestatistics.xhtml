@@ -79,13 +79,11 @@
                                 </b:column>
                             </b:formGroup>
                             <b:formGroup>
-                                <h:outputLabel value="Total Hours Logged for all timesheets over All Contracts" styleClass="col-xs-12 col-sm-5 control-label" />
-                                <b:column col-sm="8" col-xs="15">
-                                    <p:chart type="pie" model="#{employeestatisticsBean.contractPie}" style="width:400px;height:300px" />
+                                 <b:column col-sm="8" col-xs="15">
+                                     <p:chart type="pie" model="#{employeestatisticsBean.contractsPie}" style="width:400px;height:300px" />
                                 </b:column>
                             </b:formGroup>
                             <b:formGroup>
-                                <h:outputLabel value="Total Hours Logged for all timesheets over All Contracts" styleClass="col-xs-12 col-sm-5 control-label" />
                                 <b:column col-sm="8" col-xs="15">
                                     <p:chart type="pie" model="#{employeestatisticsBean.timesheetsPie}" style="width:400px;height:300px" />
                                 </b:column>

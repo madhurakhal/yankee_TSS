@@ -15,6 +15,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import org.primefaces.model.chart.PieChartModel;
 import yankee.logic.ContractBusinessLogic;
+import yankee.logic.ENUM.ContractStatusEnum;
 import yankee.logic.ENUM.TimesheetStatusEnum;
 import yankee.logic.EmployeeBusinessLogic;
 import yankee.logic.SupervisorBusinessLogic;
@@ -94,33 +95,128 @@ public class EmployeestatisticsBean implements Serializable {
     }
     
     
-    // FOR PIE CHART Contracts
+    /////////////////////////////////////
+    
+    // Begins For Pie CHART Contracts //
+    
+    /////////////////////////////////////    
+    private PieChartModel contractsPie;
+    
     private Integer totalPreparedContracts;
-    private Integer totalStartedContracts;
-    private Integer totalArchivedContracts;
-    private Integer totalTerminatedContracts;
-    
-    // For Pie CHART Timesheets
-    private Integer totalSignedTimesheets;
-    private Integer totalInProgressTimesheets;
-    private Integer totalArchivedTimesheets;
-    
-    
-    // Test
-    private PieChartModel pieModel1;
-
-    public PieChartModel getPieModel1() {
-        pieModel1 = new PieChartModel();
-         
-        pieModel1.set("Brand 1", 540);
-        pieModel1.set("Brand 2", 325);
-        pieModel1.set("Brand 3", 702);
-        pieModel1.set("Brand 4", 421);
-         
-        pieModel1.setTitle("Simple Pie");
-        pieModel1.setLegendPosition("w");
-        return pieModel1;
+    public Integer getTotalPreparedContracts() {
+        totalPreparedContracts = contractsAssociatedToEmployee.stream().filter(e -> (e.getStatus().equals(ContractStatusEnum.PREPARED))).collect(Collectors.toList()).size();              
+        return totalPreparedContracts;
     }
+    
+    private Integer totalStartedContracts;
+    public Integer getTotalStartedContracts() {
+        totalStartedContracts = contractsAssociatedToEmployee.stream().filter(e -> (e.getStatus().equals(ContractStatusEnum.STARTED))).collect(Collectors.toList()).size();              
+        return totalStartedContracts;
+    }
+    
+    private Integer totalArchivedContracts;
+    public Integer getTotalArchivedContracts() {
+        totalArchivedContracts = contractsAssociatedToEmployee.stream().filter(e -> (e.getStatus().equals(ContractStatusEnum.ARCHIVED))).collect(Collectors.toList()).size();               
+        return totalArchivedContracts;
+    }
+    
+    private Integer totalTerminatedContracts;
+    public Integer getTotalTerminatedContracts() {
+        totalTerminatedContracts = contractsAssociatedToEmployee.stream().filter(e -> (e.getStatus().equals(ContractStatusEnum.TERMINATED))).collect(Collectors.toList()).size();              
+        return totalTerminatedContracts;
+    }
+    
+    public PieChartModel getContractsPie() {
+        contractsPie = new PieChartModel();
+         
+        contractsPie.set("Total Prepared Contracts", getTotalPreparedContracts());
+        contractsPie.set("Total Started Contracts", getTotalStartedContracts());
+        contractsPie.set("Total Archived Contracts", getTotalArchivedContracts());
+        contractsPie.set("Total Terminated", getTotalTerminatedContracts());
+         
+        contractsPie.setTitle("Overall Contracts Information");
+        contractsPie.setLegendPosition("e");
+        contractsPie.setFill(false);
+        contractsPie.setShowDataLabels(true);
+        contractsPie.setDiameter(150);
+        return contractsPie;
+    }
+    ///////////////////////////////////
+    
+    // Ends For Pie CHART Timesheets //
+    
+    ///////////////////////////////////
+    
+    
+    
+    
+    /////////////////////////////////////
+    
+    // Begins For Pie CHART Timesheets //
+    
+    /////////////////////////////////////
+    private PieChartModel timesheetsPie;
+    
+    private Integer totalSignedBySupervisorTimesheets;
+    public Integer getTotalSignedBySupervisorTimesheets() {
+        totalSignedBySupervisorTimesheets = 0;
+        for(Contract c : contractsAssociatedToEmployee){
+            List<TimeSheet> timesheets = timeSheetBusinessLogic.getAllTimeSheetsForContract(c.getUuid());
+            totalSignedBySupervisorTimesheets = totalSignedBySupervisorTimesheets + timesheets.stream().filter(e -> (e.getStatus().equals(TimesheetStatusEnum.SIGNED_BY_SUPERVISOR))).collect(Collectors.toList()).size();              
+        }
+        return totalSignedBySupervisorTimesheets;
+    }
+    
+    private Integer totalSignedByEmployeeTimesheets;
+    public Integer getTotalSignedByEmployeeTimesheets() {
+        totalSignedByEmployeeTimesheets = 0;
+        for(Contract c : contractsAssociatedToEmployee){
+            List<TimeSheet> timesheets = timeSheetBusinessLogic.getAllTimeSheetsForContract(c.getUuid());
+            totalSignedByEmployeeTimesheets = totalSignedByEmployeeTimesheets + timesheets.stream().filter(e -> (e.getStatus().equals(TimesheetStatusEnum.SIGNED_BY_EMPLOYEE))).collect(Collectors.toList()).size();              
+        }
+        return totalSignedByEmployeeTimesheets;
+    }
+    
+    private Integer totalInProgressTimesheets;
+    public Integer getTotalInProgressTimesheets() {
+        totalInProgressTimesheets = 0;
+        for(Contract c : contractsAssociatedToEmployee){
+            List<TimeSheet> timesheets = timeSheetBusinessLogic.getAllTimeSheetsForContract(c.getUuid());
+            totalInProgressTimesheets = totalInProgressTimesheets + timesheets.stream().filter(e -> (e.getStatus().equals(TimesheetStatusEnum.IN_PROGRESS))).collect(Collectors.toList()).size();              
+        }
+        return totalInProgressTimesheets;
+    }
+    
+    private Integer totalArchivedTimesheets;
+    public Integer getTotalArchivedTimesheets() {
+        totalArchivedTimesheets = 0;
+        for(Contract c : contractsAssociatedToEmployee){
+            List<TimeSheet> timesheets = timeSheetBusinessLogic.getAllTimeSheetsForContract(c.getUuid());
+            totalArchivedTimesheets = totalArchivedTimesheets + timesheets.stream().filter(e -> (e.getStatus().equals(TimesheetStatusEnum.ARCHIVED))).collect(Collectors.toList()).size();              
+        }
+        return totalArchivedTimesheets;
+    }
+
+    public PieChartModel getTimesheetsPie() {
+        timesheetsPie = new PieChartModel();
+         
+        timesheetsPie.set("TotalSignedBySupervisor", getTotalSignedBySupervisorTimesheets());
+        timesheetsPie.set("TotalInProgress", getTotalInProgressTimesheets());
+        timesheetsPie.set("TotalSignedByEmployee", getTotalSignedByEmployeeTimesheets());
+        timesheetsPie.set("TotalArchived", getTotalArchivedTimesheets());
+         
+        timesheetsPie.setTitle("Overall Timesheets Information");
+        timesheetsPie.setLegendPosition("e");
+        timesheetsPie.setFill(false);
+        timesheetsPie.setShowDataLabels(true);
+        timesheetsPie.setDiameter(150);
+        return timesheetsPie;
+    }
+    /////////////////////////////////////
+    
+    // Ends For Pie CHART Timesheets //
+    
+    /////////////////////////////////////
     
     
     
