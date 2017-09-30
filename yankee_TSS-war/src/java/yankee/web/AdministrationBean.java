@@ -1,9 +1,11 @@
 package yankee.web;
 
+import java.io.IOException;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import yankee.logic.AdministrationBusinessLogic;
@@ -64,8 +66,10 @@ public class AdministrationBean {
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
     
-    public void enableGuestLogin(){
+    public void enableGuestLogin() throws IOException{
         administrationBusinessLogic.enableGuestLogin();
+        ExternalContext extContext = FacesContext.getCurrentInstance().getExternalContext();
+        extContext.redirect(extContext.getRequestContextPath() + "/index.xhtml");
     }
     
     public void disableGuestLogin(){

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
@@ -11,13 +12,16 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import yankee.entities.ContractEntity;
 import yankee.logic.AssistantBusinessLogic;
 import yankee.logic.ContractBusinessLogic;
+import yankee.logic.ENUM.ContractStatusEnum;
 import yankee.logic.ENUM.TimesheetStatusEnum;
 import yankee.logic.SecretaryBusinessLogic;
 import yankee.logic.SupervisorBusinessLogic;
 import yankee.logic.TimeSheetBusinessLogic;
 import yankee.logic.to.Person;
+import yankee.logic.to.Secretary;
 import yankee.logic.to.Supervisor;
 import yankee.logic.to.TimeSheet;
 import yankee.logic.to.TimeSheetEntry;
@@ -65,9 +69,28 @@ public class ManageContractsBean {
     private List<Person> personsAssociatedToContractSupervisor = new ArrayList<>();
     private List<Person> personsAssociatedToContractAssistant = new ArrayList<>();
     private List<Person> personsAssociatedToContractSecretary = new ArrayList<>();
+    private List<Person> terminatedContracts = new ArrayList<>();
 
-    public List<Person> getPersonsAssociatedToContractAssistant() {
-        personsAssociatedToContractAssistant = assistantBusinessLogic.getPersonsUnderAssistant(loginBean.getUser().getUuid());
+    public List<Person> getTerminatedContracts() {
+        return terminatedContracts;
+    }
+
+    //@PostConstruct
+    public void init(){
+        List<Person> lpsupr = supervisorBusinessLogic.getPersonsUnderSupervisor(loginBean.getUser().getUuid());
+        terminatedContracts.addAll(lpsupr.stream().filter(p -> (p.getContractStatusForRole().equals(ContractStatusEnum.TERMINATED))).collect(Collectors.toList()));
+        personsAssociatedToContractSupervisor = lpsupr.stream().filter(p -> (!p.getContractStatusForRole().equals(ContractStatusEnum.TERMINATED))).collect(Collectors.toList());
+   
+        List<Person> lpassi = assistantBusinessLogic.getPersonsUnderAssistant(loginBean.getUser().getUuid());
+        personsAssociatedToContractAssistant = lpassi.stream().filter(p -> (!p.getContractStatusForRole().equals(ContractStatusEnum.TERMINATED))).collect(Collectors.toList());
+        terminatedContracts.addAll(lpassi.stream().filter(p -> (p.getContractStatusForRole().equals(ContractStatusEnum.TERMINATED))).collect(Collectors.toList()));
+        
+        List<Person> lpsec = secretaryBusinessLogic.getPersonsUnderSecretary(loginBean.getUser().getUuid());        
+        personsAssociatedToContractSecretary = lpsec.stream().filter(p -> (!p.getContractStatusForRole().equals(ContractStatusEnum.TERMINATED))).collect(Collectors.toList());
+        terminatedContracts.addAll(lpsec.stream().filter(p -> (p.getContractStatusForRole().equals(ContractStatusEnum.TERMINATED))).collect(Collectors.toList()));
+         
+    }
+    public List<Person> getPersonsAssociatedToContractAssistant() {        
         return personsAssociatedToContractAssistant;
     }
 
@@ -75,8 +98,7 @@ public class ManageContractsBean {
         this.personsAssociatedToContractAssistant = personsAssociatedToContractAssistant;
     }
 
-    public List<Person> getPersonsAssociatedToContractSecretary() {
-        personsAssociatedToContractSecretary = secretaryBusinessLogic.getPersonsUnderSecretary(loginBean.getUser().getUuid());        
+    public List<Person> getPersonsAssociatedToContractSecretary() {       
         return personsAssociatedToContractSecretary;
     }
 
@@ -84,14 +106,9 @@ public class ManageContractsBean {
         this.personsAssociatedToContractSecretary = personsAssociatedToContractSecretary;
     }
 
-    // TODO hello world
-//    public List<Contract> getContracts() {
-//        List<Supervisor> sup = supervisorBusinessLogic.getSupervisorByPerson(loginBean.getUser().getUuid());
-//        
-//        return
-//    }
     public List<Person> getPersonsAssociatedToContractSupervisor() {
-        personsAssociatedToContractSupervisor = supervisorBusinessLogic.getPersonsUnderSupervisor(loginBean.getUser().getUuid());
+        // Because the postconstruct was causing problem for page refresh.
+        init();
         return personsAssociatedToContractSupervisor;
     }
 
@@ -151,4 +168,10 @@ public class ManageContractsBean {
     public Person supervisorPersonForContractUUID(String contractUUID){
         return contractBusinessLogic.getContractByUUID(contractUUID).getSupervisor().getPerson();
     }
+    
+//    public boolean isSecretary(String contractUUID) {
+//        List<Secretary> ls = secretaryBusinessLogic.getSecretariesByContract(contractUUID);
+//        // For each secretary if one of the secretary matches the person logged in
+//        return !ls.stream().filter(e -> e.getPerson().getUuid().equals(loggedinUser.getUuid())).collect(Collectors.toList()).isEmpty();
+//    }
 }

@@ -6,8 +6,8 @@
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
- <ui:composition template="/WEB-INF/templates/main-template.xhtml">
-        <ui:param name="pageTitle" value="Sign Up" />
+    <ui:composition template="/WEB-INF/templates/main-template.xhtml">
+        <ui:param name="pageTitle" value="#{msg.logIn}" />
         <ui:define name="main-content">
             <b:column styleClass="content">
                 <b:row>
@@ -17,7 +17,7 @@
                                 <h3 styleClass="box-title">#{msg.signIn}</h3>
                             </b:column>
                             <b:form horizontal="true" pt:action="j_security_check" pt:method="post" pt:name="loginForm" pt:role="form">
-                            <!--<form role="form" method="post" action="j_security_check" name="loginForm">-->
+                                <!--<form role="form" method="post" action="j_security_check" name="loginForm">-->
                                 <p:outputPanel styleClass="box-body">
                                     <b:formGroup>
                                         <h:outputLabel styleClass="col-xs-12 col-sm-2 control-label" for="email">Email</h:outputLabel>
@@ -37,16 +37,25 @@
                                                    autocomplete="off"/>
                                         </b:column>
                                     </b:formGroup>
+                                    
+
                                     <b:formGroup>
                                         <b:column col-sm="10" offset-sm="2">
-                                            <b:selectBooleanCheckbox value="checked" caption="#{msg.rememberMe}"/>
+                                            <b:selectBooleanCheckbox value="checked" caption="#{msg.acceptTermsAndCondition}" required="true" id="acceptTerm"/>
+                                            <div id="terms-and-conditions" style="display: none;">
+                                                <p>*) I hereby declare that Time Sheet will store and use my personal information for official use only.</p>
+                                            </div>    
                                         </b:column>
                                     </b:formGroup>
                                 </p:outputPanel>
-                                <b:column col-xs="12" class="box-footer">
-                                    <b:commandButton value="#{msg.logIn}" styleClass="btn btn-info pull-right" pt:type="submit" action="dashboard??faces-redirect=true"/>
+                                <b:column col-xs="12" class="box-footer">                                    
+                                    <b:commandButton value="#{msg.logIn}" styleClass="btn btn-info pull-right" pt:type="submit" action="dashboard?faces-redirect=true" pt:id="logIn"/>
                                 </b:column>
                             </b:form>
+                            <b:form>
+                                <b:commandButton value="#{msg.logInAsGuest}" styleClass="btn btn-info pull-left guest-login" actionListener="#{administrationBean.enableGuestLogin()}" pt:id="guestLogin"/>
+                            </b:form>
+                            
                             <b:alert severity="danger" rendered="${request.parameterMap.containsKey('j_username')}">
                                 #{msg.userNamePasswordIncorrect}
                             </b:alert>
@@ -54,6 +63,25 @@
                     </b:column>
                 </b:row>  
             </b:column>
+             <script>
+                var btn = document.querySelector('[id$="acceptTerm"]');
+                var logIn = document.querySelector('[id$="logIn"]');
+                var termsAndCondtion = document.getElementById('terms-and-conditions');
+                
+                function disableButton() {
+                    termsAndCondtion.style.display = "none";
+                    logIn.disabled = true;
+                }
+                btn.addEventListener('change', function(evt) {
+                   if(!evt.target.checked) {
+                      disableButton();
+                   } else {
+                       logIn.disabled = false;
+                       termsAndCondtion.style.display = "block";
+                   }
+                });
+                disableButton();
+            </script>
         </ui:define>
     </ui:composition>
 </html>

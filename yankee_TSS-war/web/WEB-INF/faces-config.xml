@@ -17,7 +17,11 @@
         <navigation-case>
             <from-outcome>yourContracts</from-outcome>
             <to-view-id>/logged_in/employeecontracts.xhtml</to-view-id>
-        </navigation-case>  
+        </navigation-case>          
+         <navigation-case>
+            <from-outcome>employeestatistics</from-outcome>
+            <to-view-id>/logged_in/employeestatistics.xhtml</to-view-id>
+        </navigation-case> 
         <navigation-case>
             <from-outcome>admin</from-outcome>
             <to-view-id>/admin/administration.xhtml</to-view-id>
@@ -39,14 +43,14 @@
             <from-outcome>dashboard</from-outcome>
             <to-view-id>/logged_in/dashboard.xhtml?faces-redirect=true</to-view-id>
         </navigation-case>
-                <navigation-case>
+        <navigation-case>
             <from-outcome>managecontracts</from-outcome>
             <to-view-id>/logged_in/managecontracts.xhtml?faces-redirect=true</to-view-id>
         </navigation-case>        
     </navigation-rule>
     <!--BEGINS for createContract Navigation--> 
     
-      <!--BEGINS for Edit Contract Navigation-->      
+    <!--BEGINS for Edit Contract Navigation-->      
     <navigation-rule>
         <from-view-id>/staff_logged_in/editcontract.xhtml</from-view-id>
         <navigation-case>
@@ -61,7 +65,7 @@
             <from-outcome>dashboard</from-outcome>
             <to-view-id>/logged_in/dashboard.xhtml?faces-redirect=true</to-view-id>
         </navigation-case>
-                <navigation-case>
+        <navigation-case>
             <from-outcome>managecontracts</from-outcome>
             <to-view-id>/logged_in/managecontracts.xhtml?faces-redirect=true</to-view-id>
         </navigation-case>        
@@ -92,6 +96,11 @@
         <navigation-case>
             <from-outcome>dashboard</from-outcome>
             <to-view-id>/logged_in/dashboard.xhtml?faces-redirect=true</to-view-id>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>documentation</from-outcome>
+            <to-view-id>/public/documentation.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     

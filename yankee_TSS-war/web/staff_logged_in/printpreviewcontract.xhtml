@@ -85,9 +85,8 @@
                                 <br/>HOURS OF WORK. The hours of work shall be on working days except public holidays at hours determined by the employer provided that ordinary working hours shall not exceed 
                                 <h:outputLabel value="#{printpreviewcontractBean.contractinfo.hoursPerWeek}"/> hours per week.
                             </p:outputPanel>
-                        </p:outputPanel>
 
-                        <p:outputPanel styleClass="box-footer">
+                            <hr/>
                             <p:outputPanel>
                                 IN WITNESS WHEREOF, each of the Parties has executed this Temporary Employment Contract, both Parties by its duly authorized officer, as of the day and year set forth below.
                             </p:outputPanel>
@@ -102,16 +101,20 @@
                             <br/> 
                             ____________________________ ______________
                             <br/>
-                            Employee SIGN/DATE                       
+                            Employee SIGN/DATE
+                        </p:outputPanel>
+
+                        <p:outputPanel styleClass="box-footer">
+                            <p:commandButton id="print"
+                                             value="Print"
+                                             action ="index"
+                                             styleClass="pull-right btn btn-primary">
+                                <p:printer target="printContract" />
+                            </p:commandButton> 
 
                         </p:outputPanel>
                     </p:outputPanel>
-                    <p:commandButton id="print"
-                                     value="Print"
-                                     action ="index"
-                                     styleClass="pull-right">
-                        <p:printer target="printContract" />
-                    </p:commandButton> 
+
                 </b:row>
             </h:form>
 
