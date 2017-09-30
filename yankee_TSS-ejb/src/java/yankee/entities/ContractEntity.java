@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yankee.entities;
 
 import java.time.LocalDate;
@@ -30,10 +25,8 @@ import yankee.logic.ENUM.TimesheetFrequencyEnum;
     @NamedQuery(name = "getContractByPerson" , query = "SELECT e FROM ContractEntity e WHERE e.employee.person = :person")
 
 })
-/**
- *
- * TODO: REMOVE relation getter setter as per our requirement. delete set if in collection.
- */
+
+
 @Entity
 @Table(name = "CONTRACT")
 public class ContractEntity extends NamedEntity {
@@ -55,11 +48,12 @@ public class ContractEntity extends NamedEntity {
     private double hoursDue;
     private int workingDaysPerWeek;
     private int vacationDaysPerYear;
+    private int archiveDuration;   
 
     @OneToOne
     private SupervisorEntity supervisor;
 
-     @OneToMany(mappedBy = "contract",cascade= CascadeType.PERSIST)
+    @OneToMany(mappedBy = "contract",cascade= CascadeType.PERSIST)
     private Set<AssistantEntity> assistants;
     
     @OneToMany(mappedBy = "contract",cascade= CascadeType.PERSIST)
@@ -71,6 +65,14 @@ public class ContractEntity extends NamedEntity {
     @OneToMany(mappedBy = "contract",cascade= CascadeType.PERSIST)
     private Set<SecretaryEntity> secretaries;
 
+     public int getArchiveDuration() {
+        return archiveDuration;
+    }
+
+    public void setArchiveDuration(int archiveDuration) {
+        this.archiveDuration = archiveDuration;
+    }
+    
     public ContractStatusEnum getStatus() {
         return status;
     }

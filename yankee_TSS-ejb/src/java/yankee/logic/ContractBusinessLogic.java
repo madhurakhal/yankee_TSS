@@ -12,15 +12,15 @@ public interface ContractBusinessLogic {
 
     public List<Contract> getContractList();
 
-    public Contract createContract(String contractName, Person supervisor, Person assistant, Person secretary, Person employee, Date startDate , Date endDate , TimesheetFrequencyEnum timesheetFrequency, double hoursPerWeek, int workingDaysPerWeek, int vacationDaysPerYear);
+    public void createContract(String contractName, Person supervisor, Person assistant, Person secretary, Person employee, Date startDate , Date endDate , TimesheetFrequencyEnum timesheetFrequency, double hoursPerWeek, int workingDaysPerWeek, int vacationDaysPerYear , int archiveDuration);
     
-    public Contract editContract(String contractUUID , Person supervisorPerson , List<Person> secretaries , boolean secretariesChanged, List<Person> assistants , boolean assistantsChanged, Date startDate, Date endDate, TimesheetFrequencyEnum timesheetFrequency , int workingDaysPerWeek , int vacationDaysPerYear , double hoursPerWeek);
+    public void editContract(String contractUUID , Person supervisorPerson , List<Person> secretaries , boolean secretariesChanged, List<Person> assistants , boolean assistantsChanged, Date startDate, Date endDate, TimesheetFrequencyEnum timesheetFrequency , int workingDaysPerWeek , int vacationDaysPerYear , double hoursPerWeek , int archiveDuration);
     
     public Contract startContract(String contractUUID);
     
     public Contract getContractByUUID(String contractUUID);
     
-    public void updateContractStatistics(String contractUUID);
+    public void _updateContractStatistics(String contractUUID);
     
     public void calledForContractArchive(String contractUUID);
     

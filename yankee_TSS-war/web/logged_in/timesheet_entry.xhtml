@@ -12,15 +12,15 @@ and open the template in the editor.
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core">
 
-    <ui:composition template="/WEB-INF/templates/main-template.xhtml">        
-        <ui:param name="pageTitle" value="Edit Timesheet Entries"/>        
+    <ui:composition template="/WEB-INF/templates/main-template.xhtml">
+        <ui:param name="pageTitle" value="Edit Timesheet Entries"/>
         <ui:define name="breadcrumb">
             <li>
                 <h:link outcome="dashboard">
                     <i class="fa fa-dashboard"></i>#{msg.home}
                 </h:link>
             </li>
-                  <li>
+            <li>
                 <h:link outcome="dashboard">
                     #{msg.dashBoard}
                 </h:link>
@@ -45,50 +45,45 @@ and open the template in the editor.
             </li>
         </ui:define>
         <ui:define name="main-content">
-            <p></p>
-            <h:form id="timesheetentry">
-                <p:dataGrid var="entry"  value="#{timeSheetEntryBean.entries}" columns="7" rows="35" id="entryGrid" layout="grid">
-                    <f:facet name="header">
-                        #{msg.timeSheetEntryFor} : <h:outputText value="#{timeSheetEntryBean.displayString}"/>
-                    </f:facet>
-
-                    <p:panel header="#{entry.dateString}" style="text-align: center;">
-                        <h:panelGrid columns="1" style="width: 100%">
-                            #{msg.loggedHours}:<h:outputText value="#{entry.hours}"/>
-                            <p:commandButton disabled="#{entry.isHoliday}" icon="fa fa-fw fa-plus" id="addUpdateEntry" update=":timesheetentry:entryDetail" oncomplete="PF('entryPanel').show()">
-                                <p:tooltip id="addNewIconToolTip" for="addUpdateEntry" position="bottom" value="#{msg.addTimeSheetEntry}" showEffect="clip" hideEffect="explode"/>
-                                <f:setPropertyActionListener target="#{timeSheetEntryBean.selectedEntry}" value="#{entry}"  />
-                            </p:commandButton>
-                        </h:panelGrid>
-                    </p:panel>
-                </p:dataGrid>
-
-
-                <p:dialog id = "entryDetail" header="Timesheet Entry for: #{timeSheetEntryBean.selectedEntry.dateString}" widgetVar="entryPanel" modal="true" showEffect="fade" fitViewport="true" hideEffect="fade" resizable="false">
-                    <p:outputPanel id="entryDetails" style="text-align: center;">
-                        
-                        <p:panelGrid rendered="#{not empty timeSheetEntryBean.selectedEntry}"  columns="2">
-                            
+            <p:outputPanel styleClass="box box-primary">
+                <p:outputPanel styleClass="box-body">
+                    <h:form id="timesheetentry">
+                        <p:dataGrid var="entry"  value="#{timeSheetEntryBean.entries}" columns="7" rows="35" id="entryGrid" layout="grid">
                             <f:facet name="header">
-                                <h:outputText value="#{entry.dateString}"/>
+                                #{msg.timeSheetEntryFor}: <h:outputText value="#{timeSheetEntryBean.displayString}"/>
                             </f:facet>
-                            <h:outputLabel for="startTime" value="#{msg.startTime}:"/>
-                            <p:calendar  id="startTime" value="#{timeSheetEntryBean.selectedEntry.startDateTime}" pattern="HH:mm" timeOnly="true"  />
+                            <p:panel header="#{entry.dateString}" style="text-align: center;">
+                                <h:panelGrid columns="1" style="width: 100%">
+                                    Logged Hours:<h:outputText value="#{entry.hours}"/>
+                                    <p:commandButton disabled="#{entry.isHoliday}" icon="fa fa-fw fa-plus" id="addUpdateEntry" update=":timesheetentry:entryDetail" oncomplete="PF('entryPanel').show()">
+                                        <p:tooltip id="addNewIconToolTip" for="addUpdateEntry" position="bottom" value="Add TimeSheet entry" showEffect="clip" hideEffect="explode"/>
+                                        <f:setPropertyActionListener target="#{timeSheetEntryBean.selectedEntry}" value="#{entry}"  />
+                                    </p:commandButton>
+                                </h:panelGrid>
+                            </p:panel>
+                        </p:dataGrid>
 
-                            <h:outputLabel for="endTime"  value="#{msg.endTime}:"/>
-                            <p:calendar id="endTime" value="#{timeSheetEntryBean.selectedEntry.endDateTime}" pattern="HH:mm" timeOnly="true" />
-                            <h:outputLabel for="description" value="#{msg.description}:"/>
-                            <b:inputTextarea id="description" value="#{timeSheetEntryBean.selectedEntry.description}" />
-                            <p:commandButton id="submitEntry"  value="#{msg.save}" actionListener="#{timeSheetEntryBean.saveEntry}"  update="timesheetentry msg"/>  
-                            <p:commandButton value="#{msg.reset}" update="timesheetentry msg" actionListener="#{timeSheetEntryBean.resetEntry}"/>
-                        </p:panelGrid>
 
-                    </p:outputPanel>
-                </p:dialog>
-            </h:form>
+                        <p:dialog id = "entryDetail" header="Timesheet Entry for: #{timeSheetEntryBean.selectedEntry.dateString}" widgetVar="entryPanel" modal="true" showEffect="fade" fitViewport="true" hideEffect="fade" resizable="false">
+                            <p:outputPanel id="entryDetails" style="text-align: center;">
+                                <b:panelGrid rendered="#{not empty timeSheetEntryBean.selectedEntry}"  columns="2">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{entry.dateString}"/>
+                                    </f:facet>
+                                    <h:outputLabel for="startTime" value="Start time:"/>
+                                    <p:calendar  id="startTime" value="#{timeSheetEntryBean.selectedEntry.startDateTime}" pattern="HH:mm" timeOnly="true"  />
+                                    <h:outputLabel for="endTime"  value="End time:"/>
+                                    <p:calendar id="endTime" value="#{timeSheetEntryBean.selectedEntry.endDateTime}" pattern="HH:mm" timeOnly="true" />
+                                    <h:outputLabel for="description" value="Description:"/>
+                                    <b:inputTextarea id="description" value="#{timeSheetEntryBean.selectedEntry.description}" />
+                                    <p:commandButton id="submitEntry"  value="Save" actionListener="#{timeSheetEntryBean.saveEntry}"  update="timesheetentry msg" oncomplete="reloadWindow()" />
+                                    <p:commandButton value="Reset" update="timesheetentry msg" actionListener="#{timeSheetEntryBean.resetEntry}"/>
+                                </b:panelGrid>
+                            </p:outputPanel>
+                        </p:dialog>
+                    </h:form>
+                </p:outputPanel>
+            </p:outputPanel>
         </ui:define>
     </ui:composition>
-
-
-
 </html>

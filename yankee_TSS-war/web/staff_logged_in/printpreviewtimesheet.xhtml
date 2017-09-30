@@ -1,121 +1,115 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:b="http://bootsfaces.net/ui"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:b="http://bootsfaces.net/ui">
-    <ui:composition template="/WEB-INF/templates/main-template.xhtml">
-        <ui:param name="pageTitle" value="Create Contract Page"/>
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/WEB-INF/templates/main-template.xhtml">        
+        <ui:param name="pageTitle" value="View Timesheet Entries"/>
         <ui:define name="breadcrumb">
             <li>
-                <h:link outcome="managecontracts">
-                    #{msg.manageContracts}
+                <h:link outcome="dashboard">
+                    <i class="fa fa-dashboard"></i>#{msg.home}
                 </h:link>
             </li>
             <li>
-                <h:link disabled="true">
-                    #{msg.printContract}
+                <h:link outcome="dashboard">
+                    #{msg.dashBoard}
+                </h:link>
+            </li>
+            <li>
+                <h:link rendered="#{timeSheetEntryBean.loggedinUser.userRoleRealm eq 'STAFF'}" outcome="managecontracts">
+                    #{msg.manageContracts}
+                </h:link>
+                <h:link rendered="#{timeSheetEntryBean.loggedinUser.userRoleRealm eq null}" outcome="employeecontracts">
+                    #{msg.employeeContracts}
+                </h:link>
+            </li>
+            <li>
+                <h:link outcome = "/logged_in/contractdetails.xhtml?id=#{timeSheetEntryBean.contractUUID}">
+                    #{msg.viewContractDetails}
+                </h:link>
+            </li>
+            <li>
+                <h:link disabled = "true">
+                    #{msg.viewEntries}
                 </h:link>
             </li>
         </ui:define>
         <ui:define name="main-content">
-            <h:form>
-                <b:row>
-                    <p:outputPanel id = "printContract" styleClass="box box-default">
-                        <p:outputPanel styleClass="box-header text-center"> 
-                            <!--image of koblenz landau-->
-                            <h:outputLabel value="Employment Contract"/>
-                        </p:outputPanel>  
+            <h:form id="timeSheetEntryList" >
+                <p:outputPanel>
+                    <p:outputPanel id="printTimesheet" styleClass="box box-success">
+                        <p:outputPanel styleClass="box-header text-center">
+                            <h:outputLabel value="TimeSheet For : #{printpreviewtimesheetBean.employeeForContract.firstName} #{printpreviewtimesheetBean.employeeForContract.lastName} (#{printpreviewtimesheetBean.employeeForContract.emailAddress})"/>
+                        </p:outputPanel>                        
+                        <p:outputPanel styleClass="box-body top-border edit-contract">
+                            <b:column>
+                                <p:outputPanel styleClass="col-xs-12 col-sm-7">
+                                    <b:formGroup>
+                                        <h:outputLabel value="Supervisor" styleClass="col-xs-12 col-sm-5 control-label"/>
+                                        <b:column col-sm="6" col-xs="12">
+                                            <h:outputLabel value="#{printpreviewtimesheetBean.supervisorForContract.firstName} #{printpreviewtimesheetBean.supervisorForContract.lastName}"/>
+                                        </b:column>
+                                    </b:formGroup> 
+                                    <b:formGroup>
+                                        <h:outputLabel for="timesheetFrequency" value="#{msg.timeSheetFrequency}" styleClass="col-xs-12 col-sm-5 control-label" />
+                                        <b:column col-sm="7" col-xs="12">
+                                            <h:outputLabel value="#{printpreviewtimesheetBean.contractinfo.frequency}"/>
+                                        </b:column>
+                                    </b:formGroup>
+                                </p:outputPanel>
+                                <p:outputPanel styleClass="col-xs-12 col-sm-5">
+                                    <b:formGroup>
+                                        <h:outputLabel value="#{msg.hoursPerWeek}" styleClass="col-xs-12 col-sm-5 control-label" />
+                                        <b:column col-sm="7" col-xs="12">
+                                            <h:outputLabel value="#{printpreviewtimesheetBean.contractinfo.hoursPerWeek}"/>
+                                        </b:column>
+                                    </b:formGroup>
 
-                        <p:outputPanel styleClass="box-body top-border text-center">
-                            <p:outputPanel>
-                                This Employment Contract states the terms and conditions that govern the contractual agreement betweeen                               
-                            </p:outputPanel>
-                            <b:formGroup>
-                                <h:outputLabel value="Supervisor : #{printpreviewtimesheetBean.supervisorForContract.firstName} #{printpreviewtimesheetBean.supervisorForContract.lastName}"/>                              
-                            </b:formGroup>                       
+                                    <b:formGroup>
+                                        <h:outputLabel value="Total Hours Due" styleClass="col-xs-12 col-sm-5 control-label" />
+                                        <b:column col-sm="7" col-xs="12">
+                                            <h:outputLabel value="#{printpreviewtimesheetBean.hoursDue}"/>
+                                        </b:column>
+                                    </b:formGroup>
 
-                            <p:outputPanel>
-                                having its principal place of employement at [University Koblenz Landau], and 
-                            </p:outputPanel>                       
-                            <b:formGroup>
-                                <h:outputLabel value="Employee : [#{printpreviewtimesheetBean.currentContractPerson.firstName} #{printpreviewtimesheetBean.currentContractPerson.lastName}]"/>
+                                    <b:formGroup>
+                                        <h:outputLabel value="Total Hours Entered" styleClass="col-xs-12 col-sm-5 control-label" />
+                                        <b:column col-sm="7" col-xs="12">
+                                            <h:outputLabel value="#{printpreviewtimesheetBean.hoursEntered}"/>
+                                        </b:column>
+                                    </b:formGroup>
 
-                            </b:formGroup>
-                            <p:outputPanel>
-                                who agrees to be bound by this Contract.                                
-                            </p:outputPanel>                           
-
+                                </p:outputPanel>
+                            </b:column>
                         </p:outputPanel>
-
-
                         <p:outputPanel styleClass="box-body top-border">
-                            <p:outputPanel>
-                                NOW, Therefore, in consideration of the mutual covenants and promises made by the parties hereto, the Company and the Temp (individually, each a “Party” and collectively, the “Parties”) covenant and agree as follows:
-                            </p:outputPanel>    
-                            <p:outputPanel>
-                                <br/>TERM. The term of this Temporary Employment Contract shall commence on
-                                <h:outputLabel value="#{printpreviewtimesheetBean.contractinfo.startDate.dayOfMonth} #{printpreviewtimesheetBean.contractinfo.startDate.month} #{printpreviewtimesheetBean.contractinfo.startDate.year} (#{printpreviewtimesheetBean.contractinfo.startDate.dayOfWeek})"/>                                 
-                                and end on 
-                                <h:outputLabel value="#{printpreviewtimesheetBean.contractinfo.endDate.dayOfMonth} #{printpreviewtimesheetBean.contractinfo.endDate.month} #{printpreviewtimesheetBean.contractinfo.endDate.year} (#{printpreviewtimesheetBean.contractinfo.endDate.dayOfWeek})"/>.
-                            </p:outputPanel>
-
-                            <p:outputPanel>
-                                <br/>TIMESHEET FREQUENCY. The time sheets frequency is set to <h:outputLabel value="#{printpreviewtimesheetBean.contractinfo.frequency}"/>
-
-                            </p:outputPanel>
-
-                            <p:outputPanel rendered="#{!empty printpreviewtimesheetBean.assistantsForContract}">
-                                <br/>ASSISTANTS. The Contract can be assisted under following listed member <br/>
-
-                                <p:dataList value="#{printpreviewtimesheetBean.assistantsForContract}" var="assistants" type="definition">                                            
-                                    #{assistants.firstName} #{assistants.lastName}
-                                </p:dataList>                         
-                            </p:outputPanel>
-
-                            <p:outputPanel rendered="#{!empty printpreviewtimesheetBean.secretariesForContract}">
-                                <br/>SECRETARIES. The Contract will be bound to have following member as secretary <br/>                                
-                                <p:dataList value="#{printpreviewtimesheetBean.secretariesForContract}" var="secretaries" type="definition">                                            
-                                    #{secretaries.firstName} #{secretaries.lastName}
-                                </p:dataList>                         
-                            </p:outputPanel>
-                            <p:outputPanel>
-                                <br/>HOURS OF WORK. The hours of work shall be on working days except public holidays at hours determined by the employer provided that ordinary working hours shall not exceed 
-                                <h:outputLabel value="#{printpreviewtimesheetBean.contractinfo.hoursPerWeek}"/> hours per week.
-                            </p:outputPanel>
-                        </p:outputPanel>
-
-                        <p:outputPanel styleClass="box-footer">
-                            <p:outputPanel>
-                                IN WITNESS WHEREOF, each of the Parties has executed this Temporary Employment Contract, both Parties by its duly authorized officer, as of the day and year set forth below.
-                            </p:outputPanel>
-                            <br/>
-                            <br/>                         
-                            ____________________________ ______________
-                            <br/>
-                            Supervisor SIGN/DATE
-                            <br/>
-                            <br/>
-                            <br/>
-                            <br/> 
-                            ____________________________ ______________
-                            <br/>
-                            Employee SIGN/DATE                       
-
+                            <b:dataTable id="tbl" var="entryObj" value="#{printpreviewtimesheetBean.entries}" responsive="true">
+                                <b:dataTableColumn value="#{entryObj.dateString}" label="Date"/>
+                                <b:dataTableColumn value="#{entryObj.hours}" label="Hours"/>
+                                <b:dataTableColumn value="#{entryObj.description}" label="Description"/>
+                                <b:dataTableColumn value="${entryObj.startDateTime}"/>
+                                <b:dataTableColumn value="${entryObj.endDateTime}"/>
+                            </b:dataTable>
                         </p:outputPanel>
                     </p:outputPanel>
                     <p:commandButton id="print"
                                      value="Print"
                                      action ="index"
                                      styleClass="pull-right">
-                        <p:printer target="printContract" />
+                        <p:printer target="printTimesheet" />
                     </p:commandButton> 
-                </b:row>
+                </p:outputPanel>
             </h:form>
-
         </ui:define>
     </ui:composition>
 </html>
-

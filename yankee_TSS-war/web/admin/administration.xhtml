@@ -21,25 +21,35 @@
                                     <p:commandButton value="#{msg.loadPublicHolidaysToDatabase}" ajax="false" actionListener="#{publicHolidaysBean.test}" update="msgs" styleClass="btn btn-flat btn-primary"/>
                                 </p:outputPanel>
                                 <p:outputPanel styleClass="col-xs-12" rendered ="#{!publicHolidaysBean.databaseEmpty}">
-                                    <b:formGroup>
-                                        <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="personInput">#{msg.selectGermanState}</h:outputLabel>
-                                        <b:column col-sm="6" col-xs="12">
-                                            <b:selectOneMenu id="germanStateChoose" value="#{administrationBean.selectedState}" immediate="true">
-                                                <f:selectItem itemLabel="#{msg.setState}" noSelectionOption="true"/>
-                                                <f:selectItems  value="#{administrationBean.germanyState}" var="entity" itemValue="#{entity}"/>                                                    
-                                            </b:selectOneMenu>
-                                        </b:column>
-                                    </b:formGroup>
+                                    <b:column>
+                                        <b:formGroup>
+                                            <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="personInput">#{msg.selectGermanState}</h:outputLabel>
+                                            <b:column col-sm="6" col-xs="12">
+                                                <b:selectOneMenu id="germanStateChoose" value="#{administrationBean.adminSettingsInfo.germanState}" immediate="true">
+                                                    <f:selectItem itemLabel="#{msg.setState}" noSelectionOption="true"/>
+                                                    <f:selectItems  value="#{administrationBean.germanyState}" var="entity" itemValue="#{entity}"/>                                                    
+                                                </b:selectOneMenu>
+                                            </b:column>
+                                        </b:formGroup>
+                                    </b:column>
+                                    <b:column>
+                                        <b:formGroup>
+                                            <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="personInput">Set Reminder Service </h:outputLabel>
+                                            <b:column col-sm="6" col-xs="12">
+                                                <b:switch value="#{administrationBean.adminSettingsInfo.reminderServiceOn}" />                                            
+                                            </b:column>
+                                        </b:formGroup>
+                                    </b:column>
                                 </p:outputPanel>
                             </b:row>
                         </p:outputPanel> 
 
-                        <b:commandButton id="setState"
+                        <b:commandButton id="updateAdminInfo"
                                          look="success"
-                                         value="#{msg.setState}"
-                                         actionListener="#{administrationBean.setState}"
-                                         styleClass="pull-right"
-                                         rendered = "#{!publicHolidaysBean.databaseEmpty}"
+                                         value="Update"
+                                         actionListener="#{administrationBean.updateAdminInfo}"
+                                         styleClass="pull-right"   
+                                         rendered ="#{!publicHolidaysBean.databaseEmpty}"
                                          />
                     </p:outputPanel>
                 </b:form>

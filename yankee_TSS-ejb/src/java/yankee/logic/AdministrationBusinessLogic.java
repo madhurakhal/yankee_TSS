@@ -9,4 +9,8 @@ import yankee.logic.to.Administration;
 public interface AdministrationBusinessLogic {
     public Administration getAdminSetState();
     public void updateState(GermanyStatesEnum ge);
+    public void updateAdminSettingsInfo(Administration adminInfo);
+    public Administration getAdminSettingsInfo();
+    public void enableGuestLogin();
+    public void disableGuestLogin();
 }

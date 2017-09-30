@@ -28,7 +28,6 @@ import yankee.logic.to.TimeSheetEntry;
  * @author Shriharsh Ambhore (ashriharsh@uni-koblenz.de)
  */
 @ManagedBean
-@Named(value = "timeSheetEntryBean")
 @ViewScoped
 public class TimeSheetEntryBean implements Serializable {
 

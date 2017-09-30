@@ -1,5 +1,6 @@
 package yankee.web;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
@@ -77,6 +79,16 @@ public class EditContractBean {
     private Integer vacationDaysPerYear;
     private Person currentContractPerson;
     private Contract contractInfo;
+    private Integer archiveDuration;
+
+    public Integer getArchiveDuration() {
+        archiveDuration = contractInfo.getArchiveDuration();
+        return archiveDuration;
+    }
+
+    public void setArchiveDuration(Integer archiveDuration) {
+        this.archiveDuration = archiveDuration;
+    }
 
     public Contract getContractInfo() {
         contractInfo = contractBusinessLogic.getContractByUUID(contract_id);
@@ -436,9 +448,9 @@ public class EditContractBean {
             assistantPickupList.getTarget().add(previousSelectedSupervisor);
         }
         previousSelectedSupervisor = supervisorForContract;
-    }
+   }
 
-    public void edit() {
+    public void edit() throws IOException  {
         System.out.println("Edit in progress");
         // Make changes for all contract details.
         System.out.println("Supervisor" + supervisorForContract);
@@ -464,9 +476,16 @@ public class EditContractBean {
         System.out.println("Previous Assistants " + _assistantsForContract);
         System.out.println("Assistants Changed " + assistantsChanged);
 
-        contractBusinessLogic.editContract(contract_id, supervisorForContract, secretaryPickupList.getTarget(), secretariesChanged, assistantPickupList.getTarget(), assistantsChanged, startDate, endDate, timesheetFrequency, workingDaysPerWeek, vacationDaysPerYear, hoursPerWeek);
+        contractBusinessLogic.editContract(contract_id, supervisorForContract, 
+                    secretaryPickupList.getTarget(), secretariesChanged, 
+                        assistantPickupList.getTarget(), assistantsChanged, 
+                            startDate, endDate, timesheetFrequency, workingDaysPerWeek, 
+                                vacationDaysPerYear, hoursPerWeek , archiveDuration);
         FacesMessage msg = new FacesMessage("Contract Has Been Updated" , "");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+        FacesContext.getCurrentInstance().addMessage(null, msg);        
+        FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+        ExternalContext extContext = FacesContext.getCurrentInstance().getExternalContext();
+        extContext.redirect(extContext.getRequestContextPath() + "/logged_in/managecontracts.xhtml");
     }
 
 }

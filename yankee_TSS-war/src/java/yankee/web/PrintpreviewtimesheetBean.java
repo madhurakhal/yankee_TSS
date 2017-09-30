@@ -1,167 +1,258 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package yankee.web;
 
-import java.util.ArrayList;
+import java.io.Serializable;
+import java.util.Date;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import org.primefaces.context.RequestContext;
 import yankee.logic.AssistantBusinessLogic;
 import yankee.logic.ContractBusinessLogic;
+import yankee.logic.EmployeeBusinessLogic;
 import yankee.logic.PersonBusinessLogic;
 import yankee.logic.SecretaryBusinessLogic;
 import yankee.logic.SupervisorBusinessLogic;
-import yankee.logic.to.Assistant;
-import yankee.logic.to.Person;
-import yankee.logic.to.Secretary;
-import yankee.logic.EmployeeBusinessLogic;
+import yankee.logic.TimeSheetBusinessLogic;
 import yankee.logic.to.Contract;
+import yankee.logic.to.Person;
+import yankee.logic.to.TimeSheetEntry;
+import yankee.utilities.UTILNumericSupport;
 
+/**
+ *
+ * @author Shriharsh Ambhore (ashriharsh@uni-koblenz.de)
+ */
 @ManagedBean
 @ViewScoped
-public class PrintpreviewtimesheetBean {
+public class PrintpreviewtimesheetBean implements Serializable {
 
+    /**
+     * Creates a new instance of TimeSheetEntryBean
+     */
     @EJB
-    private SupervisorBusinessLogic supervisorBusinessLogic;
-
-    @EJB
-    private SecretaryBusinessLogic secretaryBusinessLogic;
-
-    @EJB
-    private AssistantBusinessLogic assistantBusinessLogic;
-
-    @EJB
-    private PersonBusinessLogic personBusinessLogic;
+    private TimeSheetBusinessLogic timeSheetService;
     
     @EJB
-    private ContractBusinessLogic contractBusinessLogic;
-
+    private SupervisorBusinessLogic supervisorBusinessLogic;    
+    
     @EJB
     private EmployeeBusinessLogic employeeBusinessLogic;
 
-    private String contract_id;
-    private String timesheetID;
+    @EJB
+    private ContractBusinessLogic contractBusinessLogic;
 
-    public String getTimesheetID() {
-        if (timesheetID == null) {
-            Map<String, String> params = FacesContext.getCurrentInstance()
-                    .getExternalContext().getRequestParameterMap();
-            timesheetID = params.get("id");
-        }
-        return timesheetID;
-    }
-
-    public void setTimesheetID(String timesheetID) {
-        this.timesheetID = timesheetID;
-    }
-    private Person currentContractPerson;
+    private List<TimeSheetEntry> entries;
+    private String description;
+    private double hours;
+    private String timeSheetUuid;
+    private String dateString;
+    private String timeSheet_id;
+    private String displayString;
+    private TimeSheetEntry selectedEntry;
+    private Date startDate;
+    private String contractUUID;
     private Contract contractinfo;
-    
     private Person supervisorForContract;
-    private List<Person> secretariesForContract = new ArrayList<>();
-    private List<Person> assistantsForContract = new ArrayList<>();
-    private List<Person> persons = new ArrayList<>();
+    private Person employeeForContract;
+    private double hoursEntered;
+    private double hoursDue;
 
-
-    @PostConstruct
-    public void init() {
-        //This contract id will be sent to edit contract as parameter in url from managecontract edit is pressed
-        // This will be used in getting current assistant, supervisor, secretary for this contract id below.
-        System.out.println("SHIRHARSH WAS HEREEEE");
-        getContract_id();
-        getTimesheetID();
-        getPersons();
-        getCurrentContractPerson();
-
-        // First we will get all the assistant , supervisor , secretary for the given contract
-        getSupervisorForContract();
-        getAssistantsForContract();
-        getSecretariesForContract();
+    public double getHoursDue() {
+        hoursDue = timeSheetService.getByUUID(timeSheet_id).getHoursDue();
+        return hoursDue;
     }
 
-    // BEGINS GETTER AND SETTER for contract id then current assistant , supervisor, secretaries for given contract
-    
-    public Person getCurrentContractPerson() {
-        if (currentContractPerson == null) {
-            currentContractPerson = employeeBusinessLogic.getEmployeeByContract(contract_id).getPerson();
+    public double getHoursEntered() {
+        List<TimeSheetEntry> lse = getEntries();
+        hoursEntered = UTILNumericSupport.round(lse.stream().mapToDouble(o -> o.getHours()).sum(),2);    
+        return hoursEntered;
+    }
+
+    public Person getEmployeeForContract() {
+        if (employeeForContract == null) {
+            employeeForContract = employeeBusinessLogic.getEmployeeByContract(contractUUID).getPerson();
         }
-        return currentContractPerson;
+        return employeeForContract;
     }
-
-    public List<Person> getPersons() {
-        if (persons.isEmpty()) {
-            persons = personBusinessLogic.getPersonList();
-        }
-        return persons;
-    }
-    
-    public String getContract_id() {
-        if (contract_id == null) {
-            Map<String, String> params = FacesContext.getCurrentInstance()
-                    .getExternalContext().getRequestParameterMap();
-            contract_id = params.get("contractID");
-        }
-        return contract_id;
-    }
-    
     
 
     public Contract getContractinfo() {
-        contractinfo = contractBusinessLogic.getContractByUUID(contract_id);
+        contractinfo = contractBusinessLogic.getContractByUUID(contractUUID);
         return contractinfo;
     }
 
     public Person getSupervisorForContract() {
         if (supervisorForContract == null) {
-            supervisorForContract = supervisorBusinessLogic.getSupervisorByContract(contract_id).getPerson();
+            supervisorForContract = supervisorBusinessLogic.getSupervisorByContract(contractUUID).getPerson();
         }
         return supervisorForContract;
     }
 
-    public List<Person> getSecretariesForContract() {
-        if (secretariesForContract.isEmpty()) {
-            List<Secretary> ls = secretaryBusinessLogic.getSecretariesByContract(contract_id);
-            List<Person> result = new ArrayList<>();
-            ls.forEach((s) -> {
-                result.add(s.getPerson());
-            });
-            secretariesForContract = result;
+    private Person loggedinUser;
+    @Inject
+    private LoginBean loginBean;
+
+    public Person getLoggedinUser() {
+        loggedinUser = loginBean.getUser();
+        return loggedinUser;
+    }
+
+    public void setLoggedinUser(Person loggedinUser) {
+        this.loggedinUser = loggedinUser;
+    }
+
+    public String getContractUUID() {
+        return contractUUID;
+    }
+
+    public void setContractUUID(String contractUUID) {
+        this.contractUUID = contractUUID;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDateTime() {
+        return endDateTime;
+    }
+
+    public void setEndDateTime(Date endDateTime) {
+        this.endDateTime = endDateTime;
+    }
+    private Date endDateTime;
+
+    public TimeSheetEntry getSelectedEntry() {
+        return selectedEntry;
+    }
+
+    public void setSelectedEntry(TimeSheetEntry selectedEntry) {
+        this.selectedEntry = selectedEntry;
+    }
+
+    public List<TimeSheetEntry> getEntries() {
+        boolean flag = entries == null;
+        if (flag) {
+            entries = timeSheetService.getEntriesForTimeSheet(timeSheet_id);
         }
-        return secretariesForContract;
+        return entries;
     }
 
-    public List<Person> getAssistantsForContract() {
-        if (assistantsForContract.isEmpty()) {
-            List<Assistant> ls = assistantBusinessLogic.getAssistantsByContract(contract_id);
-            List<Person> result = new ArrayList<>();
-            ls.forEach((s) -> {
-                result.add(s.getPerson());
-            });
-            assistantsForContract = result;
+    public void setEntries(List<TimeSheetEntry> entries) {
+        this.entries = entries;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public double getHours() {
+        return hours;
+    }
+
+    public void setHours(double hours) {
+        this.hours = hours;
+    }
+
+    public String getTimeSheetUuid() {
+        return timeSheetUuid;
+    }
+
+    public void setTimeSheetUuid(String timeSheetUuid) {
+        this.timeSheetUuid = timeSheetUuid;
+    }
+
+    public String getDateString() {
+        return dateString;
+    }
+
+    public void setDateString(String dateString) {
+        this.dateString = dateString;
+    }
+
+    public String getTimeSheet_id() {
+        if (timeSheet_id == null) {
+            Map<String, String> params = FacesContext.getCurrentInstance()
+                    .getExternalContext().getRequestParameterMap();
+            timeSheet_id = params.get("id");
         }
-        return assistantsForContract;
-    }
-    
-    
-    
-    
-// RELATED TO STATISTICSSSSSSSSss For TimeSheet NEEEEED TO TALK TO HARSHIII
-    private List<Integer> HoursDuePerTimeSheet;
-
-    public List<Integer> getHoursDuePerTimeSheet() {
-        return HoursDuePerTimeSheet;
+        return timeSheet_id;
     }
 
-    public void setHoursDuePerTimeSheet(List<Integer> HoursDuePerTimeSheet) {
-        this.HoursDuePerTimeSheet = HoursDuePerTimeSheet;
+    public String getDisplayString() {
+        if (displayString == null) {
+            Map<String, String> params = FacesContext.getCurrentInstance()
+                    .getExternalContext().getRequestParameterMap();
+            displayString = params.get("timeSheetDateRange");
+        }
+        return displayString;
     }
-    
-    
-        
-    
-    
-    
-    
+
+    @PostConstruct
+    public void init() {
+        Map<String, String> params = FacesContext.getCurrentInstance()
+                .getExternalContext().getRequestParameterMap();
+        contractUUID = params.get("contractID");
+        getTimeSheet_id();
+        getDisplayString();
+        getEntries();
+
+    }
+
+    public void saveEntry() {
+        if (selectedEntry.getStartDateTime() == null || selectedEntry.getEndDateTime() == null || selectedEntry.getEndDateTime().getTime() < selectedEntry.getStartDateTime().getTime()) {
+            StringBuilder builder = new StringBuilder();
+            FacesMessage msgs = new FacesMessage();
+            msgs.setSeverity(FacesMessage.SEVERITY_INFO);
+            msgs.setSummary("Invalid!! Entry not valid. ReEnter");
+            msgs.setDetail(builder.toString());
+            FacesContext.getCurrentInstance().addMessage(null, msgs);
+        } else {
+            if (timeSheetService != null) {
+                timeSheetService.addUpdateTimeSheetEntry(selectedEntry);
+                StringBuilder builder = new StringBuilder();
+                FacesMessage msgs = new FacesMessage();
+                msgs.setSeverity(FacesMessage.SEVERITY_INFO);
+                msgs.setSummary("Entry Updated");
+                msgs.setDetail(builder.toString());
+                FacesContext.getCurrentInstance().addMessage(null, msgs);
+            }
+        }
+
+    }
+
+    public void resetEntry() {
+        selectedEntry.setEndDateTime(null);
+        selectedEntry.setStartDateTime(null);        
+        timeSheetService.addUpdateTimeSheetEntry(selectedEntry);
+        StringBuilder builder = new StringBuilder();
+        FacesMessage msgs = new FacesMessage();
+        msgs.setSeverity(FacesMessage.SEVERITY_INFO);
+        msgs.setSummary("Entry Reset done!!");
+        msgs.setDetail(builder.toString());
+        FacesContext.getCurrentInstance().addMessage(null, msgs);
+
+    }
+
 }

@@ -13,7 +13,7 @@ and open the template in the editor.
       xmlns:f="http://java.sun.com/jsf/core">
 
 
-    <ui:composition template="/WEB-INF/templates/main-template.xhtml">        
+    <ui:composition template="/WEB-INF/templates/main-template.xhtml">
         <ui:param name="pageTitle" value="View Timesheet Entries"/>
         <ui:define name="breadcrumb">
             <li>
@@ -21,7 +21,7 @@ and open the template in the editor.
                     <i class="fa fa-dashboard"></i>#{msg.home}
                 </h:link>
             </li>
-                  <li>
+            <li>
                 <h:link outcome="dashboard">
                     #{msg.dashBoard}
                 </h:link>
@@ -46,22 +46,19 @@ and open the template in the editor.
             </li>
         </ui:define>
         <ui:define name="main-content">
-            <p></p>
             <h:form id="timeSheetEntryList" >
-
-                <b:dataTable id="tbl" var="entryObj" value="#{timeSheetEntryBean.entries}" responsive="true">
-
-                    <b:dataTableColumn value="#{entryObj.dateString}" label="#{msg.date}"/>
-                    <b:dataTableColumn value="#{entryObj.hours}" label="#{msg.hours}"/>
-                    <b:dataTableColumn value="#{entryObj.description}" label="#{msg.description}"/>
-                    <b:dataTableColumn value="${entryObj.startDateTime}"/>
-                    <b:dataTableColumn value="${entryObj.endDateTime}"/>
-                </b:dataTable>
+                <p:outputPanel styleClass="box box-success">
+                    <p:outputPanel styleClass="box-body">
+                        <b:dataTable id="tbl" var="entryObj" value="#{timeSheetEntryBean.entries}" responsive="true">
+                            <b:dataTableColumn value="#{entryObj.dateString}" label="Date"/>
+                            <b:dataTableColumn value="#{entryObj.hours}" label="Hours"/>
+                            <b:dataTableColumn value="#{entryObj.description}" label="Description"/>
+                            <b:dataTableColumn value="${entryObj.startDateTime}"/>
+                            <b:dataTableColumn value="${entryObj.endDateTime}"/>
+                        </b:dataTable>
+                    </p:outputPanel>
+                </p:outputPanel>
             </h:form>
-
         </ui:define>
     </ui:composition>
-
-
-
 </html>
