@@ -126,6 +126,7 @@ public class ManageContractsBean {
     }
 
     public List<Person> getPersonsAssociatedToContractSupervisor() {
+        init();
         return personsAssociatedToContractSupervisor;
     }
 
