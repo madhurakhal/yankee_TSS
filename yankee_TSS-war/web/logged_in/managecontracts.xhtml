@@ -29,7 +29,7 @@
         <ui:define name="main-content">
             <p:outputPanel styleClass="box box-primary">
                 <p:outputPanel styleClass="box-body">
-                    <ui:fragment rendered="#{empty manageContractsBean.personsAssociatedToContractSupervisor and empty manageContractsBean.personsAssociatedToContractAssistant and empty manageContractsBean.personsAssociatedToContractSecretary}">
+                    <ui:fragment rendered="#{empty manageContractsBean.personsAssociatedToContractSupervisor and empty manageContractsBean.personsAssociatedToContractAssistant and empty manageContractsBean.personsAssociatedToContractSecretary and empty manageContractsBean.terminatedContracts}">
                         <p:outputPanel styleClass="text-center">
                             <p>#{msg.youDonothaveanyContracts}</p>
                             <h:button outcome="createcontract" value="#{msg.createContract}" styleClass="btn btn-flat btn-primary"/>
@@ -38,7 +38,7 @@
                     </ui:fragment>
 
 
-                    <b:form id="form" rendered="#{not empty manageContractsBean.personsAssociatedToContractSupervisor or not empty manageContractsBean.personsAssociatedToContractAssistant or not empty manageContractsBean.personsAssociatedToContractSecretary}">                              
+                    <b:form id="form" rendered="#{not empty manageContractsBean.personsAssociatedToContractSupervisor or not empty manageContractsBean.personsAssociatedToContractAssistant or not empty manageContractsBean.personsAssociatedToContractSecretary or not empty manageContractsBean.terminatedContracts}">                              
                         <b:tabView> 
                             <b:tab title="#{msg.asSupervisor}">  
                                 <!-- BEGINS  For Supervisor -->
@@ -73,13 +73,13 @@
                                                 </p:commandButton>
                                                 <!--ENDS Start Contract-->
 
-                                                <p:commandButton  icon="fa fa-fw fa-television"  id="viewPersonSuper" action="#{manageContractsBean.onRowView(persons.contractUUIDForRole)}"/>
+                                                <p:commandButton  icon="fa fa-fw fa-television"  id="viewPersonSuper" actionListener="#{manageContractsBean.onRowView(persons.contractUUIDForRole)}"/>
                                                 <p:tooltip for="viewPersonSuper" position="bottom" value="#{msg.view}" showEffect="clip" hideEffect="explode"/>
 
-                                                <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-edit" id="editPersonSuper" action="#{manageContractsBean.onRowEdit(persons.contractUUIDForRole)}"/>
+                                                <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-edit" id="editPersonSuper" actionListener="#{manageContractsBean.onRowEdit(persons.contractUUIDForRole)}"/>
                                                 <p:tooltip for="editPersonSuper" position="bottom" value="#{msg.editContract}" showEffect="clip" hideEffect="explode"/>
 
-                                                <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-trash"  id="deletePersonSuper" update="form" action="#{manageContractsBean.onRowDelete(persons.contractUUIDForRole)}">
+                                                <p:commandButton  rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-trash"  id="deletePersonSuper" update="form" actionListener="#{manageContractsBean.onRowDelete(persons.contractUUIDForRole)}">
                                                     <p:tooltip for="deletePersonSuper" position="bottom" value="#{msg.deleteContract}" showEffect="clip" hideEffect="explode"></p:tooltip>
                                                     <p:confirm header="#{msg.confirmation}" message="#{msg.confirmDelete}" icon="ui-icon-alert" />
                                                 </p:commandButton>
@@ -140,13 +140,13 @@
                                                 <!--ENDS Start Contract-->                                        
 
 
-                                                <p:commandButton  icon="fa fa-fw fa-television"  id="viewPersonAssis" action="#{manageContractsBean.onRowView(persons.contractUUIDForRole)}"/>
+                                                <p:commandButton  icon="fa fa-fw fa-television"  id="viewPersonAssis" actionListener="#{manageContractsBean.onRowView(persons.contractUUIDForRole)}"/>
                                                 <p:tooltip for="viewPersonAssis" position="bottom" value="#{msg.view}" showEffect="clip" hideEffect="explode"/>
 
-                                                <p:commandButton styleClass="btn-flat flat" rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-edit" id="editPersonAssis" action="#{manageContractsBean.onRowEdit(persons.contractUUIDForRole)}"/>
+                                                <p:commandButton styleClass="btn-flat flat" rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-edit" id="editPersonAssis" actionListener="#{manageContractsBean.onRowEdit(persons.contractUUIDForRole)}"/>
                                                 <p:tooltip for="editPersonAssis" position="bottom" value="#{msg.editContract}" showEffect="clip" hideEffect="explode"/>
 
-                                                <p:commandButton styleClass="btn-flat flat" rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-trash"  update="@this" id="deletePersonAssis" action="#{manageContractsBean.onRowDelete(persons.contractUUIDForRole)}">
+                                                <p:commandButton styleClass="btn-flat flat" rendered = "#{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-trash"  update="form" id="deletePersonAssis" actionListener="#{manageContractsBean.onRowDelete(persons.contractUUIDForRole)}">
                                                     <p:confirm header="#{msg.confirmation}" message="#{msg.confirmDelete}" icon="ui-icon-alert" /> 
                                                     <p:tooltip for="deletePersonAssis" position="bottom" value="#{msg.deleteContract}" showEffect="clip" hideEffect="explode"></p:tooltip>
                                                 </p:commandButton>
@@ -191,15 +191,15 @@
 
 
                                             <b:dataTableColumn label="Action " style="width:50px" styleClass="manage-btn-controllers">
-                                                <p:commandButton styleClass="btn-flat"  icon="fa fa-fw fa-television"  id="viewPersonSecrs" action="#{manageContractsBean.onRowView(persons.contractUUIDForRole)}"/>                            
+                                                <p:commandButton styleClass="btn-flat"  icon="fa fa-fw fa-television"  id="viewPersonSecrs" actionListener="#{manageContractsBean.onRowView(persons.contractUUIDForRole)}"/>                            
                                                 <p:tooltip for="viewPersonSecrs" position="bottom" value="View" showEffect="clip" hideEffect="explode"/>
 
                                                 <!--TODO Discuss if secretary able to edit contract and delete-->
-                                                <!--<p:commandButton styleClass="btn-flat" rendered = "{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-edit" id="editPersonSecrs" action="{manageContractsBean.onRowEdit(persons.contractUUIDForRole)}"/>-->
+                                                <!--<p:commandButton styleClass="btn-flat" rendered = "{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-edit" id="editPersonSecrs" actionListener="{manageContractsBean.onRowEdit(persons.contractUUIDForRole)}"/>-->
 
-                                                <p:commandButton styleClass="btn-flat" icon="fa fa-fw fa-print"  id="printPersonSecrs"  action="#{manageContractsBean.onRowPrint(persons.contractUUIDForRole)}"/>
+                                                <p:commandButton styleClass="btn-flat" icon="fa fa-fw fa-print"  id="printPersonSecrs"  actionListener="#{manageContractsBean.onRowPrint(persons.contractUUIDForRole)}"/>
                                                 <p:tooltip for="printPersonSecrs" position="bottom" value="Print Contract" showEffect="clip" hideEffect="explode"></p:tooltip>
-                                                <!--                                        <p:commandButton styleClass="btn btn-flat" rendered = "{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-trash"  id="deletePersonSecrs" action="{manageContractsBean.onRowDelete(persons.contractUUIDForRole)}">
+                                                <!--                                        <p:commandButton styleClass="btn btn-flat" rendered = "{persons.contractStatusForRole eq 'PREPARED'}" icon="fa fa-fw fa-trash"  id="deletePersonSecrs" actionListener="{manageContractsBean.onRowDelete(persons.contractUUIDForRole)}">
                                                                                             <p:confirm header="Confirmation" message="Confirm Delete?" icon="ui-icon-alert" />
                                                                                         </p:commandButton>-->
                                             </b:dataTableColumn>
@@ -228,7 +228,7 @@
 
 
                                             <b:dataTableColumn label="Action " style="width:50px" styleClass="manage-btn-controllers">
-                                                <p:commandButton styleClass="btn-flat"  icon="fa fa-fw fa-television"  id="viewPersonTerm" action="#{manageContractsBean.onRowView(persons.contractUUIDForRole)}"/>                            
+                                                <p:commandButton styleClass="btn-flat"  icon="fa fa-fw fa-television"  id="viewPersonTerm" actionListener="#{manageContractsBean.onRowView(persons.contractUUIDForRole)}"/>                            
                                                 <p:tooltip for="viewPersonTerm" position="bottom" value="View" showEffect="clip" hideEffect="explode"/>
 
                                                 
