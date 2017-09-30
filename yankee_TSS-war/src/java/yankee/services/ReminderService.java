@@ -8,6 +8,7 @@ package yankee.services;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Schedule;
+import javax.ejb.Schedules;
 import javax.ejb.Singleton;
 import yankee.logic.AdministrationBusinessLogic;
 import yankee.logic.to.TimeSheet;
@@ -29,23 +30,20 @@ public class ReminderService {
     @EJB
     AdministrationBusinessLogic administrationBusinessLogic;
 
-    /*
-        @Schedules ({
-            @Schedule(dayOfMonth="Last"),
-            @Schedule(dayOfWeek="Fri", hour="23"), dayOfMonth = "-7"
-        })
-     */
-    //@Schedule(hour = "06", minute = "59", second = "59", persistent = false)
-    @Schedule(minute = "*/1", hour = "*", persistent = false)
+    @Schedules({
+        @Schedule(dayOfMonth = "Last")
+        ,
+        @Schedule(dayOfWeek = "Fri")
+    })
     public void runTask() {
-        System.out.println("This task is executed");
         programmaticTimer.cancelTimer("timerId");
         if (administrationBusinessLogic.getAdminSettingsInfo().isReminderServiceOn()) {
             List<TimeSheet> timeSheets = reminderBean.getTimeSheetsToSendReminder();
             if (timeSheets != null && timeSheets.size() > 0) {
                 System.out.println("called from reminder service = " + timeSheets);
                 reminderBean.sendReminderForTimeSheets(timeSheets);
-                programmaticTimer.createTimer("timerId", 1);
+                //programmatic timer which runs 5:59 AM every day
+                programmaticTimer.createTimer("timerId", 05, 59, 59);
             }
         }
     }

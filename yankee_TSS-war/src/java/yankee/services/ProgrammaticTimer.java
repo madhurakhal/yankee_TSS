@@ -27,15 +27,17 @@ public class ProgrammaticTimer {
     @Resource
     TimerService timerService;
 
-    String timerId;
+    private String timerId;
 
     @EJB
     ReminderBean reminderBean;
 
-    public void createTimer(String timerId, int freq) {
+    public void createTimer(String timerId, int hour, int minute, int second) {
         this.timerId = timerId;
         ScheduleExpression expression = new ScheduleExpression();
-        expression.minute("*/" + freq).hour("*");
+        expression.hour(hour);
+        expression.minute(minute);
+        expression.second(second);
         timerService.createCalendarTimer(expression, new TimerConfig(timerId, true));
     }
 
@@ -58,10 +60,8 @@ public class ProgrammaticTimer {
 
     @Timeout
     public void execute() {
-        System.out.println("----Invoked: " + System.currentTimeMillis());
         List<TimeSheet> timeSheets = reminderBean.getTimeSheetsToSendReminder();
         if (timeSheets != null && timeSheets.size() > 0) {
-            System.out.println("called from programatic timer");
             reminderBean.sendReminderForTimeSheets(reminderBean.getTimeSheetsToSendReminder());
         } else {
             cancelTimer(timerId);

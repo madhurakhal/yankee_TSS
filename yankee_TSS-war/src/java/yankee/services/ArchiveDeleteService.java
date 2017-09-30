@@ -6,14 +6,11 @@
 package yankee.services;
 
 import java.time.LocalDate;
-import java.util.List;
 import javax.ejb.EJB;
-import javax.ejb.Remote;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import yankee.logic.AdministrationBusinessLogic;
 import yankee.logic.TimeSheetBusinessLogic;
-import yankee.logic.to.TimeSheet;
 
 /**
  *
@@ -28,14 +25,13 @@ public class ArchiveDeleteService {
     @EJB
     private AdministrationBusinessLogic administrationBusinessLogic;
 
-    private List<TimeSheet> timeSheets;
-
-    //@Schedule(dayOfMonth="Last")
-    @Schedule(minute = "*/5", hour = "*", persistent = false)
+    //@Schedule(minute = "*/1", hour = "*", persistent = false)
+    
+    @Schedule(dayOfMonth="Last", hour="23", persistent = false)
     public void runDeleteTask() {
         if (administrationBusinessLogic.getAdminSettingsInfo().isReminderServiceOn()) {
             System.out.println("This task is executed from run delete task");
-            //getDetailsToDeleteTimeSheetsAndContracts(2);
+            getDetailsToDeleteTimeSheetsAndContracts(2);
         }
     }
 
@@ -43,8 +39,7 @@ public class ArchiveDeleteService {
 
         LocalDate today = LocalDate.now();
         LocalDate x = today.minusYears(yearToSubtract);
-        System.out.println("The date before two year is = " + x);
-
+        
         try {
             timeSheetBusinessLogic.deleteOldTimeSheetSignedBySupervisor(x);
         } catch (NumberFormatException ne) {
