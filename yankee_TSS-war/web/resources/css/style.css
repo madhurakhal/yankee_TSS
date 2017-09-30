@@ -214,3 +214,7 @@ button.ui-confirmdialog-no {
     background-color: #dd4b39 !important ;
     color: white !important;
 }
+
+.ui-picklist-list-wrapper {
+    border: 1px solid #efefef;
+}
