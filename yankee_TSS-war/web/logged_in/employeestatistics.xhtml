@@ -12,30 +12,30 @@
         <ui:define name="breadcrumb">
             <li>
                 <h:link outcome="dashboard">
-                    <i class="fa fa-dashboard"></i>Home
+                    <i class="fa fa-dashboard"></i>#{msg.home}
                 </h:link>
             </li>
             <li>
                 <h:link outcome="dashboard">
-                    Dashboard
+                    #{msg.dashBoard}
                 </h:link>
             </li>
             <li>
                 <h:link rendered="#{timeSheetEntryBean.loggedinUser.userRoleRealm eq 'STAFF'}" outcome="managecontracts">
-                    Manage Contracts
+                    #{msg.manageContracts}
                 </h:link>
                 <h:link rendered="#{timeSheetEntryBean.loggedinUser.userRoleRealm eq null}" outcome="employeecontracts">
-                    Employee Contracts
+                    #{msg.employeeContracts}
                 </h:link>
             </li>
             <li>
                 <h:link outcome = "/logged_in/contractdetails.xhtml?id=#{timeSheetEntryBean.contractUUID}">
-                    View Contract Details
+                    #{msg.viewContractDetails}
                 </h:link>
             </li>
             <li>
                 <h:link disabled = "true">
-                    View Entries
+                    #{msg.viewEntries}
                 </h:link>
             </li>
         </ui:define>
@@ -52,19 +52,19 @@
                                 <p:outputPanel styleClass="col-xs-11">
                                     <p:outputPanel styleClass="col-xs-12 col-sm-6">
                                         <b:formGroup>
-                                            <h:outputLabel value="Total Number of Contracts" styleClass="col-xs-10 control-label"/>
+                                            <h:outputLabel value="#{msg.totalNumberOfContracts}" styleClass="col-xs-10 control-label"/>
                                             <b:column col-xs="2">
                                                 <h:outputLabel value="#{employeestatisticsBean.totalNumberOfContracts}"/>
                                             </b:column>
                                         </b:formGroup> 
                                         <b:formGroup>
-                                            <h:outputLabel value="Total Hours Due Over All Contracts" styleClass="col-xs-10 control-label" />
+                                            <h:outputLabel value="#{msg.totalHoursDueOverAllContracts}" styleClass="col-xs-10 control-label" />
                                             <b:column col-xs="2">
                                                 <h:outputLabel value="#{employeestatisticsBean.totalHoursDueOverAllContracts}"/>
                                             </b:column>
                                         </b:formGroup>
                                         <b:formGroup>
-                                            <h:outputLabel value="Total Unsigned Timesheets As of Today" styleClass="col-xs-10 control-label" />
+                                            <h:outputLabel value="#{msg.totalUnsignedTimesheetsAsofToday}" styleClass="col-xs-10 control-label" />
                                             <b:column col-xs="2">
                                                 <h:outputLabel value="#{employeestatisticsBean.totalUnsignedTimesheetsAsOfToday}"/>
                                             </b:column>
@@ -73,13 +73,13 @@
 
                                     <p:outputPanel styleClass="col-xs-12 col-sm-6">
                                         <b:formGroup>
-                                            <h:outputLabel value="Total Number of Timesheets Over All Contracts" styleClass="col-xs-10 control-label" />
+                                            <h:outputLabel value="#{msg.totalNumberofTimesheetsOverAllContracts}" styleClass="col-xs-10 control-label" />
                                             <b:column col-xs="2">
                                                 <h:outputLabel value="#{employeestatisticsBean.totalTimesheets}"/>
                                             </b:column>
                                         </b:formGroup>
                                         <b:formGroup>
-                                            <h:outputLabel value="Total Hours Logged for all timesheets over All Contracts" styleClass="col-xs-10 control-label" />
+                                            <h:outputLabel value="#{msg.totalHoursLoggedforalltimesheetsoverAllContracts}" styleClass="col-xs-10 control-label" />
                                             <b:column col-xs="2">
                                                 <h:outputLabel value="#{employeestatisticsBean.totalHoursWorkedOverall}"/>
                                             </b:column>

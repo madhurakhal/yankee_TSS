@@ -12,17 +12,17 @@
         <ui:define name="breadcrumb">
             <li>
                 <h:link outcome="dashboard">
-                    <i class="fa fa-dashboard"></i>Home
+                    <i class="fa fa-dashboard"></i>#{msg.home}
                 </h:link>
             </li>
             <li>
                 <h:link outcome="dashboard">
-                    Dashboard
+                    #{msg.dashBoard}
                 </h:link>
             </li>
             <li>
                 <h:link disabled="true">
-                    Your Contracts
+                    #{msg.yourContracts}
                 </h:link>
             </li>
         </ui:define>
@@ -36,7 +36,7 @@
                         <b:tabView contentStyle="border: 1px solid #ddd;padding:10px;"
                                    content-disabled="false"
                                    >
-                            <b:tab title="Started">
+                            <b:tab title="#{msg.started}">
                                 <!-- BEGINS  For Started -->
                                 <p:outputPanel rendered = "#{!empty employeeContractsBean.contractsStartedAssociatedToEmployee}" styleClass="box">                          
 
@@ -44,16 +44,14 @@
                                         <b:dataTable value="#{employeeContractsBean.contractsStartedAssociatedToEmployee}" 
                                                      var="contracts" 
                                                      responsive = "true">
-                                            <b:dataTableColumn value="#{contracts.supervisor.person.firstName} #{contracts.supervisor.person.lastName} (#{contracts.supervisor.person.emailAddress})" label="Supervisor"/>
-                                            <b:dataTableColumn value="#{contracts.startDate}" label="Start Date"/>
-                                            <b:dataTableColumn value="#{contracts.endDate}" label="End Date"/>
+                                            <b:dataTableColumn value="#{contracts.supervisor.person.firstName} #{contracts.supervisor.person.lastName} (#{contracts.supervisor.person.emailAddress})" label="#{msg.supervisor}"/>
+                                            <b:dataTableColumn value="#{contracts.startDate}" label="#{msg.startDate}"/>
+                                            <b:dataTableColumn value="#{contracts.endDate}" label="#{msg.endDate}"/>
 
-                                            <b:dataTableColumn value="#{contracts.frequency}" label="Frequency"/>
+                                            <b:dataTableColumn value="#{contracts.frequency}" label="#{msg.frequency}"/>
 
-                                            <b:dataTableColumn label="Statistics" style="width:50px">                                               
-
-
-                                                <p:commandButton  icon="fa fa-fw fa-info-circle"  value = "View" id="viewContractStartedInfo" action="#{employeeContractsBean.onRowView}">
+                                            <b:dataTableColumn label="#{msg.statistics}" style="width:50px">
+                                                <p:commandButton  icon="fa fa-fw fa-info-circle"  value = "#{msg.view}" id="viewContractStartedInfo" action="#{employeeContractsBean.onRowView}">
                                                     <f:param name="contract_uuid" value="#{contracts.uuid}" />
                                                 </p:commandButton>
 
@@ -66,7 +64,7 @@
                                 <!-- ENDS  For Started-->
                             </b:tab>
                             
-                            <b:tab title="Prepared">
+                            <b:tab title="#{msg.prepared}">
                                 <!-- BEGINS  For Supervisor -->
                                 <p:outputPanel rendered = "#{!empty employeeContractsBean.contractsPreparedAssociatedToEmployee}" styleClass="box">                                             
 
@@ -75,15 +73,15 @@
                                         <b:dataTable value="#{employeeContractsBean.contractsPreparedAssociatedToEmployee}" 
                                                      var="contracts" 
                                                      responsive = "true">
-                                            <b:dataTableColumn value="#{contracts.supervisor.person.firstName} #{contracts.supervisor.person.lastName} (#{contracts.supervisor.person.emailAddress})" label="Supervisor"/>
-                                            <b:dataTableColumn value="#{contracts.startDate}" label="Start Date"/>
-                                            <b:dataTableColumn value="#{contracts.endDate}" label="End Date"/>
+                                            <b:dataTableColumn value="#{contracts.supervisor.person.firstName} #{contracts.supervisor.person.lastName} (#{contracts.supervisor.person.emailAddress})" label="#{msg.supervisor}"/>
+                                            <b:dataTableColumn value="#{contracts.startDate}" label="#{msg.startDate}"/>
+                                            <b:dataTableColumn value="#{contracts.endDate}" label="#{msg.endDate}"/>
 
-                                            <b:dataTableColumn value="#{contracts.frequency}" label="Frequency"/>                          
+                                            <b:dataTableColumn value="#{contracts.frequency}" label="#{msg.frequency}"/>                          
 
-                                            <b:dataTableColumn label="Statistics" style="width:50px">
+                                            <b:dataTableColumn label="#{msg.statistics}" style="width:50px">
 
-                                                <p:commandButton  icon="fa fa-fw fa-info-circle"  value = "View" id="viewContractInfo" action="#{employeeContractsBean.onRowView}">
+                                                <p:commandButton  icon="fa fa-fw fa-info-circle"  value = "#{msg.view}" id="viewContractInfo" action="#{employeeContractsBean.onRowView}">
                                                     <f:param name="contract_uuid" value="#{contracts.uuid}" />
                                                 </p:commandButton>
 
@@ -97,7 +95,7 @@
                             </b:tab>                           
 
 
-                            <b:tab title="To Sign Timesheets">
+                            <b:tab title="#{msg.toSignTimeSheets}">
                                 <!-- BEGINS  For TO SIGN -->
                                 <p:outputPanel rendered = "#{!empty employeeContractsBean.contractsToSignAssociatedToEmployee}" styleClass="box">                          
 
@@ -105,13 +103,13 @@
                                         <b:dataTable value="#{employeeContractsBean.contractsToSignAssociatedToEmployee}" 
                                                      var="contracts" 
                                                      responsive = "true">
-                                            <b:dataTableColumn value="#{contracts.supervisor.person.firstName} #{contracts.supervisor.person.lastName} (#{contracts.supervisor.person.emailAddress})" label="Supervisor"/>
-                                            <b:dataTableColumn value="#{contracts.startDate}" label="Start Date"/>
-                                            <b:dataTableColumn value="#{contracts.endDate}" label="End Date"/>
+                                            <b:dataTableColumn value="#{contracts.supervisor.person.firstName} #{contracts.supervisor.person.lastName} (#{contracts.supervisor.person.emailAddress})" label="#{msg.supervisor}"/>
+                                            <b:dataTableColumn value="#{contracts.startDate}" label="#{msg.startDate}"/>
+                                            <b:dataTableColumn value="#{contracts.endDate}" label="#{msg.endDate}"/>
 
-                                            <b:dataTableColumn value="#{contracts.frequency}" label="Frequency"/>
+                                            <b:dataTableColumn value="#{contracts.frequency}" label="#{msg.frequency}"/>
 
-                                            <b:dataTableColumn label="Statistics" style="width:50px">                                               
+                                            <b:dataTableColumn label="#{msg.statistics}" style="width:50px">                                               
 
                                                 <p:commandButton  icon="fa fa-fw fa-info-circle"  value = "View" id="viewContractToSignInfo" action="#{employeeContractsBean.onRowView}">
                                                     <f:param name="contract_uuid" value="#{contracts.uuid}" />
@@ -133,12 +131,10 @@
 
                 <!-- BEGINS  For Global Confirmation dialog-->
                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    <p:commandButton value="#{msg.yes}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="#{msg.no}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                 </p:confirmDialog>
                 <!-- ENDS  For Global Confirmation dialog-->
-
-                
             </b:form>
 
         </ui:define>
