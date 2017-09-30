@@ -54,7 +54,7 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
 
     @EJB
     private AdministrationBusinessLogic administrationBusinessLogic;
-    
+
     @EJB
     private ContractBusinessLogic contractBusinessLogic;
 
@@ -139,7 +139,7 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
                                 tsEntity.setStartDate(tempStartDate.plusWeeks(i));
                                 int daysToAddToGetFriday = _getDaysToFriday(tempStartDate.getDayOfWeek());
                                 tsEntity.setEndDate(ce.getStartDate().plusDays(daysToAddToGetFriday));
-                                tempStartDate = ce.getStartDate().plusDays(daysToAddToGetFriday + 1).minusWeeks(i+1);
+                                tempStartDate = ce.getStartDate().plusDays(daysToAddToGetFriday + 1).minusWeeks(i + 1);
                             } else {
                                 tsEntity.setStartDate(tempStartDate.plusWeeks(i));
 
@@ -203,27 +203,28 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
     // ENDS ..... TO REView Code for Create TimeSheet
 
     // Helper method to evaluate days required to get to Friday
-    private int _getDaysToFriday(DayOfWeek weekday){
+    private int _getDaysToFriday(DayOfWeek weekday) {
         switch (weekday) {
-                    case FRIDAY:
-                        return 0;
-                    case SATURDAY:
-                        return 6;
-                    case SUNDAY:
-                        return 5;
-                    case MONDAY:
-                        return 4;
-                    case TUESDAY:
-                        return 3;
-                    case WEDNESDAY:
-                        return 2;
-                    case THURSDAY:
-                        return 1;
-                    default:
-                        return 0;
+            case FRIDAY:
+                return 0;
+            case SATURDAY:
+                return 6;
+            case SUNDAY:
+                return 5;
+            case MONDAY:
+                return 4;
+            case TUESDAY:
+                return 3;
+            case WEDNESDAY:
+                return 2;
+            case THURSDAY:
+                return 1;
+            default:
+                return 0;
 
-                }
+        }
     }
+
     // Helper method. Takes working days. for example 4. Working days becomes Monday Tuesday Wednesday Thursday
     private List<DayOfWeek> _getWorkingDays(int workingDaysPerWeek) {
         List<DayOfWeek> workingDaysEnum = new ArrayList<>();
@@ -521,28 +522,32 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
         return tsObjList;
     }
 
-    
     // Called only by Delete Archive service in 2 years interval
     @Override
     public void deleteOldTimeSheetSignedBySupervisor(LocalDate givenDate) {
         Set<String> setContractUUIDTimeSheetDeleted = new HashSet<>();
         List<TimesheetEntity> listTE = timeSheetAccess.getOldTimeSheetSignedBySupervisor(givenDate);
         // Get all time sheets with less then given date
-        for (TimesheetEntity timesheetEntity : listTE){
+        for (TimesheetEntity timesheetEntity : listTE) {
+            setContractUUIDTimeSheetDeleted.add(timesheetEntity.getContract().getUuid());
+
             // delete timesheet entry entity
-            List<TimesheetEntryEntity> ltee = timeSheetEntryAccess.getTimeSheetEntriesForTimeSheet(timesheetEntity.getUuid());            
-            ltee.forEach(tee->{tee.setTimesheet(null); timeSheetEntryAccess.deleteEntity(tee);}); 
+            List<TimesheetEntryEntity> ltee = timeSheetEntryAccess.getTimeSheetEntriesForTimeSheet(timesheetEntity.getUuid());
+            ltee.forEach(tee -> {
+                tee.setTimesheet(null);
+                timeSheetEntryAccess.deleteEntity(tee);
+            });
+
             // Now delete timesheet
             timesheetEntity.setContract(null);
-            setContractUUIDTimeSheetDeleted.add(timesheetEntity.getContract().getUuid());
-            timeSheetAccess.deleteEntity(timesheetEntity);            
-        }        
-        for(String contractUUID:setContractUUIDTimeSheetDeleted) {
-            if(timeSheetAccess.getTimeSheetsForContract(contractUUID).isEmpty()){
+            timeSheetAccess.deleteEntity(timesheetEntity);
+        }
+        for (String contractUUID : setContractUUIDTimeSheetDeleted) {
+            if (timeSheetAccess.getTimeSheetsForContract(contractUUID).isEmpty()) {
                 contractBusinessLogic.deleteContract(contractUUID);
             }
-        }    
-        
+        }
+
     }
 
     @Override
@@ -601,7 +606,7 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
         // Also check if the contract is to be archived.
         // Condition is when all timesheets are archived.
         contractBusinessLogic.calledForContractArchive(timeSheetAccess.getByUuid(timeSheetUUID).getContract().getUuid());
-        
+
     }
 
     @Override
