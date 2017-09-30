@@ -53,8 +53,6 @@ public class ReminderBean {
     Reminder reminder;
 
     private Employee employee;
-
-    private List<Employee> employees;
     private List<TimeSheet> timeSheets;
     private List<Secretary> secretaries;
     private List<Assistant> assistants;
@@ -64,11 +62,8 @@ public class ReminderBean {
     public List<TimeSheet> getTimeSheetsToSendReminder() {
         //Current Date
         LocalDate today = LocalDate.now();
-        LocalDate todayl = LocalDate.of(2017, 11, 7);
-        System.out.println("Current Date=" + today);
         try {
-            timeSheets = timeSheetBusinessLogic.getAllTimeSheetsByGivenDate(todayl);
-            System.out.println("list of timesheets = " + timeSheets);
+            timeSheets = timeSheetBusinessLogic.getAllTimeSheetsByGivenDate(today);
         } catch (NumberFormatException ne) {
             System.out.println("Exception Occured from timeSheetBusinessLogic!!");
         }
@@ -77,7 +72,6 @@ public class ReminderBean {
 
     public void sendReminderForTimeSheets(List<TimeSheet> timeSheets) {
         for (TimeSheet t : timeSheets) {
-            System.out.println("Status =" + t.getStatus());
             String contractId = t.getContract().getUuid();
             timesheetstatus = t.getStatus();
             employee = null;

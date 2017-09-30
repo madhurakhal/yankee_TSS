@@ -40,7 +40,6 @@ public class ReminderService {
         if (administrationBusinessLogic.getAdminSettingsInfo().isReminderServiceOn()) {
             List<TimeSheet> timeSheets = reminderBean.getTimeSheetsToSendReminder();
             if (timeSheets != null && timeSheets.size() > 0) {
-                System.out.println("called from reminder service = " + timeSheets);
                 reminderBean.sendReminderForTimeSheets(timeSheets);
                 //programmatic timer which runs 5:59 AM every day
                 programmaticTimer.createTimer("timerId", 05, 59, 59);

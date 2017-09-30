@@ -30,13 +30,12 @@ public class ArchiveDeleteService {
     @Schedule(dayOfMonth="Last", hour="23", persistent = false)
     public void runDeleteTask() {
         if (administrationBusinessLogic.getAdminSettingsInfo().isReminderServiceOn()) {
-            System.out.println("This task is executed from run delete task");
             getDetailsToDeleteTimeSheetsAndContracts(2);
         }
     }
 
     private void getDetailsToDeleteTimeSheetsAndContracts(int yearToSubtract) {
-
+        
         LocalDate today = LocalDate.now();
         LocalDate x = today.minusYears(yearToSubtract);
         
