@@ -12,6 +12,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import yankee.entities.ContractEntity;
 import yankee.logic.AssistantBusinessLogic;
 import yankee.logic.ContractBusinessLogic;
 import yankee.logic.ENUM.ContractStatusEnum;
@@ -20,6 +21,7 @@ import yankee.logic.SecretaryBusinessLogic;
 import yankee.logic.SupervisorBusinessLogic;
 import yankee.logic.TimeSheetBusinessLogic;
 import yankee.logic.to.Person;
+import yankee.logic.to.Secretary;
 import yankee.logic.to.Supervisor;
 import yankee.logic.to.TimeSheet;
 import yankee.logic.to.TimeSheetEntry;
@@ -73,7 +75,7 @@ public class ManageContractsBean {
         return terminatedContracts;
     }
 
-    @PostConstruct
+    //@PostConstruct
     public void init(){
         List<Person> lpsupr = supervisorBusinessLogic.getPersonsUnderSupervisor(loginBean.getUser().getUuid());
         terminatedContracts.addAll(lpsupr.stream().filter(p -> (p.getContractStatusForRole().equals(ContractStatusEnum.TERMINATED))).collect(Collectors.toList()));
@@ -105,6 +107,8 @@ public class ManageContractsBean {
     }
 
     public List<Person> getPersonsAssociatedToContractSupervisor() {
+        // Because the postconstruct was causing problem for page refresh.
+        init();
         return personsAssociatedToContractSupervisor;
     }
 
@@ -164,4 +168,10 @@ public class ManageContractsBean {
     public Person supervisorPersonForContractUUID(String contractUUID){
         return contractBusinessLogic.getContractByUUID(contractUUID).getSupervisor().getPerson();
     }
+    
+//    public boolean isSecretary(String contractUUID) {
+//        List<Secretary> ls = secretaryBusinessLogic.getSecretariesByContract(contractUUID);
+//        // For each secretary if one of the secretary matches the person logged in
+//        return !ls.stream().filter(e -> e.getPerson().getUuid().equals(loggedinUser.getUuid())).collect(Collectors.toList()).isEmpty();
+//    }
 }

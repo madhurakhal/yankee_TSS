@@ -64,6 +64,7 @@ public class ContractDetailsBean {
     private Person loggedinUser;
 
     public Person getLoggedinUser() {
+        init();
         return loggedinUser;
     }
 
@@ -113,7 +114,7 @@ public class ContractDetailsBean {
     }
     
 
-    @PostConstruct
+    //@PostConstruct
     public void init() {
         //This contract id will be sent to edit contract as parameter in url from managecontract edit is pressed
         // This will be used in getting current assistant, supervisor, secretary for this contract id below.
