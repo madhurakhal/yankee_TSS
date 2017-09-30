@@ -10,7 +10,6 @@ import javax.ejb.EJB;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import yankee.logic.AdministrationBusinessLogic;
-import yankee.logic.impl.AdministrationBusinessLogicImpl;
 import yankee.logic.to.TimeSheet;
 import yankee.web.ReminderBean;
 

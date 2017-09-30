@@ -19,7 +19,7 @@ import yankee.logic.to.TimeSheet;
  *
  * @author pradipgiri
  */
-//@Singleton
+@Singleton
 public class ArchiveDeleteService {
 
     @EJB
@@ -30,11 +30,12 @@ public class ArchiveDeleteService {
 
     private List<TimeSheet> timeSheets;
 
-    //@Schedule(minute = "*/1", hour = "*", persistent = false)
+    //@Schedule(dayOfMonth="Last")
+    @Schedule(minute = "*/5", hour = "*", persistent = false)
     public void runDeleteTask() {
         if (administrationBusinessLogic.getAdminSettingsInfo().isReminderServiceOn()) {
             System.out.println("This task is executed from run delete task");
-            getDetailsToDeleteTimeSheetsAndContracts(2);
+            //getDetailsToDeleteTimeSheetsAndContracts(2);
         }
     }
 
