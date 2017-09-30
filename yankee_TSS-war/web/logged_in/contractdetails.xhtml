@@ -441,7 +441,7 @@
                                                     <p:commandButton id="printTimeSheetA"  rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid)}" icon="fa fa-fw fa-print"   action="#{contractDetailsBean.printTimeSheet(timesheet.uuid)}"/>
                                                     <p:tooltip for="printTimeSheetA" position="bottom" value="#{msg.printTimeSheet}" showEffect="clip" hideEffect="explode"></p:tooltip>
 
-                                                    <p:commandButton id="archiveTimeSheetA" rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid) and (timesheet.status eq 'SIGNED_BY_SUPERVISOR') and not (timesheet.status eq 'ARCHIVED')}" icon="fa fa-fw fa-archive"   action="#{contractDetailsBean.archiveTimeSheet(timesheet.uuid)}" >
+                                                    <p:commandButton id="archiveTimeSheetA" rendered = "#{contractDetailsBean.isSecretary(timesheet.uuid) and (timesheet.status eq 'SIGNED_BY_SUPERVISOR') and not (timesheet.status eq 'ARCHIVED')}" icon="fa fa-fw fa-archive"   update ="contractDetails" actionListener="#{contractDetailsBean.archiveTimeSheet(timesheet.uuid)}" >
                                                         <p:confirm header="#{msg.confirmation}" message="#{msg.confirmArchive}" icon="ui-icon-alert" />
                                                     </p:commandButton>
                                                     <p:tooltip  for="archiveTimeSheetA" position="bottom" value="#{msg.archiveTimeSheet}" showEffect="clip" hideEffect="explode"></p:tooltip>

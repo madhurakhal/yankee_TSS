@@ -98,6 +98,7 @@ public class PrintpreviewcontractBean {
 
     public Person getSupervisorForContract() {
         if (supervisorForContract == null) {
+            System.out.println("Contract IDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD" + contract_id);
             supervisorForContract = supervisorBusinessLogic.getSupervisorByContract(contract_id).getPerson();
         }
         return supervisorForContract;

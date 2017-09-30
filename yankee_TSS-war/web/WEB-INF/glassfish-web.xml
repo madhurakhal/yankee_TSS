@@ -11,7 +11,7 @@
   </security-role-mapping>
   <security-role-mapping>
     <role-name>ADMIN</role-name>
-    <principal-name>sbhattarai@uni-koblenz.de</principal-name>
+    <principal-name>admin@uni-koblenz.de</principal-name>
   </security-role-mapping>
   <security-role-mapping>
     <role-name>STAFF</role-name>

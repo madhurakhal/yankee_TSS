@@ -47,7 +47,7 @@
                                 This Employment Contract states the terms and conditions that govern the contractual agreement betweeen                               
                             </p:outputPanel>
                             <b:formGroup>
-                                <h:outputLabel value="Supervisor : #{contractDetailsBean.supervisorForContract.firstName} #{contractDetailsBean.supervisorForContract.lastName}"/>                              
+                                <h:outputLabel value="Supervisor : #{printpreviewcontractBean.supervisorForContract.firstName} #{printpreviewcontractBean.supervisorForContract.lastName}"/>                              
                             </b:formGroup>                       
 
                             <p:outputPanel>
@@ -70,27 +70,27 @@
                             </p:outputPanel>    
                             <p:outputPanel>
                                 <br/>TERM. The term of this Temporary Employment Contract shall commence on
-                                <h:outputLabel value="#{contractDetailsBean.contractinfo.startDate.dayOfMonth} #{contractDetailsBean.contractinfo.startDate.month} #{contractDetailsBean.contractinfo.startDate.year} (#{contractDetailsBean.contractinfo.startDate.dayOfWeek})"/>                                 
+                                <h:outputLabel value="#{printpreviewcontractBean.contractinfo.startDate.dayOfMonth} #{printpreviewcontractBean.contractinfo.startDate.month} #{printpreviewcontractBean.contractinfo.startDate.year} (#{printpreviewcontractBean.contractinfo.startDate.dayOfWeek})"/>                                 
                                 and end on 
-                                <h:outputLabel value="#{contractDetailsBean.contractinfo.endDate.dayOfMonth} #{contractDetailsBean.contractinfo.endDate.month} #{contractDetailsBean.contractinfo.endDate.year} (#{contractDetailsBean.contractinfo.endDate.dayOfWeek})"/>.
+                                <h:outputLabel value="#{printpreviewcontractBean.contractinfo.endDate.dayOfMonth} #{printpreviewcontractBean.contractinfo.endDate.month} #{printpreviewcontractBean.contractinfo.endDate.year} (#{printpreviewcontractBean.contractinfo.endDate.dayOfWeek})"/>.
                             </p:outputPanel>
 
                             <p:outputPanel>
-                                <br/>TIMESHEET FREQUENCY. The time sheets frequency is set to <h:outputLabel value="#{contractDetailsBean.contractinfo.frequency}"/>
+                                <br/>TIMESHEET FREQUENCY. The time sheets frequency is set to <h:outputLabel value="#{printpreviewcontractBean.contractinfo.frequency}"/>
 
                             </p:outputPanel>
 
-                            <p:outputPanel rendered="#{!empty contractDetailsBean.assistantsForContract}">
+                            <p:outputPanel rendered="#{!empty printpreviewcontractBean.assistantsForContract}">
                                 <br/>ASSISTANTS. The Contract can be assisted under following listed member <br/>
 
-                                <p:dataList value="#{contractDetailsBean.assistantsForContract}" var="assistants" type="definition">                                            
+                                <p:dataList value="#{printpreviewcontractBean.assistantsForContract}" var="assistants" type="definition">                                            
                                     #{assistants.firstName} #{assistants.lastName}
                                 </p:dataList>                         
                             </p:outputPanel>
 
-                            <p:outputPanel rendered="#{!empty contractDetailsBean.secretariesForContract}">
+                            <p:outputPanel rendered="#{!empty printpreviewcontractBean.secretariesForContract}">
                                 <br/>SECRETARIES. The Contract will be bound to have following member as secretary <br/>                                
-                                <p:dataList value="#{contractDetailsBean.secretariesForContract}" var="secretaries" type="definition">                                            
+                                <p:dataList value="#{printpreviewcontractBean.secretariesForContract}" var="secretaries" type="definition">                                            
                                     #{secretaries.firstName} #{secretaries.lastName}
                                 </p:dataList>                         
                             </p:outputPanel>
