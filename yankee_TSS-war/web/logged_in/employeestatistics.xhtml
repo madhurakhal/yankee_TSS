@@ -21,21 +21,8 @@
                 </h:link>
             </li>
             <li>
-                <h:link rendered="#{timeSheetEntryBean.loggedinUser.userRoleRealm eq 'STAFF'}" outcome="managecontracts">
-                    #{msg.manageContracts}
-                </h:link>
-                <h:link rendered="#{timeSheetEntryBean.loggedinUser.userRoleRealm eq null}" outcome="employeecontracts">
-                    #{msg.employeeContracts}
-                </h:link>
-            </li>
-            <li>
-                <h:link outcome = "/logged_in/contractdetails.xhtml?id=#{timeSheetEntryBean.contractUUID}">
-                    #{msg.viewContractDetails}
-                </h:link>
-            </li>
-            <li>
                 <h:link disabled = "true">
-                    #{msg.viewEntries}
+                    #{msg.viewStatistics}
                 </h:link>
             </li>
         </ui:define>
