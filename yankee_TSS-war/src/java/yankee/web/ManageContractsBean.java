@@ -12,7 +12,6 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import yankee.entities.ContractEntity;
 import yankee.logic.AssistantBusinessLogic;
 import yankee.logic.ContractBusinessLogic;
 import yankee.logic.ENUM.ContractStatusEnum;
@@ -24,7 +23,6 @@ import yankee.logic.SupervisorBusinessLogic;
 import yankee.logic.TimeSheetBusinessLogic;
 import yankee.logic.to.Contract;
 import yankee.logic.to.Person;
-import yankee.logic.to.Secretary;
 import yankee.logic.to.Supervisor;
 import yankee.logic.to.TimeSheet;
 import yankee.logic.to.TimeSheetEntry;
@@ -128,8 +126,6 @@ public class ManageContractsBean {
     }
 
     public List<Person> getPersonsAssociatedToContractSupervisor() {
-        // Because the postconstruct was causing problem for page refresh.
-        init();
         return personsAssociatedToContractSupervisor;
     }
 

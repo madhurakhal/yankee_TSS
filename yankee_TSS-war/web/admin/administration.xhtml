@@ -34,7 +34,7 @@
                                     </b:column>
                                     <b:column>
                                         <b:formGroup>
-                                            <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="personInput">Set Reminder Service </h:outputLabel>
+                                            <h:outputLabel styleClass="col-xs-12 col-sm-3 control-label" for="personInput">#{msg.setReminderService}</h:outputLabel>
                                             <b:column col-sm="6" col-xs="12">
                                                 <b:switch value="#{administrationBean.adminSettingsInfo.reminderServiceOn}" />                                            
                                             </b:column>
@@ -46,7 +46,7 @@
 
                         <b:commandButton id="updateAdminInfo"
                                          look="success"
-                                         value="Update"
+                                         value="#{msg.update}"
                                          actionListener="#{administrationBean.updateAdminInfo}"
                                          styleClass="pull-right"   
                                          rendered ="#{!publicHolidaysBean.databaseEmpty}"
