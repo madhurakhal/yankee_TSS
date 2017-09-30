@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -192,7 +191,7 @@ public class ContractDetailsBean {
         return assistantsForContract;
     }
 
-// RELATED TO STATISTICSSSSSSSSss For TimeSheet NEEEEED TO TALK TO HARSHIII
+// RELATED TO STATISTICSSSSSSSSss For TimeSheet 
     private List<Integer> HoursDuePerTimeSheet;
 
     public List<Integer> getHoursDuePerTimeSheet() {
@@ -240,8 +239,8 @@ public class ContractDetailsBean {
     
     public List<TimeSheet> getPreviousTimeSheet() {
         // Get the current date today.
-        //LocalDate currentDate = LocalDate.now();
-        LocalDate currentDate = LocalDate.of(2017, 10, 15);
+        LocalDate currentDate = LocalDate.now();
+        //LocalDate currentDate = LocalDate.of(2017, 10, 15); // TRIAL TRIAL TRIAL
         previousTimeSheet = timesheets.stream().filter(e -> (e.getStartDate().isBefore(currentDate))).collect(Collectors.toList());   
         return previousTimeSheet;
     }
@@ -253,8 +252,8 @@ public class ContractDetailsBean {
 
     public TimeSheet getCurrentTimeSheet() {
         // Get the current date today.
-        //LocalDate currentDate = LocalDate.now();
-        LocalDate currentDate = LocalDate.of(2017, 10, 15);
+        LocalDate currentDate = LocalDate.now();
+        //LocalDate currentDate = LocalDate.of(2017, 10, 15);  // TRIAL TRIAL TRIAL
         List<TimeSheet> p = timesheets.stream().filter(e -> ((e.getStartDate().isBefore(currentDate) && e.getEndDate().isAfter(currentDate))
                 || (e.getEndDate().isEqual(currentDate) || e.getStartDate().isEqual(currentDate))))
                 .collect(Collectors.toList());

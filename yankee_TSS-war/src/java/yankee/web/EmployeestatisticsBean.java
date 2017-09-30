@@ -62,8 +62,8 @@ public class EmployeestatisticsBean implements Serializable {
     private Integer totalUnsignedTimesheetsAsOfToday; // previous timesheets with in progress status.
     public Integer getTotalUnsignedTimesheetsAsOfToday() {
         // Get the current date today.
-        //LocalDate currentDate = LocalDate.now();
-        LocalDate currentDate = LocalDate.of(2017, 10, 15);
+        LocalDate currentDate = LocalDate.now();
+        //LocalDate currentDate = LocalDate.of(2017, 10, 15); // TRIAL TRIAL TRIAL
         totalUnsignedTimesheetsAsOfToday = 0;
         for(Contract c : contractsAssociatedToEmployee){
             List<TimeSheet> timesheets = timeSheetBusinessLogic.getAllTimeSheetsForContract(c.getUuid());
