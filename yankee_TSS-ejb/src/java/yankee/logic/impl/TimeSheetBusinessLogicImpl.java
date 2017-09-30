@@ -530,7 +530,6 @@ public class TimeSheetBusinessLogicImpl implements TimeSheetBusinessLogic {
         // Get all time sheets with less then given date
         for (TimesheetEntity timesheetEntity : listTE) {
             setContractUUIDTimeSheetDeleted.add(timesheetEntity.getContract().getUuid());
-
             // delete timesheet entry entity
             List<TimesheetEntryEntity> ltee = timeSheetEntryAccess.getTimeSheetEntriesForTimeSheet(timesheetEntity.getUuid());
             ltee.forEach(tee -> {

@@ -64,10 +64,9 @@ public class ReminderBean {
     public List<TimeSheet> getTimeSheetsToSendReminder() {
         //Current Date
         LocalDate today = LocalDate.now();
-        LocalDate todayl = LocalDate.of(2017, 11, 7);
         System.out.println("Current Date=" + today);
         try {
-            timeSheets = timeSheetBusinessLogic.getAllTimeSheetsByGivenDate(todayl);
+            timeSheets = timeSheetBusinessLogic.getAllTimeSheetsByGivenDate(today);
             System.out.println("list of timesheets = " + timeSheets);
         } catch (NumberFormatException ne) {
             System.out.println("Exception Occured from timeSheetBusinessLogic!!");
